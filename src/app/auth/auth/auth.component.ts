@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { loginUser } from '../../store/global.actions';
 
 @Component({
   selector: 'app-auth',
@@ -6,7 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './auth.component.scss'
 })
 export class AuthComponent {
-    onLogin(e: any) {
-      console.log("event: ", e);
+  constructor(private store: Store<{global: any}>) { }
+
+  handleFormSubmit(e: any) {
+      console.log("event", e); 
+        this.store.dispatch(loginUser(e));
     }
+
 }

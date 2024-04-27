@@ -12,13 +12,14 @@ interface m_T {
 })
 export class LoginComponent {
   @Output() formSubmit = new EventEmitter<any>();
-    loginForm = new FormGroup({
-      email: new FormControl(""),
-      password: new FormControl("")
-    })
 
-    onSubmit() {
-      console.log(this.loginForm.value)
-      this.formSubmit.emit(this.loginForm.value)
-    }
+  loginForm = new FormGroup({
+    email: new FormControl(""),
+    password: new FormControl("")
+  })
+
+  onFormSubmit() {
+    console.log(this.loginForm.value)
+    this.formSubmit.emit(this.loginForm.value)
+  }
 }
