@@ -11,11 +11,16 @@ import { AuthComponent } from './auth/auth/auth.component';
 import { VendorsComponent } from './vendors/vendors.component';
 import { StoreModule } from '@ngrx/store';
 import { globalReducer } from './store/global.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { authEffect } from './store/global.effects';
+import { HttpClientModule } from '@angular/common/http';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VendorsComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,7 +28,9 @@ import { globalReducer } from './store/global.reducers';
     AppRoutingModule,
     ButtonModule,
     AuthModule,
-    StoreModule.forRoot({global: globalReducer})
+    HttpClientModule,
+    StoreModule.forRoot({global: globalReducer}),
+    EffectsModule.forRoot([authEffect])
   ],
   providers: [
     provideClientHydration()
