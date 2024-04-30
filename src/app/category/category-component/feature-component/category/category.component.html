@@ -1,0 +1,16 @@
+<div class="category" *ngIf="!isCategoryFormVisible">
+  <app-category-header (createCategoryEmmiter)="showCategoryForm()" class="category_header">
+    <h3>Active Categories</h3>
+    <button (click)="showCategoryForm()">+New</button>
+  </app-category-header> 
+
+  <app-category-table class="category_table" [categories]="categories$ | async"></app-category-table>
+</div>
+
+<div class="category" *ngIf="isCategoryFormVisible">
+  <app-category-header (createCategoryEmmiter)="showCategoryForm()" class="category_header">
+    <h3>New Category</h3>
+    <button (click)="hideCategoryForm()">Cancel</button>
+  </app-category-header> 
+  <app-category-form *ngIf="isCategoryFormVisible"></app-category-form>
+</div>
