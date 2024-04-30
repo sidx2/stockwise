@@ -1,5 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface m_T {
   email: string,
@@ -13,6 +14,8 @@ interface m_T {
 export class LoginComponent {
   @Output() formSubmit = new EventEmitter<any>();
 
+  router = inject(Router)
+
   loginForm = new FormGroup({
     email: new FormControl(""),
     password: new FormControl("")
@@ -21,5 +24,9 @@ export class LoginComponent {
   onFormSubmit() {
     console.log(this.loginForm.value)
     this.formSubmit.emit(this.loginForm.value)
+  }
+
+  onGoTo() {
+    this.router.navigate(['vendors'])
   }
 }
