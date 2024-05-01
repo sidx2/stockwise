@@ -8,7 +8,6 @@ export const categoryReducer = createReducer(
   initialState,
 
   on(setCategories, (_, { categories }) => {
-    console.log("hello");
     return categories;
   }),
 

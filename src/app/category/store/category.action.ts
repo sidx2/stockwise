@@ -3,9 +3,9 @@ import { Category } from '../models/category';
 
 // Actions triggering backend requests
 export const getCategoryRequest = createAction('[Category] Get Categories Request');
-export const createCategoryRequest = createAction('[Category] Create Category Request');
-export const deleteCategoryRequest = createAction('[Category] Delete Category Request');
-export const updateCategoryRequest = createAction('[Category] Update Category Request');
+export const createCategoryRequest = createAction('[Category] Create Category Request', props<{ category: Category }>());
+export const deleteCategoryRequest = createAction('[Category] Delete Category Request', props<{ categoryId: string }>());
+export const updateCategoryRequest = createAction('[Category] Update Category Request', props<{ updatedCategory: Category }>());
 
 // Actions updating state
 export const setCategories = createAction('[Category] Set Categories', props<{ categories: Category[] }>());

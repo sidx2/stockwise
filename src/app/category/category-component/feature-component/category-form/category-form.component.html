@@ -1,3 +1,75 @@
-<form action="">
-    <h1>Category form</h1>
+<form
+  [formGroup]="categoryFormGroup"
+  class="category_form"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="inputDiv">
+    <label for="name">Category Name</label>
+    <input
+      appCustomInputStyle
+      type="text"
+      id="name"
+      placeholder="Enter category Name"
+      formControlName="name"
+    />
+  </div>
+
+  <div class="inputDiv">
+    <label for="identificationType">Identification Type</label>
+    <select appCustomInputStyle id="identificationType" formControlName="identificationType">
+      <option value="">Select Type</option>
+      <option value="unique">unique</option>
+      <option value="non-unique">non-unique</option>
+    </select>
+  </div>
+
+  <h3 class="form-section-heading">Fixed fields</h3>
+  <div class="inputDiv">
+    <label for="itemName">Item Name</label>
+    <input appCustomInputStyle type="text" id="itemName" placeholder="Fixed field" disabled />
+  </div>
+
+  <div class="inputDiv">
+    <label for="itemImage">Item Image</label>
+    <input appCustomInputStyle type="text" id="itemImage" placeholder="Fixed field" disabled />
+  </div>
+
+  <!-- Custom Fields -->
+  <h3 class="form-section-heading">Custom Fields</h3>
+  <div formArrayName="customFields" class="customFields">
+    <div
+      *ngFor="let customField of customFields.controls; let i = index"
+      [formGroupName]="i"
+      class="customField"
+    >
+      <div class="inputDiv">
+        <label for="customFieldName">Field Name</label>
+        <input
+          appCustomInputStyle
+          type="text"
+          id="customFieldName"
+          placeholder="Enter field Name"
+          formControlName="label"
+        />
+      </div>
+      <div class="inputDiv">
+        <label for="customFieldType">Field Type</label>
+        <select appCustomInputStyle id="customFieldType" formControlName="type">
+          <option value="">Select Field Type</option>
+          <option value="text">Text</option>
+          <option value="number">Number</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+      <div class="inputDiv">
+        <label>
+          <input appCustomInputStyle type="checkbox" formControlName="required" /> Required
+        </label>
+      </div>
+      <button appButtonPrimary type="button" (click)="removeCustomField(i)">Remove</button>
+    </div>
+  </div>
+
+  <button appButtonPrimary type="button" (click)="addCustomField()">Add Custom Field</button>
+  <button appButtonPrimary type="submit" [disabled]="!categoryFormGroup.valid">{{!isEditMode ? "Submit" : "Save Changes"}}</button>
 </form>

@@ -1,6 +1,13 @@
-table {
+.category_table {
   width: 90%;
-  margin: 1rem auto;
+  margin: auto;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+table {
+  min-width: 900px;
+  width: 100%;
+  margin: 0 auto;
   border-collapse: collapse;
 }
 
@@ -25,14 +32,7 @@ table .actions {
   gap: 0.5rem;
 }
 
-
-button{
-  border: none;
-  outline: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.2rem;
-  background-color: #0183ff;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
+/* Hide scrollbar */
+.category_table::-webkit-scrollbar {
+  display: none;
 }

@@ -1,4 +1,5 @@
-<table>
+<div class="category_table">
+  <table>
     <thead>
       <tr>
         <th>Name</th>
@@ -11,13 +12,22 @@
       <tr *ngFor="let category of categories">
         <td>{{ category.name }}</td>
         <td>{{ category.identificationType }}</td>
-        <td>{{ category.numberOfAssets }}</td>
+        <td>{{ category.numberOfAssets ? category.numberOfAssets : 0 }}</td>
         <td>
           <div class="actions">
-            <button appButtonPrimary >Update</button>
-            <button appButtonPrimary >Delete</button>
+            <button appButtonPrimary (click)="updateCategoryHandler(category)">
+              Update
+            </button>
+
+            <button
+              appButtonPrimary
+              (click)="deleteCategoryHandler(category._id)"
+            >
+              Delete
+            </button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+</div>

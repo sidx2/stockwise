@@ -10,6 +10,7 @@ import { CategoryTableComponent } from './category-component/ui-component/catego
 import { CategoryHeaderComponent } from './category-component/ui-component/category-header/category-header.component';
 import { ShareModule } from '../share/share.module';
 import { CategoryFormComponent } from './category-component/feature-component/category-form/category-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,9 +22,10 @@ import { CategoryFormComponent } from './category-component/feature-component/ca
   imports: [
     CommonModule,
     HttpClientModule,
-    StoreModule.forFeature('categories', categoryReducer), // Use forFeature instead of forRoot
+    StoreModule.forFeature('categories', categoryReducer), 
     EffectsModule.forFeature([CategoryEffects]),
     ShareModule,
+    ReactiveFormsModule
   ],
   exports:[
     CategoryComponent

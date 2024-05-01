@@ -13,7 +13,6 @@ import { StoreModule } from '@ngrx/store';
 import { globalReducer } from './store/global.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { NavbarComponent } from './navbar/navbar.component';
 import { AppComponent } from './app.component';
 
 
@@ -21,7 +20,6 @@ import { AppComponent } from './app.component';
   declarations: [
     AppComponent,
     VendorsComponent,
-    NavbarComponent,
   ],
   imports: [
     BrowserModule,
