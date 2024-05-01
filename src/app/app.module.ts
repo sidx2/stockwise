@@ -39,7 +39,7 @@ import { AppComponent } from './app.component';
     StoreModule.forRoot({ global: globalReducer }),
     CategoryModule,
     ShareModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([authEffect]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
