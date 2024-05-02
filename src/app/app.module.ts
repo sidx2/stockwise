@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, inject } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -6,21 +6,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ButtonModule } from "primeng/button"
-import { AuthModule } from './auth/auth.module';
-import { AuthComponent } from './auth/auth/auth.component';
-import { VendorsComponent } from './vendors/vendors.component';
-import { StoreModule } from '@ngrx/store';
+import { AuthModule } from './auth/auth.module';  
+import { Store, StoreModule } from '@ngrx/store';
 import { globalReducer } from './store/global.reducers';
-import { EffectsModule } from '@ngrx/effects';
-import { authEffect } from './store/global.effects';
-import { HttpClientModule } from '@angular/common/http';
+import { Actions, EffectsModule } from '@ngrx/effects';
+import { globalEffects } from './store/global.effects';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { fetchOrg, init } from './store/global.actions';
+import { authInterceptor } from './auth.interceptor';
+import { RouterComponent } from './router/router.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VendorsComponent,
     DashboardComponent,
+    RouterComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,11 +31,26 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AuthModule,
     HttpClientModule,
     StoreModule.forRoot({global: globalReducer}),
-    EffectsModule.forRoot([authEffect])
+    EffectsModule.forRoot([globalEffects])
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [Actions],
+      multi: true
+    },
+    provideHttpClient(withInterceptors([authInterceptor]))
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function initializeApp() {
+  const store = inject( Store<{ global: any }>)
+  return () => {
+
+    store.dispatch(init());
+  }
+}

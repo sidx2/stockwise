@@ -6,3 +6,8 @@ export const userSelector = createSelector(
     globalUserFeatureSelector,
     (state) => state.user
 )
+
+export const orgSelector = createSelector(
+    globalUserFeatureSelector,
+    (state) => state.org
+)
