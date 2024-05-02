@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { CategoryComponent } from './category/category-component/feature-component/category/category.component';
+import { InventoryComponent } from './inventory/inventory-component/Feature-component/inventory/inventory.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'category',
     component: CategoryComponent
+  },
+  {
+    path: 'inventory',
+    component: InventoryComponent
   }
 ];
 

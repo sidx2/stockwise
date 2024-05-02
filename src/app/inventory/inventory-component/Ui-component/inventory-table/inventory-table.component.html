@@ -1,0 +1,59 @@
+<div class="inventory_table">
+  <table *ngIf="identificationType === 'unique'">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>serialNumber</th>
+        <th>Asset Count</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.name }}</td>
+        <td>{{ item.serialNumber }}</td>
+        <td>{{ item.status }}</td>
+        <td>
+          <div class="actions">
+            <button appButtonPrimary (click)="updateItemHandler(item)">
+              Update
+            </button>
+
+            <button appButtonPrimary (click)="deleteItemHandler(item?._id)">
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table *ngIf="identificationType === 'non-unique'">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Total Quantity</th>
+        <th>CheckedOut qty</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.checkedOutQuantity }}</td>
+        <td>
+          <div class="actions">
+            <button appButtonPrimary (click)="updateItemHandler(item)">
+              Update
+            </button>
+
+            <button appButtonPrimary (click)="deleteItemHandler(item?._id)">
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

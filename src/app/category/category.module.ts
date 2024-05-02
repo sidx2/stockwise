@@ -22,13 +22,13 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     HttpClientModule,
-    StoreModule.forFeature('categories', categoryReducer), 
-    EffectsModule.forFeature([CategoryEffects]),
+    // StoreModule.forRoot({'categories':categoryReducer}), 
+    // EffectsModule.forRoot([CategoryEffects]),
     ShareModule,
     ReactiveFormsModule
   ],
   exports:[
-    CategoryComponent
+    CategoryComponent,
   ]
 })
 export class CategoryModule { }

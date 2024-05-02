@@ -27,12 +27,6 @@
   font-size: 1rem;
 }
 
-.category_form button:disabled {
-  background-color: #bfbfbf;
-  color: #666666;
-  cursor: not-allowed;
-}
-
 .category_form .customFields {
   display: flex;
   flex-direction: column;

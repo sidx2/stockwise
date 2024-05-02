@@ -7,27 +7,28 @@ import { Category, CustomField } from '../../../models/category';
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit{
+export class CategoryFormComponent implements OnInit {
 
   @Output() createCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
   @Output() updateCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
 
-  @Input() selectedCategory: Category | null  = null;
+  @Input() selectedCategory: Category | null = null;
 
-
-  categoryFormGroup: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    identificationType: new FormControl('', Validators.required),
-    customFields: new FormArray([])
-  });
+  categoryFormGroup: FormGroup = new FormGroup({})
 
   isEditMode: boolean = false;
 
   ngOnInit(): void {
-    if(this.selectedCategory !== null){
+    this.categoryFormGroup = new FormGroup({
+      name: new FormControl('', Validators.required),
+      identificationType: new FormControl('', Validators.required),
+      customFields: new FormArray([])
+    });
+       
+    if(this.selectedCategory !== null) {
       this.isEditMode = true;
       this.setFormValues(this.selectedCategory);
-    }else{
+    } else {
       this.resetForm()
     }
   }
@@ -37,20 +38,20 @@ export class CategoryFormComponent implements OnInit{
       name: category.name,
       identificationType: category.identificationType,
     });
-  
+
     while (this.customFields.length !== 0) {
       this.customFields.removeAt(0);
     }
-  
+
     if (category.customFields && category.customFields.length > 0) {
       category.customFields.forEach((field: CustomField) => {
         this.customFields.push(this.createCustomField(field.label, field.type, field.required));
       });
     }
   }
-  
+
   resetForm() {
-    this.categoryFormGroup.reset(); 
+    this.categoryFormGroup.reset();
   }
 
   get customFields() {
@@ -72,7 +73,7 @@ export class CategoryFormComponent implements OnInit{
       required: new FormControl(required)
     });
   }
-  
+
 
   onSubmit() {
     if (this.categoryFormGroup.valid) {
@@ -80,11 +81,11 @@ export class CategoryFormComponent implements OnInit{
       console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
-      if(!this.isEditMode){
+      if (!this.isEditMode) {
         this.createCategoryEmmiter.emit(formData);
-      }else{
+      } else {
         this.updateCategoryEmmiter.emit({
-          ...formData, 
+          ...formData,
           _id: this.selectedCategory?._id,
           orgId: this.selectedCategory?.orgId,
           identificationType: this.selectedCategory?.identificationType,

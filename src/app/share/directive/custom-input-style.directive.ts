@@ -13,7 +13,7 @@ export class CustomInputStyleDirective {
     const element = this.el.nativeElement;
     element.style.padding = '0.5rem 1rem';
     element.style.outline = 'none';
-    element.style.border = '1px solid rgb(152, 152, 152)';
+    element.style.border = '1px solid #e4e3e3';
     element.style.borderRadius = '0.2rem';
     element.style.fontSize = '1rem';
     element.style.backgroundColor = 'white';
@@ -31,6 +31,6 @@ export class CustomInputStyleDirective {
 
   @HostListener('blur')
   onBlur() {
-    this.el.nativeElement.style.borderColor = 'rgb(152, 152, 152)';
+    this.el.nativeElement.style.borderColor = '#e4e3e3';
   }
 }

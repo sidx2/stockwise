@@ -1,4 +1,4 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostBinding, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[appButtonPrimary]'
@@ -8,9 +8,12 @@ export class ButtonPrimaryDirective implements OnInit {
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit(): void {
-    const element = this.elementRef.nativeElement;
+    // Apply the default styles
+    this.applyDefaultStyles();
+  }
 
-    // Apply the provided styling to the element
+  private applyDefaultStyles() {
+    const element = this.elementRef.nativeElement;
     element.style.border = 'none';
     element.style.outline = 'none';
     element.style.padding = '0.5rem 1rem';
@@ -21,4 +24,19 @@ export class ButtonPrimaryDirective implements OnInit {
     element.style.cursor = 'pointer';
   }
 
+  // Listen for changes to the disabled state and update styles accordingly
+  @HostBinding('style.backgroundColor')
+  get backgroundColor(): string {
+    return this.elementRef.nativeElement.disabled ? '#bfbfbf' : '#0183ff';
+  }
+
+  @HostBinding('style.color')
+  get color(): string {
+    return this.elementRef.nativeElement.disabled ? '#666666' : 'white';
+  }
+
+  @HostBinding('style.cursor')
+  get cursor(): string {
+    return this.elementRef.nativeElement.disabled ? 'not-allowed' : 'pointer';
+  }
 }

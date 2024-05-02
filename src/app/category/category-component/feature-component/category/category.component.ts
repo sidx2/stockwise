@@ -32,18 +32,6 @@ export class CategoryComponent implements OnInit {
     this.store.dispatch(getCategoryRequest());
   }
 
-  showCategoryForm(): void {
-    if(!this.isEditMode){
-      this.selectedCategory = null;
-    }
-    this.isCategoryFormVisible = true;
-  }
-
-  hideCategoryForm(): void {
-    this.isEditMode = false;
-    this.isCategoryFormVisible = false;
-  }
-
   createCategoryHandler(category: Category){
     console.log("data received inside category", category);
 
@@ -63,6 +51,18 @@ export class CategoryComponent implements OnInit {
   deleteCategoryHandler(categoryId: string){
     this.categoryIdToDelete = categoryId; 
     this.showDeleteConfirmation = true;
+  }
+
+  showCategoryForm(): void {
+    if(!this.isEditMode){
+      this.selectedCategory = null;
+    }
+    this.isCategoryFormVisible = true;
+  }
+
+  hideCategoryForm(): void {
+    this.isEditMode = false;
+    this.isCategoryFormVisible = false;
   }
 
   showUpdateCategoryForm(selectedCategory: Category){

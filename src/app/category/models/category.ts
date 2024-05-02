@@ -10,7 +10,7 @@ export interface Category {
     name: string;
     identificationType: "unique" | "non-unique";
     orgId: string;
-    customFields: [];
+    customFields: CustomField[]
     vendors?: any[];
     numberOfAssets: number
 }

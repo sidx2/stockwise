@@ -14,6 +14,11 @@ import { globalReducer } from './store/global.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
+import { InventoryModule } from './inventory/inventory.module';
+import { categoryReducer } from './category/store/category.reducer';
+import { CategoryEffects } from './category/store/category.effect';
+import { inventoryReducer } from './inventory/store/inventory.reducer';
+import { InventoryEffects } from './inventory/store/inventory.effect';
 
 
 @NgModule({
@@ -27,11 +32,11 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     ButtonModule,
     AuthModule,
-    StoreModule.forRoot({ global: globalReducer }),
     CategoryModule,
+    InventoryModule,
+    StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer }),
     ShareModule,
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([CategoryEffects, InventoryEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode(),
