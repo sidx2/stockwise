@@ -9,6 +9,7 @@ table {
   width: 100%;
   margin: 0 auto;
   border-collapse: collapse;
+  margin-bottom: 2rem;
 }
 
 th {
@@ -32,13 +33,3 @@ table .actions {
   gap: 0.5rem;
 }
 
-/* Hide scrollbar */
-// .category_table::-webkit-scrollbar {
-//   display: none;
-// }
-
-// @media screen and (max-width: 900px) {
-//   .category_table::-webkit-scrollbar {
-//     display: block;
-//   }
-// }

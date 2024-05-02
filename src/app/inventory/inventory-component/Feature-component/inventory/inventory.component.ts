@@ -16,7 +16,7 @@ export class InventoryComponent implements OnInit {
 
   items$: Observable<Item[]>; 
   categories$: Observable<Category[]>;
-  filteredItems$: Observable<Item[]> | undefined;
+  filteredItems$: Observable<Item[]> | null = null;
 
   selectedCategory: Category | null = null;
   updateItemCategory: Category | null = null;
@@ -26,6 +26,8 @@ export class InventoryComponent implements OnInit {
   itemIdToDelete: string ='';
   selectedItem: Item | null = null;
   isEditMode: boolean = false;
+
+  searchText: string = ''
 
   constructor(private store: Store<{ inventory: Item[], categories: Category[] }>) {
     this.items$ = this.store.select('inventory');
@@ -48,11 +50,12 @@ export class InventoryComponent implements OnInit {
   }
 
   onCategoryChange(): void {
+    this.searchText = '';
     this.filteredItems$ = this.items$.pipe(
       map(items => {
         const selectedCategoryId = this.selectedCategory?._id;
         return selectedCategoryId ? items.filter(item => item.categoryId === selectedCategoryId) : items;
-      })
+      }),
     );
   }
 
@@ -119,4 +122,5 @@ export class InventoryComponent implements OnInit {
       this.showDeleteConfirmation = false;
     }
   }
+
 }

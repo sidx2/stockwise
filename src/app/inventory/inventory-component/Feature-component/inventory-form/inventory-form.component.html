@@ -20,7 +20,7 @@
    <!-- Conditionally render additional fields -->
    <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
     <label for="serialNumber">Serial Number</label>
-    <input appCustomInputStyle id="serialNumber" type="text" formControlName="serialNumber" />
+    <input appCustomInputStyle id="serialNumber" class="error" type="text" formControlName="serialNumber" />
   </div>
 
   <div *ngIf="selectedCategory?.identificationType === 'non-unique'" class="inputDiv">

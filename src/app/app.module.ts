@@ -20,6 +20,7 @@ import { CategoryEffects } from './category/store/category.effect';
 import { inventoryReducer } from './inventory/store/inventory.reducer';
 import { InventoryEffects } from './inventory/store/inventory.effect';
 
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -45,9 +46,11 @@ import { InventoryEffects } from './inventory/store/inventory.effect';
       traceLimit: 75,
       connectInZone: true
     }),
+
+    // MatIconModule,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
   ],
   bootstrap: [AppComponent],
 

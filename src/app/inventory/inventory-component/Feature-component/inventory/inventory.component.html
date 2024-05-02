@@ -5,8 +5,11 @@
   </app-inventory-header>
 
   <div class="filterOption">
+    <input appCustomInputStyle type="text" class="searchBar" placeholder="Search item" [(ngModel)]="searchText">
+
     <select
       appCustomInputStyle
+      class="filter"
       name="selectedCategory"
       id="selectedCategory"
       [(ngModel)]="selectedCategory"
@@ -19,7 +22,7 @@
   </div>
 
   <app-inventory-table
-    [items]="filteredItems$ | async"
+    [items]="filteredItems$ | async | itemFilter: searchText"
     [identificationType]="selectedCategory?.identificationType"
     (deleteItemEmmiter)="deleteItemHandler($event)"
     (updateItemEmmiter)="showUpdateItemForm($event)"

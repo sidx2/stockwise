@@ -11,19 +11,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InventoryTableComponent } from './inventory-component/Ui-component/inventory-table/inventory-table.component';
 import { InventoryHeaderComponent } from './inventory-component/Ui-component/inventory-header/inventory-header.component';
 import { InventoryFormComponent } from './inventory-component/Feature-component/inventory-form/inventory-form.component';
+import { ItemFilterPipe } from './pipes/item-filter.pipe';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     InventoryComponent,
     InventoryFormComponent,
     InventoryTableComponent,
-    InventoryHeaderComponent
+    InventoryHeaderComponent,
+    ItemFilterPipe
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     ShareModule,
     ReactiveFormsModule,
+    MatIconModule,
     FormsModule
   ]
 })
