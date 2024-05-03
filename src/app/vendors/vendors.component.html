@@ -1,1 +1,54 @@
-<p>vendors works!</p>
+<div class="card">
+    <p-table #dt1 [value]="vendors" selectionMode="single" [(selection)]="selectedVendors" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+    [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="name" style="width:25%">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="country.name" style="width:25%">Email <p-sortIcon field="country.name"></p-sortIcon></th>
+                <th pSortableColumn="representative.name" style="width:25%">Address <p-sortIcon field="representative.name"></p-sortIcon></th>
+                <th pSortableColumn="status" style="width:25%">Actions <p-sortIcon field="status"></p-sortIcon></th>
+            </tr>
+            <tr>
+            <th>
+                <input pInputText type="text" (input)="dt1.filter($event, 'name', 'contains')" [value]="dt1.filters['name']" placeholder="Search by Name" class="w-full">
+            </th>
+            <th>
+                <input pInputText type="text" (input)="dt1.filter($event, 'country.name', 'contains')" [value]="dt1.filters['country.name']" placeholder="Search by Country" class="w-full">
+            </th>
+            <th>
+                <input pInputText type="text" (input)="dt1.filter($event, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']" placeholder="Search by Representative" class="w-full">
+            </th>
+            <th>
+                <input pInputText type="text" (input)="dt1.filter($event, 'status', 'contains')" [value]="dt1.filters['status']" placeholder="Search by Status" class="w-full">
+            </th>
+        </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vendor>
+            <tr [pSelectableRow]="vendor">
+                <td>
+                    <span class="p-column-title">Name</span>
+                    {{vendor.name}}
+                </td>
+                <td>
+                    <span class="p-column-title">Email</span>
+                    <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + '91'" style="width: 20px">
+                    <span class="ml-1 vertical-align-middle">{{vendor.email}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">Address</span>
+                    <!-- <img [alt]="vendor.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{vendor.representative.image}}" width="32" style="vertical-align: middle" /> -->
+                    <span class="ml-1 vertical-align-middle">{{vendor.address}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">Status</span>
+                    <p-tag [value]="vendor.status" [severity]="getSeverity('new')"></p-tag>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No vendors found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
