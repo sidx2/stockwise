@@ -1,6 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
+import { Store } from '@ngrx/store';
+import { fetchVendors } from '../../../../vendors/store/vendor.actions';
+import { Observable, mergeMap } from 'rxjs';
+import { vendorsSelector } from '../../../../vendors/store/vendor.selectors';
 
 @Component({
   selector: 'app-category-form',
@@ -14,29 +18,48 @@ export class CategoryFormComponent implements OnInit {
 
   @Input() selectedCategory: Category | null = null;
 
-  categoryFormGroup: FormGroup = new FormGroup({})
-
+  categoryFormGroup: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
+
+  vendors$!: Observable<any[]>; 
+
+  constructor(private store: Store<{ vendors: any[] }>) {
+    this.store.dispatch(fetchVendors());
+    this.vendors$ = this.store.select(vendorsSelector);
+  }
 
   ngOnInit(): void {
     this.categoryFormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
       identificationType: new FormControl('', Validators.required),
-      customFields: new FormArray([])
+      customFields: new FormArray([]),
+      selectedVendors: new FormControl([])
     });
        
-    if(this.selectedCategory !== null) {
+    if (this.selectedCategory !== null) {
       this.isEditMode = true;
+      console.log("selectedCategory ", this.selectedCategory);
       this.setFormValues(this.selectedCategory);
     } else {
       this.resetForm()
     }
   }
 
+  dropdownSettings = {
+    singleSelection: false,
+    idField: '_id',
+    textField: 'name',
+    // selectAllText: 'Select All',
+    // unSelectAllText: 'Unselect All',
+    // itemsShowLimit: 3,
+    allowSearchFilter: true
+  };
+
   setFormValues(category: Category): void {
     this.categoryFormGroup.patchValue({
       name: category.name,
       identificationType: category.identificationType,
+      selectedVendors: category.vendors
     });
 
     while (this.customFields.length !== 0) {
@@ -48,6 +71,17 @@ export class CategoryFormComponent implements OnInit {
         this.customFields.push(this.createCustomField(field.label, field.type, field.required));
       });
     }
+
+    this.vendors$.subscribe((vendors: any[]) => {
+      const selectedVendors = category.vendors?.map((vendorId: string) => {
+        const vendor = vendors.find((vendor: any) => vendor?._id === vendorId);
+        return { _id: vendor?._id, name: vendor?.name }; 
+      });
+      this.categoryFormGroup.patchValue({
+        selectedVendors: selectedVendors
+      });
+    });
+  
   }
 
   resetForm() {
@@ -81,16 +115,19 @@ export class CategoryFormComponent implements OnInit {
       console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
+      const selectedVendorsId =  this.categoryFormGroup.get('selectedVendors')?.value.map((vendor: any) => vendor._id);
+
       if (!this.isEditMode) {
-        this.createCategoryEmmiter.emit(formData);
+        this.createCategoryEmmiter.emit({...formData, vendors: selectedVendorsId});
       } else {
         this.updateCategoryEmmiter.emit({
           ...formData,
           _id: this.selectedCategory?._id,
           orgId: this.selectedCategory?.orgId,
           identificationType: this.selectedCategory?.identificationType,
-          numberOfAssets: this.selectedCategory?.numberOfAssets
+          vendors: selectedVendorsId,
         });
+        
       }
 
     } else {

@@ -93,7 +93,6 @@ export class globalEffects {
                 
                 console.log("t in tap: ", t);
                 try {
-
                     this.cs.set("org", JSON.stringify(t))
                 }
                 catch (e) {

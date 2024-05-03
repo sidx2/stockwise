@@ -7,6 +7,7 @@ import { CategoryHeaderComponent } from './category-component/ui-component/categ
 import { ShareModule } from '../share-module/share.module';
 import { CategoryFormComponent } from './category-component/feature-component/category-form/category-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     HttpClientModule,
     ShareModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule
   ],
   exports:[
     CategoryComponent,

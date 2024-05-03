@@ -22,6 +22,6 @@ export class OrgService {
   }
 
   getOrgByUserId(userId: string) {
-      return this.http.get("http://localhost:9999/org/getOrgOfUser/" + userId)
+      return this.http.get("http://localhost:9999/org/getOrg/")
   }
 }

@@ -23,8 +23,6 @@ import { vendorEffects } from './store/vendor.effects';
     ChipsModule,
     ChipModule,
     TagModule,
-    StoreModule.forFeature("vendors", vendorReducer),
-    EffectsModule.forFeature([vendorEffects])
   ]
 })
 export class VendorsModule { }

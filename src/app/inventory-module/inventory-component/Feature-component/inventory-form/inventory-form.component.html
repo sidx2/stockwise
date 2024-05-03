@@ -28,7 +28,6 @@
     <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 0"  />
   </div>
 
-
   <div class="customFields" *ngIf="selectedCategory">
     <div formArrayName="customFields" class="customFields">
       <div *ngFor="let customField of selectedCategory?.customFields; let i = index" class="inputDiv">

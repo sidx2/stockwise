@@ -16,7 +16,11 @@
 
   <div class="inputDiv">
     <label for="identificationType">Identification Type</label>
-    <select  id="identificationType" appCustomInputStyle formControlName="identificationType">
+    <select
+      id="identificationType"
+      appCustomInputStyle
+      formControlName="identificationType"
+    >
       <option value="">Select type</option>
       <option value="unique">unique</option>
       <option value="non-unique">non-unique</option>
@@ -26,14 +30,26 @@
   <h3 class="form-section-heading">Fixed fields</h3>
   <div class="inputDiv">
     <label for="itemName">Item Name</label>
-    <input appCustomInputStyle type="text" id="itemName" placeholder="Fixed field" disabled />
+    <input
+      appCustomInputStyle
+      type="text"
+      id="itemName"
+      placeholder="Fixed field"
+      disabled
+    />
   </div>
 
   <div class="inputDiv">
     <label for="itemImage">Item Image</label>
-    <input appCustomInputStyle type="text" id="itemImage" placeholder="Fixed field" disabled />
+    <input
+      appCustomInputStyle
+      type="text"
+      id="itemImage"
+      placeholder="Fixed field"
+      disabled
+    />
   </div>
-  
+
   <!-- Custom Fields -->
   <h3 class="form-section-heading">Custom Fields</h3>
   <div formArrayName="customFields" class="customFields">
@@ -63,13 +79,49 @@
       </div>
       <div class="inputDiv">
         <label>
-          <input appCustomInputStyle type="checkbox" formControlName="required" /> Required
+          <input
+            appCustomInputStyle
+            type="checkbox"
+            formControlName="required"
+          />
+          Required
         </label>
       </div>
-      <button appButtonPrimary type="button" (click)="removeCustomField(i)">Remove</button>
+      <button appButtonPrimary type="button" (click)="removeCustomField(i)">
+        Remove
+      </button>
     </div>
   </div>
 
-  <button appButtonPrimary type="button" (click)="addCustomField()">Add Custom Field</button>
-  <button appButtonPrimary type="submit" [disabled]="!categoryFormGroup.valid">{{!isEditMode ? "Submit" : "Save Changes"}}</button>
+  <!-- vendor list -->
+  <!-- <div class="inputDiv">
+    <label for="vendorsList">Select vendors</label>
+    <select id="vendorsList">
+      <option value="">Select vendor</option>
+      <option *ngFor="let vendor of vendors$ | async" [value]="vendor._id">
+        {{ vendor.name }}
+      </option>
+    </select>
+  </div> -->
+
+  <!-- vendor list -->
+  <div class="inputDiv" *ngIf="vendors$ | async as vendors">
+    <label for="vendorsList">Select vendors</label>
+    <ng-multiselect-dropdown
+      id="vendorsList"
+      appCustomInputStyle
+      [placeholder]="'Select vendors'"
+      [data]="vendors"
+      [settings]="dropdownSettings"
+      formControlName="selectedVendors"
+    ></ng-multiselect-dropdown>
+  </div>
+  
+
+  <button appButtonPrimary type="button" (click)="addCustomField()">
+    Add Custom Field
+  </button>
+  <button appButtonPrimary type="submit" [disabled]="!categoryFormGroup.valid">
+    {{ !isEditMode ? "Submit" : "Save Changes" }}
+  </button>
 </form>

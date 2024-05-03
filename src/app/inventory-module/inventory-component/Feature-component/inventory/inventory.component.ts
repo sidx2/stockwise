@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, take, filter, concatMap } from 'rxjs/operators';
 import { createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
@@ -12,11 +12,12 @@ import { Item } from '../../../models/inventory';
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss']
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
 
   items$: Observable<Item[]>; 
   categories$: Observable<Category[]>;
   filteredItems$: Observable<Item[]> | null = null;
+  private orgSubscription: Subscription | undefined;
 
   selectedCategory: Category | null = null;
   updateItemCategory: Category | null = null;
@@ -28,13 +29,19 @@ export class InventoryComponent implements OnInit {
   isEditMode: boolean = false;
 
   searchText: string = ''
+  orgId: string = '';
 
-  constructor(private store: Store<{ inventory: Item[], categories: Category[] }>) {
+  constructor(private store: Store<{global: any,  inventory: Item[], categories: Category[] }>) {
     this.items$ = this.store.select('inventory');
     this.categories$ = this.store.select('categories');
   }
 
   ngOnInit(): void {
+
+    this.orgSubscription = this.store.select('global').subscribe((global) => {
+      this.orgId = global.org._id;
+    })
+
     this.store.dispatch(getCategoryRequest());
     this.store.dispatch(getItemRequest());
 
@@ -45,7 +52,12 @@ export class InventoryComponent implements OnInit {
       this.selectedCategory = categories[0];
       this.onCategoryChange();
     });
-  
+  }
+
+  ngOnDestroy(): void {
+    if (this.orgSubscription) {
+      this.orgSubscription.unsubscribe();
+    }
   }
 
   onCategoryChange(): void {
@@ -60,7 +72,7 @@ export class InventoryComponent implements OnInit {
 
   createItemHandler(item: Item){
     // adding orgId
-    item.orgId = "660e20d70b44fcba1ea33139";
+    item.orgId = this.orgId;
     this.store.dispatch(createItemRequest({item}));
     this.isInventoryFormVisible = false;
   }

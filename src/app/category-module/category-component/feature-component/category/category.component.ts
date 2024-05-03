@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Category } from '../../../models/category';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest } from '../../../store/category.action';
 
@@ -21,15 +21,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
   
   private orgSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ categories: Category[], global: any }>) {
+  constructor(private store: Store<{ categories: Category[], global: any}>) {
     this.categories$ = this.store.select('categories');
   }
 
   ngOnInit(): void {
-    this.fetchCategoryHandler();
     this.orgSubscription = this.store.select('global').subscribe((global) => {
-      console.log("org in dashboard is: ", global)
+      this.orgId = global.org._id;
     })
+    this.fetchCategoryHandler();
   }
 
   ngOnDestroy(): void {
@@ -44,14 +44,14 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   createCategoryHandler(category: Category){
-    category.orgId = "660e20d70b44fcba1ea33139";
-    // category.orgId = this.orgId;
+    category.orgId = this.orgId;
     this.store.dispatch(createCategoryRequest({ category: category }));
     this.isCategoryFormVisible = false;
   }
 
   updateCategoryHandler(updatedCategory: Category){
     this.store.dispatch(updateCategoryRequest({updatedCategory}));
+    this.fetchCategoryHandler();
     this.isCategoryFormVisible = false;
   }
 

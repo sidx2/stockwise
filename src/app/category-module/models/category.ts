@@ -4,14 +4,13 @@ export interface CustomField {
     required: boolean;
 }
 
-
 export interface Category {
     _id: string;
     name: string;
     identificationType: "unique" | "non-unique";
     orgId: string;
     customFields: CustomField[]
-    vendors?: any[];
+    vendors: any[];
     numberOfAssets: number
 }
 

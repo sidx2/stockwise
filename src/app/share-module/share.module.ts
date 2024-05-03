@@ -8,6 +8,7 @@ import { CustomInputStyleDirective } from './directive/custom-input-style.direct
 import { FooterComponent } from './component/footer/footer.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
     NavbarComponent,
     CustomInputStyleDirective,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
