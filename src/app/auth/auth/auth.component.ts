@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loginUser } from '../../store/global.actions';
+import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess } from '../../store/global.actions';
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Router } from "@angular/router"
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-auth',
@@ -8,11 +11,27 @@ import { loginUser } from '../../store/global.actions';
   styleUrl: './auth.component.scss'
 })
 export class AuthComponent {
-  constructor(private store: Store<{global: any}>) { }
+  actions$ = inject(Actions)
+  router = inject(Router);
+  cookieService = inject(CookieService)
+  constructor(private store: Store<{ global: any }>) {
+    this.actions$.pipe(
+      ofType(loginUserSuccess),
+    ).subscribe((data) => {
+      console.log("data in AuthComponent: ", data);
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
+      this.cookieService.set("token", data.token, expiryDate)
+      this.cookieService.set("user", JSON.stringify(data), expiryDate)
+      this.cookieService.set("isLoggedin", "true", expiryDate)
+      this.store.dispatch(fetchOrg({id: data.id}))
+      this.router.navigate(['dashboard']);
+    });
+  }
 
   handleFormSubmit(e: any) {
-      console.log("event", e); 
-        this.store.dispatch(loginUser(e));
-    }
+    console.log("event: ", e);
+    this.store.dispatch(loginUser({user: e}));
+  }
 
 }

@@ -3,17 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { CategoryComponent } from './category/category-component/feature-component/category/category.component';
 import { InventoryComponent } from './inventory/inventory-component/Feature-component/inventory/inventory.component';
+import { RouterComponent } from './router/router.component';
+
 
 const routes: Routes = [
   {
-    canActivate: [authGuard],
     path: "",
     pathMatch: "full",
-    loadChildren: () => import("./auth/auth-routing.module").then(m => m.AuthRoutingModule),
+    component: RouterComponent
   },
   {
-    path: "",
-    pathMatch: "full",
+    canActivate: [authGuard],
+    path: "auth",
+    
+    loadChildren: () => import("./auth/auth-routing.module").then(m => m.AuthRoutingModule),
+  },  
+  {
+    path: "dashboard",
+
     loadChildren: () => import("./main-routing.module").then(m => m.MainRoutingModule)
   },
   {
@@ -23,7 +30,8 @@ const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryComponent
-  }
+  },
+  { path: 'vendors', loadChildren: () => import('./vendors/vendors.module').then(m => m.VendorsModule) },
 ];
 
 @NgModule({

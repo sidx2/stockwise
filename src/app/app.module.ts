@@ -1,17 +1,14 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, NgModule, inject, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CategoryModule } from './category/category.module';
 import { ButtonModule } from "primeng/button"
-import { AuthModule } from './auth/auth.module';
 import { ShareModule } from './share/share.module';
 import { AuthComponent } from './auth/auth/auth.component';
 import { VendorsComponent } from './vendors/vendors.component';
-import { StoreModule } from '@ngrx/store';
-import { globalReducer } from './store/global.reducers';
-import { EffectsModule } from '@ngrx/effects';
+
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import { InventoryModule } from './inventory/inventory.module';
@@ -21,11 +18,22 @@ import { inventoryReducer } from './inventory/store/inventory.reducer';
 import { InventoryEffects } from './inventory/store/inventory.effect';
 
 import {MatIconModule} from '@angular/material/icon';
+import { AuthModule } from './auth/auth.module';  
+import { Store, StoreModule } from '@ngrx/store';
+import { globalReducer } from './store/global.reducers';
+import { Actions, EffectsModule } from '@ngrx/effects';
+import { globalEffects } from './store/global.effects';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { fetchOrg, init } from './store/global.actions';
+import { authInterceptor } from './auth.interceptor';
+import { RouterComponent } from './router/router.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VendorsComponent,
+    DashboardComponent,
+    RouterComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,12 +55,27 @@ import {MatIconModule} from '@angular/material/icon';
       connectInZone: true
     }),
 
-    // MatIconModule,
+    MatIconModule,
   ],
   providers: [
     provideClientHydration(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [Actions],
+      multi: true
+    },
+    provideHttpClient(withInterceptors([authInterceptor]))
   ],
   bootstrap: [AppComponent],
 
 })
 export class AppModule { }
+
+export function initializeApp() {
+  const store = inject( Store<{ global: any }>)
+  return () => {
+
+    store.dispatch(init());
+  }
+}
