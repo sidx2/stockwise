@@ -11,7 +11,7 @@ import { Item } from '../../../models/inventory';
 export class InventoryFormComponent implements OnInit {
 
   @Input() categories: Category[] | null = null;
-  @Input() updateItemCategory: Category |null = null;
+  @Input() updateItemCategory: Category | null = null;
   @Input() selectedItem: Item | null = null;
 
   @Output() createItemEmmiter: EventEmitter<Item> = new EventEmitter();
@@ -60,13 +60,12 @@ export class InventoryFormComponent implements OnInit {
     const customFieldsArray = this.itemFormGroup.get('customFields') as FormArray;
     customFieldsArray.clear();
 
-    const customFieldsData = item.customFieldsData || {};
-    Object.keys(customFieldsData).forEach(key => {
-      const value = customFieldsData[key];
-      const control = new FormControl(value, Validators.required);
+    // Iterate through the selected category's custom fields
+    for (let customField of this.selectedCategory?.customFields || []) {
+      const initialValue = item.customFieldsData?.[customField.label] || '';
+      const control = new FormControl(initialValue, customField.required ? Validators.required : null);
       customFieldsArray.push(control);
-    });
-
+    }
     console.log("ItemformGroup on update", this.itemFormGroup)
   }
 
@@ -124,10 +123,10 @@ export class InventoryFormComponent implements OnInit {
         lifecycle: []
       };
 
-      if(this.isEditMode){
+      if (this.isEditMode) {
         newItem._id = this.selectedItem?._id;
         this.updateItemEmmiter.emit(newItem);
-      }else{
+      } else {
         this.createItemEmmiter.emit(newItem);
       }
     }
