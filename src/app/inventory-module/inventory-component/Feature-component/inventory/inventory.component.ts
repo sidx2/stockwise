@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, take, filter } from 'rxjs/operators';
+import { map, take, filter, concatMap } from 'rxjs/operators';
 import { createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
@@ -38,15 +38,14 @@ export class InventoryComponent implements OnInit {
     this.store.dispatch(getCategoryRequest());
     this.store.dispatch(getItemRequest());
 
-    // Select the first category by default
     this.categories$.pipe(
-      take(1) 
+      filter(categories => categories.length > 0),
+      take(1), 
     ).subscribe(categories => {
-      if (categories.length > 0) {
-        this.selectedCategory = categories[0];
-        this.onCategoryChange(); 
-      }
+      this.selectedCategory = categories[0];
+      this.onCategoryChange();
     });
+  
   }
 
   onCategoryChange(): void {

@@ -45,7 +45,7 @@ import { RouterComponent } from './router/router.component';
     InventoryModule,
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer }),
     ShareModule,
-    EffectsModule.forRoot([CategoryEffects, InventoryEffects]),
+    EffectsModule.forRoot([globalEffects,CategoryEffects, InventoryEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode(),

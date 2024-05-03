@@ -11,49 +11,18 @@ export class InventoryService {
 
   getItems() {
     const orgId = '660e20d70b44fcba1ea33139';
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBlMjBkNzBiNDRmY2JhMWVhMzMxMzUiLCJpYXQiOjE3MTQ0NjE5MzIsImV4cCI6MTcxNDcyMTEzMn0.vXTUF-VA9D8ajxJcIeIxDyVVgRZsl4o7spKjYDGdP-U';
-
-    const headers = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    return this.http.get<Item[]>(`http://localhost:9999/inventory/${orgId}`, headers); 
+    return this.http.get<Item[]>(`http://localhost:9999/inventory/${orgId}`); 
   }
 
   createItem(item: Item){
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBlMjBkNzBiNDRmY2JhMWVhMzMxMzUiLCJpYXQiOjE3MTQ0NjE5MzIsImV4cCI6MTcxNDcyMTEzMn0.vXTUF-VA9D8ajxJcIeIxDyVVgRZsl4o7spKjYDGdP-U';
-
-    const headers = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    return this.http.post<Item>(`http://localhost:9999/inventory/create`, item, headers); 
+    return this.http.post<Item>(`http://localhost:9999/inventory/create`, item); 
   }
 
   updateItem(updatedItem: Item){
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBlMjBkNzBiNDRmY2JhMWVhMzMxMzUiLCJpYXQiOjE3MTQ0NjE5MzIsImV4cCI6MTcxNDcyMTEzMn0.vXTUF-VA9D8ajxJcIeIxDyVVgRZsl4o7spKjYDGdP-U';
-
-    const headers = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    return this.http.put<Item>(`http://localhost:9999/inventory/update`, {...updatedItem, itemId: updatedItem._id}, headers); 
+    return this.http.put<Item>(`http://localhost:9999/inventory/update`, {...updatedItem, itemId: updatedItem._id}); 
   }
 
   deleteItem(itemId: String){
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBlMjBkNzBiNDRmY2JhMWVhMzMxMzUiLCJpYXQiOjE3MTQ0NjE5MzIsImV4cCI6MTcxNDcyMTEzMn0.vXTUF-VA9D8ajxJcIeIxDyVVgRZsl4o7spKjYDGdP-U';  
-    const headers = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    return this.http.delete<Item>(`http://localhost:9999/inventory/delete/${itemId}`,  headers); 
+    return this.http.delete<Item>(`http://localhost:9999/inventory/delete/${itemId}`); 
   }
 }

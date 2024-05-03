@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { VendorsComponent } from './vendors/vendors.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
+import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
 
 const routes: Routes = [
   {
@@ -13,6 +15,14 @@ const routes: Routes = [
     path: "vendors",
     component: VendorsComponent
   },
+  {
+    path: "inventory",
+    component: InventoryComponent
+  },
+  {
+    path: "category",
+    component: CategoryComponent
+  }
  
 ];
 
