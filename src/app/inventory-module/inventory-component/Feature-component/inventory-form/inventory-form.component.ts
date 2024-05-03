@@ -1,6 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Category, CustomField } from '../../../../category/models/category';
+import { Category } from '../../../../category-module/models/category';
 import { Item } from '../../../models/inventory';
 
 @Component({

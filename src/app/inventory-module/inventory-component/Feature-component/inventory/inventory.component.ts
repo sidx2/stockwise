@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take, filter } from 'rxjs/operators';
 import { createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
-import { Category } from '../../../../category/models/category';
-import { getCategoryRequest } from '../../../../category/store/category.action';
+import { Category } from '../../../../category-module/models/category';
+import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { Item } from '../../../models/inventory';
 
 @Component({

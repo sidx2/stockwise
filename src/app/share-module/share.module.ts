@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonPrimaryDirective } from './directive/button-primary.directive';
-import { ModalComponent } from './componennt/modal/modal.component';
-import { NavbarComponent } from './componennt/navbar/navbar.component';
+import { ModalComponent } from './component/modal/modal.component';
+import { NavbarComponent } from './component/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { CustomInputStyleDirective } from './directive/custom-input-style.directive';
-import { FooterComponent } from './componennt/footer/footer.component';
+import { FooterComponent } from './component/footer/footer.component';
 import { MatIconModule } from '@angular/material/icon';
+import { SidebarComponent } from './component/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
     ModalComponent,
     NavbarComponent,
     CustomInputStyleDirective,
-    FooterComponent
+    FooterComponent,
+    SidebarComponent
   ],
   imports: [
     CommonModule,

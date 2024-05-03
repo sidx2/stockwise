@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './auth.guard';
-import { CategoryComponent } from './category/category-component/feature-component/category/category.component';
-import { InventoryComponent } from './inventory/inventory-component/Feature-component/inventory/inventory.component';
+import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
+import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
 import { RouterComponent } from './router/router.component';
 
 

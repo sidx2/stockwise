@@ -3,19 +3,19 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
-import { CategoryModule } from './category/category.module';
+import { CategoryModule } from './category-module/category.module';
 import { ButtonModule } from "primeng/button"
-import { ShareModule } from './share/share.module';
+import { ShareModule } from './share-module/share.module';
 import { AuthComponent } from './auth/auth/auth.component';
 import { VendorsComponent } from './vendors/vendors.component';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
-import { InventoryModule } from './inventory/inventory.module';
-import { categoryReducer } from './category/store/category.reducer';
-import { CategoryEffects } from './category/store/category.effect';
-import { inventoryReducer } from './inventory/store/inventory.reducer';
-import { InventoryEffects } from './inventory/store/inventory.effect';
+import { InventoryModule } from './inventory-module/inventory.module';
+import { categoryReducer } from './category-module/store/category.reducer';
+import { CategoryEffects } from './category-module/store/category.effect';
+import { inventoryReducer } from './inventory-module/store/inventory.reducer';
+import { InventoryEffects } from './inventory-module/store/inventory.effect';
 
 import {MatIconModule} from '@angular/material/icon';
 import { AuthModule } from './auth/auth.module';  

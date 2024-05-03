@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from '../../../models/category';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategory, updateCategoryRequest } from '../../../store/category.action';
+import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest } from '../../../store/category.action';
 
 @Component({
   selector: 'app-category',
