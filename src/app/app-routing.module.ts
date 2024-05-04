@@ -5,7 +5,6 @@ import { CategoryComponent } from './category-module/category-component/feature-
 import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
 import { RouterComponent } from './router/router.component';
 
-
 const routes: Routes = [
   {
     path: "",
@@ -15,9 +14,9 @@ const routes: Routes = [
   {
     canActivate: [authGuard],
     path: "auth",
-    
+
     loadChildren: () => import("./auth/auth-routing.module").then(m => m.AuthRoutingModule),
-  },  
+  },
   {
     path: "dashboard",
 

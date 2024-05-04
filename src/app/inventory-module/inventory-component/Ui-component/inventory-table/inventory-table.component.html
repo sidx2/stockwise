@@ -15,19 +15,23 @@
         <td>{{ item.status }}</td>
         <td>
           <div class="actions">
-            <button appButtonPrimary (click)="updateItemHandler(item)">
+            <button appButtonPrimaryLight (click)="updateItemHandler(item)">
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button appButtonPrimary (click)="deleteItemHandler(item?._id)">
+            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)">
               <mat-icon>delete</mat-icon>
             </button>
 
-            <button appButtonPrimary >
+            <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)">
+              <mat-icon>info</mat-icon>
+            </button>
+
+            <button appButtonPrimaryLight (click)="checkoutItemHandler(item)">
               Checkout
             </button>
 
-            <button appButtonPrimary >
+            <button appButtonPrimaryLight (click)="checkinItemHandler(item)" >
               CheckIn
             </button>
           </div>
@@ -52,24 +56,31 @@
         <td>{{ item.checkedOutQuantity }}</td>
         <td>
           <div class="actions">
-            <button appButtonPrimary (click)="updateItemHandler(item)">
+            <button appButtonPrimaryLight (click)="updateItemHandler(item)">
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button appButtonPrimary (click)="deleteItemHandler(item?._id)">
+            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)">
               <mat-icon>delete</mat-icon>
             </button>
 
-            <button appButtonPrimary >
+            <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)">
+              <mat-icon>info</mat-icon>
+            </button>
+
+            <button appButtonPrimaryLight (click)="checkoutItemHandler(item)">
               Checkout
             </button>
 
-            <button appButtonPrimary >
+            <button appButtonPrimaryLight (click)="checkinItemHandler(item)">
               CheckIn
             </button>
+
           </div>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+
+

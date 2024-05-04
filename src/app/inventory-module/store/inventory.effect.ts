@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delayWhen, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-
 import { addItem, createItemRequest, deleteItemRequest, getItemRequest, removeItem, setItems, updateItem, updateItemRequest } from './inventory.action';
 
 @Injectable()
@@ -71,6 +70,6 @@ export class InventoryEffects {
 
     constructor(
         private actions$: Actions,
-        private inventoryService: InventoryService
+        private inventoryService: InventoryService,
     ) { }
 }

@@ -12,9 +12,9 @@
     <input appCustomInputStyle id="name" type="text" formControlName="name" />
   </div>
 
-  <div class="inputDiv">
+  <div class="inputDiv" *ngIf="!isEditMode">
     <label for="itemImage">Item Image</label>
-    <input appCustomInputStyle id="itemImage" type="text" formControlName="itemImage" />
+    <input appCustomInputStyle id="itemImage" type="file" formControlName="itemImage" />
   </div>
 
    <!-- Conditionally render additional fields -->

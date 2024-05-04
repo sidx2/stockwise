@@ -12,7 +12,11 @@ export class InventoryTableComponent {
   @Input() identificationType: string | undefined = undefined;
 
   @Output() deleteItemEmmiter:EventEmitter<string> = new EventEmitter();
-  @Output() updateItemEmmiter: EventEmitter<Item> = new EventEmitter()
+  @Output() updateItemEmmiter: EventEmitter<Item> = new EventEmitter();
+  @Output() detailedViewEmmiter: EventEmitter<Item> = new EventEmitter();
+  @Output() checkoutEmmiter: EventEmitter<Item> = new EventEmitter();
+  @Output() checkinEmmiter: EventEmitter<Item> = new EventEmitter();
+ 
   
   deleteItemHandler(itemId: string | undefined){
     if(itemId){
@@ -21,7 +25,18 @@ export class InventoryTableComponent {
   }
 
   updateItemHandler(selectedItem: Item){
-    console.log("selected item inside table", selectedItem);
     this.updateItemEmmiter.emit(selectedItem);
+  }
+
+  showDetailedViewHandler(selectedItem: Item){
+    this.detailedViewEmmiter.emit(selectedItem);
+  }
+
+  checkoutItemHandler(selectedItem: Item){
+    this.checkoutEmmiter.emit(selectedItem);
+  }
+
+  checkinItemHandler(selectedItem: Item){
+    this.checkinEmmiter.emit(selectedItem);
   }
 }

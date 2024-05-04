@@ -6,6 +6,7 @@ import { createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest
 import { Category } from '../../../../category-module/models/category';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { Item } from '../../../models/inventory';
+import { LoaderService } from '../../../../share-module/services/loader.service';
 
 @Component({
   selector: 'app-inventory',
@@ -14,7 +15,7 @@ import { Item } from '../../../models/inventory';
 })
 export class InventoryComponent implements OnInit, OnDestroy {
 
-  items$: Observable<Item[]>; 
+  items$: Observable<Item[]>;
   categories$: Observable<Category[]>;
   filteredItems$: Observable<Item[]> | null = null;
   private orgSubscription: Subscription | undefined;
@@ -24,14 +25,19 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   isInventoryFormVisible: boolean = false;
   showDeleteConfirmation: boolean = false;
-  itemIdToDelete: string ='';
+  itemIdToDelete: string = '';
   selectedItem: Item | null = null;
+
+  // conditional rendering
   isEditMode: boolean = false;
+  showDetailedView: boolean = false;
+  showCheckout: boolean = false;
+  showCheckin: boolean = false
 
   searchText: string = ''
   orgId: string = '';
 
-  constructor(private store: Store<{global: any,  inventory: Item[], categories: Category[] }>) {
+  constructor(private store: Store<{ global: any, inventory: Item[], categories: Category[] }>, public loaderService: LoaderService) {
     this.items$ = this.store.select('inventory');
     this.categories$ = this.store.select('categories');
   }
@@ -47,7 +53,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.categories$.pipe(
       filter(categories => categories.length > 0),
-      take(1), 
+      take(1),
     ).subscribe(categories => {
       this.selectedCategory = categories[0];
       this.onCategoryChange();
@@ -70,27 +76,36 @@ export class InventoryComponent implements OnInit, OnDestroy {
     );
   }
 
-  createItemHandler(item: Item){
-    // adding orgId
+  createItemHandler(item: Item) {
     item.orgId = this.orgId;
-    this.store.dispatch(createItemRequest({item}));
+    this.store.dispatch(createItemRequest({ item }));
     this.isInventoryFormVisible = false;
   }
 
-  updateItemHandler(updatedItem: Item){
-    // adding orgId
-    updatedItem.orgId = "660e20d70b44fcba1ea33139";
+  updateItemHandler(updatedItem: Item) {
+    updatedItem.orgId = this.orgId;
     this.isInventoryFormVisible = false;
-    this.store.dispatch(updateItemRequest({updatedItem}));
+    this.store.dispatch(updateItemRequest({ updatedItem }));
   }
 
-  deleteItemHandler(itemId: string){
+  deleteItemHandler(itemId: string) {
     this.itemIdToDelete = itemId;
     this.showDeleteConfirmation = true;
   }
 
+  cancelDelete() {
+    this.showDeleteConfirmation = false;
+  }
+
+  confirmDelete() {
+    if (this.itemIdToDelete) {
+      this.store.dispatch(deleteItemRequest({ itemId: this.itemIdToDelete }));
+      this.showDeleteConfirmation = false;
+    }
+  }
+
   showInventoryForm(): void {
-    if(!this.isEditMode){
+    if (!this.isEditMode) {
       this.selectedItem = null;
     }
     this.isInventoryFormVisible = true;
@@ -101,16 +116,16 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.isInventoryFormVisible = false;
   }
 
-  showUpdateItemForm(selectedItem: Item){
+  showUpdateItemForm(selectedItem: Item) {
     this.isEditMode = true;
     this.showInventoryForm();
-  
+
     // Find the category details of the selected item
     this.categories$.subscribe((categories: Category[]) => {
 
       const updateItemCategory = categories.find(category => category._id === selectedItem.categoryId);
 
-      if(updateItemCategory) {
+      if (updateItemCategory) {
         this.updateItemCategory = updateItemCategory;
       }
     });
@@ -118,20 +133,39 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.selectedItem = selectedItem;
   }
 
-   // Modal events
-   closeModal(){
-    this.showDeleteConfirmation = false;
+  // checkout
+  showCheckoutItemHandler(selectedItem: Item) {
+    console.log("checkout", selectedItem);
+    this.selectedItem = selectedItem;
+    this.showCheckout = true
   }
 
-  cancelDelete(){
-    this.showDeleteConfirmation = false;
+  hideCheckoutItemHandler() {
+    this.selectedItem = null;
+    this.showCheckout = false
   }
 
-  confirmDelete(){
-    if (this.itemIdToDelete) { 
-      this.store.dispatch(deleteItemRequest({itemId : this.itemIdToDelete}));
-      this.showDeleteConfirmation = false;
-    }
+  // checkin
+  showCheckinItemHandler(selectedItem: Item) {
+    console.log("checkin", selectedItem);
+    this.selectedItem = selectedItem;
+    this.showCheckin = true
+  }
+
+  hideCheckinItemHandler() {
+    this.selectedItem = null;
+    this.showCheckin = false
+  }
+
+  // detailed view
+  showDetailedViewHandler(selectedItem: Item) {
+    this.selectedItem = selectedItem;
+    this.showDetailedView = true;
+  }
+
+  hideDetailedViewHandler() {
+    this.selectedItem = null;
+    this.showDetailedView = false;
   }
 
 }

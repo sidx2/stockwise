@@ -3,6 +3,7 @@ import { Category } from '../../../models/category';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest } from '../../../store/category.action';
+import { LoaderService } from '../../../../share-module/services/loader.service';
 
 @Component({
   selector: 'app-category',
@@ -21,7 +22,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   
   private orgSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ categories: Category[], global: any}>) {
+  constructor(private store: Store<{ categories: Category[], global: any}>, public loaderService:LoaderService) {
     this.categories$ = this.store.select('categories');
   }
 

@@ -1,7 +1,6 @@
 import { APP_INITIALIZER, NgModule, inject, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppRoutingModule } from './app-routing.module';
 import { CategoryModule } from './category-module/category.module';
 import { ButtonModule } from "primeng/button"
@@ -17,17 +16,18 @@ import { InventoryEffects } from './inventory-module/store/inventory.effect';
 import { vendorReducer } from './vendors/store/vendor.reducers';
 import { vendorEffects } from './vendors/store/vendor.effects';
 
-import {MatIconModule} from '@angular/material/icon';
-import { AuthModule } from './auth/auth.module';  
+import { MatIconModule } from '@angular/material/icon';
+import { AuthModule } from './auth/auth.module';
 import { Store, StoreModule } from '@ngrx/store';
 import { globalReducer } from './store/global.reducers';
 import { Actions, EffectsModule } from '@ngrx/effects';
 import { globalEffects } from './store/global.effects';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { init } from './store/global.actions';
 import { authInterceptor } from './auth.interceptor';
 import { RouterComponent } from './router/router.component';
+import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import { RouterComponent } from './router/router.component';
     InventoryModule,
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer }),
     ShareModule,
-    EffectsModule.forRoot([globalEffects,CategoryEffects, InventoryEffects, vendorEffects]),
+    EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -65,7 +65,12 @@ import { RouterComponent } from './router/router.component';
       deps: [Actions],
       multi: true
     },
-    provideHttpClient(withInterceptors([authInterceptor]))
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    },
+    provideHttpClient(withInterceptors([authInterceptor,]))
   ],
   bootstrap: [AppComponent],
 
@@ -73,7 +78,7 @@ import { RouterComponent } from './router/router.component';
 export class AppModule { }
 
 export function initializeApp() {
-  const store = inject( Store<{ global: any }>)
+  const store = inject(Store<{ global: any }>)
   return () => {
     store.dispatch(init());
   }

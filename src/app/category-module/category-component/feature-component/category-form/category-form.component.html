@@ -50,6 +50,31 @@
     />
   </div>
 
+   <!-- vendor list -->
+  <!-- <div class="inputDiv">
+    <label for="vendorsList">Select vendors</label>
+    <select id="vendorsList">
+      <option value="">Select vendor</option>
+      <option *ngFor="let vendor of vendors$ | async" [value]="vendor._id">
+        {{ vendor.name }}
+      </option>
+    </select>
+  </div> -->
+
+  <!-- vendor list -->
+  <div class="inputDiv" *ngIf="vendors$ | async as vendors">
+    <label for="vendorsList">Select vendors</label>
+    <ng-multiselect-dropdown
+      id="vendorsList"
+      appCustomInputStyle
+      [placeholder]="'Select vendors'"
+      [data]="vendors"
+      [settings]="dropdownSettings"
+      formControlName="selectedVendors"
+    ></ng-multiselect-dropdown>
+  </div>
+  
+
   <!-- Custom Fields -->
   <h3 class="form-section-heading">Custom Fields</h3>
   <div formArrayName="customFields" class="customFields">
@@ -92,31 +117,6 @@
       </button>
     </div>
   </div>
-
-  <!-- vendor list -->
-  <!-- <div class="inputDiv">
-    <label for="vendorsList">Select vendors</label>
-    <select id="vendorsList">
-      <option value="">Select vendor</option>
-      <option *ngFor="let vendor of vendors$ | async" [value]="vendor._id">
-        {{ vendor.name }}
-      </option>
-    </select>
-  </div> -->
-
-  <!-- vendor list -->
-  <div class="inputDiv" *ngIf="vendors$ | async as vendors">
-    <label for="vendorsList">Select vendors</label>
-    <ng-multiselect-dropdown
-      id="vendorsList"
-      appCustomInputStyle
-      [placeholder]="'Select vendors'"
-      [data]="vendors"
-      [settings]="dropdownSettings"
-      formControlName="selectedVendors"
-    ></ng-multiselect-dropdown>
-  </div>
-  
 
   <button appButtonPrimary type="button" (click)="addCustomField()">
     Add Custom Field

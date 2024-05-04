@@ -26,6 +26,9 @@
     [identificationType]="selectedCategory?.identificationType"
     (deleteItemEmmiter)="deleteItemHandler($event)"
     (updateItemEmmiter)="showUpdateItemForm($event)"
+    (detailedViewEmmiter)="showDetailedViewHandler($event)"
+    (checkoutEmmiter)="showCheckoutItemHandler($event)"
+    (checkinEmmiter)="showCheckinItemHandler($event)"
   ></app-inventory-table>
 </div>
 
@@ -45,7 +48,7 @@
   ></app-inventory-form>
 </div>
 
-<app-modal *ngIf="showDeleteConfirmation" (closeModalEvent)="closeModal()">
+<app-modal *ngIf="showDeleteConfirmation" (closeModalEvent)="cancelDelete()">
   <div class="deleteConfirmation">
     <h2>Confirm Delete</h2>
     <p>
@@ -57,3 +60,18 @@
     </div>
   </div>
 </app-modal>
+
+<app-modal (closeModalEvent)="hideDetailedViewHandler()" *ngIf="showDetailedView">
+  <app-item-detailed-view [selectedItem]="selectedItem" ></app-item-detailed-view>
+</app-modal>
+
+<app-modal *ngIf="showCheckout" (closeModalEvent)="hideCheckoutItemHandler()">
+  <app-item-checkout [selectedItem]="selectedItem"></app-item-checkout>
+</app-modal>
+
+<app-modal *ngIf="showCheckin" (closeModalEvent)="hideCheckinItemHandler()">
+  <app-item-checkin [selectedItem]="selectedItem"></app-item-checkin>
+</app-modal>
+
+<app-loader *ngIf="loaderService.isLoading$ | async"></app-loader>
+

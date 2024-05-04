@@ -10,8 +10,8 @@ describe('LoaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [LoaderComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(LoaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

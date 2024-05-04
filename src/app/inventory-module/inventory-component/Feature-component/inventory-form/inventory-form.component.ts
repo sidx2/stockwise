@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { ImageService } from '../../../Services/image.service';
 import { Category } from '../../../../category-module/models/category';
 import { Item } from '../../../models/inventory';
 
@@ -21,14 +22,15 @@ export class InventoryFormComponent implements OnInit {
   isEditMode: boolean = false;
 
   itemFormGroup: FormGroup = new FormGroup({});
+  imageUrl: string = '';
 
-  constructor() {
+  constructor(private imageService: ImageService) {
   }
 
   ngOnInit(): void {
     this.itemFormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
-      itemImage: new FormControl('', Validators.required),
+      itemImage: new FormControl(null, Validators.required),
       customFields: new FormArray([])
     })
 
@@ -99,8 +101,18 @@ export class InventoryFormComponent implements OnInit {
   onSubmit(): void {
 
     if (this.itemFormGroup.valid) {
-      const formData = this.itemFormGroup.value;
 
+      const formData = this.itemFormGroup.value;
+      const imagePath = this.itemFormGroup.get('itemImage')?.value;
+      const file = new File([imagePath], "image.jpg", { type: "image/jpeg" });
+
+      console.log("my form",formData);
+      this.imageService.uploadImage(file).subscribe(
+        (result)=>{
+          this.imageUrl = typeof result === 'string' ? result : result.key;
+        }
+      )
+     
       const customFieldsData: Record<string, any> = {};
       formData.customFields.forEach((value: any, index: number) => {
         const customField = this.selectedCategory?.customFields[index];

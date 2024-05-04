@@ -1,55 +1,63 @@
-.inventory{
-    width: 100%;
+.inventory {
+  width: 100%;
 }
 
-.inventory .filterOption{
-    padding: 1rem 0rem;
-    width: 90%;
-    margin: 1rem auto;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+.inventory .filterOption {
+  padding: 1rem 0rem;
+  width: 90%;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.filterOption .searchBar{
-    flex: 3;
+.filterOption .searchBar {
+  flex: 3;
 }
 
-.filterOption .filter{
-    flex: 1;
+.filterOption .filter {
+  flex: 1;
 }
 
 // modal styling
 
-.deleteConfirmation{
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
+.deleteConfirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.delete-confirmation-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.delete-confirmation-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 0.2rem;
+  color: white;
+  font-size: 1rem;
+}
+
+.delete-btn {
+  background-color: red;
+}
+
+.cancel-btn {
+  background-color: grey;
+}
+
+@media screen and (max-width: 600px) {
+  .filterOption .searchBar {
+    flex: 1;
   }
-  
-  .delete-confirmation-buttons{
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
+
+  .filterOption .filter {
+    flex: 1;
   }
-  
-  .delete-confirmation-buttons button{
-    padding: 0.5rem 1rem;
-    border: none;
-    outline: none;
-    border-radius: 0.2rem;
-    color: white;
-    font-size: 1rem;
-  }
-  
-  .delete-btn{
-    background-color: red;
-  }
-  
-  .cancel-btn{
-    background-color: grey;
-  }
-  
-  
+}
