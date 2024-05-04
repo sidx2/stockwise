@@ -8,8 +8,10 @@ import { RouterModule } from '@angular/router';
 import { CustomInputStyleDirective } from './directive/custom-input-style.directive';
 import { FooterComponent } from './component/footer/footer.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { LoaderComponent } from './component/loader/loader.component';
+import { TooltipDirective } from './directive/tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { LoaderComponent } from './component/loader/loader.component';
     CustomInputStyleDirective,
     FooterComponent,
     SidebarComponent,
-    LoaderComponent
+    LoaderComponent,
+    TooltipDirective
   ],
   imports: [
     CommonModule,
     RouterModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   exports:[
     ModalComponent,
@@ -35,6 +39,7 @@ import { LoaderComponent } from './component/loader/loader.component';
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,
+    TooltipDirective
   ]
 })
 export class ShareModule { }

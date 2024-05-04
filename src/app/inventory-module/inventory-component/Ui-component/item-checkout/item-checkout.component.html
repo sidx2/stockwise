@@ -1,4 +1,5 @@
 <div class="checkoutItem" *ngIf="selectedItem">
+  <h3>Checkout Item</h3>
   <form [formGroup]="checkoutForm" class="checkoutItem" (ngSubmit)="onSubmit()">
     <div class="inputDiv">
       <label for="asset_name">Asset Name</label>

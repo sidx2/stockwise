@@ -1,0 +1,20 @@
+<div class="lifecycle" *ngIf="selectedItem">
+  <h3>Item Lifecycle - {{ selectedItem.name }}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>User Details</th>
+        <th>Checkout Details</th>
+        <th>Checkin Details</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let record of selectedItem?.lifecycle">
+        <td>{{ record?.userName }}</td>
+        <td>{{ record?.checkoutDate }}</td>
+        <td>{{ record.checkinDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

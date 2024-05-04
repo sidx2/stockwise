@@ -33,3 +33,8 @@ export interface CheckinDetails {
     quantity: number,
     userId: string
 }
+
+export interface CheckoutDetails{
+    assignedTo: AssignedTo, 
+    itemId: string | undefined
+} 

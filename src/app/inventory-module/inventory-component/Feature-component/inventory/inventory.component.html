@@ -29,6 +29,7 @@
     (detailedViewEmmiter)="showDetailedViewHandler($event)"
     (checkoutEmmiter)="showCheckoutItemHandler($event)"
     (checkinEmmiter)="showCheckinItemHandler($event)"
+    (lifecycleEmmiter)="showLifecycleHandler($event)"
   ></app-inventory-table>
 </div>
 
@@ -71,6 +72,10 @@
 
 <app-modal *ngIf="showCheckin" (closeModalEvent)="hideCheckinItemHandler()">
   <app-item-checkin [selectedItem]="selectedItem" (checkinEmmiter)="checkinItemHandler($event)"></app-item-checkin>
+</app-modal>
+
+<app-modal *ngIf="showLifecycle" (closeModalEvent)="hideLifecycleHandler()">
+  <app-item-lifecycle [selectedItem]="selectedItem"></app-item-lifecycle>
 </app-modal>
 
 <app-loader *ngIf="loaderService.isLoading$ | async"></app-loader>

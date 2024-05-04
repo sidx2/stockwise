@@ -16,6 +16,7 @@ export class InventoryTableComponent {
   @Output() detailedViewEmmiter: EventEmitter<Item> = new EventEmitter();
   @Output() checkoutEmmiter: EventEmitter<Item> = new EventEmitter();
   @Output() checkinEmmiter: EventEmitter<Item> = new EventEmitter();
+  @Output() lifecycleEmmiter: EventEmitter<Item> = new EventEmitter();
  
   
   deleteItemHandler(itemId: string | undefined){
@@ -38,5 +39,9 @@ export class InventoryTableComponent {
 
   checkinItemHandler(selectedItem: Item){
     this.checkinEmmiter.emit(selectedItem);
+  }
+
+  showLifecycleHandler(selectedItem: Item){
+    this.lifecycleEmmiter.emit(selectedItem)
   }
 }

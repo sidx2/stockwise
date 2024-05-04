@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map, take, filter, concatMap } from 'rxjs/operators';
 import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
-import { Item } from '../../../models/inventory';
+import { CheckoutDetails, Item } from '../../../models/inventory';
 import { LoaderService } from '../../../../share-module/services/loader.service';
 import { Employee } from '../../../../employees/store/employees.reducers';
 import { AssignedTo, CheckinDetails } from '../../../models/inventory';
@@ -39,7 +39,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   isEditMode: boolean = false;
   showDetailedView: boolean = false;
   showCheckout: boolean = false;
-  showCheckin: boolean = false
+  showCheckin: boolean = false;
+  showLifecycle: boolean = false;
 
   searchText: string = ''
   orgId: string = '';
@@ -153,7 +154,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.showCheckout = false
   }
 
-  checkoutItemHandler(assignedToDetails: {assignedTo: AssignedTo, itemId: string | undefined}){
+  checkoutItemHandler(assignedToDetails: CheckoutDetails){
     this.store.dispatch(checkoutItemRequest({assignedToDetails}));
     this.hideCheckoutItemHandler();
   }
@@ -184,6 +185,18 @@ export class InventoryComponent implements OnInit, OnDestroy {
   hideDetailedViewHandler() {
     this.selectedItem = null;
     this.showDetailedView = false;
+  }
+
+  // lifecycle
+
+  showLifecycleHandler(selectedItem: Item){
+    this.selectedItem = selectedItem;
+    this.showLifecycle = true;
+  }
+
+  hideLifecycleHandler(){
+    this.selectedItem = null;
+    this.showLifecycle = false;
   }
 
 }

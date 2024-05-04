@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../../../models/inventory';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Employee } from '../../../../employees/store/employees.reducers';
-import { AssignedTo } from '../../../models/inventory';
+import { AssignedTo, CheckoutDetails } from '../../../models/inventory';
 
 @Component({
   selector: 'app-item-checkout',
@@ -13,13 +13,13 @@ export class ItemCheckoutComponent {
   @Input() selectedItem: Item | null = null;
   @Input() employees: Employee[] | null = [];
 
-  @Output() checkoutEmmiter: EventEmitter<{assignedTo: AssignedTo, itemId: string | undefined}> = new EventEmitter()
+  @Output() checkoutEmmiter: EventEmitter<CheckoutDetails> = new EventEmitter()
   checkoutForm: FormGroup;
 
   constructor() {
     this.checkoutForm = new FormGroup({
       quantity: new FormControl(1, Validators.required),
-      employee: new FormControl(null, Validators.required)
+      employee: new FormControl('', Validators.required)
     });
   }
 
@@ -27,7 +27,7 @@ export class ItemCheckoutComponent {
     if (this.checkoutForm.valid) {
       const formData = this.checkoutForm.value;
 
-      const assignedToDetails: {assignedTo: AssignedTo, itemId: string | undefined} = {
+      const assignedToDetails: CheckoutDetails = {
         itemId: this.selectedItem?._id,
         assignedTo: {
           userId: formData.employee._id,

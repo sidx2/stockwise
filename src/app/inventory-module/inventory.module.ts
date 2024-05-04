@@ -9,9 +9,11 @@ import { InventoryHeaderComponent } from './inventory-component/Ui-component/inv
 import { InventoryFormComponent } from './inventory-component/Feature-component/inventory-form/inventory-form.component';
 import { ItemFilterPipe } from './pipes/item-filter.pipe';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ItemDetailedViewComponent } from './inventory-component/Ui-component/item-detailed-view/item-detailed-view.component';
 import { ItemCheckoutComponent } from './inventory-component/Ui-component/item-checkout/item-checkout.component';
 import { ItemCheckinComponent } from './inventory-component/Ui-component/item-checkin/item-checkin.component';
+import { ItemLifecycleComponent } from './inventory-component/Ui-component/item-lifecycle/item-lifecycle.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ItemCheckinComponent } from './inventory-component/Ui-component/item-ch
     ItemFilterPipe,
     ItemDetailedViewComponent,
     ItemCheckoutComponent,
-    ItemCheckinComponent
+    ItemCheckinComponent,
+    ItemLifecycleComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +33,7 @@ import { ItemCheckinComponent } from './inventory-component/Ui-component/item-ch
     ShareModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatTooltipModule,
     FormsModule
   ]
 })

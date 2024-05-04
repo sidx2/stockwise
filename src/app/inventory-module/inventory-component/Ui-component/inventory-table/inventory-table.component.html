@@ -26,15 +26,20 @@
             </button>
 
             <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)">
-              <mat-icon>info</mat-icon>
+              <mat-icon matTooltip="info">info</mat-icon>
             </button>
 
+            <button appButtonPrimaryLight (click)="showLifecycleHandler(item)" 
+            *ngIf="item && item.lifecycle != undefined && item.lifecycle.length > 0">
+              <mat-icon matTooltip="lifecycle">sync</mat-icon>
+            </button>
+           
             <button appButtonPrimaryLight *ngIf="item?.assignedTo?.length === 0" (click)="checkoutItemHandler(item)">
-              Checkout
+              <mat-icon matTooltip="checkout">assignment_ind</mat-icon>
             </button>
 
             <button appButtonPrimaryLight *ngIf="item?.assignedTo?.length === 1" (click)="checkinItemHandler(item)">
-              CheckIn
+              <mat-icon matTooltip="checkin">assignment_return</mat-icon>
             </button>
           </div>
         </td>
@@ -77,16 +82,16 @@
               <mat-icon>delete</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)">
-              <mat-icon>info</mat-icon>
+            <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)" >
+              <mat-icon matTooltip="ino">info</mat-icon>
             </button>
 
             <button appButtonPrimaryLight *ngIf="item && item.checkedOutQuantity !== undefined && item.quantity !== undefined && item.checkedOutQuantity < item.quantity" (click)="checkoutItemHandler(item)">
-              Checkout
+              <mat-icon matTooltip="checkout">assignment_ind</mat-icon>
             </button>
 
             <button appButtonPrimaryLight *ngIf="item && item.checkedOutQuantity !== undefined && item.checkedOutQuantity > 0" (click)="checkinItemHandler(item)">
-              CheckIn
+              <mat-icon matTooltip="checkin">assignment_return</mat-icon>
             </button>
           </div>
         </td>

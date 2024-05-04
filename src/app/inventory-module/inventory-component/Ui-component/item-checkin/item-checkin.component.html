@@ -1,88 +1,86 @@
 <div *ngIf="selectedItem">
-    <form
-      [formGroup]="checkinFormGroup"
-      class="checkoutItem"
-      (ngSubmit)="onSubmit()"
+  <h3>Checkin Item</h3>
+  <form
+    [formGroup]="checkinFormGroup"
+    class="checkoutItem"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="inputDiv">
+      <label for="asset_name">Asset Name</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="asset_name"
+        [value]="selectedItem.name"
+        disabled
+      />
+    </div>
+
+    <div class="inputDiv" *ngIf="selectedItem.identificationType === 'unique'">
+      <label for="serialNumber">Serial Number</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="serialNumber"
+        [value]="selectedItem.serialNumber || ''"
+        disabled
+      />
+    </div>
+
+    <div class="inputDiv" *ngIf="selectedItem.identificationType === 'unique'">
+      <label for="employee_name">Employee Name</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="employee_name"
+        [value]="selectedItem.assignedTo[0].userName || ''"
+        disabled
+      />
+    </div>
+
+    <div
+      class="inputDiv"
+      *ngIf="selectedItem.identificationType === 'non-unique'"
     >
-      <div class="inputDiv">
-        <label for="asset_name">Asset Name</label>
-        <input
-          appCustomInputStyle
-          type="text"
-          id="asset_name"
-          [value]="selectedItem.name"
-          disabled
-        />
-      </div>
-  
-      <div class="inputDiv" *ngIf="selectedItem.identificationType === 'unique'">
-        <label for="serialNumber">Serial Number</label>
-        <input
-          appCustomInputStyle
-          type="text"
-          id="serialNumber"
-          [value]="selectedItem.serialNumber || ''"
-          disabled
-        />
-      </div>
-  
-      <div class="inputDiv" *ngIf="selectedItem.identificationType === 'unique'">
-        <label for="employee_name">Employee Name</label>
-        <input
-          appCustomInputStyle
-          type="text"
-          id="employee_name"
-          [value]="selectedItem.assignedTo[0].userName || ''"
-          disabled
-        />
-      </div>
-  
-      <div
-        class="inputDiv"
-        *ngIf="selectedItem.identificationType === 'non-unique'"
+      <label for="employee_name">Employee Name</label>
+      <select
+        id="employee_name"
+        appCustomInputStyle
+        formControlName="selectedEmployee"
       >
-        <label for="employee_name">Employee Name</label>
-        <select
-          id="employee_name"
-          appCustomInputStyle
-          formControlName="selectedEmployee"
+        <option value="">Select Employee</option>
+        <option
+          [ngValue]="assignment"
+          *ngFor="let assignment of selectedItem?.assignedTo || []"
         >
-          <option value="">Select Employee</option>
-          <option
-            [ngValue]="assignment"
-            *ngFor="let assignment of selectedItem?.assignedTo || []"
-          >
-            {{ assignment?.userName }}
-          </option>
-        </select>
-      </div>
-  
-      <div
-        class="inputDiv"
-        *ngIf="
-          selectedItem.identificationType === 'non-unique' &&
-          checkinFormGroup.get('selectedEmployee')?.value
-        "
+          {{ assignment?.userName }}
+        </option>
+      </select>
+    </div>
+
+    <div
+      class="inputDiv"
+      *ngIf="
+        selectedItem.identificationType === 'non-unique' &&
+        checkinFormGroup.get('selectedEmployee')?.value
+      "
+    >
+      <label for="quantity"
+        >CheckIn Quantity :
+        {{ checkinFormGroup.get("selectedEmployee")?.value?.quantity }}</label
       >
-        <label for="quantity"
-          >CheckIn Quantity :
-          {{
-            checkinFormGroup.get('selectedEmployee')?.value?.quantity
-          }}</label
-        >
-        <input
-          appCustomInputStyle
-          type="number"
-          id="quantity"
-          formControlName="quantity"
-          min="1"
-          [max]="checkinFormGroup.get('selectedEmployee')?.value?.quantity"
-        />
-      </div>
-  
-      <button appButtonPrimary [disabled]="checkinFormGroup.invalid">
-        Check In
-      </button>
-    </form>
-  </div>
-  
+      <input
+        appCustomInputStyle
+        type="number"
+        id="quantity"
+        formControlName="quantity"
+        min="1"
+        [max]="checkinFormGroup.get('selectedEmployee')?.value?.quantity"
+      />
+    </div>
+
+    <button appButtonPrimary [disabled]="checkinFormGroup.invalid">
+      Check In
+    </button>
+  </form>
+</div>
