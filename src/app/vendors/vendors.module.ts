@@ -7,6 +7,10 @@ import { TagModule } from "primeng/tag"
 import { VendorsRoutingModule } from './vendors-routing.module';
 import { VendorsComponent } from './vendors.component';
 import { CardModule } from "primeng/card"
+
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { StoreModule } from '@ngrx/store';
 import { vendorReducer } from './store/vendor.reducers';
 import { EffectsModule } from '@ngrx/effects';
@@ -23,6 +27,10 @@ import { vendorEffects } from './store/vendor.effects';
     ChipsModule,
     ChipModule,
     TagModule,
+    CardModule,
+    InputTextModule,
+    IconFieldModule,
+    InputIconModule,
     StoreModule.forFeature("vendors", vendorReducer),
     EffectsModule.forFeature([vendorEffects])
   ]

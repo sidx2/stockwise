@@ -16,6 +16,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { fetchOrg, init } from './store/global.actions';
 import { authInterceptor } from './auth.interceptor';
 import { RouterComponent } from './router/router.component';
+import { EmployeesModule } from './employees/employees.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { RouterComponent } from './router/router.component';
     AppRoutingModule,
     ButtonModule,
     AuthModule,
+    EmployeesModule,
     HttpClientModule,
     StoreModule.forRoot({global: globalReducer}),
     EffectsModule.forRoot([globalEffects])
