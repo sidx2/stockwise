@@ -22,6 +22,7 @@ const routes: Routes = [
     loadChildren: () => import("./main-routing.module").then(m => m.MainRoutingModule)
   },
   { path: 'vendors', loadChildren: () => import('./vendors/vendors.module').then(m => m.VendorsModule) },
+  { path: 'employees', loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule) },
 ];
 
 @NgModule({
