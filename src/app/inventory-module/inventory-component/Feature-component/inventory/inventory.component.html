@@ -66,11 +66,11 @@
 </app-modal>
 
 <app-modal *ngIf="showCheckout" (closeModalEvent)="hideCheckoutItemHandler()">
-  <app-item-checkout [selectedItem]="selectedItem"></app-item-checkout>
+  <app-item-checkout [selectedItem]="selectedItem" [employees]="employees$ | async" (checkoutEmmiter)="checkoutItemHandler($event)"></app-item-checkout>
 </app-modal>
 
 <app-modal *ngIf="showCheckin" (closeModalEvent)="hideCheckinItemHandler()">
-  <app-item-checkin [selectedItem]="selectedItem"></app-item-checkin>
+  <app-item-checkin [selectedItem]="selectedItem" (checkinEmmiter)="checkinItemHandler($event)"></app-item-checkin>
 </app-modal>
 
 <app-loader *ngIf="loaderService.isLoading$ | async"></app-loader>

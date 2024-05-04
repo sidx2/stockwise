@@ -132,7 +132,6 @@ export class InventoryFormComponent implements OnInit {
         assignedTo: [],
         checkedOutQuantity: this.selectedItem?.checkedOutQuantity || 0,
         itemImage: formData.itemImage,
-        lifecycle: []
       };
 
       if (this.isEditMode) {

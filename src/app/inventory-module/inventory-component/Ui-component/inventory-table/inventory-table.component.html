@@ -5,6 +5,7 @@
         <th>Name</th>
         <th>Serial Number</th>
         <th>Status</th>
+        <th>Assigned To</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -13,6 +14,7 @@
         <td>{{ item.name }}</td>
         <td>{{ item.serialNumber }}</td>
         <td>{{ item.status }}</td>
+        <td>{{ item.assignedTo && item.assignedTo.length > 0 ? item.assignedTo[0].userName : 'Not Assigned' }}</td>
         <td>
           <div class="actions">
             <button appButtonPrimaryLight (click)="updateItemHandler(item)">
@@ -27,11 +29,11 @@
               <mat-icon>info</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="checkoutItemHandler(item)">
+            <button appButtonPrimaryLight *ngIf="item?.assignedTo?.length === 0" (click)="checkoutItemHandler(item)">
               Checkout
             </button>
 
-            <button appButtonPrimaryLight (click)="checkinItemHandler(item)" >
+            <button appButtonPrimaryLight *ngIf="item?.assignedTo?.length === 1" (click)="checkinItemHandler(item)">
               CheckIn
             </button>
           </div>
@@ -46,6 +48,7 @@
         <th>Name</th>
         <th>Total Quantity</th>
         <th>CheckedOut qty</th>
+        <th>Assigned To</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -54,6 +57,16 @@
         <td>{{ item.name }}</td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.checkedOutQuantity }}</td>
+        <td>
+          <div *ngIf="item.assignedTo && item.assignedTo.length > 0" class="assignedTo">
+            <div *ngFor="let assignedItem of item.assignedTo">
+              {{ assignedItem.userName }} - {{ assignedItem.quantity }}
+            </div>
+          </div>
+          <div *ngIf="!item.assignedTo || item.assignedTo.length === 0">
+            No assignment
+          </div>
+        </td>
         <td>
           <div class="actions">
             <button appButtonPrimaryLight (click)="updateItemHandler(item)">
@@ -68,19 +81,16 @@
               <mat-icon>info</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="checkoutItemHandler(item)">
+            <button appButtonPrimaryLight *ngIf="item && item.checkedOutQuantity !== undefined && item.quantity !== undefined && item.checkedOutQuantity < item.quantity" (click)="checkoutItemHandler(item)">
               Checkout
             </button>
 
-            <button appButtonPrimaryLight (click)="checkinItemHandler(item)">
+            <button appButtonPrimaryLight *ngIf="item && item.checkedOutQuantity !== undefined && item.checkedOutQuantity > 0" (click)="checkinItemHandler(item)">
               CheckIn
             </button>
-
           </div>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-
-

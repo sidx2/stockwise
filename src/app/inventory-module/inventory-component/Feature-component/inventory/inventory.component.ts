@@ -2,11 +2,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { map, take, filter, concatMap } from 'rxjs/operators';
-import { createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
-import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { Item } from '../../../models/inventory';
 import { LoaderService } from '../../../../share-module/services/loader.service';
+import { Employee } from '../../../../employees/store/employees.reducers';
+import { AssignedTo, CheckinDetails } from '../../../models/inventory';
+
+// temp
+import { getCategoryRequest } from '../../../../category-module/store/category.action';
+import { fetchEmployees } from '../../../../employees/store/employees.actions';
+import { employeesSelector } from '../../../../employees/store/employees.selectors';
 
 @Component({
   selector: 'app-inventory',
@@ -17,6 +23,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   items$: Observable<Item[]>;
   categories$: Observable<Category[]>;
+  employees$: Observable<Employee[]>;
   filteredItems$: Observable<Item[]> | null = null;
   private orgSubscription: Subscription | undefined;
 
@@ -37,9 +44,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
   searchText: string = ''
   orgId: string = '';
 
-  constructor(private store: Store<{ global: any, inventory: Item[], categories: Category[] }>, public loaderService: LoaderService) {
+  constructor(private store: Store<{ global: any, inventory: Item[], categories: Category[], employees: Employee[] }>, public loaderService: LoaderService) {
     this.items$ = this.store.select('inventory');
     this.categories$ = this.store.select('categories');
+    this.employees$ = this.store.select(employeesSelector)
   }
 
   ngOnInit(): void {
@@ -50,6 +58,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(getCategoryRequest());
     this.store.dispatch(getItemRequest());
+    this.store.dispatch(fetchEmployees())
 
     this.categories$.pipe(
       filter(categories => categories.length > 0),
@@ -135,7 +144,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   // checkout
   showCheckoutItemHandler(selectedItem: Item) {
-    console.log("checkout", selectedItem);
     this.selectedItem = selectedItem;
     this.showCheckout = true
   }
@@ -143,6 +151,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
   hideCheckoutItemHandler() {
     this.selectedItem = null;
     this.showCheckout = false
+  }
+
+  checkoutItemHandler(assignedToDetails: {assignedTo: AssignedTo, itemId: string | undefined}){
+    this.store.dispatch(checkoutItemRequest({assignedToDetails}));
+    this.hideCheckoutItemHandler();
   }
 
   // checkin
@@ -155,6 +168,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
   hideCheckinItemHandler() {
     this.selectedItem = null;
     this.showCheckin = false
+  }
+
+  checkinItemHandler(checkinDetails: CheckinDetails){
+    this.store.dispatch(checkinItemRequest({checkinDetails}))
+    this.hideCheckinItemHandler()
   }
 
   // detailed view

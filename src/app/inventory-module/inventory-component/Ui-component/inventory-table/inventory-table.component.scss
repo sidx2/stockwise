@@ -28,6 +28,12 @@ td {
   padding: 0.8rem;
 }
 
+td .assignedTo{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 table .actions {
   display: flex;
   gap: 0.5rem;

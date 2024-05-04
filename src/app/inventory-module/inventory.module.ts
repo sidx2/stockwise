@@ -10,8 +10,8 @@ import { InventoryFormComponent } from './inventory-component/Feature-component/
 import { ItemFilterPipe } from './pipes/item-filter.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { ItemDetailedViewComponent } from './inventory-component/Ui-component/item-detailed-view/item-detailed-view.component';
-import { ItemCheckoutComponent } from './inventory-component/Feature-component/item-checkout/item-checkout.component';
-import { ItemCheckinComponent } from './inventory-component/Feature-component/item-checkin/item-checkin.component';
+import { ItemCheckoutComponent } from './inventory-component/Ui-component/item-checkout/item-checkout.component';
+import { ItemCheckinComponent } from './inventory-component/Ui-component/item-checkin/item-checkin.component';
 
 @NgModule({
   declarations: [

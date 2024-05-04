@@ -6,14 +6,14 @@ interface LifecycleEvent {
     checkinDate?: Date;
 }
 
-interface AssignedTo {
+export interface AssignedTo {
     userId: string;
     userName: string;
     quantity: number;
 }
 
 export interface Item {
-    _id?: string; 
+    _id?: string;
     name: string;
     identificationType: 'unique' | 'non-unique';
     categoryId: string;
@@ -25,5 +25,11 @@ export interface Item {
     status?: string;
     checkedOutQuantity: number;
     itemImage?: string;
-    lifecycle: LifecycleEvent[];
+    lifecycle?: LifecycleEvent[];
+}
+
+export interface CheckinDetails {
+    itemId: string,
+    quantity: number,
+    userId: string
 }

@@ -29,6 +29,8 @@ import { authInterceptor } from './auth.interceptor';
 import { RouterComponent } from './router/router.component';
 import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
 import { EmployeesModule } from './employees/employees.module';
+import { employeesReducer } from './employees/store/employees.reducers';
+import { EmployeeEffects } from './employees/store/employees.effects';
 
 @NgModule({
   declarations: [
@@ -47,9 +49,9 @@ import { EmployeesModule } from './employees/employees.module';
     InventoryModule,
     EmployeesModule,
     MatIconModule,
-    StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer }),
+    StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer}),
     ShareModule,
-    EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects]),
+    EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode(),

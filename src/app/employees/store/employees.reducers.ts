@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess } from "./employees.actions"
 
-
 export interface Employee {
     name: string,
     email: string,
@@ -16,7 +15,7 @@ export const initialState: IEmployeesState = {
     employees: []
 }
 
-export const employeesReduer = createReducer(
+export const employeesReducer = createReducer(
     initialState,
     on(fetchEmployees, (state) => {
         console.log("fetchEmployees", "state:", state, "action: ", )

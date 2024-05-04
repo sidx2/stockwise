@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Item } from '../models/inventory';
+import { CheckinDetails, Item } from '../models/inventory';
+import { AssignedTo } from '../models/inventory';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,13 @@ export class InventoryService {
 
   deleteItem(itemId: String){
     return this.http.delete<Item>(`http://localhost:9999/inventory/delete/${itemId}`); 
+  }
+
+  checkoutItem(assignedToDetails :{assignedTo: AssignedTo, itemId: string | undefined} ){
+    return this.http.put<Item>(`http://localhost:9999/inventory/checkout`, assignedToDetails); 
+  }
+
+  checkinItem(checkinDetails: CheckinDetails){
+    return this.http.put<Item>(`http://localhost:9999/inventory/checkin`, checkinDetails); 
   }
 }
