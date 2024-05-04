@@ -1,4 +1,4 @@
-import { Injectable, inject } from "@angular/core";
+import { ChangeDetectorRef, Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Observable, catchError, map, of, switchMap, tap } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
@@ -12,7 +12,6 @@ export class vendorEffects {
     vendorsService$ = inject(VendorsService)
     cs = inject(CookieService);
     store = inject(Store<{ global: any }>)
-
     constructor() {
         console.log("action$", this.action$)
     }

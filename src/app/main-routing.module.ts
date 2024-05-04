@@ -4,12 +4,17 @@ import { VendorsComponent } from './vendors/vendors.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
 import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
+import { EmployeesComponent } from './employees/employees/employees.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: "full",
     component: DashboardComponent
+  },
+  {
+    path: "employees",
+    component: EmployeesComponent
   },
   {
     path: "vendors",

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CategoryModule } from './category-module/category.module';
 import { ButtonModule } from "primeng/button"
 import { ShareModule } from './share-module/share.module';
-
+import { HttpClientModule } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import { InventoryModule } from './inventory-module/inventory.module';
@@ -28,6 +28,7 @@ import { init } from './store/global.actions';
 import { authInterceptor } from './auth.interceptor';
 import { RouterComponent } from './router/router.component';
 import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
+import { EmployeesModule } from './employees/employees.module';
 
 @NgModule({
   declarations: [
@@ -38,11 +39,14 @@ import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
     ButtonModule,
     AuthModule,
     CategoryModule,
     InventoryModule,
+    EmployeesModule,
+    MatIconModule,
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer }),
     ShareModule,
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects]),
@@ -54,8 +58,6 @@ import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor
       traceLimit: 75,
       connectInZone: true
     }),
-
-    MatIconModule,
   ],
   providers: [
     provideClientHydration(),

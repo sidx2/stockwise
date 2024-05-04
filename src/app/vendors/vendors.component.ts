@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { VendorsService } from './vendors.service';
 import { Store } from '@ngrx/store';
 import { fetchVendors } from './store/vendor.actions';
 import { vendorsSelector } from './store/vendor.selectors';
+
+
+export interface Vendor {
+    name?: string,
+    email?: string,
+    address?: string,
+}
 
 @Component({
   selector: 'app-vendors',
@@ -10,9 +17,13 @@ import { vendorsSelector } from './store/vendor.selectors';
   styleUrl: './vendors.component.scss'
 })
 export class VendorsComponent {
-  vendors!: any[];
+  vendors!: Vendor[];
+  _vendors!: Vendor[];
 
-  selectedVendors!: any;
+
+  cdr = inject(ChangeDetectorRef)
+
+  selectedVendors!: Vendor[];
 
   constructor(
         private vendorService: VendorsService,
@@ -20,8 +31,10 @@ export class VendorsComponent {
     ) {
         this.store.dispatch(fetchVendors());
 
-        this.store.select(vendorsSelector).subscribe(data => {
-            this.vendors = data;
+        this.store.select(vendorsSelector).subscribe(vendors => {
+            console.log("vendors in vendors: ", vendors)
+            this.vendors = vendors;
+            this._vendors = vendors;
         })
   }
 
@@ -48,5 +61,18 @@ export class VendorsComponent {
 
             default: return 'info';
       }
+  }
+
+  filter(e: any) {
+    return;
+    console.log(e.target.value)
+    this.vendors = this._vendors.filter((v, i, a) => {
+        JSON.stringify(v).toLowerCase().includes(e.target.value);
+        return true;
+    });
+
+    console.log("new vendors: ", this.vendors)
+
+    this.cdr.detectChanges();
   }
 }
