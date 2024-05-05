@@ -1,0 +1,18 @@
+.checkoutItem{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.checkoutItem .inputDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+h3 {
+  padding: 0.5rem;
+  font-weight: 450;
+  color: #0183ff;
+}

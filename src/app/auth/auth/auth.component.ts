@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loginUser, loginUserSuccess } from '../../store/global.actions';
+import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess } from '../../store/global.actions';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
@@ -22,13 +22,16 @@ export class AuthComponent {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
       this.cookieService.set("token", data.token, expiryDate)
+      this.cookieService.set("user", JSON.stringify(data), expiryDate)
+      this.cookieService.set("isLoggedin", "true", expiryDate)
+      this.store.dispatch(fetchOrg({id: data.id}))
       this.router.navigate(['dashboard']);
     });
   }
 
   handleFormSubmit(e: any) {
     console.log("event: ", e);
-    this.store.dispatch(loginUser(e));
+    this.store.dispatch(loginUser({user: e}));
   }
 
 }

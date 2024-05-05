@@ -1,0 +1,49 @@
+.detailedView {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.detailedView .itemImage {
+  flex: 1;
+  border-right: 2px solid rgb(207, 207, 207);
+}
+
+.detailedView .itemInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1rem;
+}
+
+.itemImage .image {
+  width: 10rem;
+  height: 10rem;
+}
+
+.itemInfo h3 {
+  font-weight: 450;
+  color: #0183ff;
+}
+
+.itemInfo h4 {
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.itemInfo h4 span {
+  font-weight: 500;
+}
+
+@media screen and (max-width: 700px) {
+  .itemImage .image{
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .itemInfo h4 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
