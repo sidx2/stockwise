@@ -1,0 +1,41 @@
+<div class="inputDiv" class="category_selection" *ngIf ="!isEditMode">
+  <label for="category">Select Category</label>
+  <select appCustomInputStyle id="category" (change)="onCategoryChange()" [(ngModel)]="selectedCategory">
+    <option [ngValue]="null">Select Category</option>
+    <option *ngFor="let category of categories" [ngValue]="category">{{ category.name }}</option>
+  </select>
+</div>
+
+<form class="inventory_form" [formGroup]="itemFormGroup" (ngSubmit)="onSubmit()">
+  <div class="inputDiv">
+    <label for="name">Name</label>
+    <input appCustomInputStyle id="name" type="text" formControlName="name" />
+  </div>
+
+  <div class="inputDiv" *ngIf="!isEditMode">
+    <label for="itemImage">Item Image</label>
+    <input appCustomInputStyle id="itemImage" type="file" formControlName="itemImage" />
+  </div>
+
+   <!-- Conditionally render additional fields -->
+   <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
+    <label for="serialNumber">Serial Number</label>
+    <input appCustomInputStyle id="serialNumber" class="error" type="text" formControlName="serialNumber" />
+  </div>
+
+  <div *ngIf="selectedCategory?.identificationType === 'non-unique'" class="inputDiv">
+    <label for="quantity">Quantity</label>
+    <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 0"  />
+  </div>
+
+  <div class="customFields" *ngIf="selectedCategory">
+    <div formArrayName="customFields" class="customFields">
+      <div *ngFor="let customField of selectedCategory?.customFields; let i = index" class="inputDiv">
+        <label>{{ customField.label }}</label>
+        <input appCustomInputStyle [type]="customField.type" [formControlName]="i" />
+      </div>
+    </div>
+  </div>
+  
+  <button appButtonPrimary [disabled]="!itemFormGroup.valid" type="submit">{{isEditMode ? 'Save Changes': 'Submit'}}</button>
+</form>

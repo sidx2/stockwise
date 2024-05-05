@@ -16,7 +16,7 @@ export const initialState: IEmployeesState = {
     employees: []
 }
 
-export const employeesReduer = createReducer(
+export const employeesReducer = createReducer(
     initialState,
     on(fetchEmployees, (state) => {
         console.log("fetchEmployees", "state:", state, "action: ", )

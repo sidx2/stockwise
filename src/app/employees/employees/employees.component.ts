@@ -13,7 +13,6 @@ export class EmployeesComponent {
     employees!: any
     constructor() {
       this.store.dispatch(fetchEmployees())
-
       this.employees = this.store.select(employeesSelector)
     }
 }
