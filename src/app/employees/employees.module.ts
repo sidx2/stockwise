@@ -7,6 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { EmployeeEffects } from './store/employees.effects';
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesRoutingModule } from './employees-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -18,6 +19,8 @@ import { EmployeesRoutingModule } from './employees-routing.module';
   imports: [
     CommonModule,
     EmployeesRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     StoreModule.forFeature("employees", employeesReduer),
     EffectsModule.forFeature([EmployeeEffects])
   ]

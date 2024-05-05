@@ -1,8 +1,8 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess } from "./employees.actions"
-
+import { deleteEmployee, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployee } from "./employees.actions"
 
 export interface Employee {
+    _id: any,
     name: string,
     email: string,
     role: string
@@ -29,5 +29,22 @@ export const employeesReduer = createReducer(
     on(fetchEmployeesFailure, (state, action) => {
         console.log("fetchEmployeesFailure", "state:", state, "action: ", action)
         return (state);
+    }),
+    on(updateEmployee, (state, action) => {
+        console.log("updateEmployee", "state:", state, "action: ", action)
+        const newEmployees = state.employees.map((emp) => {
+            if (emp._id == action.employee._id) {
+                emp = action.employee
+            }
+            return emp
+        })
+        
+        return ({...state, employees: newEmployees});
+    }),
+    on(deleteEmployee, (state, action) => {
+        console.log("deleteEmployee", "state:", state, "action: ", action)
+        const newEmployees = state.employees.filter((e) => e._id !== action._id)
+
+        return ({...state, employees: newEmployees});
     })
 )

@@ -1,9 +1,52 @@
 <p>employees-table works!</p>
 
-<div *ngFor="let emp of employees">
-    <p>
-        {{ emp.name }}
+<table>
+    <thead>
+        <tr>
 
-    </p>
-</div>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let emp of employees; index as i">
+        <tr *ngIf="emp._id != editing; else elseBlock">
+            <th> {{ emp.name }} </th>
+            <th> {{ emp.email }} </th>
+            <th> {{ emp.role }} </th>
+            <th>
+                <button (click)="onEdit(emp._id)" >edit</button>
+                <button (click)="onDelete(emp._id)">delete</button>
+            </th>
+        </tr>
 
+        <ng-template #elseBlock>
+            <!-- <form > -->
+                <tr>
+                    <th>
+
+                        <input type="text" [(ngModel)]="m_name" value={{emp.name}}>
+                    </th>
+                    <th>
+
+                        <input type="text" [(ngModel)]="m_email" value={{emp.email}}>
+                    </th>
+                    <th>
+
+                        <!-- <select [(ngModel)]=emp.role> -->
+                            <select [(ngModel)]="m_role">
+                            <option value="admin">Admin</option>
+                            <option value="employee">Employee</option>
+                            <option value="user">User</option>
+                        </select>
+                    </th>
+                    <th>
+                        <button (click)="onCancel()" >cancel</button>
+                        <button (click)="onDone()" type="submit">done</button>
+                    </th>
+                </tr>
+            <!-- </form> -->
+        </ng-template>
+    </tbody>
+</table>

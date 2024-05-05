@@ -1,0 +1,19 @@
+<p>order works!</p>
+<form [formGroup]="dynamicForm">
+    <div formArrayName="formDataArray">
+      <div *ngFor="let formGroup of formDataArray.controls; let i=index" [formGroupName]="i">
+        <label for="product">Product:</label>
+        <select id="product" formControlName="product" (change)="onProductChange(i)">
+          <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+        </select>
+  
+        <label for="vendor">Vendor:</label>
+        <select id="vendor" formControlName="vendor">
+          <option *ngFor="let vendor of selectedProductVendors[i]" [value]="vendor">{{ vendor }}</option>
+        </select>
+      </div>
+    </div>
+  </form>
+  
+  <button (click)="addFormData()">Add</button>
+  
