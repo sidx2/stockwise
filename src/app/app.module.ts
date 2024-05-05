@@ -5,14 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { CategoryModule } from './category-module/category.module';
 import { ButtonModule } from "primeng/button"
 import { AuthModule } from './auth/auth.module';
-import { VendorsComponent } from './vendors/vendors.component';
 import { StoreModule } from '@ngrx/store';
 import { globalReducer } from './store/global.reducers';
 import { EffectsModule } from '@ngrx/effects';
-// import { authEffect } from './store/global.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ShareModule } from './share-module/share.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import { InventoryModule } from './inventory-module/inventory.module';
@@ -35,14 +32,10 @@ import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor
 import { EmployeesModule } from './employees/employees.module';
 import { employeesReducer } from './employees/store/employees.reducers';
 import { EmployeeEffects } from './employees/store/employees.effects';
-import { NavbarComponent } from './share-module/component/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VendorsComponent,
-    DashboardComponent,
-    NavbarComponent,
     DashboardComponent,
     RouterComponent,
   ],
@@ -53,18 +46,11 @@ import { NavbarComponent } from './share-module/component/navbar/navbar.componen
     AppRoutingModule,
     ButtonModule,
     AuthModule,
-    HttpClientModule,
-    StoreModule.forRoot({global: globalReducer}),
-    // EffectsModule.forRoot([authEffect]),
-    StoreModule.forRoot({ global: globalReducer }),
     CategoryModule,
     InventoryModule,
     EmployeesModule,
     MatIconModule,
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer}),
-    ShareModule,
-    EffectsModule.forRoot([globalEffects]),
-    StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
