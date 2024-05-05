@@ -1,8 +1,8 @@
 <div class="navbar">
   <div class="left">
     <div class="logo">
-      <i className="fas fa-laptop"></i>
-      <h3>Stockwise</h3>
+      <mat-icon>business</mat-icon>
+      <h3>{{ orgName }}</h3>
     </div>
   </div>
 
@@ -13,7 +13,7 @@
       <a [routerLink]="'login'">Login</a>
       <a [routerLink]="'login'">SignUp</a>
     </ul>
-    
+
     <ul *ngIf="!(globalState$ | async)?.isLoggedIn">
       <a href="">Logout</a>
     </ul>

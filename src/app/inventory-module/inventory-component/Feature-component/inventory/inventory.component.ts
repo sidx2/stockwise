@@ -59,9 +59,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.orgId = global.org._id;
     })
 
-    this.store.dispatch(getCategoryRequest());
-    this.store.dispatch(getItemRequest());
-    this.store.dispatch(fetchEmployees())
+    this.store.dispatch(getCategoryRequest({orgId: this.orgId}));
+    this.store.dispatch(getItemRequest({orgId: this.orgId}));
+    this.store.dispatch(fetchEmployees());
 
     this.categories$.pipe(
       filter(categories => categories.length > 0),

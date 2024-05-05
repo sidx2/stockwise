@@ -34,9 +34,9 @@ export class TicketAdminComponent {
   ngOnInit(): void {
     this.orgSubscription = this.store.select('global').subscribe((global) => {
       this.orgId = global.org._id;
+      this.store.dispatch(getAllTicketRequest({orgId: this.orgId}));
     });
 
-    this.store.dispatch(getAllTicketRequest({orgId: this.orgId}));
     this.filteredTickets$ = this.tickets$;
   }
 

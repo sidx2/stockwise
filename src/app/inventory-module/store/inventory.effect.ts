@@ -11,8 +11,8 @@ export class InventoryEffects {
     loadInventoryItems$ = createEffect(() => this.actions$.pipe(
         ofType(getItemRequest),
         tap(() => console.log('getItemRequest dispatched')),
-        mergeMap(() =>
-            this.inventoryService.getItems().pipe(
+        mergeMap((action) =>
+            this.inventoryService.getItems(action.orgId).pipe(
                 map(response => setItems({ items: response })),
                 tap(action => console.log('Dispatched action setItems')),
                 catchError(error => {

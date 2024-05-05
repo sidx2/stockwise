@@ -1,3 +1,17 @@
-<p>dashboard works!</p>
-<button (click)="onLogout()">logout</button>
-<a href="employees">employees</a>
+<!-- dashboard.component.html -->
+
+<div class="dashboard_categories" *ngIf="categories$ | async as categories">
+  <div *ngFor="let category of categories" class="dashboard_category">
+    <h3 class="assetCount">{{ category.numberOfAssets }}</h3>
+    <h2 class="categoryName">{{ category.name }}</h2>
+  </div>
+</div>
+
+<mat-card>
+  <mat-card-content>
+    <h2>Category Pie Chart</h2>
+    <div class="chart-container">
+      <canvas #pieChart width="400" height="400"></canvas>
+    </div>
+  </mat-card-content>
+</mat-card>

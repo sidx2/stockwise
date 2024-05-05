@@ -9,8 +9,7 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  getItems() {
-    const orgId = '660e20d70b44fcba1ea33139';
+  getItems(orgId: string) {
     return this.http.get<Item[]>(`http://localhost:9999/inventory/${orgId}`); 
   }
 

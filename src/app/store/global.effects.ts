@@ -1,11 +1,13 @@
 import { Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Observable, catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, map, of, switchMap, tap } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser } from "./global.actions";
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { OrgService } from "../org.service";
+import { InventoryState } from "../inventory-module/store/inventory.reducer";
+import { getItemRequest } from "../inventory-module/store/inventory.action";
 
 @Injectable()
 export class globalEffects {
@@ -13,7 +15,7 @@ export class globalEffects {
     authService$ = inject(AuthService)
     orgService$ = inject(OrgService)
     cs = inject(CookieService);
-    store = inject(Store<{ global: any }>)
+    store = inject(Store<{ global: any, inventory: InventoryState }>)
 
     constructor() {
         console.log("action$", this.action$)
@@ -59,10 +61,10 @@ export class globalEffects {
 
     startupEffect$ = createEffect(() =>
         this.action$.pipe(
-            ofType(init), 
+            ofType(init),
 
             tap(() => {
-                
+
                 console.log('Application started!');
                 const rawUesr = this.cs.get("user")
                 const rawOrg = this.cs.get("org")
@@ -74,10 +76,8 @@ export class globalEffects {
                 console.log("org in init:", org)
                 console.log("user.id in init: ", user.id)
                 try {
-
-                    
                     this.store.dispatch(setUser({ user: user }))
-                    this.store.dispatch(setOrg({org: org}))
+                    this.store.dispatch(setOrg({ org: org }));
                 }
                 catch (e) {
                     console.log(e);
@@ -87,10 +87,10 @@ export class globalEffects {
 
     orgEffect$ = createEffect(() =>
         this.action$.pipe(
-            ofType(fetchOrgSuccess), 
+            ofType(fetchOrgSuccess),
 
             tap((t) => {
-                
+
                 console.log("t in tap: ", t);
                 try {
                     this.cs.set("org", JSON.stringify(t))

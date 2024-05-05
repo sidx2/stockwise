@@ -6,7 +6,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { ButtonModule } from "primeng/button"
 import { HttpClientModule } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
 
 import { ShareModule } from './share-module/share.module';
 import { AuthModule } from './auth/auth.module';
@@ -54,11 +57,16 @@ import { TicketEffects } from './ticket-module/store/ticket.effect';
     AppRoutingModule,
     ButtonModule,
     AuthModule,
+    
     CategoryModule,
     InventoryModule,
     TicketModule,
     EmployeesModule,
+
     MatIconModule,
+    MatCardModule,
+    MatListModule,
+
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer, tickets: ticketReducer}),
     ShareModule,
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects, TicketEffects]),

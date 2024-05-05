@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Category } from '../models/category';
 
 // Actions triggering backend requests
-export const getCategoryRequest = createAction('[Category] Get Categories Request');
+export const getCategoryRequest = createAction('[Category] Get Categories Request', props<{orgId: string}>());
 export const createCategoryRequest = createAction('[Category] Create Category Request', props<{ category: Category }>());
 export const deleteCategoryRequest = createAction('[Category] Delete Category Request', props<{ categoryId: string }>());
 export const updateCategoryRequest = createAction('[Category] Update Category Request', props<{ updatedCategory: Category }>());

@@ -9,9 +9,9 @@ import { Category } from '../models/category';
 export class CategoryService {
   constructor(private http: HttpClient) { }
 
-  getCategories(): Observable<Category[]> {
+  getCategories(orgId: string): Observable<Category[]> {
 
-    const orgId = '660e20d70b44fcba1ea33139';
+    // const orgId = '660e20d70b44fcba1ea33139';
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBlMjBkNzBiNDRmY2JhMWVhMzMxMzUiLCJpYXQiOjE3MTQ3Mjc3NDIsImV4cCI6MTcxNDk4Njk0Mn0.XXwhK0hVaFl7vM71jUzsR54-q0fzeenieq5W_Jic1R4';
 
     // const headers = {

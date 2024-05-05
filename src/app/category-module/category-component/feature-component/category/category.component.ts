@@ -41,7 +41,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   fetchCategoryHandler(): void {
     console.log("Fetching categories...");
-    this.store.dispatch(getCategoryRequest());
+    this.store.dispatch(getCategoryRequest({orgId: this.orgId}));
   }
 
   createCategoryHandler(category: Category){
