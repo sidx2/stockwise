@@ -1,19 +1,26 @@
-<p>order works!</p>
 <form [formGroup]="dynamicForm">
     <div formArrayName="formDataArray">
       <div *ngFor="let formGroup of formDataArray.controls; let i=index" [formGroupName]="i">
         <label for="product">Product:</label>
         <select id="product" formControlName="product" (change)="onProductChange(i)">
-          <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+          <option *ngFor="let product of products" [value]="product.item._id">{{ product.item.name }}</option>
         </select>
   
         <label for="vendor">Vendor:</label>
         <select id="vendor" formControlName="vendor">
-          <option *ngFor="let vendor of selectedProductVendors[i]" [value]="vendor">{{ vendor }}</option>
+          <option *ngFor="let vendor of selectedProductVendors[i]" [value]="JSONStringify(vendor)">{{ vendor.name }}</option>
         </select>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" formControlName="quantity" name="quantity" id="quantity">
+
+        <button (click)="removeProduct(i)">Remove</button>
       </div>
     </div>
   </form>
   
   <button (click)="addFormData()">Add</button>
+  <button (click)="removeAll()">Remove All</button>
+  <button (click)="placeOrder()">Place Order</button>
+
   

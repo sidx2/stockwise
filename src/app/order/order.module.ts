@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { OrderRoutingModule } from './order-routing.module';
 import { OrderComponent } from './order.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { orderReducer } from './store/order.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { orderEffects } from './store/order.effects';
 
 
 @NgModule({
@@ -13,7 +17,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    OrderRoutingModule
+    OrderRoutingModule,
+    StoreModule.forFeature("order", orderReducer),
+    EffectsModule.forFeature([orderEffects])
   ]
 })
 export class OrderModule { }
