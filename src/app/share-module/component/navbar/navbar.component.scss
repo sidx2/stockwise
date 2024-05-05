@@ -18,9 +18,16 @@
       display: flex;
       gap: 0.5rem;
 
+    
       h3 {
         font-weight: 500;
         font-size: 1.4rem;
+      }
+    }
+
+    .menu{
+      .hamburger-icon {
+        background: transparent;
       }
     }
   }
