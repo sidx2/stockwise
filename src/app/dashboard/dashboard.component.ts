@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { orgSelector } from '../store/global.selectors';
 import { Category } from '../category-module/models/category';
 import { getCategoryRequest } from '../category-module/store/category.action';
+import { LoaderService } from '../share-module/services/loader.service';
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto'; 
 
@@ -47,7 +48,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private store: Store<{ global: any, categories: Category[]}>,
     private router: Router,
-    private cs: CookieService
+    private cs: CookieService,
+    public loaderService:LoaderService
   ) {}
 
   ngOnInit(): void {

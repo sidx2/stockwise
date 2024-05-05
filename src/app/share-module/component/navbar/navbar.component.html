@@ -1,5 +1,11 @@
+<app-sidebar *ngIf="isSidebarOpen" (linkClicked)="closeSidebar()"></app-sidebar>
+
 <div class="navbar">
   <div class="left">
+    <button (click)="toggleSidebar($event)" class="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+
     <div class="logo">
       <mat-icon>business</mat-icon>
       <h3>{{ orgName }}</h3>
@@ -15,7 +21,7 @@
     </ul>
 
     <ul *ngIf="!(globalState$ | async)?.isLoggedIn">
-      <a href="">Logout</a>
+      <a (click)="onLogout()">Logout</a>
     </ul>
   </div>
 </div>

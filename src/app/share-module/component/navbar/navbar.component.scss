@@ -5,9 +5,13 @@
   top: 0rem;
   padding: 1rem;
   display: flex;
+  align-items: center;
   gap: 1rem;
 
   .left {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
     width: fit-content;
 
     .logo {
@@ -29,6 +33,7 @@
     ul {
       width: fit-content;
       display: flex;
+      align-items: center;
       gap: 0.5rem;
 
       a {

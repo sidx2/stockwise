@@ -36,3 +36,15 @@
   font-size: 1.3rem;
   font-weight: 500;
 }
+
+
+@media (max-width: 800px){
+  .dashboard_categories{
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dashboard_category{
+    width: 90%;
+  }
+}
