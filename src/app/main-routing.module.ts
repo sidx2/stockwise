@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
 import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
 import { EmployeesComponent } from './employees/employees/employees.component';
+import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: "category",
     component: CategoryComponent
+  },
+  {
+    path: "ticket",
+    component: TicketComponent
   }
  
 ];

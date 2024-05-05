@@ -1,33 +1,36 @@
 import { createReducer, on } from '@ngrx/store';
-import { Item } from '../models/inventory';
+import { Item, UserAsset } from '../models/inventory';
+import { addItem, removeItem, setItems, updateItem, setUserAssets } from './inventory.action';
 
-import { addItem, removeItem, setItems, updateItem } from './inventory.action';
-export const initialState: Item[] = [];
+export interface InventoryState {
+  items: Item[];
+  userAssets: UserAsset[];
+}
+
+const initialState: InventoryState = {
+  items: [],
+  userAssets: []
+};
 
 export const inventoryReducer = createReducer(
-    initialState,
+  initialState,
 
-    on(setItems, (_, { items }) => {
-        console.log("hello");
-        return items;
-    }),
+  on(setItems, (_, { items }) => ({ ...initialState, items })),
 
-    on(addItem, (state, { item }) => [...state, item]),
+  on(setUserAssets, (_, { userAssets }) => ({ ...initialState, userAssets })),
 
-    on(removeItem, (state , {itemId})=>{
-        return state.filter((item)=>  item._id !== itemId)
-    }),
+  on(addItem, (state, { item }) => ({
+    ...state,
+    items: [...state.items, item]
+  })),
 
-    on(updateItem, (state, {updatedItem})=>{
-        const updatedState = state.map( item => {
-          if (item._id === updatedItem._id) {
-            return updatedItem;
-          } else {
-            return item;
-          }
-        });
-        return updatedState;
-      }),
+  on(removeItem, (state, { itemId }) => ({
+    ...state,
+    items: state.items.filter((item) => item._id !== itemId)
+  })),
 
+  on(updateItem, (state, { updatedItem }) => ({
+    ...state,
+    items: state.items.map((item) => (item._id === updatedItem._id ? updatedItem : item))
+  }))
 );
-

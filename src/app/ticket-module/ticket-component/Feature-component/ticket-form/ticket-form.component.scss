@@ -1,0 +1,12 @@
+.ticket_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.ticket_form .inputDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

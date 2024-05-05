@@ -37,4 +37,13 @@ export interface CheckinDetails {
 export interface CheckoutDetails{
     assignedTo: AssignedTo, 
     itemId: string | undefined
-} 
+}
+
+export interface UserAsset {
+    _id: string;
+    name: string;
+    itemImage: string;
+    serialNumber: string;
+    customFieldsData: Record<string, any>; 
+  }
+  

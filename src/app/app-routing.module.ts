@@ -4,6 +4,8 @@ import { authGuard } from './auth.guard';
 import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
 import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
 import { RouterComponent } from './router/router.component';
+import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
+import { TicketAdminComponent } from './ticket-module/ticket-component/Feature-component/ticket-admin/ticket-admin.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,14 @@ const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryComponent
+  },
+  {
+    path: 'ticket',
+    component: TicketComponent
+  },
+  {
+    path: "ticketAdmin",
+    component: TicketAdminComponent
   },
   { path: 'vendors', loadChildren: () => import('./vendors/vendors.module').then(m => m.VendorsModule) },
   { path: 'employees', loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule) },

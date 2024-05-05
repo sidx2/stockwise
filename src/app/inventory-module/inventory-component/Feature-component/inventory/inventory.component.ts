@@ -5,9 +5,10 @@ import { map, take, filter, concatMap } from 'rxjs/operators';
 import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
 import { CheckoutDetails, Item } from '../../../models/inventory';
+import { InventoryState } from '../../../store/inventory.reducer';
 import { LoaderService } from '../../../../share-module/services/loader.service';
 import { Employee } from '../../../../employees/store/employees.reducers';
-import { AssignedTo, CheckinDetails } from '../../../models/inventory';
+import { CheckinDetails } from '../../../models/inventory';
 
 // temp
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
@@ -45,8 +46,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
   searchText: string = ''
   orgId: string = '';
 
-  constructor(private store: Store<{ global: any, inventory: Item[], categories: Category[], employees: Employee[] }>, public loaderService: LoaderService) {
-    this.items$ = this.store.select('inventory');
+  constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>, public loaderService: LoaderService) {
+
+    this.items$ = this.store.select(state => state.inventory.items);
     this.categories$ = this.store.select('categories');
     this.employees$ = this.store.select(employeesSelector)
   }

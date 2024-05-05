@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delayWhen, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, removeItem, setItems, updateItem, updateItemRequest } from './inventory.action';
+import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest } from './inventory.action';
 
 @Injectable()
 export class InventoryEffects {
@@ -92,6 +92,21 @@ export class InventoryEffects {
                 tap(action => console.log('Dispatched action update Item', action)),
                 catchError(error => {
                     console.error('Error in chheckin item:', error);
+                    return of();
+                })
+            )
+        )
+    ))
+
+    loadUserAssets$ = createEffect(() => this.actions$.pipe(
+        ofType(getUserAssets),
+        tap(() => console.log('getUserAssets dispatched')),
+        mergeMap((action) =>
+            this.inventoryService.getUserAsset().pipe(
+                map(response => setUserAssets({ userAssets: response })),
+                tap(action => console.log('Dispatched action set userAssets', action)),
+                catchError(error => {
+                    console.error('Error in loading userAssets:', error);
                     return of();
                 })
             )

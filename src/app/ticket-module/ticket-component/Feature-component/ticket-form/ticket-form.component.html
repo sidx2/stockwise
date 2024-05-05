@@ -1,0 +1,53 @@
+<form class="ticket_form" (ngSubmit)="onSubmit()" [formGroup]="ticketFormGroup">
+  <div class="inputDiv">
+    <label for="issue">Issue Type</label>
+    <select appCustomInputStyle id="issue" formControlName="issueType">
+      <option value="">Select Issue Type</option>
+      <option value="newAssetRequest">New Asset Request</option>
+      <option value="assetModification">Asset Modification Request</option>
+      <option value="assetDamage">Asset Damage</option>
+      <option value="assetMalfunction">Asset Malfunction</option>
+      <option value="assetLossTheft">Asset Loss or Theft</option>
+      <option value="accessRestriction">Access Restriction</option>
+      <option value="routineMaintenance">Routine Maintenance Request</option>
+      <option value="urgentRepair">Urgent Repair Request</option>
+      <option value="assetDisposal">Asset Disposal Request</option>
+      <option value="assetTransfer">Asset Transfer Request</option>
+    </select>
+  </div>
+
+  <!-- selecting asset -->
+  <div class="inputDiv">
+    <select appCustomInputStyle id="assetId" formControlName="assetId">
+      <option value="">Select Asset</option>
+      <option *ngFor="let asset of userAssets" [value]="asset._id">
+        {{ asset?.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="inputDiv">
+    <label for="description">Description</label>
+    <textarea
+      appCustomInputStyle
+      formControlName="description"
+      id="description"
+      cols="30"
+      rows="5"
+    ></textarea>
+  </div>
+
+  <div class="inputDiv">
+    <label for="priority">Priority</label>
+    <select appCustomInputStyle id="priority" formControlName="priority">
+      <option value="">Select Priority</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+  <button appButtonPrimary [disabled]="!ticketFormGroup.valid">
+    Raise Ticket
+  </button>
+</form>
