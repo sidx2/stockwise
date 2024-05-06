@@ -1,4 +1,4 @@
-Search: <input type="text" (input)="search($event)">
+Search: <input type="text" placeholder="Search for employee" (input)="search($event)">
 <table>
     <thead>
         <tr>
@@ -20,19 +20,14 @@ Search: <input type="text" (input)="search($event)">
         </tr>
 
         <ng-template #elseBlock>
-            <!-- <form > -->
                 <tr>
                     <th>
-
                         <input type="text" [(ngModel)]="m_name" value={{emp.name}}>
                     </th>
                     <th>
-
                         <input type="text" [(ngModel)]="m_email" value={{emp.email}}>
                     </th>
                     <th>
-
-                        <!-- <select [(ngModel)]=emp.role> -->
                             <select [(ngModel)]="m_role">
                             <option value="admin">Admin</option>
                             <option value="employee">Employee</option>
@@ -44,7 +39,6 @@ Search: <input type="text" (input)="search($event)">
                         <button (click)="onDone()" type="submit">done</button>
                     </th>
                 </tr>
-            <!-- </form> -->
         </ng-template>
     </tbody>
 </table>

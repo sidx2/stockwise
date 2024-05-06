@@ -1,4 +1,4 @@
-<p-button (click)="showDialog()" label="Add Employee" />
+<button (click)="showDialog()" label="Add Employee" >Add Employee</button>
 <p-dialog header="Add Employee To the Organization" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <span class="p-text-secondary block mb-5">Add new Employee</span>
     <form [formGroup]="addEmployeeForm" (submit)="onAddEmployee()">
@@ -20,7 +20,7 @@
             </select>
         </div>
         <div class="flex justify-content-end gap-2">
-            <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+            <button label="Cancel" severity="secondary" (click)="visible = false" >Cancel</button>
             <button type="submit" label="Add" >Add</button>
         </div>
     </form>
