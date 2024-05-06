@@ -78,8 +78,6 @@ import { SharedModule } from 'primeng/api';
       logOnly: !isDevMode(),
       autoPause: true,
       trace: false,
-      traceLimit: 75,
-      connectInZone: true
     }),
   ],
   providers: [
