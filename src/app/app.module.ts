@@ -41,8 +41,10 @@ import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS } from '@angular
 import { init } from './store/global.actions';
 import { authInterceptor } from './auth.interceptor';
 import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
+
 import { ticketReducer } from './ticket-module/store/ticket.reducer';
 import { TicketEffects } from './ticket-module/store/ticket.effect';
+import { SharedModule } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { TicketEffects } from './ticket-module/store/ticket.effect';
     MatIconModule,
     MatCardModule,
     MatListModule,
+    ShareModule,
 
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer, tickets: ticketReducer}),
     ShareModule,

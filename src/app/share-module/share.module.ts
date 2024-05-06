@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { LoaderComponent } from './component/loader/loader.component';
 import { TooltipDirective } from './directive/tooltip.directive';
+import { Footer } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { TooltipDirective } from './directive/tooltip.directive';
     FooterComponent,
     SidebarComponent,
     LoaderComponent,
-    TooltipDirective
+    TooltipDirective,
+    NavbarComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,

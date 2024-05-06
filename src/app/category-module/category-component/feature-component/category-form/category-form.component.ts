@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
-import { fetchVendors } from '../../../../vendors/store/vendor.actions';
+import { fetchVendorsRequest } from '../../../../vendors/store/vendor.actions';
 import { Observable, mergeMap } from 'rxjs';
 import { vendorsSelector } from '../../../../vendors/store/vendor.selectors';
 
@@ -24,7 +24,7 @@ export class CategoryFormComponent implements OnInit {
   vendors$!: Observable<any[]>; 
 
   constructor(private store: Store<{ vendors: any[] }>) {
-    this.store.dispatch(fetchVendors());
+    this.store.dispatch(fetchVendorsRequest());
     this.vendors$ = this.store.select(vendorsSelector);
   }
 
