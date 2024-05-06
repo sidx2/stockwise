@@ -1,0 +1,31 @@
+<div class="updateStatus">
+  <form
+    [formGroup]="updateStatusFormGroup"
+    class="updateStatus"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="inputDiv">
+      <label for="status">Ticket Status</label>
+      <select appCustomInputStyle id="status" formControlName="status">
+        <option value="">Select status</option>
+        <option value="processing">Processing</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+
+    <div class="inputDiv">
+      <label for="remark">Remark</label>
+      <textarea
+        appCustomInputStyle
+        id="remark"
+        formControlName="remark"
+        cols="30"
+        rows="5"
+      ></textarea>
+    </div>
+
+    <button appButtonPrimary [disabled]="!updateStatusFormGroup.valid">
+      Update Status
+    </button>
+  </form>
+</div>

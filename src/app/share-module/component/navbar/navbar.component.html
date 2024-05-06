@@ -1,8 +1,14 @@
+<app-sidebar *ngIf="isSidebarOpen" (linkClicked)="closeSidebar()"></app-sidebar>
+
 <div class="navbar">
   <div class="left">
+    <button (click)="toggleSidebar($event)" class="menu">
+      <mat-icon>dashboard</mat-icon>
+    </button>
+
     <div class="logo">
-      <i className="fas fa-laptop"></i>
-      <h3>Stockwise</h3>
+      <mat-icon>business</mat-icon>
+      <h3>{{ orgName }}</h3>
     </div>
   </div>
 
@@ -13,9 +19,9 @@
       <a [routerLink]="'login'">Login</a>
       <a [routerLink]="'login'">SignUp</a>
     </ul>
-    
+
     <ul *ngIf="!(globalState$ | async)?.isLoggedIn">
-      <a href="">Logout</a>
+      <a (click)="onLogout()">Logout</a>
     </ul>
   </div>
 </div>

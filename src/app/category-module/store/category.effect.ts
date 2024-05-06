@@ -11,8 +11,8 @@ export class CategoryEffects {
     loadCategories$ = createEffect(() => this.actions$.pipe(
         ofType(getCategoryRequest),
         tap(() => console.log('getCategoryRequest dispatched')),
-        mergeMap(() =>
-            this.categoryService.getCategories().pipe(
+        mergeMap((action) =>
+            this.categoryService.getCategories(action.orgId).pipe(
                 map(response => setCategories({ categories: response })),
                 tap(action => console.log('Dispatched action setCategories')),
                 catchError(error => {

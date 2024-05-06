@@ -1,42 +1,61 @@
 .navbar {
-    background-color: #0183ff;
-    color: white;
-    position: sticky;
-    top: 0rem;
-    padding: 1rem;
+  background-color: #0183ff;
+  color: white;
+  position: sticky;
+  top: 0rem;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .left {
     display: flex;
     gap: 1rem;
-  
-    .left {
-      width: fit-content;
-  
-      .logo {
-        h3 {
-          font-weight: 500;
-          font-size: 1.4rem;
-        }
+    align-items: center;
+    width: fit-content;
+
+    .logo {
+      display: flex;
+      gap: 0.5rem;
+
+    
+      h3 {
+        font-weight: 500;
+        font-size: 1.4rem;
       }
     }
-  
-    .middle {
-      width: 100%;
+
+    .menu{
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: white;
+      padding: 0.4rem 0.5rem;
     }
-  
-    .right {
-  
-      ul {
-        width: fit-content;
-        display: flex;
-        gap: 0.5rem;
-  
-        a{
-          text-decoration: none;
-          color: white;
-          font-size: 1.1rem;
-          font-weight: 400;
-        }
-      }
-  
+
+    .menu:hover{
+      border-radius: 50%;
+      background-color: rgba(75, 72, 72, 0.2);
     }
   }
-  
+
+  .middle {
+    width: 100%;
+  }
+
+  .right {
+    ul {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      a {
+        text-decoration: none;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 400;
+      }
+    }
+  }
+}

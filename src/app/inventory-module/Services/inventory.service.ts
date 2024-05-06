@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CheckinDetails, CheckoutDetails, Item } from '../models/inventory';
-import { AssignedTo } from '../models/inventory';
+import { CheckinDetails, CheckoutDetails, Item, UserAsset } from '../models/inventory';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +9,7 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  getItems() {
-    const orgId = '660e20d70b44fcba1ea33139';
+  getItems(orgId: string) {
     return this.http.get<Item[]>(`http://localhost:9999/inventory/${orgId}`); 
   }
 
@@ -33,5 +31,9 @@ export class InventoryService {
 
   checkinItem(checkinDetails: CheckinDetails){
     return this.http.put<Item>(`http://localhost:9999/inventory/checkin`, checkinDetails); 
+  }
+
+  getUserAsset(){
+    return this.http.get<UserAsset[]>(`http://localhost:9999/inventory/item/getUserAssets`); 
   }
 }
