@@ -1,16 +1,14 @@
-<p>employees-table works!</p>
-
+Search: <input type="text" (input)="search($event)">
 <table>
     <thead>
         <tr>
-
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
             <th>Action</th>
         </tr>
     </thead>
-    <tbody *ngFor="let emp of employees; index as i">
+    <tbody *ngFor="let emp of (employees | paginate: {itemsPerPage: psize, currentPage: currPage}); index as i">
         <tr *ngIf="emp._id != editing; else elseBlock">
             <th> {{ emp.name }} </th>
             <th> {{ emp.email }} </th>
@@ -50,3 +48,7 @@
         </ng-template>
     </tbody>
 </table>
+
+<div class="fixed bottom-0 right-0 w-full flex justify-center bg-[#fff] p-1 items-center">
+    <pagination-controls (pageChange)="currPage=$event"></pagination-controls>
+  </div>

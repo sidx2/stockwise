@@ -32,6 +32,7 @@ import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor
 import { EmployeesModule } from './employees/employees.module';
 import { employeesReducer } from './employees/store/employees.reducers';
 import { EmployeeEffects } from './employees/store/employees.effects';
+import { SharedModule } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { EmployeeEffects } from './employees/store/employees.effects';
     CategoryModule,
     InventoryModule,
     EmployeesModule,
+    SharedModule,
     MatIconModule,
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer}),
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects]),

@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { deleteEmployee, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployee } from "./employees.actions"
+import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployeeSuccess } from "./employees.actions"
 
 export interface Employee {
     _id: any,
@@ -30,7 +30,7 @@ export const employeesReducer = createReducer(
         console.log("fetchEmployeesFailure", "state:", state, "action: ", action)
         return (state);
     }),
-    on(updateEmployee, (state, action) => {
+    on(updateEmployeeSuccess, (state, action) => {
         console.log("updateEmployee", "state:", state, "action: ", action)
         const newEmployees = state.employees.map((emp) => {
             if (emp._id == action.employee._id) {
@@ -41,10 +41,40 @@ export const employeesReducer = createReducer(
         
         return ({...state, employees: newEmployees});
     }),
-    on(deleteEmployee, (state, action) => {
+    on(deleteEmployeeSuccess, (state, action) => {
         console.log("deleteEmployee", "state:", state, "action: ", action)
         const newEmployees = state.employees.filter((e) => e._id !== action._id)
-
+        
         return ({...state, employees: newEmployees});
+    }),
+    
+    // 
+    on(createUserRequest, (state, action) => {
+        console.log("createUserRequest", "state:", state, "action: ", action)
+        return (state);
+    }),
+    
+    on(createUserSuccess, (state,action) => {
+        console.log("createUserSuccess", "state:", state, "action: ", action)
+        return (state)
+    }),
+    on(createUserFailure, (state, action) => {
+        console.log("createUserFailure", "state:", state, "action: ", action)
+        return (state);
+    }),
+    
+    // 
+    on(addEmployeeRequest, (state,action) => {
+        console.log("addEmployeeRequest", "state:", state, "action: ", action)
+        return (state)
+    }),
+    on(addEmployeeSuccess, (state, action) => {
+        console.log("addEmployeeSuccess", "state:", state, "action: ", action)
+        return ({...state, employees: [...state.employees, action.employee]});
+    }),
+    
+    on(addEmployeeFailure, (state,action) => {
+        console.log("addEmployeeFailure", "state:", state, "action: ", action)
+        return (state)
     })
 )

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Init } from 'v8';
-import { deleteEmployee, updateEmployee } from '../../store/employees.actions';
+import { deleteEmployeeRequest, updateEmployeeRequest } from '../../store/employees.actions';
 
 @Component({
   selector: 'app-employees-table',
@@ -11,6 +10,9 @@ import { deleteEmployee, updateEmployee } from '../../store/employees.actions';
 })
 export class EmployeesTableComponent implements OnInit {
   @Input() employees!: any
+
+  _emps!:any
+
   employeeForms: FormGroup[] = []
   editing: number = -1
   store = inject(Store<{ employees: any }>);
@@ -19,9 +21,13 @@ export class EmployeesTableComponent implements OnInit {
   m_email!: string
   m_role!: string
 
+  psize: number = 10;
+  currPage: number = 1;
+
   ngOnInit(): void  {
     if (this.employees) {
       console.log("this.employees: ", this.employees)
+      this._emps = this.employees
       for (const e of this.employees) {
         this.employeeForms.push(new FormGroup({
           name: new FormControl(e.name),
@@ -46,11 +52,10 @@ export class EmployeesTableComponent implements OnInit {
 
   onCancel() {
     this.editing = -1
-
   }
 
   onDone() {
-    this.store.dispatch(updateEmployee({
+    this.store.dispatch(updateEmployeeRequest({
       employee: {_id: this.editing,
       name: this.m_name,
       email: this.m_email,
@@ -61,10 +66,15 @@ export class EmployeesTableComponent implements OnInit {
   }
   
   onDelete(_id: any) {
-      this.store.dispatch(deleteEmployee({ _id }))
+      this.store.dispatch(deleteEmployeeRequest({ _id }))
   }
 
   onUpdate(e: any) {
       console.log("updating...", e)
+  }
+
+  search(e: any) {
+    if (!this._emps.length) this._emps = this.employees
+    this.employees = this._emps.filter((emp:any) => JSON.stringify(emp).toLowerCase().includes(e.target.value))
   }
 }

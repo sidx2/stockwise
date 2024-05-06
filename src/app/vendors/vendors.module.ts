@@ -5,7 +5,7 @@ import { ChipsModule } from "primeng/chips"
 import { ChipModule } from "primeng/chip"
 import { TagModule } from "primeng/tag"
 import { VendorsRoutingModule } from './vendors-routing.module';
-import { VendorsComponent } from './vendors.component';
+import { VendorsComponent } from './vendors/vendors.component';
 import { CardModule } from "primeng/card"
 
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,10 +15,16 @@ import { StoreModule } from '@ngrx/store';
 import { vendorReducer } from './store/vendor.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { vendorEffects } from './store/vendor.effects';
+import { VendorsTableComponent } from './ui/vendors-table/vendors-table.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
-    VendorsComponent
+    VendorsComponent,
+    VendorsTableComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +37,11 @@ import { vendorEffects } from './store/vendor.effects';
     InputTextModule,
     IconFieldModule,
     InputIconModule,
+    DialogModule,
+    ButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule,
     StoreModule.forFeature("vendors", vendorReducer),
     EffectsModule.forFeature([vendorEffects])
   ]
