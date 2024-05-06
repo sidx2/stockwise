@@ -1,4 +1,4 @@
-Search:  <input type="text" placeholder="Search for vendor" (input)="search($event)">
+<input type="text" id="searchInput" placeholder="Search for vendor" (input)="search($event)">
 
 <table>
     <thead>
@@ -12,39 +12,49 @@ Search:  <input type="text" placeholder="Search for vendor" (input)="search($eve
     </thead>
     <tbody *ngFor="let vendor of (vendors | paginate: {itemsPerPage: psize, currentPage: currPage}); index as i">
         <tr *ngIf="vendor._id != editing; else elseBlock">
-            <th> {{ vendor.name }} </th>
-            <th> {{ vendor.email }} </th>
-            <th> {{ vendor.address }} </th>
-            <th> {{ vendor.phone }} </th>
-            <th>
-                <button (click)="onEdit(vendor._id)" >edit</button>
-                <button (click)="onDelete(vendor._id)">delete</button>
-            </th>
+            <td> {{ vendor.name }} </td>
+            <td> {{ vendor.email }} </td>
+            <td> {{ vendor.address }} </td>
+            <td> {{ vendor.phone }} </td>
+            <td>
+                <button appButtonPrimaryLight (click)="onEdit(vendor._id)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+      
+                  <button appButtonPrimaryLight (click)="onDelete(vendor._id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+            </td>
         </tr>
 
         <ng-template #elseBlock>
-                <tr>
-                    <th>
-                        <input type="text" [(ngModel)]="m_name" value={{vendor.name}}>
-                    </th>
-                    <th>
-                        <input type="text" [(ngModel)]="m_email" value={{vendor.email}}>
-                    </th>
-                    <th>
-                        <input type="text" [(ngModel)]="m_address" value={{vendor.email}}>       
-                    </th>
-                    <th>
-                        <input type="text" [(ngModel)]="m_phone" value={{vendor.phone}}> 
-                    </th>
-                    <th>
-                        <button (click)="onCancel()" >cancel</button>
-                        <button (click)="onDone()" type="submit">done</button>
-                    </th>
-                </tr>
+            <tr class="pending">
+                <td>
+                    <input type="text" [(ngModel)]="m_name" value={{vendor.name}}>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="m_email" value={{vendor.email}}>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="m_address" value={{vendor.email}}>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="m_phone" value={{vendor.phone}}>
+                </td>
+                <th>
+                    <button appButtonPrimaryLight (click)="onCancel()">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+          
+                      <button type="submit" appButtonPrimaryLight (click)="onDone()">
+                        <mat-icon>done</mat-icon>
+                      </button>
+                </th>
+            </tr>
         </ng-template>
     </tbody>
 </table>
 
-<div class="fixed bottom-0 right-0 w-full flex justify-center bg-[#fff] p-1 items-center">
+<div class="paginationControls">
     <pagination-controls (pageChange)="currPage=$event"></pagination-controls>
-  </div>
+</div>

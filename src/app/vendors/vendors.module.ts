@@ -20,6 +20,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { ShareModule } from '../share-module/share.module';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { DialogModule } from 'primeng/dialog';
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    ShareModule,
+    MatIconModule,
+    MatTooltipModule,
     StoreModule.forFeature("vendors", vendorReducer),
     EffectsModule.forFeature([vendorEffects])
   ]
