@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
 import { fetchVendorsRequest } from '../../../../vendors/store/vendor.actions';
-import { Observable } from 'rxjs';
+import { Observable, mergeMap } from 'rxjs';
 import { vendorsSelector } from '../../../../vendors/store/vendor.selectors';
 
 @Component({
@@ -21,7 +21,7 @@ export class CategoryFormComponent implements OnInit {
   categoryFormGroup: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
 
-  vendors$!: Observable<any[]>;
+  vendors$!: Observable<any[]>; 
 
   constructor(private store: Store<{ vendors: any[] }>) {
     this.store.dispatch(fetchVendorsRequest());
@@ -35,7 +35,7 @@ export class CategoryFormComponent implements OnInit {
       customFields: new FormArray([]),
       selectedVendors: new FormControl([])
     });
-
+       
     if (this.selectedCategory !== null) {
       this.isEditMode = true;
       console.log("selectedCategory ", this.selectedCategory);
@@ -75,13 +75,13 @@ export class CategoryFormComponent implements OnInit {
     this.vendors$.subscribe((vendors: any[]) => {
       const selectedVendors = category.vendors?.map((vendorId: string) => {
         const vendor = vendors.find((vendor: any) => vendor?._id === vendorId);
-        return { _id: vendor?._id, name: vendor?.name };
+        return { _id: vendor?._id, name: vendor?.name }; 
       });
       this.categoryFormGroup.patchValue({
         selectedVendors: selectedVendors
       });
     });
-
+  
   }
 
   resetForm() {
@@ -115,10 +115,10 @@ export class CategoryFormComponent implements OnInit {
       console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
-      const selectedVendorsId = this.categoryFormGroup.get('selectedVendors')?.value.map((vendor: any) => vendor._id);
+      const selectedVendorsId =  this.categoryFormGroup.get('selectedVendors')?.value.map((vendor: any) => vendor._id);
 
       if (!this.isEditMode) {
-        this.createCategoryEmmiter.emit({ ...formData, vendors: selectedVendorsId });
+        this.createCategoryEmmiter.emit({...formData, vendors: selectedVendorsId});
       } else {
         this.updateCategoryEmmiter.emit({
           ...formData,
@@ -127,7 +127,7 @@ export class CategoryFormComponent implements OnInit {
           identificationType: this.selectedCategory?.identificationType,
           vendors: selectedVendorsId,
         });
-
+        
       }
 
     } else {
