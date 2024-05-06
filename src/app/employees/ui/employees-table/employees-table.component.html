@@ -1,4 +1,4 @@
-Search: <input type="text" (input)="search($event)">
+<input type="text" id="searchInput" placeholder="Search for employee" (input)="search($event)">
 <table>
     <thead>
         <tr>
@@ -10,45 +10,49 @@ Search: <input type="text" (input)="search($event)">
     </thead>
     <tbody *ngFor="let emp of (employees | paginate: {itemsPerPage: psize, currentPage: currPage}); index as i">
         <tr *ngIf="emp._id != editing; else elseBlock">
-            <th> {{ emp.name }} </th>
-            <th> {{ emp.email }} </th>
-            <th> {{ emp.role }} </th>
-            <th>
-                <button (click)="onEdit(emp._id)" >edit</button>
-                <button (click)="onDelete(emp._id)">delete</button>
-            </th>
+            <td> {{ emp.name }} </td>
+            <td> {{ emp.email }} </td>
+            <td> {{ emp.role }} </td>
+            <td>
+                <button appButtonPrimaryLight (click)="onEdit(emp._id)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+      
+                  <button appButtonPrimaryLight (click)="onDelete(emp._id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+            </td>
         </tr>
 
         <ng-template #elseBlock>
-            <!-- <form > -->
-                <tr>
-                    <th>
-
+                <tr class="pending">
+                    <td>
                         <input type="text" [(ngModel)]="m_name" value={{emp.name}}>
-                    </th>
-                    <th>
-
+                    </td>
+                    <td>
                         <input type="text" [(ngModel)]="m_email" value={{emp.email}}>
-                    </th>
-                    <th>
-
-                        <!-- <select [(ngModel)]=emp.role> -->
+                    </td>
+                    <td>
                             <select [(ngModel)]="m_role">
                             <option value="admin">Admin</option>
                             <option value="employee">Employee</option>
                             <option value="user">User</option>
                         </select>
-                    </th>
-                    <th>
-                        <button (click)="onCancel()" >cancel</button>
-                        <button (click)="onDone()" type="submit">done</button>
-                    </th>
+                    </td>
+                    <td>
+                        <button appButtonPrimaryLight (click)="onCancel()">
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+              
+                          <button type="submit" appButtonPrimaryLight (click)="onDone()">
+                            <mat-icon>done</mat-icon>
+                          </button>
+                    </td>
                 </tr>
-            <!-- </form> -->
         </ng-template>
     </tbody>
 </table>
 
-<div class="fixed bottom-0 right-0 w-full flex justify-center bg-[#fff] p-1 items-center">
+<div class="paginationControls">
     <pagination-controls (pageChange)="currPage=$event"></pagination-controls>
   </div>

@@ -52,6 +52,16 @@
     </li>
     <li>
       <a
+        [routerLink]="['/order']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+        Order
+      </a>
+    </li>
+    <li>
+      <a
         [routerLink]="['/ticket']"
         routerLinkActive="active"
         (click)="closeSidebar()"
