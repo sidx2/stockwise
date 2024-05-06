@@ -18,6 +18,10 @@
   gap: 0.5rem;
 }
 
+.inputDiv input.ng-invalid.ng-touched, select.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched{
+  border: red 1px solid !important;
+}
+
 .inventory_form .customFields{
   display: flex;
   flex-direction: column;

@@ -13,6 +13,7 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { LoaderComponent } from './component/loader/loader.component';
 import { TooltipDirective } from './directive/tooltip.directive';
 import { Footer } from 'primeng/api';
+import { InputWitherrorDirective } from './directive/input-witherror.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { Footer } from 'primeng/api';
     TooltipDirective,
     NavbarComponent,
     FooterComponent,
+    InputWitherrorDirective,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { Footer } from 'primeng/api';
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,
+    InputWitherrorDirective,
     TooltipDirective
   ]
 })

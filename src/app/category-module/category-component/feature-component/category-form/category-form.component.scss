@@ -22,6 +22,11 @@
   font-size: 1rem;
 }
 
+.category_form .inputDiv input.ng-invalid.ng-touched, select.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched{
+  border: red 1px solid !important;
+}
+
+
 .form-section-heading {
   font-weight: 500;
   font-size: 1rem;
