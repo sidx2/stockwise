@@ -13,7 +13,6 @@ export class AuthService {
 
   login(credentials: any): Observable<any> {
       console.log("Credentials for login: ", credentials);
-      return this.http.post("http://localhost:9999/auth/login", credentials)
-      credentials;
+      return this.http.post("http://localhost:9999/auth/login", credentials);
   }
 }

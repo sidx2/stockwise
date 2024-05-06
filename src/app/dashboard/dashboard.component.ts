@@ -15,7 +15,6 @@ export class DashboardComponent implements OnInit {
   store = inject(Store<{ global: any }>)
 
   constructor() {
-
   }
 
   ngOnInit(): void {

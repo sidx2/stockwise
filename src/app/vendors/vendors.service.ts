@@ -27,4 +27,24 @@ export class VendorsService {
       })
     );
   }
+
+  updateVendor(vendor: any) {
+    console.log("vendor in updateVendor: ", vendor)
+    return this.http.put("http://localhost:9999/vendor/update", vendor.vendor);
+  }
+  
+  deleteVendor(vendorId: any) {
+    console.log("vendor in deleteVendor: ", vendorId)
+    return this.http.delete("http://localhost:9999/vendor/delete", { body: { vendorId } });
+    
+  }
+  
+  addVendor(vendor: any, orgId: any) {
+    console.log("vendor orgId ", vendor, orgId)
+    return this.http.post("http://localhost:9999/vendor/create", {
+      ...vendor,
+      orgId
+    })
+
+  }
 }

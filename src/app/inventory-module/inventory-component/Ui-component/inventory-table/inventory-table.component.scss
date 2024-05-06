@@ -1,0 +1,40 @@
+.inventory_table {
+  width: 90%;
+  margin: auto;
+  overflow-x: auto; 
+}
+
+table {
+  min-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+th {
+  background-color: #f2f2f2;
+  border: 1px solid #dddddd;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+td {
+  border: 1px solid #dddddd;
+  padding: 0.8rem;
+}
+
+td .assignedTo{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+table .actions {
+  display: flex;
+  gap: 0.5rem;
+}
