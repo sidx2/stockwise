@@ -78,6 +78,7 @@ export class globalEffects {
                 try {
                     this.store.dispatch(setUser({ user: user }))
                     this.store.dispatch(setOrg({ org: org }));
+                    this.store.dispatch(loginUserSuccess({user}))
                 }
                 catch (e) {
                     console.log(e);

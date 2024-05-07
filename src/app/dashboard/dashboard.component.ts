@@ -7,7 +7,7 @@ import { Category } from '../category-module/models/category';
 import { getCategoryRequest } from '../category-module/store/category.action';
 import { LoaderService } from '../share-module/services/loader.service';
 import { Observable } from 'rxjs';
-import Chart from 'chart.js/auto'; 
+import Chart from 'chart.js/auto';
 
 // Define PieChartOptions interface outside the component class
 interface PieChartOptions {
@@ -46,48 +46,50 @@ export class DashboardComponent implements OnInit {
   orgId: string = '';
 
   constructor(
-    private store: Store<{ global: any, categories: Category[]}>,
+    private store: Store<{ global: any, categories: Category[] }>,
     private router: Router,
     private cs: CookieService,
-    public loaderService:LoaderService
-  ) {}
+    public loaderService: LoaderService
+  ) { }
 
   ngOnInit(): void {
-    this.store.select(orgSelector).subscribe((org) =>{
+
+    this.store.select(orgSelector).subscribe((org) => {
       this.orgId = org?._id
-      this.store.dispatch(getCategoryRequest({orgId: this.orgId}));
+
+      this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
+      this.categories$ = this.store.select('categories');
+
+      this.categories$.subscribe(categories => {
+        if (categories) {
+          this.createPieChart(categories);
+        }
+      });
     });
 
-    this.categories$ = this.store.select('categories');
-
-    this.categories$.subscribe(categories => {
-      if (categories) {
-        this.createPieChart(categories);
-      }
-    });
   }
 
   onLogout(): void {
     this.cs.deleteAll();
     this.router.navigate([""]);
   }
-  
+
   createPieChart(categories: Category[]): void {
     const canvas = this.pieChartRef?.nativeElement;
     if (!canvas) {
       console.error("Canvas element not found");
       return;
     }
-  
+
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.error("Failed to get 2D rendering context");
       return;
     }
-  
+
     const data = categories.map(category => category.numberOfAssets);
     const labels = categories.map(category => category.name);
-  
+
     // Prepare options object
     const options: any = {
       responsive: true,
@@ -121,7 +123,7 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
-  
+
     // Dark colors for the chart
     const darkColors = [
       'rgba(75, 192, 192, 0.5)',
@@ -140,8 +142,8 @@ export class DashboardComponent implements OnInit {
       // 'rgba(0, 128, 0, 0.5)',     // Dark green
       // 'rgba(128, 128, 128, 0.5)', // Dark gray
     ];
-    
-  
+
+
     new Chart(ctx, {
       type: 'pie',
       data: {

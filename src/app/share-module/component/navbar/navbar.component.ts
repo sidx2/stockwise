@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { IGlobalState } from '../../../store/global.reducers';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { clearState } from '../../../store/global.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -14,19 +15,27 @@ export class NavbarComponent implements OnInit {
   globalState$: Observable<IGlobalState>;
   orgName: string = '';
   isSidebarOpen: boolean = false;
+  globalStateSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ global: any }>, private router: Router, private cs: CookieService, private elementRef: ElementRef) {
+  constructor(private store: Store<{ global: IGlobalState }>, private router: Router, private cs: CookieService, private elementRef: ElementRef) {
     this.globalState$ = this.store.select('global');
   }
 
   ngOnInit(): void {
-    this.globalState$.subscribe((global) => {
+    this.globalStateSubscription = this.globalState$.subscribe((global) => {
       this.orgName = global.org.name;
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.globalStateSubscription) {
+      this.globalStateSubscription.unsubscribe();
+    }
+  }
+
   onLogout(): void {
     this.cs.deleteAll();
+    this.store.dispatch(clearState())
     this.router.navigate(["login"]);
   }
 

@@ -20,3 +20,5 @@ export const fetchOrgFailure = createAction("fetchOrgFailure", props<any>());
 
 export const init = createAction("init");
 
+export const clearState = createAction('[Global] Clear State');
+
