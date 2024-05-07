@@ -65,7 +65,7 @@ export class VendorsTableComponent {
         _id: this.editing,
         name: this.m_name,
         email: this.m_email,
-        role: this.m_address,
+        address: this.m_address,
         phone: this.m_phone
       }
     }))

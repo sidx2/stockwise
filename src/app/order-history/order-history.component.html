@@ -1,0 +1,47 @@
+<div class="header">
+
+    <div class="title">
+        <h3>Order History</h3>
+    </div>
+    <div class="">
+
+    </div>
+</div>
+<div class="orders-list">
+    <div class="order" *ngFor="let order of history">
+        <div class="order-header">
+            <div class="order-meta">
+
+                <div class="order-id">Order ID: {{ order._id }}</div>
+                <div class="order-status" [ngClass]="['order-status-' + order.status]">
+                    {{ order.status | uppercase }}
+                </div>
+            </div>
+            <div class="order-date">
+                <mat-icon>event</mat-icon>
+                {{ order.createdAt | date : "MMM dd, yyyy, hh:mm a" }}
+            </div>
+
+        </div>
+        <div class="order-details">
+            <div class="order-info">
+                <div class="order-admin">Placed By: {{ order.admin.name }}</div>
+            </div>
+            <div class="cart">
+                <h3>Cart Items:</h3>
+                <ul>
+                    <li *ngFor="let item of order.cart">
+                        <span>{{ item.quantity }} x </span>
+                        {{ item.item.name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="additional-details">
+            <h4 *ngIf="order.remark">Remark: <span>{{ order.remark }}</span></h4>
+        </div>
+        <div class="order-action">
+            <!-- Add any actions here -->
+        </div>
+    </div>
+</div>

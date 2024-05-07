@@ -26,7 +26,4 @@ export class LoginComponent {
     this.formSubmit.emit(this.loginForm.value)
   }
 
-  onGoTo() {
-    this.router.navigate(['vendors'])
-  }
 }

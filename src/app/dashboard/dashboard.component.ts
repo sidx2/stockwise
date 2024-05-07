@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
 
   onLogout(): void {
     this.cs.deleteAll();
-    this.router.navigate([""]);
+    this.router.navigate(["auth"]);
   }
   
   createPieChart(categories: Category[]): void {
