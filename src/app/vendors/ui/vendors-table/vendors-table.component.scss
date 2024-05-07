@@ -1,3 +1,8 @@
+:host{
+  width: 90%;
+  margin: 1rem auto;
+}
+
 /* Style the search input */
 input[type="text"] {
   padding: 8px;
@@ -20,12 +25,11 @@ input[type="text"] {
   border: 1px solid black;
 }
 
-
 /* Style the table */
 
 table {
-  min-width: 900px;
   width: 100%;
+  min-width: 900px;
   margin: 0 auto;
   border-collapse: collapse;
   margin-bottom: 2rem;

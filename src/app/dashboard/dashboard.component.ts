@@ -53,28 +53,40 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    
     this.store.select(orgSelector).subscribe((org) => {
-      this.orgId = org?._id
+      this.orgId = org?._id;
 
-      this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
-      this.categories$ = this.store.select('categories');
+      console.log(this.orgId);
 
-      this.categories$.subscribe(categories => {
-        if (categories) {
-          this.createPieChart(categories);
-        }
-      });
+      if (this.orgId) {
+        this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
+      }
     });
 
+    this.categories$ = this.store.select('categories');
+
+    this.categories$.subscribe(categories => {
+      if (categories) {
+        this.createPieChart(categories);
+      }else{
+       console.log("Not able to create piechart")
+      }
+    });
   }
+
 
   onLogout(): void {
     this.cs.deleteAll();
     this.router.navigate([""]);
   }
 
-  createPieChart(categories: Category[]): void {
+  createPieChart(categories?: Category[]): void {
+    if (!categories) {
+      console.error("No categories provided");
+      return;
+    }
+
     const canvas = this.pieChartRef?.nativeElement;
     if (!canvas) {
       console.error("Canvas element not found");

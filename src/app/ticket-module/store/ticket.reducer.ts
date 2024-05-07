@@ -26,7 +26,7 @@ export const ticketReducer = createReducer(
     }),
 
     on(addTicket, (state, { ticket }) => {
-        return { ...state, allTickets: [...state.allTickets, ticket] };
+        return { ...state, userTickets: [...state.userTickets, ticket] };
     }),
 
     on(updateTicket, (state, { ticket }) => {
