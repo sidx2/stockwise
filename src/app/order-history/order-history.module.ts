@@ -9,6 +9,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { historyEffects } from './store/order-history.effects';
 import { ShareModule } from '../share-module/share.module';
 import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
     OrderHistoryRoutingModule,
     MatIconModule,
     ShareModule,
+    FormsModule,
     StoreModule.forFeature("history", historyReducer),
     EffectsModule.forFeature([historyEffects])
   ]
