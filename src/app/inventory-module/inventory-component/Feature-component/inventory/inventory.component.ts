@@ -46,7 +46,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   searchText: string = ''
   orgId: string = '';
 
-  constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>, public loaderService: LoaderService) {
+  constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>) {
 
     this.items$ = this.store.select(state => state.inventory.items);
     this.categories$ = this.store.select('categories');

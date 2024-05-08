@@ -45,12 +45,14 @@ import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor
 import { ticketReducer } from './ticket-module/store/ticket.reducer';
 import { TicketEffects } from './ticket-module/store/ticket.effect';
 import { SharedModule } from 'primeng/api';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     RouterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

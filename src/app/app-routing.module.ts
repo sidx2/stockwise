@@ -6,6 +6,7 @@ import { InventoryComponent } from './inventory-module/inventory-component/Featu
 import { RouterComponent } from './router/router.component';
 import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
 import { TicketAdminComponent } from './ticket-module/ticket-component/Feature-component/ticket-admin/ticket-admin.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: "ticketAdmin",
     component: TicketAdminComponent
+  },
+  {
+    path:"profile",
+    component: ProfileComponent
   },
   { path: 'vendors', loadChildren: () => import('./vendors-module/vendors.module').then(m => m.VendorsModule) },
   { path: 'employees', loadChildren: () => import('./employees-module/employees.module').then(m => m.EmployeesModule) },

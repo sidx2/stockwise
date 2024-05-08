@@ -16,7 +16,9 @@
 
   <div class="right">
     <ul *ngIf="(globalState$ | async)?.isLoggedIn">
-      <li><a (click)="onLogout()">Logout</a></li>
+      <li><a [routerLink]="'profile'">
+        <mat-icon class="profileIcon">account_circle</mat-icon>
+      </a></li>
     </ul>
 
     <ul *ngIf="!(globalState$ | async)?.isLoggedIn">

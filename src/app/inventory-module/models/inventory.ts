@@ -44,6 +44,7 @@ export interface UserAsset {
     name: string;
     itemImage: string;
     serialNumber: string;
+    quantity?: number,
     customFieldsData: Record<string, any>; 
   }
   

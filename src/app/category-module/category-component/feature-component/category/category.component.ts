@@ -22,7 +22,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   
   private orgSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ categories: Category[], global: any}>, public loaderService:LoaderService) {
+  constructor(private store: Store<{ categories: Category[], global: any}>) {
     this.categories$ = this.store.select('categories');
   }
 

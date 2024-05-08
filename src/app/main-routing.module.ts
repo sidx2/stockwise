@@ -6,6 +6,7 @@ import { InventoryComponent } from './inventory-module/inventory-component/Featu
 import { EmployeesComponent } from './employees-module/components/Feature-components/employees/employees.component';
 import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
 import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,11 @@ const routes: Routes = [
   {
     path: "ticket",
     component: TicketComponent
-  }
+  },
+  {
+    path:"profile",
+    component: ProfileComponent
+  },
  
 ];
 

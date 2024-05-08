@@ -124,7 +124,6 @@ export class CategoryFormComponent implements OnInit {
           ...formData,
           _id: this.selectedCategory?._id,
           orgId: this.selectedCategory?.orgId,
-          identificationType: this.selectedCategory?.identificationType,
           vendors: selectedVendorsId,
         });
         

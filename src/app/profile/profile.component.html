@@ -1,0 +1,68 @@
+<div class="profilePage">
+  <div class="header">
+    <h3>Profile</h3>
+    <button appButtonPrimary (click)="onLogout()">Logout</button>
+  </div>
+
+  <div class="profile">
+    <div *ngIf="user$ | async as user" class="userInfo">
+      <div class="profileImage">
+        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+      </div>
+
+      <div class="info">
+        <h3>
+          Name: <span>{{ user.name }}</span>
+        </h3>
+        <h3>
+          Email: <span>{{ user.email }}</span>
+        </h3>
+        <h3>
+          Role: <span>{{ user.role }}</span>
+        </h3>
+      </div>
+    </div>
+
+    <hr />
+
+    <div *ngIf="userAssets$ | async as userAssets" class="assignedAssets">
+      <h3>Assigned Assets</h3>
+
+      <div class="assetList">
+        <div *ngFor="let asset of userAssets" class="asset">
+          <div class="assetImage">
+            <img
+              [src]="
+                'https://stockwisebucket.s3.ap-south-1.amazonaws.com/' +
+                asset?.itemImage
+              "
+              alt=""
+            />
+          </div>
+
+          <div class="assetInfo">
+            <h4>
+              Asset Name: <span>{{ asset?.name }}</span>
+            </h4>
+            <h4 *ngIf="asset?.serialNumber">
+              SerialNumber: <span>{{ asset?.serialNumber }}</span>
+            </h4>
+            <h4>
+              Quantity: <span>{{ asset?.quantity }}</span>
+            </h4>
+
+            <div *ngIf="asset.customFieldsData" class="customFields">
+              <div
+                *ngFor="let customField of asset.customFieldsData | keyvalue"
+              >
+                <h4 *ngIf="customField.key && customField.value">
+                  {{ customField.key }}: <span>{{ customField.value }}</span>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

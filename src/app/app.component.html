@@ -1,7 +1,12 @@
 <div class="app">
-    <app-navbar></app-navbar>
+    <ng-container *ngIf="(global$ | async) as global">
+        <app-navbar *ngIf="global.isLoggedIn" ></app-navbar>
+    </ng-container>
+
     <router-outlet></router-outlet>
-    <!-- <app-footer></app-footer> -->
+
+    <app-loader *ngIf="loaderService.isLoading$ | async"></app-loader>
+
 </div>
 
 

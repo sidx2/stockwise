@@ -13,6 +13,7 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { LoaderComponent } from './component/loader/loader.component';
 import { TooltipDirective } from './directive/tooltip.directive';
 import { Footer } from 'primeng/api';
+import { MatIcon } from '@angular/material/icon';
 
 @NgModule({
   declarations: [

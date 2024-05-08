@@ -33,12 +33,6 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  onLogout(): void {
-    this.cs.deleteAll();
-    this.store.dispatch(clearState())
-    this.router.navigate(["login"]);
-  }
-
   toggleSidebar(event: MouseEvent): void {
     console.log("Toggling sidebar...");
     this.isSidebarOpen = !this.isSidebarOpen;
