@@ -39,7 +39,7 @@ import { Actions, EffectsModule } from '@ngrx/effects';
 
 import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { init } from './store/global.actions';
-import { authInterceptor } from './auth.interceptor';
+import { authInterceptor } from './interceptors/auth.interceptor';
 import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
 
 import { ticketReducer } from './ticket-module/store/ticket.reducer';

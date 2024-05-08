@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { userSelector } from './store/global.selectors';
+import { userSelector } from '../store/global.selectors';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({

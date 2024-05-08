@@ -5,7 +5,7 @@ import { AuthService } from "../auth/auth.service";
 import { fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser } from "./global.actions";
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
-import { OrgService } from "../org.service";
+import { OrgService } from "../services/org.service";
 import { InventoryState } from "../inventory-module/store/inventory.reducer";
 import { getItemRequest } from "../inventory-module/store/inventory.action";
 
