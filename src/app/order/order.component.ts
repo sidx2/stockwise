@@ -106,6 +106,8 @@ export class OrderComponent {
     console.log("order: ", order);
 
     this.store.dispatch(placeOrderRequest(order))
+
+    this.removeAll();
   }
 
   JSONStringify(obj: Object) {

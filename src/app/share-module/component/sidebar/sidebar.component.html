@@ -80,5 +80,15 @@
         Help Desk Admin
       </a>
     </li>
+    <li>
+        <a
+          [routerLink]="['/history']"
+          routerLinkActive="active"
+          (click)="closeSidebar()"
+        >
+          <mat-icon>history</mat-icon>
+          Order History
+        </a>
+      </li>
   </ul>
 </div>

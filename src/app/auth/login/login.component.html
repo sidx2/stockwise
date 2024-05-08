@@ -1,17 +1,20 @@
 <form class="login-form" [formGroup]="loginForm" (submit)="onFormSubmit()">
-    <img src="https://cdn-icons-png.flaticon.com/512/7527/7527289.png" width="100px">
+    <img src="https://cdn-icons-png.flaticon.com/512/7527/7527289.png" alt="Login icon">
     <h2>Login To Stockwise</h2>
     <div class="p-fluid">
-        <p-floatLabel >
-            <input id="email" formControlName="email" type="email" class="p-field p-inputtext-lg" pInputText />
-            <label for="Email">Email</label>
-        </p-floatLabel>
+        <div class="p-floatLabel">
+            <label for="email">Email</label>
+            <input id="email" formControlName="email" type="email" class="p-field p-inputtext-lg" pInputText>
+        </div>
 
-        <p-floatLabel class="p-field">
-            <input id="password" formControlName="password" type="password" class=" p-field p-inputtext-lg" pInputText />
-            <label for="password">password</label>
-        </p-floatLabel>
-        <p-button type="submit">Login</p-button>
+        <div class="p-floatLabel">
+            <label for="password">Password</label> 
+            <input id="password" formControlName="password" type="password" class="p-field p-inputtext-lg" pInputText>
+        </div>
+        <button type="submit" class="p-button">Login</button>
     </div>
 
+    <div class="redirect">
+        <h3>New here? </h3> <a [routerLink]="['/signup']">Signup</a>
+    </div>
 </form>
