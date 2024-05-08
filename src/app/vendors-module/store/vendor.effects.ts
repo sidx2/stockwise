@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Observable, catchError, map, of, switchMap, tap } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
-import { VendorsService } from "../vendors.service";
+import { VendorsService } from "../services/vendors.service";
 import { fetchVendorsRequest, fetchVendorsFailure, fetchVendorsSuccess, updateVendorRequest, updateVendorSuccess, updateVendorFailure, deleteVendorRequest, deleteVendorSuccess, deleteVendorFailure, addVendorSuccess, addVendorFailure, addVendorRequest } from "./vendor.actions";
 import { addEmployeeRequest } from "../../employees/store/employees.actions";
 

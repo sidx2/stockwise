@@ -24,7 +24,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { categoryReducer } from './category-module/store/category.reducer';
 import { inventoryReducer } from './inventory-module/store/inventory.reducer';
-import { vendorReducer } from './vendors/store/vendor.reducers';
+import { vendorReducer } from './vendors-module/store/vendor.reducers';
 import { globalReducer } from './store/global.reducers';
 import { employeesReducer } from './employees/store/employees.reducers';
 
@@ -32,7 +32,7 @@ import { globalEffects } from './store/global.effects';
 import { CategoryEffects } from './category-module/store/category.effect';
 import { InventoryEffects } from './inventory-module/store/inventory.effect';
 import { EmployeeEffects } from './employees/store/employees.effects';
-import { vendorEffects } from './vendors/store/vendor.effects';
+import { vendorEffects } from './vendors-module/store/vendor.effects';
 
 import { Store, StoreModule } from '@ngrx/store';
 import { Actions, EffectsModule } from '@ngrx/effects';

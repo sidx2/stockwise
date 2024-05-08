@@ -1,7 +1,7 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { deleteVendorRequest, updateVendorRequest } from '../../store/vendor.actions';
+import { deleteVendorRequest, updateVendorRequest } from '../../../store/vendor.actions';
 
 @Component({
   selector: 'app-vendors-table',
@@ -10,6 +10,7 @@ import { deleteVendorRequest, updateVendorRequest } from '../../store/vendor.act
 })
 export class VendorsTableComponent {
   @Input() vendors!: any
+  @Output() updateVendor = new EventEmitter<any>();
 
   _vends!: any
 
@@ -60,7 +61,8 @@ export class VendorsTableComponent {
   }
 
   onDone() {
-    this.store.dispatch(updateVendorRequest({
+
+    this.updateVendor.emit({
       vendor: {
         _id: this.editing,
         name: this.m_name,
@@ -68,17 +70,13 @@ export class VendorsTableComponent {
         address: this.m_address,
         phone: this.m_phone
       }
-    }))
+    })
     this.editing = -1
     console.log(this.m_name, this.m_email, this.m_address, this.m_phone)
   }
 
   onDelete(_id: any) {
     this.store.dispatch(deleteVendorRequest({ _id }))
-  }
-
-  onUpdate(e: any) {
-    console.log("updating...", e)
   }
 
   search(e: any) {

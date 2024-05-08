@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { switchMap } from 'rxjs';
-import { orgSelector, userSelector } from '../store/global.selectors';
+import { orgSelector, userSelector } from '../../store/global.selectors';
 
 @Injectable({
   providedIn: 'root'

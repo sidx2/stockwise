@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { VendorsService } from '../vendors.service';
+import { VendorsService } from '../../../services/vendors.service';
 import { Store } from '@ngrx/store';
-import { addVendorRequest, fetchVendorsRequest } from '../store/vendor.actions';
-import { vendorsSelector } from '../store/vendor.selectors';
+import { addVendorRequest, fetchVendorsRequest, updateVendorRequest } from '../../../store/vendor.actions';
+import { vendorsSelector } from '../../../store/vendor.selectors';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { orgSelector } from '../../store/global.selectors';
+import { orgSelector } from '../../../../store/global.selectors';
 
 
 export interface Vendor {
@@ -29,16 +29,11 @@ export class VendorsComponent {
 
   selectedVendors!: Vendor[];
 
-  addVendorForm = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required]),
-    address: new FormControl("", [Validators.required]),
-    phone: new FormControl("", [Validators.required]),
-  })
+  
 
   constructor(
         private vendorService: VendorsService,
-        private store: Store<{ vendors: any }>
+        private store: Store<{ vendors: any, employees: any }>
     ) {
         this.store.dispatch(fetchVendorsRequest());
 
@@ -54,16 +49,14 @@ export class VendorsComponent {
           })
   }
 
+  onAddVendor(event: any) {
+    console.log("event: ", event);
 
-
-  showDialog() {
-    this.visible = !this.visible
+    this.store.dispatch(addVendorRequest({vendor: event.vendor, orgId: this.orgId}))
   }
 
-  onAddVendor() {
-    console.log("data: ", this.addVendorForm.value);
-    this.visible = !this.visible
-
-    this.store.dispatch(addVendorRequest({vendor: this.addVendorForm.value, orgId: this.orgId}))
+  onUpdateVendor(event: any) {
+    console.log(event);
+    this.store.dispatch(updateVendorRequest({vendor: event.vendor}));
   }
 }
