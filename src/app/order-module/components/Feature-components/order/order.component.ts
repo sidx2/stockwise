@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from './store/order.actions';
-import { productVendorsSelector } from './store/order.selectors';
-import { orgSelector, userSelector } from '../store/global.selectors';
+import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
+import { productVendorsSelector } from '../../../store/order.selectors';
+import { orgSelector, userSelector } from '../../../../store/global.selectors';
 import { map, switchMap, tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 

@@ -42,8 +42,8 @@ const routes: Routes = [
   },
   { path: 'vendors', loadChildren: () => import('./vendors-module/vendors.module').then(m => m.VendorsModule) },
   { path: 'employees', loadChildren: () => import('./employees-module/employees.module').then(m => m.EmployeesModule) },
-  { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
-  { path: 'history', loadChildren: () => import('./order-history/order-history.module').then(m => m.OrderHistoryModule) },
+  { path: 'order', loadChildren: () => import('./order-module/order.module').then(m => m.OrderModule) },
+  { path: 'history', loadChildren: () => import('./order-history-module/order-history.module').then(m => m.OrderHistoryModule) },
 ];
 
 @NgModule({
