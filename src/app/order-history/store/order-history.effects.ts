@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
-import { OrderHistoryService } from "../order-history.service";
+import { OrderHistoryService } from "../services/order-history.service";
 import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions";
 
 @Injectable()

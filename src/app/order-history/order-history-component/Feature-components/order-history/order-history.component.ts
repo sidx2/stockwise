@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fetchHistoryRequest, updateStatusRequest } from './store/order-history.actions';
-import { historySelector } from './store/order-history.selectors';
-import { orgSelector } from '../store/global.selectors';
+import { fetchHistoryRequest, updateStatusRequest } from '../../../store/order-history.actions';
+import { historySelector } from '../../../store/order-history.selectors';
+import { orgSelector } from '../../../../store/global.selectors';
 
 @Component({
   selector: 'app-order-history',
@@ -13,9 +13,6 @@ export class OrderHistoryComponent {
   store = inject(Store<{ history: any, global: any }>);
   orgId: any
   history: any
-
-  editing = -1
-  m_status!:any
 
   constructor() {
     this.store.select(orgSelector).subscribe((org) => {
@@ -30,18 +27,8 @@ export class OrderHistoryComponent {
     })
   }
 
-  edit(_id:any) {
-    if (_id == -1) {
-      this.editing = -1;
-      return;
-    }
-    this.editing = _id
-    this.m_status = this.history.filter((h:any) => h._id == _id)[0].status
-  }
-
-  onStatusUpdate(updatedStatus: any) {
-    console.log(updatedStatus);
-    this.store.dispatch(updateStatusRequest({orderId: this.editing, updatedStatus}))
-    this.edit(-1);
+  onStatusUpdate(event: any) {
+    console.log("event:", event);
+    this.store.dispatch(updateStatusRequest({orderId: event.orderId, updatedStatus: event.updatedStatus}))
   }
 }
