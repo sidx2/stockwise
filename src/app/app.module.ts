@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 
 import { ShareModule } from './share-module/share.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth-module/auth.module';
 import { CategoryModule } from './category-module/category.module';
 import { InventoryModule } from './inventory-module/inventory.module';
 import { EmployeesModule } from './employees-module/employees.module';
