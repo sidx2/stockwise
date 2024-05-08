@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess } from '../../store/global.actions';
+import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess } from '../../../../store/global.actions';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
