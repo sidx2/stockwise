@@ -7,13 +7,13 @@ import { Category } from '../../../../category-module/models/category';
 import { CheckoutDetails, Item } from '../../../models/inventory';
 import { InventoryState } from '../../../store/inventory.reducer';
 import { LoaderService } from '../../../../share-module/services/loader.service';
-import { Employee } from '../../../../employees/store/employees.reducers';
+import { Employee } from '../../../../employees-module/store/employees.reducers';
 import { CheckinDetails } from '../../../models/inventory';
 
 // temp
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
-import { fetchEmployees } from '../../../../employees/store/employees.actions';
-import { employeesSelector } from '../../../../employees/store/employees.selectors';
+import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
+import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 
 @Component({
   selector: 'app-inventory',

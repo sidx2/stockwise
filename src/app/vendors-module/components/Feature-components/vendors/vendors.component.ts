@@ -5,7 +5,7 @@ import { addVendorRequest, fetchVendorsRequest, updateVendorRequest } from '../.
 import { vendorsSelector } from '../../../store/vendor.selectors';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { orgSelector } from '../../../../store/global.selectors';
-import { deleteEmployeeRequest } from '../../../../employees/store/employees.actions';
+import { deleteEmployeeRequest } from '../../../../employees-module/store/employees.actions';
 
 
 export interface Vendor {

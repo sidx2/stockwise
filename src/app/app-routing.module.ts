@@ -41,7 +41,7 @@ const routes: Routes = [
     component: TicketAdminComponent
   },
   { path: 'vendors', loadChildren: () => import('./vendors-module/vendors.module').then(m => m.VendorsModule) },
-  { path: 'employees', loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule) },
+  { path: 'employees', loadChildren: () => import('./employees-module/employees.module').then(m => m.EmployeesModule) },
   { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
   { path: 'history', loadChildren: () => import('./order-history/order-history.module').then(m => m.OrderHistoryModule) },
 ];

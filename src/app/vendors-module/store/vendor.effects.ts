@@ -5,7 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { VendorsService } from "../services/vendors.service";
 import { fetchVendorsRequest, fetchVendorsFailure, fetchVendorsSuccess, updateVendorRequest, updateVendorSuccess, updateVendorFailure, deleteVendorRequest, deleteVendorSuccess, deleteVendorFailure, addVendorSuccess, addVendorFailure, addVendorRequest } from "./vendor.actions";
-import { addEmployeeRequest } from "../../employees/store/employees.actions";
+import { addEmployeeRequest } from "../../employees-module/store/employees.actions";
 
 @Injectable()
 export class vendorEffects {

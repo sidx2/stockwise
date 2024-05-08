@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { deleteEmployeeRequest, updateEmployeeRequest } from '../../store/employees.actions';
+import { deleteEmployeeRequest, updateEmployeeRequest } from '../../../store/employees.actions';
 
 @Component({
   selector: 'app-employees-table',
@@ -12,6 +12,9 @@ export class EmployeesTableComponent implements OnInit {
   @Input() employees!: any
 
   _emps!:any
+
+  @Output() updateEmployee = new EventEmitter<any>();
+  @Output() deleteEmployee = new EventEmitter<any>();
 
   employeeForms: FormGroup[] = []
   editing: number = -1
@@ -55,18 +58,25 @@ export class EmployeesTableComponent implements OnInit {
   }
 
   onDone() {
-    this.store.dispatch(updateEmployeeRequest({
+    // this.store.dispatch(updateEmployeeRequest({
+    //   employee: {_id: this.editing,
+    //   name: this.m_name,
+    //   email: this.m_email,
+    //   role: this.m_role}
+    // }))
+
+    this.updateEmployee.emit({
       employee: {_id: this.editing,
       name: this.m_name,
       email: this.m_email,
       role: this.m_role}
-    }))
+    })
     this.editing = -1
     console.log(this.m_name, this.m_email, this.m_role)
   }
   
   onDelete(_id: any) {
-      this.store.dispatch(deleteEmployeeRequest({ _id }))
+    this.deleteEmployee.emit({ _id })
   }
 
   onUpdate(e: any) {

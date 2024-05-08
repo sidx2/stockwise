@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeFailure, deleteEmployeeRequest, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployeeFailure, updateEmployeeRequest, updateEmployeeSuccess } from "./employees.actions";
 import { catchError, map, of, switchMap } from "rxjs";
-import { EmployeesService } from "../employees.service";
+import { EmployeesService } from "../services/employees.service";
 import { Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
 
