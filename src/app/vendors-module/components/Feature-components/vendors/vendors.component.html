@@ -8,6 +8,10 @@
     </div>
     <div class="vendors-table">
 
-        <app-vendors-table [vendors]="vendors" (updateVendor)="onUpdateVendor($event)"></app-vendors-table>
+        <app-vendors-table 
+            [vendors]="vendors" 
+            (updateVendor)="onUpdateVendor($event)"
+            (deleteVendor)="onDeleteVendor($event)"
+        ></app-vendors-table>
     </div>
 </div>

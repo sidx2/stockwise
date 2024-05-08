@@ -11,13 +11,14 @@ import { deleteVendorRequest, updateVendorRequest } from '../../../store/vendor.
 export class VendorsTableComponent {
   @Input() vendors!: any
   @Output() updateVendor = new EventEmitter<any>();
+  @Output() deleteVendor = new EventEmitter<any>();
 
   _vends!: any
 
   visisble:boolean = false
 
   vendorForms: FormGroup[] = []
-  editing: number = -1
+  editing: any = -1
   store = inject(Store<{ employees: any }>);
 
   m_name!: string
@@ -76,7 +77,7 @@ export class VendorsTableComponent {
   }
 
   onDelete(_id: any) {
-    this.store.dispatch(deleteVendorRequest({ _id }))
+    this.deleteVendor.emit({ _id })
   }
 
   search(e: any) {

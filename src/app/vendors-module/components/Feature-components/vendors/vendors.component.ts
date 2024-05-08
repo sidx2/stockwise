@@ -5,6 +5,7 @@ import { addVendorRequest, fetchVendorsRequest, updateVendorRequest } from '../.
 import { vendorsSelector } from '../../../store/vendor.selectors';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { orgSelector } from '../../../../store/global.selectors';
+import { deleteEmployeeRequest } from '../../../../employees/store/employees.actions';
 
 
 export interface Vendor {
@@ -56,7 +57,12 @@ export class VendorsComponent {
   }
 
   onUpdateVendor(event: any) {
-    console.log(event);
+    console.log("event: ", event);
     this.store.dispatch(updateVendorRequest({vendor: event.vendor}));
+  }
+  
+  onDeleteVendor(event: any) {
+    console.log("event: ", event);
+    this.store.dispatch(deleteEmployeeRequest({ _id: event._id }))
   }
 }
