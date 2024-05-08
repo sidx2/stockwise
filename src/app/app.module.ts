@@ -12,10 +12,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 
 import { ShareModule } from './share-module/share.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth-module/auth.module';
 import { CategoryModule } from './category-module/category.module';
 import { InventoryModule } from './inventory-module/inventory.module';
-import { EmployeesModule } from './employees/employees.module';
+import { EmployeesModule } from './employees-module/employees.module';
 import { TicketModule } from './ticket-module/ticket.module';
 
 import { AppComponent } from './app.component';
@@ -24,22 +24,22 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { categoryReducer } from './category-module/store/category.reducer';
 import { inventoryReducer } from './inventory-module/store/inventory.reducer';
-import { vendorReducer } from './vendors/store/vendor.reducers';
+import { vendorReducer } from './vendors-module/store/vendor.reducers';
 import { globalReducer } from './store/global.reducers';
-import { employeesReducer } from './employees/store/employees.reducers';
+import { employeesReducer } from './employees-module/store/employees.reducers';
 
 import { globalEffects } from './store/global.effects';
 import { CategoryEffects } from './category-module/store/category.effect';
 import { InventoryEffects } from './inventory-module/store/inventory.effect';
-import { EmployeeEffects } from './employees/store/employees.effects';
-import { vendorEffects } from './vendors/store/vendor.effects';
+import { EmployeeEffects } from './employees-module/store/employees.effects';
+import { vendorEffects } from './vendors-module/store/vendor.effects';
 
 import { Store, StoreModule } from '@ngrx/store';
 import { Actions, EffectsModule } from '@ngrx/effects';
 
 import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { init } from './store/global.actions';
-import { authInterceptor } from './auth.interceptor';
+import { authInterceptor } from './interceptors/auth.interceptor';
 import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
 
 import { ticketReducer } from './ticket-module/store/ticket.reducer';

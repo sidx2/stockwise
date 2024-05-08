@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { authGuard } from './auth.guard';
+import { authGuard } from './guards/auth.guard';
 import { CategoryComponent } from './category-module/category-component/feature-component/category/category.component';
 import { InventoryComponent } from './inventory-module/inventory-component/Feature-component/inventory/inventory.component';
 import { RouterComponent } from './router/router.component';
@@ -17,7 +17,7 @@ const routes: Routes = [
     canActivate: [authGuard],
     path: "auth",
 
-    loadChildren: () => import("./auth/auth-routing.module").then(m => m.AuthRoutingModule),
+    loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
   },
   {
     path: "dashboard",
@@ -40,10 +40,10 @@ const routes: Routes = [
     path: "ticketAdmin",
     component: TicketAdminComponent
   },
-  { path: 'vendors', loadChildren: () => import('./vendors/vendors.module').then(m => m.VendorsModule) },
-  { path: 'employees', loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule) },
-  { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
-  { path: 'history', loadChildren: () => import('./order-history/order-history.module').then(m => m.OrderHistoryModule) },
+  { path: 'vendors', loadChildren: () => import('./vendors-module/vendors.module').then(m => m.VendorsModule) },
+  { path: 'employees', loadChildren: () => import('./employees-module/employees.module').then(m => m.EmployeesModule) },
+  { path: 'order', loadChildren: () => import('./order-module/order.module').then(m => m.OrderModule) },
+  { path: 'history', loadChildren: () => import('./order-history-module/order-history.module').then(m => m.OrderHistoryModule) },
 ];
 
 @NgModule({

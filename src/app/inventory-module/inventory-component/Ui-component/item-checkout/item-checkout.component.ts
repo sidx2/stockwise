@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../../../models/inventory';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Employee } from '../../../../employees/store/employees.reducers';
+import { Employee } from '../../../../employees-module/store/employees.reducers';
 import { AssignedTo, CheckoutDetails } from '../../../models/inventory';
 
 @Component({

@@ -2,9 +2,9 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
-import { fetchVendorsRequest } from '../../../../vendors/store/vendor.actions';
+import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
 import { Observable, mergeMap } from 'rxjs';
-import { vendorsSelector } from '../../../../vendors/store/vendor.selectors';
+import { vendorsSelector } from '../../../../vendors-module/store/vendor.selectors';
 
 @Component({
   selector: 'app-category-form',

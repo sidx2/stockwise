@@ -1,0 +1,60 @@
+<input type="text" id="searchInput" placeholder="Search for vendor" (input)="search($event)">
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let vendor of (vendors | paginate: {itemsPerPage: psize, currentPage: currPage}); index as i">
+        <tr *ngIf="vendor._id != editing; else elseBlock">
+            <td> {{ vendor.name }} </td>
+            <td> {{ vendor.email }} </td>
+            <td> {{ vendor.address }} </td>
+            <td> {{ vendor.phone }} </td>
+            <td>
+                <button appButtonPrimaryLight (click)="onEdit(vendor._id)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button appButtonPrimaryLight (click)="onDelete(vendor._id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </tr>
+
+        <ng-template #elseBlock>
+            <tr class="pending">
+                <td>
+                    <input type="text" [(ngModel)]="m_name" value={{vendor.name}}>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="m_email" value={{vendor.email}}>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="m_address" value={{vendor.address}}>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="m_phone" value={{vendor.phone}}>
+                </td>
+                <th>
+                    <button appButtonPrimaryLight (click)="onCancel()">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+
+                    <button type="submit" appButtonPrimaryLight (click)="onDone()">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                </th>
+            </tr>
+        </ng-template>
+    </tbody>
+</table>
+
+<div class="paginationControls">
+    <pagination-controls (pageChange)="currPage=$event"></pagination-controls>
+</div>
