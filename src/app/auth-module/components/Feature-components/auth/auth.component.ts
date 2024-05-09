@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess, setOrg } from '../../../../store/global.actions';
+import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess, setOrg, setUser } from '../../../../store/global.actions';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
@@ -30,13 +30,14 @@ export class AuthComponent {
       this.cookieService.set("user", JSON.stringify(data), expiryDate)
       this.cookieService.set("isLoggedin", "true", expiryDate)
 
+      this.store.dispatch(setUser({user: data}))
       this.store.dispatch(fetchOrg({id: data.id}))
     });
-
+    
     this.actions$.pipe(
       ofType(fetchOrgSuccess),
-    ).subscribe((org) => {
-      this.cookieService.set("org", JSON.stringify(org))
+      ).subscribe((org) => {
+        this.cookieService.set("org", JSON.stringify(org))
       this.store.dispatch(setOrg({ org: org }));
 
       this.router.navigate(['dashboard']);
