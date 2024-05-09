@@ -7,6 +7,7 @@ import { RouterComponent } from './router/router.component';
 import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
 import { TicketAdminComponent } from './ticket-module/ticket-component/Feature-component/ticket-admin/ticket-admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { loggedOutGuard } from './guards/logged-out-guard';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
     component: RouterComponent
   },
   {
+    canActivate: [loggedOutGuard],
     path: "auth",
     loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
   },

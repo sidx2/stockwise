@@ -4,6 +4,7 @@ import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess, setOrg } from '
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
+import { globalStateSelector } from '../../../../store/global.selectors';
 
 @Component({
   selector: 'app-auth',
@@ -14,19 +15,22 @@ export class AuthComponent {
   actions$ = inject(Actions)
   router = inject(Router);
   cookieService = inject(CookieService)
-  
+  globalState: any
+
   constructor(private store: Store<{ global: any }>) {
-    this.actions$.pipe(
-      ofType(loginUserSuccess),
-    ).subscribe((data) => {
+    this.store.select(globalStateSelector).subscribe((data) => {
+      this.globalState = data;
+    })
+    this.actions$.pipe(ofType(loginUserSuccess)).subscribe((data) => {
       console.log("data in AuthComponent: ", data);
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
+
       this.cookieService.set("token", data.token, expiryDate)
       this.cookieService.set("user", JSON.stringify(data), expiryDate)
       this.cookieService.set("isLoggedin", "true", expiryDate)
+
       this.store.dispatch(fetchOrg({id: data.id}))
-      // this.router.navigate(['dashboard']);
     });
 
     this.actions$.pipe(

@@ -1,13 +1,18 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 
-const globalUserFeatureSelector = createFeatureSelector<any>("global");
+const globalFeatureSelector = createFeatureSelector<any>("global");
 
 export const userSelector = createSelector(
-    globalUserFeatureSelector,
+    globalFeatureSelector,
     (state) => state.user
 )
 
 export const orgSelector = createSelector(
-    globalUserFeatureSelector,
+    globalFeatureSelector,
     (state) => state.org
+)
+
+export const globalStateSelector = createSelector(
+    globalFeatureSelector,
+    (state) => state
 )

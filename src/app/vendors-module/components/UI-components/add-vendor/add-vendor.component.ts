@@ -22,6 +22,10 @@ export class AddVendorComponent {
   }
 
   onAddVendor() {
+    if (!this.addVendorForm.valid) {
+      alert("Invalid form")
+      return;
+    }
     this.addVendor.emit({ vendor: this.addVendorForm.value })
     this.toggleDialog();
   }

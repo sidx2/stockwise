@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser } from "./global.actions"
+import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, logout, setOrg, setUser } from "./global.actions"
 
 // Reducers for global module
 export interface IGlobalState {
@@ -48,5 +48,10 @@ export const globalReducer = createReducer(
     on(fetchOrgSuccess, (state, action) => {
         console.log("fetchOrgSuccess:", "state: ", state, "action ->", action);
         return ({...state, org: {...state.org, ...action.org},});
+    }),
+
+    on(logout, (state, action) => {
+        console.log("logout:", "state: ", state, "action ->", action);
+        return (initialState);
     })
 )

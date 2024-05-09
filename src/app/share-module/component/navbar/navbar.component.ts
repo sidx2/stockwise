@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { IGlobalState } from '../../../store/global.reducers';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { logout } from '../../../store/global.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -27,6 +28,7 @@ export class NavbarComponent implements OnInit {
 
   onLogout(): void {
     this.cs.deleteAll();
+    this.store.dispatch(logout());
     this.router.navigate(["login"]);
   }
 

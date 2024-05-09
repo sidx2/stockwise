@@ -8,6 +8,7 @@ import { getCategoryRequest } from '../category-module/store/category.action';
 import { LoaderService } from '../share-module/services/loader.service';
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto'; 
+import { logout } from '../store/global.actions';
 
 // Define PieChartOptions interface outside the component class
 interface PieChartOptions {
@@ -69,6 +70,7 @@ export class DashboardComponent implements OnInit {
 
   onLogout(): void {
     this.cs.deleteAll();
+    this.store.dispatch(logout())
     this.router.navigate(["auth"]);
   }
   
