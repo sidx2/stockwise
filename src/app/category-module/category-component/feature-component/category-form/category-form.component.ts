@@ -49,9 +49,6 @@ export class CategoryFormComponent implements OnInit {
     singleSelection: false,
     idField: '_id',
     textField: 'name',
-    // selectAllText: 'Select All',
-    // unSelectAllText: 'Unselect All',
-    // itemsShowLimit: 3,
     allowSearchFilter: true
   };
 
@@ -115,7 +112,7 @@ export class CategoryFormComponent implements OnInit {
       console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
-      const selectedVendorsId =  this.categoryFormGroup.get('selectedVendors')?.value.map((vendor: any) => vendor._id);
+      const selectedVendorsId =  this.categoryFormGroup.get('selectedVendors')?.value?.map((vendor: any) => vendor._id);
 
       if (!this.isEditMode) {
         this.createCategoryEmmiter.emit({...formData, vendors: selectedVendorsId});

@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Category } from '../../../models/category';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest } from '../../../store/category.action';
-import { LoaderService } from '../../../../share-module/services/loader.service';
+import { Observable, Subscription} from 'rxjs';
+import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory } from '../../../store/category.action';
+import { ErrorService } from '../../../../share-module/services/error.service';
+import { Actions, ofType } from '@ngrx/effects';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-category',
@@ -22,7 +24,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   
   private orgSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ categories: Category[], global: any}>) {
+  constructor(private store: Store<{ categories: Category[], global: any}>, private error: ErrorService,private actions$: Actions) {
     this.categories$ = this.store.select('categories');
   }
 
@@ -31,6 +33,21 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.orgId = global.org._id;
     })
     this.fetchCategoryHandler();
+
+
+    // catgory created successfully
+    this.actions$.pipe(
+      ofType(addCategory)
+    ).subscribe( ()=> {
+      this.hideCategoryForm();
+    })
+
+    // category updated successfully
+    this.actions$.pipe(
+      ofType(addCategory)
+    ).subscribe( ()=> {
+      this.hideCategoryForm();
+    })
   }
 
   ngOnDestroy(): void {
@@ -47,13 +64,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
   createCategoryHandler(category: Category){
     category.orgId = this.orgId;
     this.store.dispatch(createCategoryRequest({ category: category }));
-    this.isCategoryFormVisible = false;
   }
 
   updateCategoryHandler(updatedCategory: Category){
     this.store.dispatch(updateCategoryRequest({updatedCategory}));
     this.fetchCategoryHandler();
-    this.isCategoryFormVisible = false;
   }
 
   deleteCategoryHandler(categoryId: string){

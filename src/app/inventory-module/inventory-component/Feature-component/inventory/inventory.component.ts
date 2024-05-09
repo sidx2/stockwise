@@ -1,19 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { map, take, filter, concatMap } from 'rxjs/operators';
-import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest } from '../../../store/inventory.action';
+import { map, take, filter } from 'rxjs/operators';
+import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
 import { CheckoutDetails, Item } from '../../../models/inventory';
 import { InventoryState } from '../../../store/inventory.reducer';
-import { LoaderService } from '../../../../share-module/services/loader.service';
 import { Employee } from '../../../../employees-module/store/employees.reducers';
 import { CheckinDetails } from '../../../models/inventory';
-
-// temp
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-inventory',
@@ -46,7 +44,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   searchText: string = ''
   orgId: string = '';
 
-  constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>) {
+  constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>, private actions$: Actions) {
 
     this.items$ = this.store.select(state => state.inventory.items);
     this.categories$ = this.store.select('categories');
@@ -70,6 +68,21 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.selectedCategory = categories[0];
       this.onCategoryChange();
     });
+
+    // item created successfully
+    this.actions$.pipe(
+      ofType(addItem)
+    ).subscribe( ()=> {
+      this.hideInventoryForm();
+    })
+
+    // item updated successfully
+    this.actions$.pipe(
+      ofType(updateItem)
+    ).subscribe( ()=> {
+      this.hideInventoryForm();
+    })
+    
   }
 
   ngOnDestroy(): void {
@@ -91,12 +104,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
   createItemHandler(item: Item) {
     item.orgId = this.orgId;
     this.store.dispatch(createItemRequest({ item }));
-    this.isInventoryFormVisible = false;
   }
 
   updateItemHandler(updatedItem: Item) {
     updatedItem.orgId = this.orgId;
-    this.isInventoryFormVisible = false;
     this.store.dispatch(updateItemRequest({ updatedItem }));
   }
 

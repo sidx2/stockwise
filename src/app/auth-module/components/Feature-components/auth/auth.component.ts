@@ -17,7 +17,7 @@ export class AuthComponent {
   cookieService = inject(CookieService)
   globalState: any
 
-  constructor(private store: Store<{ global: any }>) {
+  constructor(private store: Store<{ global: any }>, private actios$: Actions) {
     this.store.select(globalStateSelector).subscribe((data) => {
       this.globalState = data;
     })
