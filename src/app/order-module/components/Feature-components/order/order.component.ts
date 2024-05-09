@@ -89,6 +89,7 @@ export class OrderComponent {
     }
   }
 
+
   placeOrder() {
     if (!this.formDataArray.valid) {
       alert("All fields are required!");
@@ -115,7 +116,12 @@ export class OrderComponent {
 
     this.store.dispatch(placeOrderRequest(order))
 
-    this.removeAll();
+    this.cleanForms();
+  }
+
+  cleanForms() {
+    this.formDataArray.clear();
+    this.selectedProductVendors = [];
   }
 
   JSONStringify(obj: Object) {
