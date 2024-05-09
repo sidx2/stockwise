@@ -19,9 +19,4 @@ export class AppComponent{
     public errorService: ErrorService){
     this.global$ = this.store.select('global')
   }
-
-  showError(){
-    this.errorService.emmitError("hello");
-  }
-
 }

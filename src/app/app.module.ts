@@ -42,6 +42,7 @@ import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS } from '@angular
 import { init } from './store/global.actions';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
+import { ErrorInterceptor } from './share-module/interceptors/errorInterceptor';
 
 import { ticketReducer } from './ticket-module/store/ticket.reducer';
 import { TicketEffects } from './ticket-module/store/ticket.effect';
@@ -62,7 +63,7 @@ import { ProfileComponent } from './profile/profile.component';
     AppRoutingModule,
     ButtonModule,
     AuthModule,
-    
+
     CategoryModule,
     InventoryModule,
     TicketModule,
@@ -72,16 +73,16 @@ import { ProfileComponent } from './profile/profile.component';
     MatCardModule,
     MatListModule,
     ShareModule,
-    
+
     ToastrModule.forRoot({
-      positionClass: 'toast-top-right', 
-      preventDuplicates: true, 
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
       progressBar: true,
-      closeButton: true, 
-      timeOut: 3000 
+      closeButton: true,
+      timeOut: 3000
     }),
 
-    StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer, tickets: ticketReducer}),
+    StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer, tickets: ticketReducer }),
     ShareModule,
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects, TicketEffects]),
     StoreDevtoolsModule.instrument({
@@ -104,7 +105,12 @@ import { ProfileComponent } from './profile/profile.component';
       useClass: LoaderInterceptor,
       multi: true
     },
-    provideHttpClient(withInterceptors([authInterceptor,]))
+    provideHttpClient(withInterceptors([authInterceptor,])),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 
