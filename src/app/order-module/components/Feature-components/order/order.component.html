@@ -17,7 +17,7 @@
         <label for="quantity">Quantity:</label>
         <input type="number" formControlName="quantity" name="quantity" id="quantity">
 
-        <button (click)="removeProduct(i)">Remove</button>
+        <button (click)="removeProduct(i)" class="btnRed">Remove</button>
       </div>
     </div>
   </form>
@@ -26,6 +26,6 @@
 <div class="form-actions">
 
   <button (click)="addFormData()">Add</button>
-  <button (click)="removeAll()">Remove All</button>
+  <button (click)="removeAll()" class="btnRed">Remove All</button>
   <button (click)="placeOrder()">Place Order</button>
 </div>
