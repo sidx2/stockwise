@@ -22,3 +22,4 @@ export const init = createAction("init");
 
 export const clearState = createAction('[Global] Clear State');
 
+export const logout = createAction("logout")

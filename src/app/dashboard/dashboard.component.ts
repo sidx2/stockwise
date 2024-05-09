@@ -78,6 +78,7 @@ export class DashboardComponent implements OnInit {
 
   onLogout(): void {
     this.cs.deleteAll();
+    this.store.dispatch(logout())
     this.router.navigate(["auth"]);
   }
 
