@@ -76,24 +76,33 @@ export class OrderComponent {
   }
 
   removeProduct(index: number) {
-    this.formDataArray.removeAt(index);
-    this.selectedProductVendors.splice(index, 1);
+    if (confirm("Are you sure want to remove this order?")) {
+      this.formDataArray.removeAt(index);
+      this.selectedProductVendors.splice(index, 1);
+    }
   }
 
   removeAll() {
-    this.formDataArray.clear();
-    this.selectedProductVendors = [];
+    if (confirm("Are you sure want to remove all orders?")) {
+      this.formDataArray.clear();
+      this.selectedProductVendors = [];
+    }
   }
 
+
   placeOrder() {
-    const objectifiedVendors = this.formDataArray.value.map((a: any) => {
-      const o = a;
-      o.vendor = JSON.parse(o.vendor);
-      o.item = this.products.filter((p) => {
-        return p.item._id == o.product
+    if (!this.formDataArray.valid) {
+      alert("All fields are required!");
+      return;
+    }
+    const objectifiedVendors = this.formDataArray.value.map((formDataElement: any) => {
+      const newFormDataElement = formDataElement;
+      newFormDataElement.vendor = JSON.parse(newFormDataElement.vendor);
+      newFormDataElement.item = this.products.filter((product) => {
+        return product.item._id == newFormDataElement.product
       })[0].item;
-      delete o.product
-      return o;
+      delete newFormDataElement.product
+      return newFormDataElement;
     })
 
 
@@ -107,7 +116,12 @@ export class OrderComponent {
 
     this.store.dispatch(placeOrderRequest(order))
 
-    this.removeAll();
+    this.cleanForms();
+  }
+
+  cleanForms() {
+    this.formDataArray.clear();
+    this.selectedProductVendors = [];
   }
 
   JSONStringify(obj: Object) {

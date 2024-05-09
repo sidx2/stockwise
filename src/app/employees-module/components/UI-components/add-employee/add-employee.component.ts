@@ -22,6 +22,10 @@ export class AddEmployeeComponent {
   }
 
   onAddEmployee() {
+    if (!this.addEmployeeForm.valid) {
+      alert("All fields are required!");
+      return;
+    }
     this.addEmployee.emit({ employee: this.addEmployeeForm.value });
     this.toggleDialog();
   }

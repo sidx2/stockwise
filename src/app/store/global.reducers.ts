@@ -42,7 +42,7 @@ export const globalReducer = createReducer(
         return (state);
     }),
     on(setOrg, (state, action) => {
-        console.log("setUser:", "state: ", state, "action ->", action);
+        console.log("setOrg:", "state: ", state, "action ->", action);
         return ({...state, org: {...state.org, ...action.org},});
     }),
     on(fetchOrgSuccess, (state, action) => {

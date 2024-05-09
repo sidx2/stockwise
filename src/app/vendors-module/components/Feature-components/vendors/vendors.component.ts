@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { VendorsService } from '../../../services/vendors.service';
 import { Store } from '@ngrx/store';
-import { addVendorRequest, fetchVendorsRequest, updateVendorRequest } from '../../../store/vendor.actions';
+import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, updateVendorRequest } from '../../../store/vendor.actions';
 import { vendorsSelector } from '../../../store/vendor.selectors';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { orgSelector } from '../../../../store/global.selectors';
@@ -63,6 +63,6 @@ export class VendorsComponent {
   
   onDeleteVendor(event: any) {
     console.log("event: ", event);
-    this.store.dispatch(deleteEmployeeRequest({ _id: event._id }))
+    this.store.dispatch(deleteVendorRequest({ _id: event._id }))
   }
 }

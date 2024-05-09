@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { deleteVendorRequest, updateVendorRequest } from '../../../store/vendor.actions';
 
 @Component({
   selector: 'app-vendors-table',
@@ -13,12 +11,10 @@ export class VendorsTableComponent {
   @Output() updateVendor = new EventEmitter<any>();
   @Output() deleteVendor = new EventEmitter<any>();
 
-  _vends!: any
-
+  _vends: any = []
   visisble:boolean = false
-
-  vendorForms: FormGroup[] = []
   editing: any = -1
+
   store = inject(Store<{ employees: any }>);
 
   m_name!: string
@@ -28,23 +24,6 @@ export class VendorsTableComponent {
 
   psize: number = 10;
   currPage: number = 1;
-
-  ngOnInit(): void {
-    if (this.vendors) {
-      console.log("this.vendors: ", this.vendors)
-      this._vends = this.vendors
-      for (const e of this.vendors) {
-        this.vendorForms.push(new FormGroup({
-          name: new FormControl(e.name),
-          email: new FormControl(e.email),
-          address: new FormControl(e.address),
-          phone: new FormControl(e.phone),
-        }))
-      }
-    }
-
-    console.log("this.employeesForms", this.vendorForms)
-  }
 
   onEdit(_id: any) {
     this.editing = _id
@@ -62,6 +41,10 @@ export class VendorsTableComponent {
   }
 
   onDone() {
+    if (!this.m_name || !this.m_email || !this.m_address || !this.m_phone) {
+      alert("All fields are require");
+      return;
+    }
 
     this.updateVendor.emit({
       vendor: {
@@ -77,7 +60,8 @@ export class VendorsTableComponent {
   }
 
   onDelete(_id: any) {
-    this.deleteVendor.emit({ _id })
+    console.log("_id in onDelete", _id)
+    if (confirm("Are you sure want to delete this vendor")) this.deleteVendor.emit({ _id })
   }
 
   search(e: any) {
