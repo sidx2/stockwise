@@ -10,6 +10,9 @@ import { AuthComponent } from './components/Feature-components/auth/auth.compone
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './components/UI-components/signup/signup.component';
 import { StoreModule } from '@ngrx/store';
+import { authReducer } from './store/auth.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { authEffects } from './store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import { StoreModule } from '@ngrx/store';
     FloatLabelModule,
     InputTextModule,
     ReactiveFormsModule,
+    StoreModule.forFeature("auth", authReducer),
+    EffectsModule.forFeature([authEffects])
   ]
 })
 export class AuthModule { }
