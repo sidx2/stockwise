@@ -55,8 +55,8 @@ export class vendorEffects {
     deleteVendor$ = createEffect(() =>
         this.action$.pipe(
             ofType(deleteVendorRequest),
-            switchMap((vendor) =>
-                this.vendorsService$.deleteVendor(vendor).pipe(
+            switchMap((data) =>
+                this.vendorsService$.deleteVendor(data._id).pipe(
                     map((res: any) => {
                         console.log("deleteVendor res:", res)
                         return deleteVendorSuccess({ vendor: res })

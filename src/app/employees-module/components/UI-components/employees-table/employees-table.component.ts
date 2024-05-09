@@ -8,7 +8,7 @@ import { deleteEmployeeRequest, updateEmployeeRequest } from '../../../store/emp
   templateUrl: './employees-table.component.html',
   styleUrl: './employees-table.component.scss'
 })
-export class EmployeesTableComponent implements OnInit {
+export class EmployeesTableComponent {
   @Input() employees!: any
 
   _emps!:any
@@ -16,7 +16,6 @@ export class EmployeesTableComponent implements OnInit {
   @Output() updateEmployee = new EventEmitter<any>();
   @Output() deleteEmployee = new EventEmitter<any>();
 
-  employeeForms: FormGroup[] = []
   editing: number = -1
   store = inject(Store<{ employees: any }>);
 
@@ -26,22 +25,6 @@ export class EmployeesTableComponent implements OnInit {
 
   psize: number = 10;
   currPage: number = 1;
-
-  ngOnInit(): void  {
-    if (this.employees) {
-      console.log("this.employees: ", this.employees)
-      this._emps = this.employees
-      for (const e of this.employees) {
-        this.employeeForms.push(new FormGroup({
-          name: new FormControl(e.name),
-          email: new FormControl(e.email),
-          role: new FormControl(e.role)
-        }))
-      }
-    }
-
-    console.log("this.employeesForms", this.employeeForms)
-  }
   
   onEdit(_id: any) {
     this.editing = _id
@@ -58,13 +41,10 @@ export class EmployeesTableComponent implements OnInit {
   }
 
   onDone() {
-    // this.store.dispatch(updateEmployeeRequest({
-    //   employee: {_id: this.editing,
-    //   name: this.m_name,
-    //   email: this.m_email,
-    //   role: this.m_role}
-    // }))
-
+    if (!this.m_name || !this.m_email || !this.m_role) {
+      alert("All fields are required!");
+      return;
+    }
     this.updateEmployee.emit({
       employee: {_id: this.editing,
       name: this.m_name,
@@ -76,11 +56,7 @@ export class EmployeesTableComponent implements OnInit {
   }
   
   onDelete(_id: any) {
-    this.deleteEmployee.emit({ _id })
-  }
-
-  onUpdate(e: any) {
-      console.log("updating...", e)
+    if (confirm("Are you sure want to delete this employee")) this.deleteEmployee.emit({ _id })
   }
 
   search(e: any) {

@@ -23,7 +23,7 @@ export class AddVendorComponent {
 
   onAddVendor() {
     if (!this.addVendorForm.valid) {
-      alert("Invalid form")
+      alert("All fields are required")
       return;
     }
     this.addVendor.emit({ vendor: this.addVendorForm.value })
