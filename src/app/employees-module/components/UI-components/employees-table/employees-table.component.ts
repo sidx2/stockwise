@@ -11,7 +11,7 @@ import { deleteEmployeeRequest, updateEmployeeRequest } from '../../../store/emp
 export class EmployeesTableComponent {
   @Input() employees!: any
 
-  _emps!:any
+  _emps:any = []
 
   @Output() updateEmployee = new EventEmitter<any>();
   @Output() deleteEmployee = new EventEmitter<any>();

@@ -11,7 +11,7 @@ export class VendorsTableComponent {
   @Output() updateVendor = new EventEmitter<any>();
   @Output() deleteVendor = new EventEmitter<any>();
 
-  _vends!: any
+  _vends: any = []
   visisble:boolean = false
   editing: any = -1
 
