@@ -6,7 +6,11 @@
     <router-outlet></router-outlet>
 
     <app-loader *ngIf="loaderService.isLoading$ | async"></app-loader>
+    <!-- <ngx-toast-notifications></ngx-toast-notifications> -->
 
+    <button (click)="showError()">
+        show error
+    </button>
 </div>
 
 

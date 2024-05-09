@@ -10,6 +10,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { ToastrModule, ToastNoAnimationModule } from 'ngx-toastr';
 
 import { ShareModule } from './share-module/share.module';
 import { AuthModule } from './auth-module/auth.module';
@@ -71,6 +72,14 @@ import { ProfileComponent } from './profile/profile.component';
     MatCardModule,
     MatListModule,
     ShareModule,
+    
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right', 
+      preventDuplicates: true, 
+      progressBar: true,
+      closeButton: true, 
+      timeOut: 3000 
+    }),
 
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer, tickets: ticketReducer}),
     ShareModule,
