@@ -6,6 +6,7 @@ import { InventoryComponent } from './inventory-module/inventory-component/Featu
 import { RouterComponent } from './router/router.component';
 import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
 import { TicketAdminComponent } from './ticket-module/ticket-component/Feature-component/ticket-admin/ticket-admin.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -14,36 +15,54 @@ const routes: Routes = [
     component: RouterComponent
   },
   {
-    canActivate: [authGuard],
     path: "auth",
-
     loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
   },
   {
-    path: "dashboard",
-
-    loadChildren: () => import("./main-routing.module").then(m => m.MainRoutingModule)
+    canActivate: [authGuard],
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
+    canActivate: [authGuard],
     path: 'category',
     component: CategoryComponent
   },
   {
+    canActivate: [authGuard],
     path: 'inventory',
     component: InventoryComponent
   },
   {
+    canActivate: [authGuard],
     path: 'ticket',
     component: TicketComponent
   },
   {
+    canActivate: [authGuard],
     path: "ticketAdmin",
     component: TicketAdminComponent
   },
-  { path: 'vendors', loadChildren: () => import('./vendors-module/vendors.module').then(m => m.VendorsModule) },
-  { path: 'employees', loadChildren: () => import('./employees-module/employees.module').then(m => m.EmployeesModule) },
-  { path: 'order', loadChildren: () => import('./order-module/order.module').then(m => m.OrderModule) },
-  { path: 'history', loadChildren: () => import('./order-history-module/order-history.module').then(m => m.OrderHistoryModule) },
+  {
+    canActivate: [authGuard],
+    path: 'vendors',
+    loadChildren: () => import('./vendors-module/vendors.module').then(m => m.VendorsModule)
+  },
+  {
+    canActivate: [authGuard],
+    path: 'employees',
+    loadChildren: () => import('./employees-module/employees.module').then(m => m.EmployeesModule)
+  },
+  {
+    canActivate: [authGuard],
+    path: 'order',
+    loadChildren: () => import('./order-module/order.module').then(m => m.OrderModule)
+  },
+  {
+    canActivate: [authGuard],
+    path: 'history',
+    loadChildren: () => import('./order-history-module/order-history.module').then(m => m.OrderHistoryModule)
+  },
 ];
 
 @NgModule({
