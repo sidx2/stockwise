@@ -3,10 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delayWhen, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest } from './inventory.action';
+import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest, checkoutMailRequest } from './inventory.action';
+import { MailService } from '../Services/mail.service';
 
 @Injectable()
 export class InventoryEffects {
+
+    constructor(
+        private actions$: Actions,
+        private inventoryService: InventoryService,
+        private mailService: MailService,
+    ) { }
 
     loadInventoryItems$ = createEffect(() => this.actions$.pipe(
         ofType(getItemRequest),
@@ -70,11 +77,11 @@ export class InventoryEffects {
 
     checkoutItem$ = createEffect(() => this.actions$.pipe(
         ofType(checkoutItemRequest),
-        tap(() => console.log('checkoutItem dispatched')),
+        tap((response) => console.log('checkoutItem dispatched')),
         mergeMap((action) =>
             this.inventoryService.checkoutItem(action.assignedToDetails).pipe(
                 map(response => updateItem({ updatedItem: response })),
-                tap(action => console.log('Dispatched action update Item', action)),
+                tap(() => console.log('Dispatched action update Item', action)),
                 catchError(error => {
                     console.error('Error in checkout item:', error);
                     return of();
@@ -101,7 +108,7 @@ export class InventoryEffects {
     loadUserAssets$ = createEffect(() => this.actions$.pipe(
         ofType(getUserAssets),
         tap(() => console.log('getUserAssets dispatched')),
-        mergeMap((action) =>
+        mergeMap(() =>
             this.inventoryService.getUserAsset().pipe(
                 map(response => setUserAssets({ userAssets: response })),
                 tap(action => console.log('Dispatched action set userAssets', action)),
@@ -113,9 +120,18 @@ export class InventoryEffects {
         )
     ))
 
+    sendMail$ = createEffect(() => this.actions$.pipe(
+        ofType(checkoutMailRequest),
+        tap(() => console.log('sendMail action dispatched')),
+        mergeMap((action) =>
+            this.mailService.sendCheckoutMail(action.checkoutMailDetails).pipe(
+                tap(() => console.log('Mail sent successfully')), 
+                catchError(error => {
+                    console.error('Error in sending mail:', error); 
+                    return of(); 
+                })
+            )
+        )
+    ));
 
-    constructor(
-        private actions$: Actions,
-        private inventoryService: InventoryService,
-    ) { }
 }

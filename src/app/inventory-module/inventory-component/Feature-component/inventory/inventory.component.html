@@ -67,7 +67,7 @@
 </app-modal>
 
 <app-modal *ngIf="showCheckout" (closeModalEvent)="hideCheckoutItemHandler()">
-  <app-item-checkout [selectedItem]="selectedItem" [employees]="employees$ | async" (checkoutEmmiter)="checkoutItemHandler($event)"></app-item-checkout>
+  <app-item-checkout [selectedItem]="selectedItem" [employees]="employees$ | async" (checkoutEmitter)="checkoutItemHandler($event)"></app-item-checkout>
 </app-modal>
 
 <app-modal *ngIf="showCheckin" (closeModalEvent)="hideCheckinItemHandler()">

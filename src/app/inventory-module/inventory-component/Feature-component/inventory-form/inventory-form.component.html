@@ -1,12 +1,13 @@
-<div class="inputDiv" class="category_selection" *ngIf ="!isEditMode">
-  <label for="category">Select Category</label>
-  <select appCustomInputStyle id="category" (change)="onCategoryChange()" [(ngModel)]="selectedCategory">
-    <option [ngValue]="null">Select Category</option>
-    <option *ngFor="let category of categories" [ngValue]="category">{{ category.name }}</option>
-  </select>
-</div>
-
 <form class="inventory_form" [formGroup]="itemFormGroup" (ngSubmit)="onSubmit()">
+
+  <div class="inputDiv"*ngIf ="!isEditMode">
+    <label for="category">Select Category</label>
+    <select appCustomInputStyle id="category" formControlName="category">
+      <option [ngValue]="null">Select Category</option>
+      <option *ngFor="let category of categories" [ngValue]="category">{{ category.name }}</option>
+    </select>
+  </div>
+  
   <div class="inputDiv">
     <label for="name">Name</label>
     <input appCustomInputStyle id="name" type="text" formControlName="name" />
@@ -14,7 +15,7 @@
 
   <div class="inputDiv" *ngIf="!isEditMode">
     <label for="itemImage">Item Image</label>
-    <input appCustomInputStyle id="itemImage" type="file" formControlName="itemImage" />
+    <input appCustomInputStyle id="itemImage" type="file" (change)="onFileChange($event)"  />
   </div>
 
    <!-- Conditionally render additional fields -->
@@ -25,7 +26,7 @@
 
   <div *ngIf="selectedCategory?.identificationType === 'non-unique'" class="inputDiv">
     <label for="quantity">Quantity</label>
-    <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 0"  />
+    <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 1"  />
   </div>
 
   <div class="customFields" *ngIf="selectedCategory">

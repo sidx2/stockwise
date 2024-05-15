@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ImageService } from '../../../Services/image.service';
 import { Category } from '../../../../category-module/models/category';
@@ -22,26 +22,33 @@ export class InventoryFormComponent implements OnInit {
   isEditMode: boolean = false;
 
   itemFormGroup: FormGroup = new FormGroup({});
-  imageUrl: string = '';
+  imageS3Key: string = '';
 
-  constructor(private imageService: ImageService) {
+  constructor(private imageService: ImageService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     this.itemFormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
-      itemImage: new FormControl(null, Validators.required),
-      customFields: new FormArray([])
+      customFields: new FormArray([]),
     })
 
     if (this.selectedItem !== null) {
       this.isEditMode = true;
       this.selectedCategory = this.updateItemCategory;
       this.setFormValues(this.selectedItem);
-
     } else {
+      this.itemFormGroup.addControl('category', new FormControl(null, Validators.required));
+      this.itemFormGroup.addControl('itemImage', new FormControl(null));
+      
       this.itemFormGroup.reset();
     }
+
+    // subscribing to category change
+    this.itemFormGroup.get('category')?.valueChanges.subscribe((value: Category) => {
+      this.selectedCategory = value;
+      this.onCategoryChange();
+    });
   }
 
   setFormValues(item: Item): void {
@@ -62,18 +69,15 @@ export class InventoryFormComponent implements OnInit {
     const customFieldsArray = this.itemFormGroup.get('customFields') as FormArray;
     customFieldsArray.clear();
 
-    // Iterate through the selected category's custom fields
     for (let customField of this.selectedCategory?.customFields || []) {
       const initialValue = item.customFieldsData?.[customField.label] || '';
       const control = new FormControl(initialValue, customField.required ? Validators.required : null);
       customFieldsArray.push(control);
     }
-    console.log("ItemformGroup on update", this.itemFormGroup)
   }
 
   onCategoryChange() {
     if (this.selectedCategory) {
-      console.log("category selected", this.selectedCategory)
       const customFieldsArray = this.itemFormGroup.get('customFields') as FormArray;
       customFieldsArray.clear();
 
@@ -81,10 +85,7 @@ export class InventoryFormComponent implements OnInit {
         const control = new FormControl('', customField.required ? Validators.required : null);
         customFieldsArray.push(control);
       }
-
       this.addAdditionalFields();
-
-      console.log("Based on category selection", this.itemFormGroup);
     }
   }
 
@@ -98,48 +99,69 @@ export class InventoryFormComponent implements OnInit {
     }
   }
 
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    this.itemFormGroup.patchValue({
+      itemImage: file
+    });
+  }
+
   onSubmit(): void {
 
     if (this.itemFormGroup.valid) {
+      const fileInput = this.itemFormGroup.get('itemImage');
 
-      const formData = this.itemFormGroup.value;
-      const imagePath = this.itemFormGroup.get('itemImage')?.value;
-      const file = new File([imagePath], "image.jpg", { type: "image/jpeg" });
-
-      console.log("my form",formData);
-      this.imageService.uploadImage(file).subscribe(
-        (result)=>{
-          this.imageUrl = typeof result === 'string' ? result : result.key;
-        }
-      )
-     
-      const customFieldsData: Record<string, any> = {};
-      formData.customFields.forEach((value: any, index: number) => {
-        const customField = this.selectedCategory?.customFields[index];
-        if (customField) {
-          customFieldsData[customField.label] = value;
-        }
-      });
-
-      let newItem: Item = {
-        name: formData.name,
-        identificationType: this.selectedCategory?.identificationType || 'unique',
-        categoryId: this.selectedCategory?._id || '',
-        orgId: '',
-        customFieldsData: customFieldsData,
-        quantity: formData.quantity || 1,
-        serialNumber: formData.serialNumber || '',
-        assignedTo: [],
-        checkedOutQuantity: this.selectedItem?.checkedOutQuantity || 0,
-        itemImage: formData.itemImage,
-      };
-
-      if (this.isEditMode) {
-        newItem._id = this.selectedItem?._id;
-        this.updateItemEmmiter.emit(newItem);
+      if (fileInput && fileInput.value) {
+        const file: File = fileInput.value;
+        this.uploadAndSubmitForm(file);
       } else {
-        this.createItemEmmiter.emit(newItem);
+        this.submitForm();
       }
+
+    }
+  }
+
+  uploadAndSubmitForm(file: File): void {
+    this.imageService.uploadImage(file).subscribe(
+      (result) => {
+        this.imageS3Key = typeof result === 'string' ? result : result.key;
+        this.submitForm();
+      },
+      (error) => {
+        console.error("Image upload error:", error);
+      }
+    );
+  }
+
+  submitForm(): void {
+    const formData = this.itemFormGroup.value;
+
+    const customFieldsData: Record<string, any> = {};
+    formData.customFields.forEach((value: any, index: number) => {
+      const customField = this.selectedCategory?.customFields[index];
+      if (customField) {
+        customFieldsData[customField.label] = value;
+      }
+    });
+
+    let newItem: Item = {
+      name: formData.name,
+      identificationType: this.selectedCategory?.identificationType || 'unique',
+      categoryId: this.selectedCategory?._id || '',
+      orgId: '',
+      customFieldsData: customFieldsData,
+      quantity: formData.quantity || 1,
+      serialNumber: formData.serialNumber || '',
+      assignedTo: [],
+      checkedOutQuantity: this.selectedItem?.checkedOutQuantity || 0,
+    };
+
+    if (this.isEditMode) {
+      newItem._id = this.selectedItem?._id;
+      this.updateItemEmmiter.emit(newItem);
+    } else {
+      newItem.itemImage = this.imageS3Key,
+        this.createItemEmmiter.emit(newItem);
     }
   }
 }

@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Item } from '../../../models/inventory';
+import { CheckoutMailDetails, Item } from '../../../models/inventory';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Employee } from '../../../../employees-module/store/employees.reducers';
-import { AssignedTo, CheckoutDetails } from '../../../models/inventory';
+import { CheckoutDetails } from '../../../models/inventory';
+import { CheckoutEventData } from '../../../models/inventory';
 
 @Component({
   selector: 'app-item-checkout',
@@ -13,7 +14,8 @@ export class ItemCheckoutComponent {
   @Input() selectedItem: Item | null = null;
   @Input() employees: Employee[] | null = [];
 
-  @Output() checkoutEmmiter: EventEmitter<CheckoutDetails> = new EventEmitter()
+  @Output() checkoutEmitter: EventEmitter<CheckoutEventData> = new EventEmitter();
+
   checkoutForm: FormGroup;
 
   constructor() {
@@ -24,11 +26,11 @@ export class ItemCheckoutComponent {
   }
 
   onSubmit() {
-    if (this.checkoutForm.valid) {
+    if (this.checkoutForm.valid && this.selectedItem) {
       const formData = this.checkoutForm.value;
 
       const assignedToDetails: CheckoutDetails = {
-        itemId: this.selectedItem?._id,
+        itemId: this.selectedItem._id,
         assignedTo: {
           userId: formData.employee._id,
           userName: formData.employee.name,
@@ -36,11 +38,20 @@ export class ItemCheckoutComponent {
         }
       }
 
+      const checkoutMailDetails: CheckoutMailDetails = {
+        userEmail: formData.employee.email,
+        messageContent: `You've been assigned a new asset: ${this.selectedItem?.name}. Please visit your profile to view the details of the new asset.`,
+        itemImage: this.selectedItem.itemImage || '',
+        subject: 'Asset Checkout Completed',
+        orgName: ''
+      }
+
       console.log("AssignedTo", assignedToDetails);
-      this.checkoutEmmiter.emit(assignedToDetails)
-    
-      } else {
-        console.log('Form is not valid');
+      this.checkoutEmitter.emit({ assignedToDetails, checkoutMailDetails });
+
+      this.checkoutForm.reset();
+    } else {
+      console.log('Form is not valid');
     }
   }
 }

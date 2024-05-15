@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { map, take, filter } from 'rxjs/operators';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest } from '../../../store/inventory.action';
+import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest, checkoutMailRequest } from '../../../store/inventory.action';
 import { Category } from '../../../../category-module/models/category';
-import { CheckoutDetails, Item } from '../../../models/inventory';
+import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState } from '../../../store/inventory.reducer';
 import { Employee } from '../../../../employees-module/store/employees.reducers';
 import { CheckinDetails } from '../../../models/inventory';
@@ -43,6 +43,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   searchText: string = ''
   orgId: string = '';
+  orgName: string = '';
+  checkoutMailDetails: CheckoutMailDetails | null = null;
 
   constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>, private actions$: Actions) {
 
@@ -55,6 +57,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.orgSubscription = this.store.select('global').subscribe((global) => {
       this.orgId = global.org._id;
+      this.orgName = global.org.name;
     })
 
     this.store.dispatch(getCategoryRequest({orgId: this.orgId}));
@@ -82,6 +85,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe( ()=> {
       this.hideInventoryForm();
     })
+
+    this.actions$.pipe(
+      ofType(checkoutItemRequest),  
+      take(1)
+    ).subscribe(() => {
+      if (this.checkoutMailDetails) {
+        this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
+      }
+    });
     
   }
 
@@ -167,7 +179,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.showCheckout = false
   }
 
-  checkoutItemHandler(assignedToDetails: CheckoutDetails){
+  checkoutItemHandler(event:CheckoutEventData) {
+    const assignedToDetails: CheckoutDetails = event.assignedToDetails;
+    const checkoutMailDetails: CheckoutMailDetails = event.checkoutMailDetails;
+
+    checkoutMailDetails.orgName = this.orgName;
+
+    console.log("inside parent");
+    this.checkoutMailDetails = checkoutMailDetails;
+
     this.store.dispatch(checkoutItemRequest({assignedToDetails}));
     this.hideCheckoutItemHandler();
   }

@@ -12,6 +12,8 @@
 
 .modal-content {
   min-width: 40%;
+  max-height: 80vh;
+  overflow-y: auto;
   margin: 0rem auto;
   background-color: white;
   padding: 1rem;

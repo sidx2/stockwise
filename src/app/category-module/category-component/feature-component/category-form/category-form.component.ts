@@ -31,7 +31,7 @@ export class CategoryFormComponent implements OnInit {
   ngOnInit(): void {
     this.categoryFormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
-      identificationType: new FormControl('', Validators.required),
+      identificationType: new FormControl(null, Validators.required),
       customFields: new FormArray([]),
       selectedVendors: new FormControl([])
     });

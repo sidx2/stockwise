@@ -34,8 +34,8 @@ export interface CheckinDetails {
     userId: string
 }
 
-export interface CheckoutDetails{
-    assignedTo: AssignedTo, 
+export interface CheckoutDetails {
+    assignedTo: AssignedTo,
     itemId: string | undefined
 }
 
@@ -45,6 +45,19 @@ export interface UserAsset {
     itemImage: string;
     serialNumber: string;
     quantity?: number,
-    customFieldsData: Record<string, any>; 
-  }
-  
+    customFieldsData: Record<string, any>;
+}
+
+export interface CheckoutMailDetails {
+    userEmail: string;
+    messageContent: string;
+    itemImage: string;
+    subject: string;
+    orgName: string;
+}
+
+export interface CheckoutEventData {
+    assignedToDetails: CheckoutDetails;
+    checkoutMailDetails: CheckoutMailDetails;
+}
+
