@@ -14,6 +14,7 @@ import { ItemDetailedViewComponent } from './inventory-component/Ui-component/it
 import { ItemCheckoutComponent } from './inventory-component/Ui-component/item-checkout/item-checkout.component';
 import { ItemCheckinComponent } from './inventory-component/Ui-component/item-checkin/item-checkin.component';
 import { ItemLifecycleComponent } from './inventory-component/Ui-component/item-lifecycle/item-lifecycle.component';
+import { InventoryRoutingModule } from './inventory-routing.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ItemLifecycleComponent } from './inventory-component/Ui-component/item-
     ReactiveFormsModule,
     MatIconModule,
     MatTooltipModule,
-    FormsModule
+    FormsModule, 
+    InventoryRoutingModule
   ]
 })
 export class InventoryModule { }
