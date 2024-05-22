@@ -1,16 +1,33 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, clearState} from "./global.actions"
+import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, clearState } from "./global.actions"
+
+export interface User {
+    _id: string
+    name: string
+    email: string
+    password: string,
+    role: string,
+}
+
+export interface Org {
+    _id: string
+    name: string,
+    email: string,
+    admins: [],
+    employees: [],
+    address: string
+}
 
 // Reducers for global module
 export interface IGlobalState {
-    user: any,
-    org: any,
+    user: User,
+    org: Org,
     isLoggedIn: boolean
 }
 
 export const initialState: IGlobalState = {
-    user: {},
-    org: {},
+    user: {} as User,
+    org: {} as Org,
     isLoggedIn: false
 }
 
@@ -22,7 +39,7 @@ export const globalReducer = createReducer(
     }),
     on(setUser, (state, action) => {
         console.log("setUser:", "state: ", state, "action ->", action);
-        return ({...state, user: {...state.user, ...action.user}})
+        return ({ ...state, user: { ...state.user, ...action.user } })
     }),
     on(loginUser, (state, action) => {
         console.log("loginUser:", "state: ", state, "action ->", action);
@@ -30,9 +47,9 @@ export const globalReducer = createReducer(
     }),
     on(loginUserSuccess, (state, action) => {
         console.log("loginUserSuccess:", "state: ", state, "action ->", action);
-        return ({...state, user: {...state.user, ...action.user}, isLoggedIn: true});
-    }),       
-    
+        return ({ ...state, user: { ...state.user, ...action.user }, isLoggedIn: true });
+    }),
+
     on(loginUserFailure, (state, action) => {
         console.log("loginUserFailure:", "state: ", state, "action ->", action);
         return (state);
@@ -43,18 +60,18 @@ export const globalReducer = createReducer(
     }),
     on(setOrg, (state, action) => {
         console.log("setOrg:", "state: ", state, "action ->", action);
-        return ({...state, org: {...state.org, ...action.org},});
+        return ({ ...state, org: { ...state.org, ...action.org }, });
     }),
     on(fetchOrgSuccess, (state, action) => {
         console.log("fetchOrgSuccess:", "state: ", state, "action ->", action);
-        return ({...state, org: {...state.org, ...action.org},});
+        return ({ ...state, org: { ...state.org, ...action.org }, });
     }),
 
     on(clearState, (state) => {
         console.log("Clearing state...");
         return {
-            user: {},
-            org: {},
+            user: {} as User,
+            org: {} as Org,
             isLoggedIn: false
         };
     }),

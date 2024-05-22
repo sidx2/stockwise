@@ -8,7 +8,9 @@
     <div class="vendors-table">
 
         <app-vendors-table 
-            [vendors]="vendors" 
+            [vendors]="vendors"
+            [editors]="editors"
+            (startedEditing)="onStartedEditing($event)"
             (updateVendor)="onUpdateVendor($event)"
             (deleteVendor)="onDeleteVendor($event)"
         ></app-vendors-table>

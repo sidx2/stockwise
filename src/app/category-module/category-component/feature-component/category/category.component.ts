@@ -6,6 +6,7 @@ import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updat
 import { ErrorService } from '../../../../share-module/services/error.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { IGlobalState } from '../../../../store/global.reducers';
 
 @Component({
   selector: 'app-category',
@@ -24,7 +25,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   
   private orgSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ categories: Category[], global: any}>, private error: ErrorService,private actions$: Actions) {
+  constructor(private store: Store<{ categories: Category[], global: IGlobalState}>, private error: ErrorService,private actions$: Actions) {
     this.categories$ = this.store.select('categories');
   }
 

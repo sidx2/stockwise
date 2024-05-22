@@ -1,9 +1,18 @@
 import { createReducer, on } from "@ngrx/store"
 import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, updateVendorFailure, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
 
+export interface Vendor {
+    _id: string
+    name: string,
+    address: string,
+    email: string,
+    phone: string,
+    orgId: string
+}
+
 // Reducers for global module
 export interface IVendorsState {
-    vendors: any
+    vendors: Vendor[]
 }
 
 export const initialState: IVendorsState = {
@@ -18,7 +27,7 @@ export const vendorReducer = createReducer(
     }),
     on(fetchVendorsSuccess, (state, action) => {
         console.log("fetchVendorsSuccess:", "state: ", state, "action ->", action);
-        return ({...state, vendors: action.vendors});
+        return ({ ...state, vendors: action.vendors });
     }),
     on(fetchVendorsFailure, (state, action) => {
         console.log("fetchVendorsFailure:", "state: ", state, "action ->", action);
@@ -26,16 +35,16 @@ export const vendorReducer = createReducer(
     }),
 
     // add vendors
-    on(addVendorRequest, (state,action) => {
+    on(addVendorRequest, (state, action) => {
         console.log("addVendorRequest", "state:", state, "action: ", action)
         return (state)
     }),
     on(addVendorSuccess, (state, action) => {
         console.log("addVendorSuccess", "state:", state, "action: ", action)
-        return ({...state, vendors: [...state.vendors, action.vendor]});
+        return ({ ...state, vendors: [...state.vendors, action.vendor] });
     }),
-    
-    on(addVendorFailure, (state,action) => {
+
+    on(addVendorFailure, (state, action) => {
         console.log("addVendorFailure", "state:", state, "action: ", action)
         return (state)
     }),
@@ -47,14 +56,14 @@ export const vendorReducer = createReducer(
     }),
     on(updateVendorSuccess, (state, action) => {
         console.log("updateVendorSuccess:", "state: ", state, "action ->", action);
-        const newVenors = state.vendors.map((vendor : any) => {
+        const newVenors = state.vendors.map((vendor: Vendor) => {
             if (vendor._id == action.vendor._id) {
                 vendor = action.vendor
             }
             return vendor
         })
-        
-        return ({...state, vendors: newVenors});
+
+        return ({ ...state, vendors: newVenors });
     }),
     on(updateVendorFailure, (state, action) => {
         console.log("updateVendorFailure:", "state: ", state, "action ->", action);
@@ -68,9 +77,9 @@ export const vendorReducer = createReducer(
     }),
     on(deleteVendorSuccess, (state, action) => {
         console.log("deleteVendorSuccess:", "state: ", state, "action ->", action);
-        const newVendors = state.vendors.filter((vendor: any) => vendor._id !== action.vendor._id)
+        const newVendors = state.vendors.filter((vendor: Vendor) => vendor._id !== action.vendor._id)
 
-        return ({...state, vendors: newVendors});
+        return ({ ...state, vendors: newVendors });
     }),
     on(deleteVendorFailure, (state, action) => {
         console.log("deleteVendorFailure:", "state: ", state, "action ->", action);

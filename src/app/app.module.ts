@@ -26,7 +26,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { categoryReducer } from './category-module/store/category.reducer';
 import { inventoryReducer } from './inventory-module/store/inventory.reducer';
 import { vendorReducer } from './vendors-module/store/vendor.reducers';
-import { globalReducer } from './store/global.reducers';
+import { IGlobalState, globalReducer } from './store/global.reducers';
 import { employeesReducer } from './employees-module/store/employees.reducers';
 
 import { globalEffects } from './store/global.effects';
@@ -46,8 +46,11 @@ import { ErrorInterceptor } from './share-module/interceptors/errorInterceptor';
 
 import { ticketReducer } from './ticket-module/store/ticket.reducer';
 import { TicketEffects } from './ticket-module/store/ticket.effect';
-import { SharedModule } from 'primeng/api';
 import { ProfileComponent } from './profile/profile.component';
+
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
 
 @NgModule({
   declarations: [
@@ -73,6 +76,8 @@ import { ProfileComponent } from './profile/profile.component';
     MatCardModule,
     MatListModule,
     ShareModule,
+
+    SocketIoModule.forRoot(config),
 
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
@@ -118,7 +123,7 @@ import { ProfileComponent } from './profile/profile.component';
 export class AppModule { }
 
 export function initializeApp() {
-  const store = inject(Store<{ global: any }>)
+  const store = inject(Store<{ global: IGlobalState }>)
   return () => {
     store.dispatch(init());
   }

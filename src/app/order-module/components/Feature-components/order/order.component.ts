@@ -6,12 +6,16 @@ import { productVendorsSelector } from '../../../store/order.selectors';
 import { orgSelector, userSelector } from '../../../../store/global.selectors';
 import { map, switchMap, tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
+import { IOrderState } from '../../../store/order.reducers';
+import { IGlobalState, Org, User } from '../../../../store/global.reducers';
+import { Item } from '../../../../inventory-module/models/inventory';
+import { Vendor } from '../../../../vendors-module/store/vendor.reducers';
 
 
-export interface Vendor {
+export interface Product {
   _id: string,
   item: any,
-  vendors: any
+  vendors: Vendor[]
 }
 
 @Component({
@@ -21,13 +25,13 @@ export interface Vendor {
 })
 export class OrderComponent {
   dynamicForm: FormGroup;
-  store = inject(Store<{ order: any, global: any }>);
-  org: any
-  user: any
-  items: any
+  store = inject(Store<{ order: IOrderState, global: IGlobalState }>);
+  org!: Org
+  user!: User
+  items!: any[]
   action$ = inject(Actions)
 
-  products: Vendor[] = [];
+  products: Product[] = [];
   selectedProductVendors: any[][] = [];
 
   constructor(private formBuilder: FormBuilder) {
@@ -117,6 +121,7 @@ export class OrderComponent {
     this.store.dispatch(placeOrderRequest(order))
 
     this.cleanForms();
+    alert("Your Order was placed! You can check them in history")
   }
 
   cleanForms() {
@@ -128,7 +133,7 @@ export class OrderComponent {
     return JSON.stringify(obj);
   }
 
-  onQuantityChange(e: any, i: any) {
+  onQuantityChange(e: any, i: number) {
     const newValue = e.target.value;
     const formGroup = this.formDataArray.at(i) as FormGroup;
     formGroup.get('quantity')?.setValue(newValue);

@@ -8,6 +8,7 @@ import { getCategoryRequest } from '../category-module/store/category.action';
 import { LoaderService } from '../share-module/services/loader.service';
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto';
+import { IGlobalState } from '../store/global.reducers';
 
 // Define PieChartOptions interface outside the component class
 interface PieChartOptions {
@@ -46,7 +47,7 @@ export class DashboardComponent implements OnInit {
   orgId: string = '';
 
   constructor(
-    private store: Store<{ global: any, categories: Category[] }>,
+    private store: Store<{ global: IGlobalState, categories: Category[] }>,
     private router: Router,
     private cs: CookieService,
     public loaderService: LoaderService

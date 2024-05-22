@@ -1,3 +1,5 @@
+import { Vendor } from "../../vendors-module/store/vendor.reducers";
+
 export interface CustomField {
     label: string;
     type: string;
@@ -10,7 +12,7 @@ export interface Category {
     identificationType: "unique" | "non-unique";
     orgId: string;
     customFields: CustomField[]
-    vendors: any[];
+    vendors: Vendor[];
     numberOfAssets: number
 }
 

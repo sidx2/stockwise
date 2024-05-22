@@ -1,9 +1,10 @@
 import { createReducer, on } from "@ngrx/store"
 import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions"
+import { Order } from "../order-history-component/Feature-components/order-history/order-history.component"
 
 
 export interface IHistoryState {
-    history: any
+    history: Order[]
 }
 
 export const initialState: IHistoryState = {
@@ -34,7 +35,7 @@ export const historyReducer = createReducer(
         action._id
         action.updatedStatus
 
-        const newHistory = state.history.map((h: any) => {
+        const newHistory = state.history.map((h: Order) => {
             if (h._id == action._id) { 
                 return { ...h, status: action.updatedStatus }
             }

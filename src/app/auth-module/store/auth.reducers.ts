@@ -1,14 +1,15 @@
 import { createReducer, on } from "@ngrx/store";
 import { createOrgFailre, createOrgSuccess, signupFailre, signupSuccess } from "./auth.actions";
+import { Org, User } from "../../store/global.reducers";
 
 export interface IAuthState {
-    user: any,
-    org: any,
+    user: User,
+    org: Org,
 }
 
 export const initialState: IAuthState = {
-    user: {},
-    org: {}
+    user: {} as User,
+    org: {} as Org,
 }
 
 export const authReducer = createReducer(

@@ -6,13 +6,16 @@ import { Store } from "@ngrx/store";
 import { VendorsService } from "../services/vendors.service";
 import { fetchVendorsRequest, fetchVendorsFailure, fetchVendorsSuccess, updateVendorRequest, updateVendorSuccess, updateVendorFailure, deleteVendorRequest, deleteVendorSuccess, deleteVendorFailure, addVendorSuccess, addVendorFailure, addVendorRequest } from "./vendor.actions";
 import { addEmployeeRequest } from "../../employees-module/store/employees.actions";
+import { AppService } from "../../services/app.service";
+import { IGlobalState } from "../../store/global.reducers";
 
 @Injectable()
 export class vendorEffects {
     action$ = inject(Actions)
     vendorsService$ = inject(VendorsService)
+    // appService$ = inject(AppService);
     cs = inject(CookieService);
-    store = inject(Store<{ global: any }>)
+    store = inject(Store<{ global: IGlobalState }>)
 
     constructor() {
         console.log("action$", this.action$)
@@ -42,6 +45,7 @@ export class vendorEffects {
                 this.vendorsService$.updateVendor(vendor).pipe(
                     map((res: any) => {
                         console.log("updateVendor res:", res)
+                        // this.appService$.vendorUpdated(res)
                         return updateVendorSuccess({ vendor: res })
                     }),
                     catchError((err) =>
@@ -69,7 +73,7 @@ export class vendorEffects {
         )
     )
 
-    addEmployee$ = createEffect(() =>
+    addVendor$ = createEffect(() =>
     this.action$.pipe(
         ofType(addVendorRequest),
         switchMap((data) =>

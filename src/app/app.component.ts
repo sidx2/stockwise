@@ -15,7 +15,7 @@ export class AppComponent{
 
   global$: Observable<IGlobalState> | null = null;
 
-  constructor(private store: Store<{ global: any}>, public loaderService:LoaderService,
+  constructor(private store: Store<{ global: IGlobalState}>, public loaderService:LoaderService,
     public errorService: ErrorService){
     this.global$ = this.store.select('global')
   }
