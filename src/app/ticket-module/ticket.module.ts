@@ -11,6 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { TicketAdminComponent } from './ticket-component/Feature-component/ticket-admin/ticket-admin.component';
 import { MatIconModule } from '@angular/material/icon';
 import { UpdateStatusFormComponent } from './ticket-component/Ui-component/update-status-form/update-status-form.component';
+import { StoreModule } from '@ngrx/store';
+import { ticketReducer } from './store/ticket.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { TicketEffects } from './store/ticket.effect';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,10 @@ import { UpdateStatusFormComponent } from './ticket-component/Ui-component/updat
     ShareModule,
     ReactiveFormsModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    StoreModule.forFeature('tickets', ticketReducer),
+    EffectsModule.forFeature(TicketEffects)
   ]
+
 })
 export class TicketModule { }

@@ -12,7 +12,15 @@
       {{ ticket.createdAt | date : "MMM dd, yyyy, hh:mm a" }}
     </div>
   </div>
+  
+  <div>
+    <ng-content select="[ticket-user]"></ng-content>
+  </div>
 
+  <div>
+    <ng-content select="[ticket-assetId]"></ng-content>
+  </div>
+  
   <div class="ticketDetails">
     <h3>{{ ticket.issueType }}</h3>
     <p>{{ ticket.description }}</p>
@@ -25,6 +33,6 @@
   </div>
 
   <div class="ticket-action">
-    <ng-content></ng-content>
+    <ng-content select="[ticket-action]"></ng-content>
   </div>
 </div>

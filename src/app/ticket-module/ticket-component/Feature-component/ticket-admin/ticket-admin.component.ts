@@ -26,7 +26,7 @@ export class TicketAdminComponent {
   isUpdateFormVisible: boolean = false;
 
   constructor(private store: Store<{ global: any, tickets: TicketState, inventory: InventoryState }>, public loaderService: LoaderService) {
-    this.tickets$ = this.store.select(state => state.tickets.userTickets);
+    this.tickets$ = this.store.select(state => state.tickets.allTickets);
     this.filteredTickets$ = this.tickets$
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
   }

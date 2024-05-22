@@ -17,7 +17,8 @@
   </div>
 
   <!-- selecting asset -->
-  <div class="inputDiv">
+  <div class="inputDiv" *ngIf="ticketFormGroup.get('issueType')?.value !== 'newAssetRequest' && ticketFormGroup.get('issueType')?.value !== ''">
+    <label for="assetId">Asset</label>
     <select appCustomInputStyle id="assetId" formControlName="assetId">
       <option value="">Select Asset</option>
       <option *ngFor="let asset of userAssets" [value]="asset._id">

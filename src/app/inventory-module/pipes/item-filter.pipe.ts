@@ -11,7 +11,6 @@ export class ItemFilterPipe implements PipeTransform {
     if (!items || !searchText) {
       return items;
     }
-    return items.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()) || item?.serialNumber?.toLowerCase().includes(searchText.toLowerCase()) || item?.status?.toLowerCase().includes(searchText.toLowerCase()));
+    return items.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()) || item?.serialNumber?.toLowerCase().includes(searchText.toLowerCase()) || item?.status?.toLowerCase().includes(searchText.toLowerCase()) || item?._id?.toLowerCase().includes(searchText.toLowerCase()));
   }
-
 }

@@ -12,6 +12,11 @@
   gap: 0.5rem;
 }
 
+.category_form .inputDiv input.ng-invalid.ng-touched,
+.category_form .inputDiv select.ng-invalid.ng-touched {
+  border: #ff0000 1px solid !important;
+}
+
 .inputDiv input,
 .inputDiv select {
   background-color: white;

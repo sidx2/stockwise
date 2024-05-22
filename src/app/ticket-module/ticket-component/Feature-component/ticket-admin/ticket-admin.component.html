@@ -37,7 +37,17 @@
 
   <ng-container *ngIf="filteredTickets$ | async as tickets">
     <app-ticket-card *ngFor="let ticket of tickets" [ticket]="ticket">
+      <div ticket-user>
+        Raised By: <span>{{ ticket.userName }}</span>
+      </div>
+
+      <div ticket-assetId>
+        Asset Id: <span>{{ ticket.assetId }}</span>
+      </div>
+
+      <div ticket-action>
         <button appButtonPrimary (click)="showUpdateStatusForm(ticket)">Update Status</button>
+      </div>
     </app-ticket-card>
   </ng-container>
 </div>

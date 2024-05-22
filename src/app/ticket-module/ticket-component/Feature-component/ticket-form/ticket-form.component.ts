@@ -13,24 +13,18 @@ export class TicketFormComponent implements OnInit {
   @Input() userAssets: UserAsset[] | null = null;
 
   ticketFormGroup: FormGroup = new FormGroup({});
-  assetIdControl: FormControl = new FormControl('');
 
   ngOnInit(): void {
     this.ticketFormGroup = new FormGroup({
       issueType: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       priority: new FormControl('', Validators.required),
-      assetId: this.assetIdControl 
     });
 
-    // Listen to changes in the 'issueType' control
     this.ticketFormGroup.get('issueType')?.valueChanges.subscribe((issueType: string) => {
-      if (issueType === 'newAssetRequest') {
-        this.assetIdControl.clearValidators();
-      } else {
-        this.assetIdControl.setValidators(Validators.required);
+      if (issueType && issueType !== 'newAssetRequest') {
+        this.ticketFormGroup.addControl('assetId', new FormControl('', Validators.required));
       }
-      this.assetIdControl.updateValueAndValidity();
     });
   }
 
