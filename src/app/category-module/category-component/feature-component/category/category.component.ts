@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Category } from '../../../models/category';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription} from 'rxjs';
-import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory } from '../../../store/category.action';
+import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory, updateCategory } from '../../../store/category.action';
 import { ErrorService } from '../../../../share-module/services/error.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action } from 'rxjs/internal/scheduler/Action';
@@ -44,7 +44,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     // category updated successfully
     this.actions$.pipe(
-      ofType(addCategory)
+      ofType(updateCategory)
     ).subscribe( ()=> {
       this.hideCategoryForm();
     })
