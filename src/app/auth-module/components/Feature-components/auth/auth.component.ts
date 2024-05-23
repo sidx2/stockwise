@@ -39,6 +39,7 @@ export class AuthComponent {
     
     this.actions$.pipe(
       ofType(fetchOrgSuccess),
+      takeUntil(this.destroySubject)
       ).subscribe((org) => {
         this.cookieService.set("org", JSON.stringify(org))
       this.store.dispatch(setOrg({ org: org }));

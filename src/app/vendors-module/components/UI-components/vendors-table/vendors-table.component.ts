@@ -14,6 +14,7 @@ export class VendorsTableComponent {
   @Output() startedEditing = new EventEmitter<any>();
   @Output() cancelledEditing = new EventEmitter<any>();
   @Output() updateVendor = new EventEmitter<any>();
+  @Output() changeVendor = new EventEmitter<any>();
   @Output() deleteVendor = new EventEmitter<any>();
 
   _vends: Vendor[] = []
@@ -31,6 +32,9 @@ export class VendorsTableComponent {
   currPage: number = 1;
 
   onEdit(_id: string) {
+    if (this.editing != "-1") {
+      this.cancelledEditing.emit(this.editing);
+    }
     this.editing = _id
     const editingEmp = this.vendors.filter((e: any) => e._id == _id)[0]
 
@@ -44,6 +48,7 @@ export class VendorsTableComponent {
   }
 
   onCancel() {
+    this.cancelledEditing.emit(this.editing);
     this.editing = "-1"
   }
 
@@ -62,6 +67,8 @@ export class VendorsTableComponent {
         phone: this.m_phone
       }
     })
+
+    this.cancelledEditing.emit(this.editing);
     this.editing = "-1"
     console.log(this.m_name, this.m_email, this.m_address, this.m_phone)
   }
@@ -69,6 +76,19 @@ export class VendorsTableComponent {
   onDelete(_id: string) {
     console.log("_id in onDelete", _id)
     if (confirm("Are you sure want to delete this vendor")) this.deleteVendor.emit({ _id })
+  }
+
+  onVendorChanged() {
+    console.log("vendor changed");
+    this.changeVendor.emit({
+      vendor: {
+        _id: this.editing,
+        name: this.m_name,
+        email: this.m_email,
+        address: this.m_address,
+        phone: this.m_phone
+      }
+    })
   }
 
   search(e: any) {

@@ -12,6 +12,8 @@ export const updateVendorRequest = createAction("updateVendorRequest", props<any
 export const updateVendorSuccess = createAction("updateVendorSuccess", props<any>())
 export const updateVendorFailure = createAction("updateVendorFailure", props<any>())
 
+export const updateVendorRemote = createAction("updateVendorRemote", props<any>());
+
 export const deleteVendorRequest = createAction("deleteVendorRequest", props<any>())
 export const deleteVendorSuccess = createAction("deleteVendorSuccess", props<any>())
 export const deleteVendorFailure = createAction("deleteVendorFailure", props<any>())

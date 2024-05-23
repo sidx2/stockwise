@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, updateVendorFailure, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
+import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, updateVendorFailure, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
 
 export interface Vendor {
     _id: string
@@ -68,6 +68,19 @@ export const vendorReducer = createReducer(
     on(updateVendorFailure, (state, action) => {
         console.log("updateVendorFailure:", "state: ", state, "action ->", action);
         return (state);
+    }),
+
+    // remote update
+    on(updateVendorRemote, (state, action) => {
+        console.log("updateVendorSuccess:", "state: ", state, "action ->", action);
+        const newVenors = state.vendors.map((vendor: Vendor) => {
+            if (vendor._id == action.vendor._id) {
+                vendor = action.vendor
+            }
+            return vendor
+        })
+
+        return ({ ...state, vendors: newVenors });
     }),
 
     // delete vendor

@@ -11,6 +11,8 @@
             [vendors]="vendors"
             [editors]="editors"
             (startedEditing)="onStartedEditing($event)"
+            (cancelledEditing)="onCancelledEditing($event)"
+            (changeVendor)="onVendorChanged($event)"
             (updateVendor)="onUpdateVendor($event)"
             (deleteVendor)="onDeleteVendor($event)"
         ></app-vendors-table>
