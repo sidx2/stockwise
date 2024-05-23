@@ -13,7 +13,7 @@ import { ErrorService } from '../services/error.service';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private errorService: ErrorService) {}
+  constructor(private errorService: ErrorService) { }
 
   intercept(
     request: HttpRequest<any>,
@@ -24,10 +24,13 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'An error occurred';
 
+        console.log("error interceptor");
+
         if (error.error && error.error.error) {
-          errorMessage = error.error.error; // Assuming the error message is sent as { error: "Error message" }
-        } else if(error.status === 400 && error.error.message) {
-            errorMessage = error.error.message;
+          errorMessage = error.error.error;
+
+        } else if (error.status === 400 && error.error.message) {
+          errorMessage = error.error.message;
         }
         else {
           errorMessage = `${error.status} - ${error.message}`;

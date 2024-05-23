@@ -10,7 +10,7 @@ import { IGlobalState } from './store/global.reducers';
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -34,6 +34,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { AuthModule } from './auth-module/auth.module';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { LoaderInterceptor } from './interceptors/loaderInterceptor';
+import { ErrorInterceptor } from './interceptors/errorInterceptor';
 
 const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
 
@@ -75,6 +77,16 @@ const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
       multi: true
     },
     provideHttpClient(withInterceptors([authInterceptor])),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 

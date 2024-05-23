@@ -15,7 +15,6 @@ export class ErrorService {
   }
 
   emmitError(errorMsg: string){
-    // this.errorSubject?.next(errorMsg);
     this.toastr.error(errorMsg, 'Error'); 
     console.log("Error emitted successfully:", errorMsg);
   }

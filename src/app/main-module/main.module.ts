@@ -10,9 +10,8 @@ import { OrderHistoryModule } from './order-history-module/order-history.module'
 import { TicketModule } from './ticket-module/ticket.module';
 import { EmployeesModule } from './employees-module/employees.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
-import { ErrorInterceptor } from './share-module/interceptors/errorInterceptor';
-
+import { LoaderInterceptor } from '../interceptors/loaderInterceptor';
+import { ErrorInterceptor } from '../interceptors/errorInterceptor';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -47,15 +46,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatListModule,
   ],
   providers: [
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: LoaderInterceptor,
-    multi: true
-  },
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: ErrorInterceptor,
-    multi: true
-  }]
+  ]
 })
 export class MainModule { }

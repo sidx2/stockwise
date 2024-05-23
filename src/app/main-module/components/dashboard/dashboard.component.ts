@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { orgSelector } from '../../../store/global.selectors';
 import { Category } from '../../category-module/models/category';
 import { getCategoryRequest } from '../../category-module/store/category.action';
-import { LoaderService } from '../../share-module/services/loader.service';
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { IGlobalState } from '../../../store/global.reducers';
@@ -48,7 +47,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private store: Store<{ global: IGlobalState, categories: Category[] }>,
     private router: Router,
-    public loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {

@@ -10,11 +10,9 @@ export class LoaderInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loaderService.startLoading();
-
-    // Handle the request
+    
     return next.handle(req).pipe(
       finalize(() => {
-        // Stop loader
         this.loaderService.stopLoading();
       })
     );
