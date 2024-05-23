@@ -12,10 +12,10 @@ export class RouterComponent implements OnInit {
   cs = inject(CookieService)
   router = inject(Router)
   ngOnInit(): void {
-    const token = this.cs.get("token")
-      if (!token) {
-        this.router.navigate(["auth"])
-      }
-      else this.router.navigate(["dashboard"])
+    // const token = this.cs.get("token")
+    //   if (!token) {
+    //     this.router.navigate(["auth"])
+    //   }
+    //   else this.router.navigate(["dashboard"])
   }
 }
