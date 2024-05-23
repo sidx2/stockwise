@@ -50,8 +50,7 @@ export class OrderComponent {
       ofType(placeOrderSuccess),
       tap((order) => {
         alert("Order placed successfully!")
-      }
-      )
+      })
     )
   }
 
@@ -69,7 +68,7 @@ export class OrderComponent {
 
   addFormData() {
     this.formDataArray.push(this.createFormGroup());
-    this.selectedProductVendors.push(this.products[0].vendors);
+    // this.selectedProductVendors.push(this.products[0].vendors);
   }
 
   onProductChange(index: number) {

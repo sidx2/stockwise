@@ -30,6 +30,12 @@
         .p-floatLabel {
             margin-bottom: 20px;
 
+            .errMsg {
+                color: red;
+                font-size: 1rem;
+                margin-top: 4px;
+            }
+
             input {
                 width: 100%;
                 padding: 10px;
@@ -72,22 +78,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    
+
         h3 {
-          margin-right: 10px;
-          font-size: 16px;
-          color: #333;
+            margin-right: 10px;
+            font-size: 16px;
+            color: #333;
         }
-    
+
         a {
-          font-size: 16px;
-          color: #007bff;
-          text-decoration: none;
-          transition: color 0.3s ease;
-    
-          &:hover {
-            color: #0056b3;
-          }
+            font-size: 16px;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #0056b3;
+            }
         }
-      }
+    }
 }

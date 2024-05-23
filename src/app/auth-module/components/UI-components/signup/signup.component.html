@@ -5,20 +5,35 @@
         <div class="p-floatLabel">
             <label for="orgname">Organization Name</label>
             <input id="orgname" formControlName="orgName" type="text" class="p-field p-inputtext-lg" pInputText>
-        </div>
-        <div class="p-floatLabel">
-            <label for="name">You name</label>
+            <div *ngIf="signupForm.controls['orgName'].invalid && signupForm.controls['orgName'].touched" class="errMsg">
+              <span *ngIf="signupForm.controls['orgName'].errors?.['required']">Organization Name is required.</span>
+              <span *ngIf="signupForm.controls['orgName'].errors?.['minlength']">Organization Name must be at least 3 characters long.</span>
+            </div>
+          </div>
+          <div class="p-floatLabel">
+            <label for="name">Your name</label>
             <input id="name" formControlName="name" type="text" class="p-field p-inputtext-lg" pInputText>
-        </div>
-        <div class="p-floatLabel">
+            <div *ngIf="signupForm.controls['name'].invalid && signupForm.controls['name'].touched" class="errMsg">
+              <span *ngIf="signupForm.controls['name'].errors?.['required']">Name is required.</span>
+              <span *ngIf="signupForm.controls['name'].errors?.['minlength']">Name must be at least 3 characters long.</span>
+            </div>
+          </div>
+          <div class="p-floatLabel">
             <label for="email">Email</label>
             <input id="email" formControlName="email" type="email" class="p-field p-inputtext-lg" pInputText>
-        </div>
-
-        <div class="p-floatLabel">
-            <label for="password">Password</label> 
+            <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched" class="errMsg">
+              <span *ngIf="signupForm.controls['email'].errors?.['required']">Email is required.</span>
+              <span *ngIf="signupForm.controls['email'].errors?.['email']">Please enter a valid email address.</span>
+            </div>
+          </div>
+          <div class="p-floatLabel">
+            <label for="password">Password</label>
             <input id="password" formControlName="password" type="password" class="p-field p-inputtext-lg" pInputText>
-        </div>
+            <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched" class="errMsg">
+              <span *ngIf="signupForm.controls['password'].errors?.['required']">Password is required.</span>
+              <span *ngIf="signupForm.controls['password'].errors?.['minlength']">Password must be at least 6 characters long.</span>
+            </div>
+          </div>
         <button type="submit" class="p-button">Signup</button>
     </div>
 
