@@ -1,8 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions"
-import { Order } from "../order-history-component/Feature-components/order-history/order-history.component"
-
-
+import { Order } from "../components/Feature-components/order-history/order-history.component"
 export interface IHistoryState {
     history: Order[]
 }

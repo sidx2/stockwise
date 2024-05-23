@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './component/dashboard/dashboard.component';
-import { ProfileComponent } from './component/profile/profile.component';
-import { TicketComponent } from './ticket-module/ticket-component/Feature-component/ticket/ticket.component';
-import { TicketAdminComponent } from './ticket-module/ticket-component/Feature-component/ticket-admin/ticket-admin.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { TicketComponent } from './ticket-module/components/Feature-component/ticket/ticket.component';
+import { TicketAdminComponent } from './ticket-module/components/Feature-component/ticket-admin/ticket-admin.component';
 import { MainComponent } from './main.component';
 
 const routes: Routes = [

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonPrimaryDirective } from './directive/button-primary.directive';
 import { ButtonPrimaryLightDirective } from './directive/buttom-primary-light.directive';
-import { ModalComponent } from './component/modal/modal.component';
+import { ModalComponent } from './components/modal/modal.component';
 import { RouterModule } from '@angular/router';
 import { CustomInputStyleDirective } from './directive/custom-input-style.directive';
 import { MatIconModule } from '@angular/material/icon';

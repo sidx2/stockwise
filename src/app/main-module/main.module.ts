@@ -17,11 +17,11 @@ import { ErrorInterceptor } from './share-module/interceptors/errorInterceptor';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { DashboardComponent } from './component/dashboard/dashboard.component';
-import { ProfileComponent } from './component/profile/profile.component';
-import { SidebarComponent } from './component/sidebar/sidebar.component';
-import { LoaderComponent } from './component/loader/loader.component';
-import { NavbarComponent } from './component/navbar/navbar.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { LoaderComponent } from './components/loader/loader.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
