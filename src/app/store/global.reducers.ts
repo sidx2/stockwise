@@ -64,7 +64,7 @@ export const globalReducer = createReducer(
     }),
     on(fetchOrgSuccess, (state, action) => {
         console.log("fetchOrgSuccess:", "state: ", state, "action ->", action);
-        return ({ ...state, org: { ...state.org, ...action.org }, });
+        return ({ ...state, org: { ...state.org, ...action.org }, isLoggedIn: true });
     }),
 
     on(clearState, (state) => {

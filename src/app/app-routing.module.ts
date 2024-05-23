@@ -6,11 +6,6 @@ import { loggedOutGuard } from './guards/logged-out-guard';
 
 const routes: Routes = [
   {
-    path: "",
-    pathMatch: "full",
-    component: RouterComponent
-  },
-  {
     canActivate: [loggedOutGuard],
     path: "",
     loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
