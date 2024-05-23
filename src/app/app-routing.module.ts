@@ -12,13 +12,17 @@ const routes: Routes = [
   },
   {
     canActivate: [loggedOutGuard],
-    path: "auth",
+    path: "",
     loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
   },
   {
     canActivate: [authGuard],
     path: '',
     loadChildren: () => import('./authenticated.module').then(m => m.AuthenticatedModule),
+  },
+  {
+    path: '**',
+    redirectTo: 'login'
   }
 ];
 

@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     console.log("Token in authGuard: ", token);
     if (token) return true;
     else {
-      router.navigate(["/auth"])
+      router.navigate(["/login"])
       return false;
     }
 };

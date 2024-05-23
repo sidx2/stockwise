@@ -14,7 +14,7 @@ export class RouterComponent implements OnInit {
   ngOnInit(): void {
     const token = this.cs.get("token")
       if (!token) {
-        this.router.navigate(["auth"])
+        this.router.navigate(["login"])
       }
       else this.router.navigate(["dashboard"])
   }
