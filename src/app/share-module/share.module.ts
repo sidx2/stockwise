@@ -6,14 +6,11 @@ import { ModalComponent } from './component/modal/modal.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { CustomInputStyleDirective } from './directive/custom-input-style.directive';
-import { FooterComponent } from './component/footer/footer.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { LoaderComponent } from './component/loader/loader.component';
 import { TooltipDirective } from './directive/tooltip.directive';
-import { Footer } from 'primeng/api';
-import { MatIcon } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -22,12 +19,10 @@ import { MatIcon } from '@angular/material/icon';
     ModalComponent,
     NavbarComponent,
     CustomInputStyleDirective,
-    FooterComponent,
     SidebarComponent,
     LoaderComponent,
     TooltipDirective,
     NavbarComponent,
-    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +33,6 @@ import { MatIcon } from '@angular/material/icon';
   exports:[
     ModalComponent,
     NavbarComponent,
-    FooterComponent,
     LoaderComponent,
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,

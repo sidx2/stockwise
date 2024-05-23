@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketService } from '../services/ticket.service';
-import { addTicket, createTicketRequest, getUserTicketRequest, setUserTickets, getAllTicketRequest, updateTicketStatusRequest, updateTicket } from './ticket.action';
+import { addTicket, createTicketRequest, getUserTicketRequest, setUserTickets, getAllTicketRequest, updateTicketStatusRequest, updateTicket, setAllTickets } from './ticket.action';
 
 
 @Injectable()
@@ -29,7 +29,7 @@ export class TicketEffects {
         tap(() => console.log('getAllTicketsRequest dispatched')),
         mergeMap((action) =>
             this.ticketService.getAllTickets(action.orgId).pipe( 
-                map(response => setUserTickets({ userTickets: response })),
+                map(response => setAllTickets({ allTickets: response })),
                 tap(action => console.log('Dispatched action setAllTickets')),
                 catchError(error => {
                     console.error('Error in loading all tickets:', error);
