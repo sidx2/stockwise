@@ -8,6 +8,11 @@ import { TicketAdminComponent } from './ticket-module/ticket-component/Feature-c
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
     path: 'dashboard',
     component: DashboardComponent
   },

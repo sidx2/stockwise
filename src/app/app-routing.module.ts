@@ -11,18 +11,18 @@ const routes: Routes = [
   //   component: RouterComponent
   // },
   {
-    canActivate: [loggedOutGuard],
-    path: "",
-    loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
-  },
-  {
     canActivate: [authGuard],
-    path: '',
+    path: "",
     loadChildren: () => import('./authenticated.module').then(m => m.AuthenticatedModule),
   },
   {
+    canActivate: [loggedOutGuard],
+    path: 'auth',
+    loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
+  },
+  {
     path: "**",
-    redirectTo: "login",
+    redirectTo: "auth",
   }
 ];
 
