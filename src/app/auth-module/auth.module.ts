@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthComponent } from './components/Feature-components/auth/auth.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './components/UI-components/signup/signup.component';
 import { StoreModule } from '@ngrx/store';
 import { authReducer } from './store/auth.reducers';

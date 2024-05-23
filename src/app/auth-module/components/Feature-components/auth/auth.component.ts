@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess, setOrg, setUser } from '../../../../store/global.actions';
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Actions, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
-import { globalStateSelector } from '../../../../store/global.selectors';
 import { Subject, takeUntil } from 'rxjs';
 import { IGlobalState } from '../../../../store/global.reducers';
 
@@ -14,34 +13,37 @@ import { IGlobalState } from '../../../../store/global.reducers';
   styleUrl: './auth.component.scss'
 })
 export class AuthComponent {
-  actions$ = inject(Actions)
-  router = inject(Router);
-  cookieService = inject(CookieService)
-  globalState!: IGlobalState
   destroySubject = new Subject<void>();
 
-  constructor(private store: Store<{ global: IGlobalState }>, private actios$: Actions) {
-    this.store.select(globalStateSelector).subscribe((data) => {
-      this.globalState = data;
-    })
-    this.actions$.pipe(ofType(loginUserSuccess), takeUntil(this.destroySubject)).subscribe((data) => {
+  constructor(
+    private store: Store<{ global: IGlobalState }>,
+    private router: Router,
+    private cookieService: CookieService,
+    private actions$: Actions,
+  ) {
+  
+    this.actions$.pipe(
+      ofType(loginUserSuccess),
+      takeUntil(this.destroySubject)
+    ).subscribe((data) => {
       console.log("data in AuthComponent: ", data);
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
 
+      // set cookies
       this.cookieService.set("token", data.token, expiryDate)
       this.cookieService.set("user", JSON.stringify(data), expiryDate)
       this.cookieService.set("isLoggedin", "true", expiryDate)
 
-      this.store.dispatch(setUser({user: data}))
-      this.store.dispatch(fetchOrg({id: data.id}))
+      this.store.dispatch(setUser({ user: data }))
+      this.store.dispatch(fetchOrg({ id: data.id }))
     });
-    
+
     this.actions$.pipe(
       ofType(fetchOrgSuccess),
       takeUntil(this.destroySubject)
-      ).subscribe((org) => {
-        this.cookieService.set("org", JSON.stringify(org))
+    ).subscribe((org) => {
+      this.cookieService.set("org", JSON.stringify(org))
       this.store.dispatch(setOrg({ org: org }));
 
       this.router.navigate(['dashboard']);
@@ -50,14 +52,11 @@ export class AuthComponent {
 
   handleFormSubmit(e: any) {
     console.log("event: ", e);
-    this.store.dispatch(loginUser({user: e}));
+    this.store.dispatch(loginUser({ user: e }));
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.destroySubject.next();
     this.destroySubject.complete();
   }
-
 }
