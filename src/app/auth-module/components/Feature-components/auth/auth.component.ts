@@ -5,6 +5,8 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
 import { globalStateSelector } from '../../../../store/global.selectors';
+import { Subject, takeUntil } from 'rxjs';
+import { IGlobalState } from '../../../../store/global.reducers';
 
 @Component({
   selector: 'app-auth',
@@ -15,13 +17,14 @@ export class AuthComponent {
   actions$ = inject(Actions)
   router = inject(Router);
   cookieService = inject(CookieService)
-  globalState: any
+  globalState!: IGlobalState
+  destroySubject = new Subject<void>();
 
-  constructor(private store: Store<{ global: any }>, private actios$: Actions) {
+  constructor(private store: Store<{ global: IGlobalState }>, private actios$: Actions) {
     this.store.select(globalStateSelector).subscribe((data) => {
       this.globalState = data;
     })
-    this.actions$.pipe(ofType(loginUserSuccess)).subscribe((data) => {
+    this.actions$.pipe(ofType(loginUserSuccess), takeUntil(this.destroySubject)).subscribe((data) => {
       console.log("data in AuthComponent: ", data);
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
@@ -36,6 +39,7 @@ export class AuthComponent {
     
     this.actions$.pipe(
       ofType(fetchOrgSuccess),
+      takeUntil(this.destroySubject)
       ).subscribe((org) => {
         this.cookieService.set("org", JSON.stringify(org))
       this.store.dispatch(setOrg({ org: org }));
@@ -47,6 +51,13 @@ export class AuthComponent {
   handleFormSubmit(e: any) {
     console.log("event: ", e);
     this.store.dispatch(loginUser({user: e}));
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
 }

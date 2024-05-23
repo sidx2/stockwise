@@ -2,7 +2,7 @@ import { createReducer, on } from "@ngrx/store"
 import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployeeSuccess } from "./employees.actions"
 
 export interface Employee {
-    _id: any,
+    _id: string,
     name: string,
     email: string,
     role: string

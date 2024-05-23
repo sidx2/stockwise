@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { switchMap } from 'rxjs';
 import { orgSelector, userSelector } from '../../store/global.selectors';
+import { Socket } from 'ngx-socket-io';
+import { IGlobalState } from '../../store/global.reducers';
+import { Vendor } from '../store/vendor.reducers';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,7 @@ export class VendorsService {
 
   constructor(
     private http: HttpClient,
-    private store: Store<{ global: any }>
+    private store: Store<{ global: IGlobalState }>,
   ) { }
 
   getVendors() {
@@ -33,13 +36,13 @@ export class VendorsService {
     return this.http.put("http://localhost:9999/vendor/update", vendor.vendor);
   }
   
-  deleteVendor(vendorId: any) {
+  deleteVendor(vendorId: string) {
     console.log("vendor in deleteVendor: ", vendorId)
     return this.http.delete("http://localhost:9999/vendor/delete", { body: { vendorId } });
     
   }
   
-  addVendor(vendor: any, orgId: any) {
+  addVendor(vendor: Vendor, orgId: string) {
     console.log("vendor orgId ", vendor, orgId)
     return this.http.post("http://localhost:9999/vendor/create", {
       ...vendor,
@@ -47,4 +50,9 @@ export class VendorsService {
     })
 
   }
+
+
+  // private socket = inject(Socket)
+
+  
 }

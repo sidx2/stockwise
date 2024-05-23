@@ -33,9 +33,9 @@
             </ul>
         </div>
     </div>
-    <div class="additional-details">
+    <!-- <div class="additional-details">
         <h4 *ngIf="order.remark">Remark: <span>{{ order.remark }}</span></h4>
-    </div>
+    </div> -->
     
 </div>
 
@@ -53,7 +53,7 @@
                         <option value="fulfilled" name="FULFILLED" id="FULFILLED">FULFILLED</option>
                         <option value="rejected" name="REJECTED" id="REJECTED">REJECTED</option>
                     </select>
-                    <button appButtonPrimaryLight (click)="edit(-1)">
+                    <button appButtonPrimaryLight (click)="edit('-1')">
                         <mat-icon>cancel</mat-icon>
                         </button>
                 </div>
@@ -78,8 +78,8 @@
                 </ul>
             </div>
         </div>
-        <div class="additional-details">
+        <!-- <div class="additional-details">
             <h4 *ngIf="order.remark">Remark: <span>{{ order.remark }}</span></h4>
-        </div>
+        </div> -->
     </div>
 </ng-template>

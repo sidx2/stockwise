@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
 import { Observable, mergeMap } from 'rxjs';
 import { vendorsSelector } from '../../../../vendors-module/store/vendor.selectors';
+import { IVendorsState } from '../../../../vendors-module/store/vendor.reducers';
 
 @Component({
   selector: 'app-category-form',
@@ -23,7 +24,7 @@ export class CategoryFormComponent implements OnInit {
 
   vendors$!: Observable<any[]>; 
 
-  constructor(private store: Store<{ vendors: any[] }>) {
+  constructor(private store: Store<{ vendors: IVendorsState }>) {
     this.store.dispatch(fetchVendorsRequest());
     this.vendors$ = this.store.select(vendorsSelector);
   }
@@ -69,8 +70,8 @@ export class CategoryFormComponent implements OnInit {
       });
     }
 
-    this.vendors$.subscribe((vendors: any[]) => {
-      const selectedVendors = category.vendors?.map((vendorId: string) => {
+    this.vendors$.subscribe((vendors: any) => {
+      const selectedVendors = category.vendors?.map((vendorId: any) => {
         const vendor = vendors.find((vendor: any) => vendor?._id === vendorId);
         return { _id: vendor?._id, name: vendor?.name }; 
       });

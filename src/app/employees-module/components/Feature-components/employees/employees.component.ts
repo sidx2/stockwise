@@ -4,6 +4,9 @@ import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmploye
 import { employeesSelector } from '../../../store/employees.selectors';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { orgSelector } from '../../../../store/global.selectors';
+import { Employee, IEmployeesState } from '../../../store/employees.reducers';
+import { IGlobalState } from '../../../../store/global.reducers';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-employees',
@@ -11,11 +14,11 @@ import { orgSelector } from '../../../../store/global.selectors';
   styleUrl: './employees.component.scss'
 })
 export class EmployeesComponent {
-    store = inject (Store<{ employees: any, global: any }>)
-    employees!: any
+    store = inject (Store<{ employees: IEmployeesState, global: IGlobalState }>)
+    employees: Observable<any>
     visible: boolean = false
 
-    orgId: any
+    orgId!: string
 
 
 

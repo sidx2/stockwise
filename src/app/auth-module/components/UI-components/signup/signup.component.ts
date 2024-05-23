@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
 import { setOrg } from '../../../../store/global.actions';
+import { IGlobalState } from '../../../../store/global.reducers';
+import { IAuthState } from '../../../store/auth.reducers';
 
 @Component({
   selector: 'app-signup',
@@ -29,7 +31,7 @@ export class SignupComponent {
     password: new FormControl("")
   })
 
-  constructor(private store: Store<{ global: any, auth: any }>) {
+  constructor(private store: Store<{ global: IGlobalState, auth: IAuthState }>) {
     this.actions$.pipe(
       ofType(signupSuccess),
     ).subscribe((data) => {
