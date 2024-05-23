@@ -14,7 +14,7 @@ export class globalEffects {
     authService$ = inject(AuthService)
     orgService$ = inject(OrgService)
     cs = inject(CookieService);
-    store = inject(Store<{ global: IGlobalState}>)
+    store = inject(Store<{ global: IGlobalState }>)
 
     constructor() {
         console.log("action$", this.action$)
@@ -77,7 +77,7 @@ export class globalEffects {
                 try {
                     this.store.dispatch(setUser({ user: user }))
                     this.store.dispatch(setOrg({ org: org }));
-                    this.store.dispatch(loginUserSuccess({user}))
+                    this.store.dispatch(loginUserSuccess({ user }))
                 }
                 catch (e) {
                     console.log(e);

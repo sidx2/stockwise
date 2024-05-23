@@ -10,12 +10,8 @@ const routes: Routes = [
   {
     path: '',
     component: MainComponent,
+
     children: [
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-      },
       {
         path: 'dashboard',
         component: DashboardComponent
@@ -56,9 +52,13 @@ const routes: Routes = [
         path: "profile",
         component: ProfileComponent
       },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      }
     ]
   },
-
 ];
 
 @NgModule({

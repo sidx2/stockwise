@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 import { orgSelector } from '../../../store/global.selectors';
 import { Category } from '../../category-module/models/category';
 import { getCategoryRequest } from '../../category-module/store/category.action';
@@ -10,7 +9,6 @@ import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { IGlobalState } from '../../../store/global.reducers';
 
-// Define PieChartOptions interface outside the component class
 interface PieChartOptions {
   responsive: boolean;
   maintainAspectRatio: boolean;
@@ -42,6 +40,7 @@ interface PieChartOptions {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  
   @ViewChild('pieChart') private pieChartRef!: ElementRef<HTMLCanvasElement>;
   categories$: Observable<Category[]> | null = null;
   orgId: string = '';
@@ -49,7 +48,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private store: Store<{ global: IGlobalState, categories: Category[] }>,
     private router: Router,
-    private cs: CookieService,
     public loaderService: LoaderService
   ) { }
 
@@ -132,7 +130,6 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // Dark colors for the chart
     const darkColors = [
       'rgba(75, 192, 192, 0.5)',
       'rgba(255, 99, 132, 0.5)',
@@ -140,15 +137,6 @@ export class DashboardComponent implements OnInit {
       'rgba(255, 206, 86, 0.5)',
       'rgba(153, 102, 255, 0.5)',
       'rgba(255, 159, 64, 0.5)',
-      // 'rgba(255, 0, 0, 0.5)',     // Dark red
-      // 'rgba(0, 255, 0, 0.5)',     // Dark green
-      // 'rgba(0, 0, 255, 0.5)',     // Dark blue
-      // 'rgba(255, 255, 0, 0.5)',   // Dark yellow
-      // 'rgba(128, 0, 128, 0.5)',   // Dark purple
-      // 'rgba(0, 255, 255, 0.5)',   // Dark cyan
-      // 'rgba(255, 140, 0, 0.5)',   // Dark orange
-      // 'rgba(0, 128, 0, 0.5)',     // Dark green
-      // 'rgba(128, 128, 128, 0.5)', // Dark gray
     ];
 
 

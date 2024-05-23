@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   onLogout(): void {
     this.cs.deleteAll();
     this.store.dispatch(clearState())
-    this.router.navigate(["login"]);
+    this.router.navigate(["auth/login"]);
   }
 
 }

@@ -30,7 +30,7 @@ import { NavbarComponent } from './component/navbar/navbar.component';
     SidebarComponent,
     LoaderComponent,
     DashboardComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
