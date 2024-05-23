@@ -2,10 +2,7 @@
   <div class="itemImage">
     <img
       class="image"
-      src="https://stockwisebucket.s3.ap-south-1.amazonaws.com/{{
-        selectedItem?.itemImage
-      }}"
-      (error)="handleImageError()"
+      src="{{ selectedItem?.itemImage ? 'https://stockwisebucket.s3.ap-south-1.amazonaws.com/' + selectedItem?.itemImage : noItemImage }}"
       alt="image not found"
     />
   </div>

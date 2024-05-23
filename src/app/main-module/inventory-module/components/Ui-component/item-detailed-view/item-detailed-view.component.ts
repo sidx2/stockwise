@@ -10,11 +10,6 @@ import { Item } from '../../../models/inventory';
 export class ItemDetailedViewComponent {
 
   @Input() selectedItem: Item | null = null;
-
-  handleImageError() {
-    console.log('Image loading failed.');
-    const imgElement = document.querySelector('.image') as HTMLImageElement;
-    imgElement.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTuSpR_FwEIFFf0C8vSnQ4kMVW7KO4iNdYgjdUok3Ew&s';
-  }
-
+  noItemImage: string = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTuSpR_FwEIFFf0C8vSnQ4kMVW7KO4iNdYgjdUok3Ew&s';
+  
 }
