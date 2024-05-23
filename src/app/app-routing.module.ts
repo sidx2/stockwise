@@ -7,15 +7,19 @@ import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
-    canActivate: [loggedOutGuard],
-    path: "auth",
-    loadChildren: () => import("./auth-module/auth.module").then(m => m.AuthModule),
-  },
-  {
     canActivate: [authGuard],
     path: '',
     loadChildren: () => import('./main-module/main.module').then(m => m.MainModule),
   },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth-module/auth.module').then(m => m.AuthModule),
+  },
+  {
+    path:'**',
+    redirectTo: 'auth',
+    pathMatch:'full'
+  }
 ];
 
 @NgModule({

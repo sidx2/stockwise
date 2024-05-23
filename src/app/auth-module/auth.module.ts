@@ -13,12 +13,14 @@ import { StoreModule } from '@ngrx/store';
 import { authReducer } from './store/auth.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { authEffects } from './store/auth.effects';
+import { AuthWrapperComponent } from './components/Feature-components/auth-wrapper/auth-wrapper.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     AuthComponent,
-    SignupComponent
+    SignupComponent,
+    AuthWrapperComponent
   ],
   imports: [
     CommonModule,

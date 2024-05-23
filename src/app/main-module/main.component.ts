@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGlobalState } from '../../../store/global.reducers';
+import { IGlobalState } from '../store/global.reducers';
 import { Store } from '@ngrx/store';
-import { LoaderService } from '../../share-module/services/loader.service';
-import { ErrorService } from '../../share-module/services/error.service';
+import { LoaderService } from './share-module/services/loader.service';
+import { ErrorService } from './share-module/services/error.service';
 
 @Component({
   selector: 'app-main',
