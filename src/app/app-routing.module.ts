@@ -3,22 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { RouterComponent } from './router/router.component';
 import { loggedOutGuard } from './guards/logged-out-guard';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
     canActivate: [loggedOutGuard],
-    path: "",
-    loadChildren: () => import("./auth-module/auth-routing.module").then(m => m.AuthRoutingModule),
+    path: "auth",
+    loadChildren: () => import("./auth-module/auth.module").then(m => m.AuthModule),
   },
   {
     canActivate: [authGuard],
     path: '',
-    loadChildren: () => import('./authenticated.module').then(m => m.AuthenticatedModule),
+    loadChildren: () => import('./main-module/main.module').then(m => m.MainModule),
   },
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
 ];
 
 @NgModule({

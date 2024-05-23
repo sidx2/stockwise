@@ -6,8 +6,6 @@ import { fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserF
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { OrgService } from "../services/org.service";
-import { InventoryState } from "../inventory-module/store/inventory.reducer";
-import { getItemRequest } from "../inventory-module/store/inventory.action";
 import { IGlobalState } from "./global.reducers";
 
 @Injectable()
@@ -16,7 +14,7 @@ export class globalEffects {
     authService$ = inject(AuthService)
     orgService$ = inject(OrgService)
     cs = inject(CookieService);
-    store = inject(Store<{ global: IGlobalState, inventory: InventoryState }>)
+    store = inject(Store<{ global: IGlobalState}>)
 
     constructor() {
         console.log("action$", this.action$)

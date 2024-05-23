@@ -2,81 +2,50 @@ import { APP_INITIALIZER, NgModule, inject, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
-import { ButtonModule } from "primeng/button"
-import { HttpClientModule } from '@angular/common/http';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { ToastrModule, ToastNoAnimationModule } from 'ngx-toastr';
-
-import { ShareModule } from './share-module/share.module';
-import { AuthModule } from './auth-module/auth.module';
-import { CategoryModule } from './category-module/category.module';
-import { InventoryModule } from './inventory-module/inventory.module';
-import { EmployeesModule } from './employees-module/employees.module';
-import { TicketModule } from './ticket-module/ticket.module';
+import { init } from './store/global.actions';
+import { Actions } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { IGlobalState } from './store/global.reducers';
 
 import { AppComponent } from './app.component';
-import { RouterComponent } from './router/router.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
-import { categoryReducer } from './category-module/store/category.reducer';
-import { inventoryReducer } from './inventory-module/store/inventory.reducer';
-import { vendorReducer } from './vendors-module/store/vendor.reducers';
-import { IGlobalState, globalReducer } from './store/global.reducers';
-import { employeesReducer } from './employees-module/store/employees.reducers';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ToastrModule } from 'ngx-toastr';
+
+import { categoryReducer } from './main-module/category-module/store/category.reducer';
+import { inventoryReducer } from './main-module/inventory-module/store/inventory.reducer';
+import { vendorReducer } from './main-module/vendors-module/store/vendor.reducers';
+import { globalReducer } from './store/global.reducers';
+import { employeesReducer } from './main-module/employees-module/store/employees.reducers';
+import { ticketReducer } from './main-module/ticket-module/store/ticket.reducer';
 
 import { globalEffects } from './store/global.effects';
-import { CategoryEffects } from './category-module/store/category.effect';
-import { InventoryEffects } from './inventory-module/store/inventory.effect';
-import { EmployeeEffects } from './employees-module/store/employees.effects';
-import { vendorEffects } from './vendors-module/store/vendor.effects';
+import { CategoryEffects } from './main-module/category-module/store/category.effect';
+import { InventoryEffects } from './main-module/inventory-module/store/inventory.effect';
+import { EmployeeEffects } from './main-module/employees-module/store/employees.effects';
+import { vendorEffects } from './main-module/vendors-module/store/vendor.effects';
+import { TicketEffects } from './main-module/ticket-module/store/ticket.effect';
 
-import { Store, StoreModule } from '@ngrx/store';
-import { Actions, EffectsModule } from '@ngrx/effects';
-
-import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { init } from './store/global.actions';
-import { authInterceptor } from './interceptors/auth.interceptor';
-import { LoaderInterceptor } from './share-module/interceptors/loaderInterceptor';
-import { ErrorInterceptor } from './share-module/interceptors/errorInterceptor';
-
-import { ticketReducer } from './ticket-module/store/ticket.reducer';
-import { TicketEffects } from './ticket-module/store/ticket.effect';
-import { ProfileComponent } from './profile/profile.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { AuthModule } from './auth-module/auth.module';
 
 const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DashboardComponent,
-    RouterComponent,
-    ProfileComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    ButtonModule,
     AuthModule,
-
-    CategoryModule,
-    InventoryModule,
-    TicketModule,
-    EmployeesModule,
-
-    MatIconModule,
-    MatCardModule,
-    MatListModule,
-    ShareModule,
-
     SocketIoModule.forRoot(config),
 
     ToastrModule.forRoot({
@@ -88,7 +57,6 @@ const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
     }),
 
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer, tickets: ticketReducer }),
-    ShareModule,
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects, TicketEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -105,17 +73,6 @@ const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
       deps: [Actions],
       multi: true
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoaderInterceptor,
-      multi: true
-    },
-    provideHttpClient(withInterceptors([authInterceptor,])),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    }
   ],
   bootstrap: [AppComponent],
 

@@ -1,11 +1,2 @@
-<div class="app">
-    <ng-container *ngIf="(global$ | async) as global">
-        <app-navbar *ngIf="global.isLoggedIn" ></app-navbar>
-    </ng-container>
-
-    <router-outlet></router-outlet>
-
-    <app-loader *ngIf="loaderService.isLoading$ | async"></app-loader>
-</div>
-
+<router-outlet></router-outlet>
 
