@@ -11,7 +11,7 @@ export class TicketAdminCardComponent {
   @Input() ticket: Ticket | null = null
   @Output() updateStatusEmmiter: EventEmitter<string> = new EventEmitter();
 
-  updateStatusHandler(ticketId: string){
+  updateStatusHandler(ticketId: string | undefined){
     console.log("inside ticket admin card");
     this.updateStatusEmmiter.emit(ticketId);
   }
