@@ -24,22 +24,6 @@ export class TicketEffects {
         )
     ));
 
-    loadAllTicket$ = createEffect(() => this.actions$.pipe(
-        ofType(getAllTicketRequest),
-        tap(() => console.log('getAllTicketsRequest dispatched')),
-        mergeMap((action) =>
-            this.ticketService.getAllTickets(action.orgId).pipe( 
-                map(response => setAllTickets({ allTickets: response })),
-                tap(action => console.log('Dispatched action setAllTickets')),
-                catchError(error => {
-                    console.error('Error in loading all tickets:', error);
-                    return of();
-                })
-            )
-        )
-    ));
-
-
     createTicket$ = createEffect(() => this.actions$.pipe(
         ofType(createTicketRequest),
         tap(() => console.log('createTicketRequest dispatched')),
@@ -54,23 +38,6 @@ export class TicketEffects {
             )
         )
     ));
-
-    updateTicketStatus$ = createEffect(() => this.actions$.pipe(
-        ofType(updateTicketStatusRequest),
-        tap(() => console.log('updateTicketStatusRequest dispatched')),
-        mergeMap((action) =>
-            this.ticketService.updateTicketStatus(action.updatedStatus).pipe(
-                map(response => updateTicket({ ticket: response })),
-                tap(action => console.log('Dispatched action updateTicket')),
-                catchError(error => {
-                    console.error('Error in updating ticket:', error);
-                    return of(); // or any other error handling logic
-                })
-            )
-        )
-    ));
-    
-    
 
     constructor(
         private actions$: Actions,

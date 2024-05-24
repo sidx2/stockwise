@@ -14,14 +14,6 @@ export class TicketService {
     return this.http.get<Ticket[]>(`${BASE_URL}/ticket/userTickets`);
   }
 
-  getAllTickets(orgId: string) {
-    return this.http.get<Ticket[]>(`${BASE_URL}/ticket/${orgId}`);
-  }
-
-  updateTicketStatus(updatedStatus: UpdateStatus){
-    return this.http.put<Ticket>(`${BASE_URL}/ticket/update`, updatedStatus);
-  }
-
   createTicket(ticket: Ticket){
     return this.http.post<Ticket>(`${BASE_URL}/ticket/create`, ticket);
   }

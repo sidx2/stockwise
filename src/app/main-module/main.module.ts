@@ -20,6 +20,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { TicketAdminModule } from './ticket-admin-module/ticket-admin.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     OrderModule,
     OrderHistoryModule,
     TicketModule,
+    TicketAdminModule,
     EmployeesModule,
     MatIconModule,
     MatCardModule,

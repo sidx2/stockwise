@@ -29,7 +29,7 @@ import { AuthWrapperComponent } from './components/Feature-components/auth-wrapp
     FloatLabelModule,
     InputTextModule,
     ReactiveFormsModule,
-    // StoreModule.forFeature("auth", authReducer),
+    StoreModule.forFeature("auth", authReducer),
     EffectsModule.forFeature([authEffects])
   ]
 })

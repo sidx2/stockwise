@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, map } from 'rxjs';
-import { Ticket, UpdateStatus } from '../../../models/ticket.model';
+import { Ticket } from '../../../models/ticket-admin';
 import { UserAsset } from '../../../../inventory-module/models/inventory';
-import { TicketState } from '../../../store/ticket.reducer';
+import { TicketAdminState } from '../../../store/ticket-admin.reducer';
 import { InventoryState } from '../../../../inventory-module/store/inventory.reducer';
 import { Store } from '@ngrx/store';
-import { getAllTicketRequest, updateTicketStatusRequest } from '../../../store/ticket.action';
+import { getAllTicketRequest, updateTicketStatusRequest } from '../../../store/ticket-admin.action';
+import { UpdateStatus } from '../../../models/ticket-admin';
 
 @Component({
   selector: 'app-ticket-admin',
@@ -18,14 +19,14 @@ export class TicketAdminComponent {
   userAssets$: Observable<UserAsset[]>;
   private orgSubscription: Subscription | undefined;
 
-  selectedTicket: Ticket | null = null
+  selectedTicketId: string = '';
   orgId: string = '';
   isTicketFormVisible: boolean = false;
   filterTag: string = 'all';
   isUpdateFormVisible: boolean = false;
 
-  constructor(private store: Store<{ global: any, tickets: TicketState, inventory: InventoryState }>) {
-    this.tickets$ = this.store.select(state => state.tickets.allTickets);
+  constructor(private store: Store<{ global: any, ticketsAdmin: TicketAdminState, inventory: InventoryState }>) {
+    this.tickets$ = this.store.select(state => state.ticketsAdmin.allTickets);
     this.filteredTickets$ = this.tickets$
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
   }
@@ -56,18 +57,18 @@ export class TicketAdminComponent {
     );
   }
 
-  showUpdateStatusForm(ticket: Ticket){
-    this.selectedTicket = ticket;
+  showUpdateStatusForm(ticketId: string){
+    this.selectedTicketId = ticketId;
     this.isUpdateFormVisible = true;
   }
 
   hideUpdateStatusForm(){
-    this.selectedTicket = null;
+    this.selectedTicketId = '';
     this.isUpdateFormVisible = false
   }
 
   updateStatusHandler(updatedStatus: UpdateStatus){
-    updatedStatus.ticketId = this.selectedTicket?._id;
+    updatedStatus.ticketId = this.selectedTicketId;
     this.store.dispatch(updateTicketStatusRequest({updatedStatus}));
     console.log("updated status recieved", updatedStatus)
     this.hideUpdateStatusForm()

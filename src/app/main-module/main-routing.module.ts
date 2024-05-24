@@ -4,8 +4,6 @@ import { MainComponent } from './main.component';
 import { adminGuard } from './admin.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { TicketComponent } from './ticket-module/components/Feature-component/ticket/ticket.component';
-import { TicketAdminComponent } from './ticket-module/components/Feature-component/ticket-admin/ticket-admin.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
@@ -33,7 +31,7 @@ const routes: Routes = [
           },
           {
             path: 'ticketAdmin',
-            component: TicketAdminComponent
+            loadChildren: () => import("./ticket-admin-module/ticket-admin.module").then(m => m.TicketAdminModule),
           },
           {
             path: 'vendors',
@@ -64,7 +62,7 @@ const routes: Routes = [
       },
       {
         path: 'ticket',
-        component: TicketComponent
+        loadChildren: () => import("./ticket-module/ticket.module").then(m => m.TicketModule),
       },
       {
         path: 'landingPage',

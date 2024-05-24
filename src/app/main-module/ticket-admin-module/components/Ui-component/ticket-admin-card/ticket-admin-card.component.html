@@ -12,7 +12,11 @@
       {{ ticket.createdAt | date : "MMM dd, yyyy, hh:mm a" }}
     </div>
   </div>
-  
+
+  <div>
+    Raised By: <span>{{ ticket.userName }}</span>
+  </div>
+
   <div class="ticketDetails">
     <h3>{{ ticket.issueType }}</h3>
     <p>{{ ticket.description }}</p>
@@ -22,5 +26,9 @@
     <h4 *ngIf="ticket.remark">
       Remark: <span>{{ ticket.remark }}</span>
     </h4>
+  </div>
+
+  <div>
+    <button appButtonPrimary (click)="updateStatusHandler(ticket?._id)">Update Status</button>
   </div>
 </div>

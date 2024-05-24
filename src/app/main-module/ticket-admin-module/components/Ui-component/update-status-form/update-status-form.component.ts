@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UpdateStatus } from '../../../models/ticket.model';
+import { UpdateStatus } from '../../../models/ticket-admin';
 
 @Component({
   selector: 'app-update-status-form',

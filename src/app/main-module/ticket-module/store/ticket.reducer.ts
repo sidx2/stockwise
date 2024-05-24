@@ -4,12 +4,10 @@ import { addTicket, setUserTickets, setAllTickets, updateTicket } from './ticket
 
 export interface TicketState {
     userTickets: Ticket[];
-    allTickets: Ticket[];
 }
 
 export const initialState: TicketState = {
     userTickets: [],
-    allTickets: []
 };
 
 export const ticketReducer = createReducer(
@@ -20,22 +18,8 @@ export const ticketReducer = createReducer(
         return { ...state, userTickets: userTickets };
     }),
 
-    on(setAllTickets, (state, { allTickets }) => {
-        console.log("All tickets are fetched successfully.");
-        return { ...state, allTickets: allTickets };
-    }),
-
     on(addTicket, (state, { ticket }) => {
         return { ...state, userTickets: [...state.userTickets, ticket] };
     }),
 
-    on(updateTicket, (state, { ticket }) => {
-        const updatedAllTickets = state.allTickets.map(t =>
-          t._id === ticket._id ? ticket : t
-        );
-        const updatedUserTickets = state.userTickets.map(t =>
-          t._id === ticket._id ? ticket : t
-        );
-        return { ...state, allTickets: updatedAllTickets, userTickets: updatedUserTickets };
-      }),
 );
