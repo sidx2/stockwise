@@ -35,7 +35,7 @@ export class SignupComponent {
 
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
-      this.cookieService.set("token", data.user.token, expiryDate)
+      this.cookieService.set("token", data.user.token??"", expiryDate)
       this.cookieService.set("user", JSON.stringify(data.user), expiryDate)
       this.cookieService.set("isLoggedin", "true", expiryDate)
 
