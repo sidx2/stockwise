@@ -21,7 +21,7 @@ export class OrderCardComponent {
       return;
     }
     this.editing = _id
-    this.m_status = this.history.filter((h:any) => h._id == _id)[0].status
+    this.m_status = this.history.filter((h:Order) => h._id == _id)[0].status;
   }
 
   onStatusUpdate(updatedStatus: string) {

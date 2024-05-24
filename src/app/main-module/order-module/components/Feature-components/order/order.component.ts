@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
 import { productVendorsSelector } from '../../../store/order.selectors';
@@ -9,14 +9,9 @@ import { tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { IOrderState } from '../../../store/order.reducers';
 import { IGlobalState, Org, User } from '../../../../../store/global.reducers';
+import { OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/store/vendor.reducers';
-
-
-export interface Product {
-  _id: string,
-  item: any,
-  vendors: Vendor[]
-}
+import { CartItem } from '../../../../order-history-module/order-history-component/Feature-components/order-history/order-history.component';
 
 @Component({
   selector: 'app-order',
@@ -25,21 +20,22 @@ export interface Product {
 })
 export class OrderComponent {
   dynamicForm: FormGroup;
-  store = inject(Store<{ order: IOrderState, global: IGlobalState }>);
   org!: Org
   user!: User
-  items!: any[]
-  action$ = inject(Actions)
 
   products: Product[] = [];
-  selectedProductVendors: any[][] = [];
+  selectedProductVendors: Vendor[][] = [];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<{ order: IOrderState, global: IGlobalState }>,
+    private actions$: Actions,
+  ) {
     this.store.select(orgSelector).subscribe((org) => { this.org = org; })
     this.store.select(userSelector).subscribe((user) => { this.user = user; })
 
     this.dynamicForm = this.formBuilder.group({
-      formDataArray: this.formBuilder.array([])
+      OrderFormArray: this.formBuilder.array([])
     })
 
     this.store.dispatch(getProductVendorsRequest())
@@ -47,75 +43,78 @@ export class OrderComponent {
       this.products = pv;
     })
 
-    this.action$.pipe(
+    this.actions$.pipe(
       ofType(placeOrderSuccess),
       tap((order) => {
-        alert("Order placed successfully!")
+        alert("Order placed successfully!");
       })
     )
   }
 
-  get formDataArray() {
-    return this.dynamicForm.get('formDataArray') as FormArray;
+  get OrderFormArray() {
+    return this.dynamicForm.get('OrderFormArray') as FormArray;
   }
 
   createFormGroup(): FormGroup {
     return this.formBuilder.group({
-      product: '',
-      vendor: '',
-      quantity: 0
+      product: ['', Validators.required],
+      vendor: ['', Validators.required],
+      quantity: [0, [Validators.required, Validators.min(1), Validators.max(999)]],
     });
   }
 
   addFormData() {
-    this.formDataArray.push(this.createFormGroup());
-    // this.selectedProductVendors.push(this.products[0].vendors);
+    this.OrderFormArray.push(this.createFormGroup());
   }
 
   onProductChange(index: number) {
-    const selectedProduct = this.dynamicForm.get(`formDataArray.${index}.product`)?.value;
+    const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
     const productIndex = this.products.findIndex(product => product.item._id === selectedProduct);
     this.selectedProductVendors[index] = this.products[productIndex].vendors;
+
+    console.log("selectedProductVendors:", this.selectedProductVendors);
   }
 
   removeProduct(index: number) {
     if (confirm("Are you sure want to remove this order?")) {
-      this.formDataArray.removeAt(index);
+      this.OrderFormArray.removeAt(index);
       this.selectedProductVendors.splice(index, 1);
     }
   }
 
   removeAll() {
     if (confirm("Are you sure want to remove all orders?")) {
-      this.formDataArray.clear();
+      this.OrderFormArray.clear();
       this.selectedProductVendors = [];
     }
   }
 
-
   placeOrder() {
-    if (!this.formDataArray.valid) {
-      alert("All fields are required!");
+    if (!this.OrderFormArray.valid) {
+      alert("All fields are required! and quantity should be between 1 and 999");
       return;
     }
-    const objectifiedVendors = this.formDataArray.value.map((formDataElement: any) => {
-      const newFormDataElement = formDataElement;
-      newFormDataElement.vendor = JSON.parse(newFormDataElement.vendor);
-      newFormDataElement.item = this.products.filter((product) => {
-        return product.item._id == newFormDataElement.product
+
+    const cart = this.OrderFormArray.value.map((orderForm: OrderForm) => {
+      const cartItem: CartItem = { 
+        item: { _id: "", name: "", categoryId: "" },
+        vendor: orderForm.vendor,
+        quantity: orderForm.quantity,
+      };
+
+      cartItem.item = this.products.filter((product) => {
+        return product.item._id == orderForm.product
       })[0].item;
-      delete newFormDataElement.product
-      return newFormDataElement;
+      return cartItem;
     })
 
-
     const order = {
-      org: this.org,
-      admin: this.user,
-      cart: objectifiedVendors
+      org: { _id: this.org._id },
+      admin: { 
+        _id: this.user._id, 
+        name: this.user.name },
+      cart,
     }
-
-    console.log("order: ", order);
 
     this.store.dispatch(placeOrderRequest(order))
 
@@ -124,18 +123,7 @@ export class OrderComponent {
   }
 
   cleanForms() {
-    this.formDataArray.clear();
+    this.OrderFormArray.clear();
     this.selectedProductVendors = [];
-  }
-
-  JSONStringify(obj: Object) {
-    return JSON.stringify(obj);
-  }
-
-  onQuantityChange(e: any, i: number) {
-    const newValue = e.target.value;
-    const formGroup = this.formDataArray.at(i) as FormGroup;
-    formGroup.get('quantity')?.setValue(newValue);
-    this.removeAll();
   }
 }

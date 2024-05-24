@@ -1,8 +1,8 @@
 <div >
 
   <form [formGroup]="dynamicForm">
-    <div formArrayName="formDataArray" class="form-container">
-      <div *ngFor="let formGroup of formDataArray.controls; let i=index" [formGroupName]="i" class="form-group">
+    <div formArrayName="OrderFormArray" class="form-container">
+      <div *ngFor="let formGroup of OrderFormArray.controls; let i=index" [formGroupName]="i" class="form-group">
         <label for="product">Product:</label>
         <select id="product" formControlName="product" (change)="onProductChange(i)">
           <option *ngFor="let product of products" [value]="product.item._id">{{ product.item.name }}</option>
@@ -10,7 +10,7 @@
 
         <label for="vendor">Vendor:</label>
         <select id="vendor" formControlName="vendor">
-          <option *ngFor="let vendor of selectedProductVendors[i]" [value]="JSONStringify(vendor)">{{ vendor.name }}
+          <option *ngFor="let vendor of selectedProductVendors[i]" [ngValue]="vendor">{{ vendor.name }}
           </option>
         </select>
 

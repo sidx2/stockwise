@@ -11,11 +11,17 @@ export interface Admin {
   role: string,
 }
 
+export interface CartItem {
+  vendor: { name: string, _id: string },
+  quantity: number,
+  item: { _id: string, name: string, categoryId: string }
+}
+
 export interface Order {
   _id: string,
   org: Org,
   admin: Admin,
-  cart: any[],
+  cart: CartItem[],
   status: string,
   isActive: true,
   createdAt: Date
