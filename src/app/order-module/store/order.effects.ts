@@ -21,7 +21,7 @@ export class orderEffects {
                         return getProductVendorsSuccess({productVendors: res})
                     }),
                     catchError((err) =>
-                        of(getProductVendorsFailure({ error: "something fucked up! LoL!" }))
+                        of(getProductVendorsFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -38,7 +38,7 @@ export class orderEffects {
                         return placeOrderSuccess(res)
                     }),
                     catchError((err) =>
-                        of(placeOrderFailure({ error: "something fucked up! LoL!" }))
+                        of(placeOrderFailure({ error: "Something went wrong" }))
                     )
                 )
             )

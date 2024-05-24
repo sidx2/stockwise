@@ -32,7 +32,7 @@ export class globalEffects {
                         return loginUserSuccess(res)
                     }),
                     catchError((err) =>
-                        of(loginUserFailure({ error: "something fucked up! LoL!" }))
+                        of(loginUserFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -52,7 +52,7 @@ export class globalEffects {
                     }),
                     catchError((err) => {
                         console.log("err: ", err)
-                        return of(fetchOrgFailure({ error: "something fucked up! LoL!" }))
+                        return of(fetchOrgFailure({ error: "Something went wrong" }))
                     }
                     )
                 )

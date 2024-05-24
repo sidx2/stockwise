@@ -24,7 +24,7 @@ export class EmployeeEffects {
                         return fetchEmployeesSuccess({ employees: res})
                     }),
                     catchError((err) =>
-                        of(fetchEmployeesFailure({ error: "something fucked up! LoL!" }))
+                        of(fetchEmployeesFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -41,7 +41,7 @@ export class EmployeeEffects {
                     return updateEmployeeSuccess({ employee: res})
                 }),
                 catchError((err) =>
-                    of(updateEmployeeFailure({ error: "something fucked up! LoL!" }))
+                    of(updateEmployeeFailure({ error: "Something went wrong" }))
                 )
             )
         )
@@ -58,7 +58,7 @@ this.action$.pipe(
                 return deleteEmployeeSuccess({ _id: emp._id })
             }),
             catchError((err) =>
-                of(deleteEmployeeFailure({ error: "something fucked up! LoL!" }))
+                of(deleteEmployeeFailure({ error: "Something went wrong" }))
             )
         )
     )
@@ -76,7 +76,7 @@ this.action$.pipe(
                         return createUserSuccess({ user: res, orgId: data.orgId })
                     }),
                     catchError((err) =>
-                        of(createUserFailure({ error: "something fucked up! LoL!" }))
+                        of(createUserFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -93,7 +93,7 @@ this.action$.pipe(
                         return addEmployeeSuccess({ employee: data.user })
                     }),
                     catchError((err) =>
-                        of(addEmployeeFailure({ error: "something fucked up! LoL!" }))
+                        of(addEmployeeFailure({ error: "Something went wrong" }))
                     )
                 )
             )

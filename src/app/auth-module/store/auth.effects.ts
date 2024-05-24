@@ -21,7 +21,7 @@ export class authEffects {
                         return signupSuccess({user: res})
                     }),
                     catchError((err) =>
-                        of(signupFailre({ error: "something fucked up! LoL!" }))
+                        of(signupFailre({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -38,7 +38,7 @@ export class authEffects {
                         return createOrgSuccess({org: res})
                     }),
                     catchError((err) =>
-                        of(createOrgFailre({ error: "something fucked up! LoL!" }))
+                        of(createOrgFailre({ error: "Something went wrong" }))
                     )
                 )
             )

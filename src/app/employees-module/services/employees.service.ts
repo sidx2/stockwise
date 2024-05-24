@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { orgSelector } from "../../store/global.selectors"
 import { IGlobalState, User } from '../../store/global.reducers';
-import { Employee } from '../store/employees.reducers';
+import { Employee } from '../models/employee';
 
 @Injectable({
   providedIn: 'root'

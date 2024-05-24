@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CheckoutMailDetails, Item } from '../../../models/inventory';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Employee } from '../../../../employees-module/store/employees.reducers';
 import { CheckoutDetails } from '../../../models/inventory';
 import { CheckoutEventData } from '../../../models/inventory';
+import { Employee } from '../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-item-checkout',

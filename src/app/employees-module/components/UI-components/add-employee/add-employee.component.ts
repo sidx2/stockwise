@@ -1,6 +1,7 @@
 import { Component, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IAddEmployee } from '../../../models/employee';
 
 @Component({
   selector: 'app-add-employee',
@@ -8,7 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrl: './add-employee.component.scss'
 })
 export class AddEmployeeComponent {
-  @Output() addEmployee = new EventEmitter<any>();
+  @Output() addEmployee = new EventEmitter<IAddEmployee>();
   visible = false
 
   addEmployeeForm = new FormGroup({
@@ -18,7 +19,7 @@ export class AddEmployeeComponent {
   })
 
   toggleDialog() {
-    this.visible = !this.visible
+    this.visible = !this.visible;
   }
 
   onAddEmployee() {
@@ -26,7 +27,15 @@ export class AddEmployeeComponent {
       alert("All fields are required!");
       return;
     }
-    this.addEmployee.emit({ employee: this.addEmployeeForm.value });
+    
+    const employee = {
+      name: this.addEmployeeForm.value.name!,
+      email: this.addEmployeeForm.value.email!,
+      role: this.addEmployeeForm.value.role!
+    };
+
+    this.addEmployeeForm.reset();
+    this.addEmployee.emit(employee);
     this.toggleDialog();
   }
 }

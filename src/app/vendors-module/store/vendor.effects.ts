@@ -1,12 +1,10 @@
-import { ChangeDetectorRef, Injectable, inject } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Observable, catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, map, of, switchMap } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { VendorsService } from "../services/vendors.service";
 import { fetchVendorsRequest, fetchVendorsFailure, fetchVendorsSuccess, updateVendorRequest, updateVendorSuccess, updateVendorFailure, deleteVendorRequest, deleteVendorSuccess, deleteVendorFailure, addVendorSuccess, addVendorFailure, addVendorRequest } from "./vendor.actions";
-import { addEmployeeRequest } from "../../employees-module/store/employees.actions";
-import { AppService } from "../../services/app.service";
 import { IGlobalState } from "../../store/global.reducers";
 
 @Injectable()
@@ -31,7 +29,7 @@ export class vendorEffects {
                         return fetchVendorsSuccess({vendors: res})
                     }),
                     catchError((err) =>
-                        of(fetchVendorsFailure({ error: "something fucked up! LoL!" }))
+                        of(fetchVendorsFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -49,7 +47,7 @@ export class vendorEffects {
                         return updateVendorSuccess({ vendor: res })
                     }),
                     catchError((err) =>
-                        of(updateVendorFailure({ error: "something fucked up! LoL!" }))
+                        of(updateVendorFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -66,7 +64,7 @@ export class vendorEffects {
                         return deleteVendorSuccess({ vendor: res })
                     }),
                     catchError((err) =>
-                        of(deleteVendorFailure({ error: "something fucked up! LoL!" }))
+                        of(deleteVendorFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -83,7 +81,7 @@ export class vendorEffects {
                     return addVendorSuccess({ vendor: res })
                 }),
                 catchError((err) =>
-                    of(addVendorFailure({ error: "something fucked up! LoL!" }))
+                    of(addVendorFailure({ error: "Something went wrong" }))
                 )
             )
         )

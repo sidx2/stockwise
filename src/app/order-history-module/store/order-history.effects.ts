@@ -22,7 +22,7 @@ export class historyEffects {
                         return fetchHistorySuccess({history: res})
                     }),
                     catchError((err) =>
-                        of(fetchHistoryFailure({ error: "something fucked up! LoL!" }))
+                        of(fetchHistoryFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -39,7 +39,7 @@ export class historyEffects {
                     return updateStatusSuccess({_id: data.orderId, updatedStatus: data.updatedStatus})
                 }),
                 catchError((err) =>
-                    of(updateStatusFailure({ error: "something fucked up! LoL!" }))
+                    of(updateStatusFailure({ error: "Something went wrong" }))
                 )
             )
         )

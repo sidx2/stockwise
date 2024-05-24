@@ -6,12 +6,12 @@ import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, de
 import { Category } from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState } from '../../../store/inventory.reducer';
-import { Employee } from '../../../../employees-module/store/employees.reducers';
 import { CheckinDetails } from '../../../models/inventory';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { Actions, ofType } from '@ngrx/effects';
+import { Employee } from '../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-inventory',

@@ -9,7 +9,7 @@
     </div>
     <div class="vendors-table">
         <app-employees-table 
-            [employees]="(employees | async)" 
+            [employees]="(employees | async)??[]" 
             (updateEmployee)="onUpdateEmployee($event)"
             (deleteEmployee)="onDeleteEmploye($event)"
         ></app-employees-table>

@@ -2,11 +2,10 @@ import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
 import { employeesSelector } from '../../../store/employees.selectors';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { orgSelector } from '../../../../store/global.selectors';
-import { Employee, IEmployeesState } from '../../../store/employees.reducers';
 import { IGlobalState } from '../../../../store/global.reducers';
 import { Observable } from 'rxjs';
+import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
 
 @Component({
   selector: 'app-employees',
@@ -15,20 +14,17 @@ import { Observable } from 'rxjs';
 })
 export class EmployeesComponent {
     store = inject (Store<{ employees: IEmployeesState, global: IGlobalState }>)
-    employees: Observable<any>
+    employees: Observable<Employee[]>
     visible: boolean = false
 
     orgId!: string
-
-
 
     constructor() {
       this.store.dispatch(fetchEmployees())
       this.employees = this.store.select(employeesSelector)
 
       this.store.select(orgSelector).subscribe((org) => {
-        console.log("org in employees component: ", org);
-        this.orgId = org._id
+        this.orgId = org._id;
       })
     }
 
@@ -36,19 +32,17 @@ export class EmployeesComponent {
       this.visible = !this.visible
     }
 
-    onAddEmployee(event: any) {
-      // console.log("data: ", this.addEmployeeForm.value);
+    onAddEmployee(employee: IAddEmployee) {
       this.visible = !this.visible
-
-      this.store.dispatch(createUserRequest({user: event.employee, orgId: this.orgId}))
+      this.store.dispatch(createUserRequest({user: employee, orgId: this.orgId}))
     }
 
-    onUpdateEmployee(event: any) {
-      this.store.dispatch(updateEmployeeRequest({ employee: event.employee }))
+    onUpdateEmployee(employee: Employee) {
+      this.store.dispatch(updateEmployeeRequest({ employee }))
     }
     
-    onDeleteEmploye(event: any) {
+    onDeleteEmploye(_id: string) {
       
-      this.store.dispatch(deleteEmployeeRequest({ _id: event._id }))
+      this.store.dispatch(deleteEmployeeRequest({ _id }))
     }
 }

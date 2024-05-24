@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Vendor } from '../../../store/vendor.reducers';
-import { IEmployeesState } from '../../../../employees-module/store/employees.reducers';
+import { IEmployeesState } from '../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-vendors-table',
@@ -11,6 +11,7 @@ import { IEmployeesState } from '../../../../employees-module/store/employees.re
 export class VendorsTableComponent {
   @Input() vendors!: Vendor[]
   @Input() editors!: string[]
+  
   @Output() startedEditing = new EventEmitter<any>();
   @Output() cancelledEditing = new EventEmitter<any>();
   @Output() updateVendor = new EventEmitter<any>();

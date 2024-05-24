@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { deleteEmployeeRequest, updateEmployeeRequest } from '../../../store/employees.actions';
-import { Employee, IEmployeesState } from '../../../store/employees.reducers';
+import { Employee, IEmployeesState } from '../../../models/employee';
 
 @Component({
   selector: 'app-employees-table',
@@ -11,11 +9,10 @@ import { Employee, IEmployeesState } from '../../../store/employees.reducers';
 })
 export class EmployeesTableComponent {
   @Input() employees!: Employee[]
+  _emps: Employee[] = []
 
-  _emps:any = []
-
-  @Output() updateEmployee = new EventEmitter<any>();
-  @Output() deleteEmployee = new EventEmitter<any>();
+  @Output() updateEmployee = new EventEmitter<Employee>();
+  @Output() deleteEmployee = new EventEmitter<string>();
 
   editing: string = "-1"
   store = inject(Store<{ employees: IEmployeesState }>);
@@ -26,15 +23,14 @@ export class EmployeesTableComponent {
 
   psize: number = 10;
   currPage: number = 1;
-  
+
   onEdit(_id: string) {
     this.editing = _id
-    const editingEmp = this.employees?.filter((e: Employee) => e._id == _id)[0]
-    
-    console.log("editingEmp: ", editingEmp)
-    this.m_name = editingEmp?.name || ""
-    this.m_email = editingEmp?.email || ""
-    this.m_role = editingEmp?.role || ""
+    const editingEmp = this.employees?.filter((emp: Employee) => emp._id == _id)[0]
+
+    this.m_name = editingEmp?.name || "";
+    this.m_email = editingEmp?.email || "";
+    this.m_role = editingEmp?.role || "";
   }
 
   onCancel() {
@@ -47,22 +43,22 @@ export class EmployeesTableComponent {
       return;
     }
     this.updateEmployee.emit({
-      employee: {_id: this.editing,
+      _id: this.editing,
       name: this.m_name,
       email: this.m_email,
-      role: this.m_role}
+      role: this.m_role
     })
-    this.editing = "-1"
-    console.log(this.m_name, this.m_email, this.m_role)
+    this.editing = "-1";
   }
-  
+
   onDelete(_id: string) {
-    if (confirm("Are you sure want to delete this employee")) this.deleteEmployee.emit({ _id })
+    if (confirm("Are you sure want to delete this employee?")) 
+      this.deleteEmployee.emit(_id)
   }
 
   search(e: any) {
     if (!this._emps.length) this._emps = this.employees
     this.currPage = 1;
-    this.employees = this._emps.filter((emp:any) => JSON.stringify(emp).toLowerCase().includes(e.target.value))
+    this.employees = this._emps.filter((emp: any) => JSON.stringify(emp).toLowerCase().includes(e.target.value))
   }
 }
