@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { IGlobalState } from '../../../store/global.reducers';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { clearState } from '../../../store/global.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -37,7 +36,7 @@ export class NavbarComponent implements OnInit {
     console.log("Toggling sidebar...");
     this.isSidebarOpen = !this.isSidebarOpen;
     console.log("isSidebarOpen", this.isSidebarOpen);
-    event.stopPropagation(); // Stop propagation here
+    event.stopPropagation(); 
   }
   
   closeSidebar() {

@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { setCategories, addCategory, removeCategory, updateCategory} from './category.action';
 import { Category } from '../models/category';
+import { logoutUserSuccess } from '../../../store/global.actions';
 
 export const initialState: Category[] = [];
 
@@ -28,4 +29,5 @@ export const categoryReducer = createReducer(
     return updatedState;
   }),
 
+  on(logoutUserSuccess, ()=>  initialState)
 );

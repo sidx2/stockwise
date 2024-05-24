@@ -29,6 +29,6 @@
   </div>
 
   <div class="ticketAction" *ngIf="ticket.status !== 'resolved'">
-    <button appButtonPrimary (click)="updateStatusHandler(ticket?._id)">Update Status</button>
+    <button appButtonPrimary (click)="updateStatusHandler(ticket._id)">Update Status</button>
   </div>
 </div>

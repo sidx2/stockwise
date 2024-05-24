@@ -9,9 +9,7 @@ export const deleteItemRequest = createAction('[Item] Delete Item Request', prop
 export const updateItemRequest = createAction('[Item] Update Item Request', props<{ updatedItem: Item }>());
 
 export const checkoutItemRequest = createAction('[Item] Checkout Item Request', props<{assignedToDetails: CheckoutDetails}>());
-
 export const checkoutMailRequest = createAction('[Item] Checkout Item Request', props<{checkoutMailDetails: CheckoutMailDetails}>());
-
 export const checkinItemRequest = createAction('[Item] Checkin Item Request', props<{checkinDetails: CheckinDetails}>());
 
 // Actions updating state

@@ -10,6 +10,8 @@ import { OrderModule } from './order-module/order.module';
 import { OrderHistoryModule } from './order-history-module/order-history.module';
 import { TicketModule } from './ticket-module/ticket.module';
 import { EmployeesModule } from './employees-module/employees.module';
+import { TicketAdminModule } from './ticket-admin-module/ticket-admin.module';
+import { StoreModule } from '@ngrx/store';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +22,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
-import { TicketAdminModule } from './ticket-admin-module/ticket-admin.module';
+
 
 @NgModule({
   declarations: [

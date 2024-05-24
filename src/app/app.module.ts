@@ -33,7 +33,7 @@ import { SharedModule } from './shared-module/shared.module';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { AuthModule } from './auth-module/auth.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { LoaderInterceptor } from './interceptors/loaderInterceptor';
+import { LoaderInterceptor } from './shared-module/interceptors/loaderInterceptor';
 import { ErrorInterceptor } from './interceptors/errorInterceptor';
 
 const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };

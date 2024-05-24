@@ -34,7 +34,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     })
     this.fetchCategoryHandler();
 
-
     // catgory created successfully
     this.actions$.pipe(
       ofType(addCategory)
