@@ -1,4 +1,4 @@
-<div class="order-card" *ngIf="editing !== order._id; else elseBlock">
+<div class="order-card" *ngIf="editingId !== order._id; else elseBlock">
 
     <div class="order-header">
         <div class="order-meta">
@@ -55,7 +55,7 @@
                     </select>
                     <button appButtonPrimaryLight (click)="edit('-1')">
                         <mat-icon>cancel</mat-icon>
-                        </button>
+                    </button>
                 </div>
             </div>
             <div class="order-date">

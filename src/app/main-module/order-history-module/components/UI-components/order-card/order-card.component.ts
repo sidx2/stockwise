@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Order } from '../../Feature-components/order-history/order-history.component';
+import { IStatusUpdated, Order } from '../../../models/order-history';
 
 @Component({
   selector: 'app-order-card',
@@ -10,22 +10,22 @@ export class OrderCardComponent {
   @Input() order!: Order
   @Input() history!: Order[]
 
-  @Output() statusUpdated = new EventEmitter<any>();
+  @Output() statusUpdated = new EventEmitter<IStatusUpdated>();
 
-  editing = "-1"
-  m_status!:string
+  editingId: string = "-1"
+  m_status!: string
 
-  edit(_id:string) {
+  edit(_id: string) {
     if (_id == "-1") {
-      this.editing = "-1";
+      this.editingId = "-1";
       return;
     }
-    this.editing = _id
-    this.m_status = this.history.filter((h:Order) => h._id == _id)[0].status;
+    this.editingId = _id
+    this.m_status = this.history.filter((h: Order) => h._id == _id)[0].status;
   }
 
   onStatusUpdate(updatedStatus: string) {
-    this.statusUpdated.emit({orderId: this.editing, updatedStatus });
+    this.statusUpdated.emit({ orderId: this.editingId, updatedStatus });
     this.edit("-1");
   }
 }

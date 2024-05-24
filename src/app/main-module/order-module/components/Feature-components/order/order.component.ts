@@ -11,7 +11,7 @@ import { IOrderState } from '../../../store/order.reducers';
 import { IGlobalState, Org, User } from '../../../../../store/global.reducers';
 import { OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/store/vendor.reducers';
-import { CartItem } from '../../../../order-history-module/components/Feature-components/order-history/order-history.component';
+import { CartItem } from '../../../../order-history-module/models/order-history';
 
 @Component({
   selector: 'app-order',
