@@ -1,8 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { IGlobalState } from '../../../store/global.reducers';
 import { Store } from '@ngrx/store';
 import { userSelector } from '../../../store/global.selectors';
-import { User } from '../../../store/global.reducers';
+import { IGlobalState, User } from '../../../models/global';
 
 @Component({
   selector: 'app-sidebar',

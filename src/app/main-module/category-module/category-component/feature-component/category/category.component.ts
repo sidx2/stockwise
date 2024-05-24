@@ -4,8 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription} from 'rxjs';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory, updateCategory } from '../../../store/category.action';
 import { Actions, ofType } from '@ngrx/effects';
-import { Action } from 'rxjs/internal/scheduler/Action';
-import { IGlobalState } from '../../../../../store/global.reducers';
+import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-category',

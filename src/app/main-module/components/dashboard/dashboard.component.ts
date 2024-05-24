@@ -6,7 +6,7 @@ import { Category } from '../../category-module/models/category';
 import { getCategoryRequest } from '../../category-module/store/category.action';
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto';
-import { IGlobalState } from '../../../store/global.reducers';
+import { IGlobalState } from '../../../models/global';
 
 interface PieChartOptions {
   responsive: boolean;

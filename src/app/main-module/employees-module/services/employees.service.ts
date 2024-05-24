@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Employee } from '../models/employee';
-import { IGlobalState } from '../../../store/global.reducers';
 import { orgSelector } from '../../../store/global.selectors';
+import { IGlobalState } from '../../../models/global';
 
 @Injectable({
   providedIn: 'root'

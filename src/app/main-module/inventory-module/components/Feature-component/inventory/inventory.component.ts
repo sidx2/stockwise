@@ -9,7 +9,7 @@ import { InventoryState } from '../../../store/inventory.reducer';
 import { CheckinDetails } from '../../../models/inventory';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { Actions, ofType } from '@ngrx/effects';
-import { IGlobalState } from '../../../../../store/global.reducers';
+import { IGlobalState } from '../../../../../models/global';
 import { Employee } from '../../../../employees-module/models/employee';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';

@@ -8,10 +8,10 @@ import { userSelector } from '../../../../../store/global.selectors';
 import { tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { IOrderState } from '../../../store/order.reducers';
-import { IGlobalState, Org, User } from '../../../../../store/global.reducers';
 import { OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/store/vendor.reducers';
 import { CartItem } from '../../../../order-history-module/models/order-history';
+import { IGlobalState, Org, User } from '../../../../../models/global';
 
 @Component({
   selector: 'app-order',

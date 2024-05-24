@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { init } from './store/global.actions';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { IGlobalState } from './store/global.reducers';
+import { IGlobalState } from './models/global';
 
 import { AppComponent } from './app.component';
 

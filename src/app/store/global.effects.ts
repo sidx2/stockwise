@@ -6,7 +6,7 @@ import { fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserF
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { OrgService } from "../services/org.service";
-import { IGlobalState } from "./global.reducers";
+import { IGlobalState } from "../models/global";
 
 @Injectable()
 export class globalEffects {
