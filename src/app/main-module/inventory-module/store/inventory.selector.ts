@@ -3,7 +3,14 @@ import { InventoryState } from './inventory.reducer';
 
 export const selectInventoryState = createFeatureSelector<InventoryState>('inventory');
 
-export const selectItems = createSelector(
+export const inventorySelector = createSelector(
     selectInventoryState,
     (state: InventoryState) => state.items
 );
+
+export const usrAssetSelector = createSelector(
+    selectInventoryState,
+    (state: InventoryState) => state.userAssets
+);
+
+
