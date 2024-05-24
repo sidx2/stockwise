@@ -1,0 +1,94 @@
+<div class="sidebar">
+  <ul>
+    <li *ngIf="user.role === 'admin'">
+      <a
+        [routerLink]="['/dashboard']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'">
+      <a
+        [routerLink]="['/category']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>category</mat-icon>
+        Category
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'">
+      <a
+        [routerLink]="['/inventory']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>inventory</mat-icon>
+        Inventory
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'">
+      <a
+        [routerLink]="['/employees']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>people</mat-icon>
+        Employee
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'"> 
+      <a
+        [routerLink]="['/vendors']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>store</mat-icon>
+        Vendor
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'">
+      <a
+        [routerLink]="['/order']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+        Order
+      </a>
+    </li>
+    <li >
+      <a
+        [routerLink]="['/ticket']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>help</mat-icon>
+        Help Desk
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'">
+      <a
+        [routerLink]="['/ticketAdmin']"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
+        <mat-icon>admin_panel_settings</mat-icon>
+        Help Desk Admin
+      </a>
+    </li>
+    <li *ngIf="user.role === 'admin'">
+        <a
+          [routerLink]="['/history']"
+          routerLinkActive="active"
+          (click)="closeSidebar()"
+        >
+          <mat-icon>history</mat-icon>
+          Order History
+        </a>
+      </li>
+  </ul>
+</div>

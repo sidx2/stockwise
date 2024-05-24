@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IGlobalState } from '../store/global.reducers';
 import { Store } from '@ngrx/store';
-import { LoaderService } from './share-module/services/loader.service';
-import { ErrorService } from './share-module/services/error.service';
 
 @Component({
   selector: 'app-main',
@@ -13,8 +11,7 @@ import { ErrorService } from './share-module/services/error.service';
 export class MainComponent {
   global$: Observable<IGlobalState> | null = null;
 
-  constructor(private store: Store<{ global: IGlobalState}>, public loaderService:LoaderService,
-    public errorService: ErrorService){
+  constructor(private store: Store<{ global: IGlobalState}>){
     this.global$ = this.store.select('global')
   }
 }

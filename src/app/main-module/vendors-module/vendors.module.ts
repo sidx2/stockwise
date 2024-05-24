@@ -22,7 +22,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { ShareModule } from '../share-module/share.module';
+import { SharedModule } from 'primeng/api';
 import { AddVendorComponent } from './components/UI-components/add-vendor/add-vendor.component';
 
 @NgModule({
@@ -47,7 +47,7 @@ import { AddVendorComponent } from './components/UI-components/add-vendor/add-ve
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
-    ShareModule,
+    SharedModule,
     MatIconModule,
     MatTooltipModule,
     StoreModule.forFeature("vendors", vendorReducer),
