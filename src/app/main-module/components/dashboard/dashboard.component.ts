@@ -41,6 +41,7 @@ interface PieChartOptions {
 export class DashboardComponent implements OnInit {
   
   @ViewChild('pieChart') private pieChartRef!: ElementRef<HTMLCanvasElement>;
+
   categories$: Observable<Category[]> | null = null;
   orgId: string = '';
 
@@ -71,7 +72,6 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
 
   createPieChart(categories?: Category[]): void {
     if (!categories) {
