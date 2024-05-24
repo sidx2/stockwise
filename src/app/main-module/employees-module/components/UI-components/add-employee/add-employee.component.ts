@@ -13,8 +13,8 @@ export class AddEmployeeComponent {
   visible = false
 
   addEmployeeForm = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required]),
+    name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
+    email: new FormControl("", [Validators.required, Validators.email]),
     role: new FormControl("user", [Validators.required]),
   })
 
@@ -22,6 +22,27 @@ export class AddEmployeeComponent {
     this.visible = !this.visible;
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.addEmployeeForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('email')) {
+      return 'Please enter a valid email address.';
+    }
+    if (control?.hasError('minlength')) {
+      const requiredLength = control.getError('minlength').requiredLength;
+      return `Must be at least ${requiredLength} characters long.`;
+    }
+    if (control?.hasError('maxlength')) {
+      const requiredLength = control.getError('maxlength').requiredLength;
+      return `Cannot exceed ${requiredLength} characters.`;
+    }
+
+    return '';
+  }
+  
   onAddEmployee() {
     if (!this.addEmployeeForm.valid) {
       alert("All fields are required!");

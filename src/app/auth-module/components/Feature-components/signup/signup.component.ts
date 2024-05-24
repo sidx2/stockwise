@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
@@ -57,6 +57,23 @@ export class SignupComponent {
 
       this.router.navigate(['dashboard']);
     });
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.signupForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('email')) {
+      return 'Please enter a valid email address.';
+    }
+    if (control?.hasError('minlength')) {
+      const requiredLength = control.getError('minlength').requiredLength;
+      return `Must be at least ${requiredLength} characters long.`;
+    }
+
+    return '';
   }
 
   onFormSubmit() {
