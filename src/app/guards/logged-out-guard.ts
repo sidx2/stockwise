@@ -9,7 +9,6 @@ export const loggedOutGuard: CanActivateFn = (route, state) => {
     const token = cookieService.get("token");
     console.log("Token in loggedOut: ", token);
     if (token)  {
-      // router.navigate(["/dashboard"])
       return false;
     }
     else {

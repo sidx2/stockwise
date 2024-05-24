@@ -1,0 +1,4 @@
+<ng-container *ngIf="(global$ | async) as global">
+    <app-navbar *ngIf="global.isLoggedIn" ></app-navbar>
+</ng-container>
+<router-outlet></router-outlet>
