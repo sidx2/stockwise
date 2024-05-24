@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployeeSuccess } from "./employees.actions"
-import { IEmployeesState } from "../models/employee"
+import { IEmployeesState } from "../../../employees-module/models/employee"
 
 export const initialState: IEmployeesState = {
     employees: []

@@ -3,7 +3,7 @@ import { CheckoutMailDetails, Item } from '../../../models/inventory';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CheckoutDetails } from '../../../models/inventory';
 import { CheckoutEventData } from '../../../models/inventory';
-import { Employee } from '../../../../employees-module/models/employee';
+import { Employee } from '../../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-item-checkout',

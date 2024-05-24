@@ -1,7 +1,7 @@
 import { Component, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IAddEmployee } from '../../../models/employee';
+import { IAddEmployee } from '../../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-add-employee',

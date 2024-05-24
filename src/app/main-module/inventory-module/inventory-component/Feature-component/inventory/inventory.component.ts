@@ -11,7 +11,7 @@ import { getCategoryRequest } from '../../../../category-module/store/category.a
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { Actions, ofType } from '@ngrx/effects';
-import { Employee } from '../../../../employees-module/models/employee';
+import { Employee } from '../../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-inventory',

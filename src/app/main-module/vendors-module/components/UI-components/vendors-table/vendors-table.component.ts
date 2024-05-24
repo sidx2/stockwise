@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Vendor } from '../../../store/vendor.reducers';
-import { IEmployeesState } from '../../../../employees-module/models/employee';
+import { IEmployeesState } from '../../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-vendors-table',

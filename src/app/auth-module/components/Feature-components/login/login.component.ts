@@ -6,14 +6,20 @@ import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { IGlobalState } from '../../../../store/global.reducers';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
-export class AuthComponent {
+export class LoginComponent {
   destroySubject = new Subject<void>();
+
+  loginForm = new FormGroup({
+    email: new FormControl("", [Validators.required, Validators.email]),
+    password: new FormControl("", [Validators.required, Validators.minLength(6)])
+  })
 
   constructor(
     private store: Store<{ global: IGlobalState }>,
@@ -50,9 +56,13 @@ export class AuthComponent {
     });
   }
 
-  handleFormSubmit(e: any) {
-    console.log("event: ", e);
-    this.store.dispatch(loginUser({ user: e }));
+  onFormSubmit() {
+    console.log(this.loginForm.value)
+    if (this.loginForm.invalid) {
+      alert("Invalid credentials");
+      return;
+    };
+    this.store.dispatch(loginUser({ user: this.loginForm.value }));
   }
 
   ngOnDestroy(): void {
