@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TicketComponent } from './ticket-component/Feature-component/ticket/ticket.component';
-import { TicketCardComponent } from './ticket-component/Ui-component/ticket-card/ticket-card.component';
-import { TicketHeaderComponent } from './ticket-component/Ui-component/ticket-header/ticket-header.component';
-import { ShareModule } from '../share-module/share.module';
+import { TicketComponent } from './components/Feature-component/ticket/ticket.component';
+import { TicketCardComponent } from './components/Ui-component/ticket-card/ticket-card.component';
+import { TicketHeaderComponent } from './components/Ui-component/ticket-header/ticket-header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { TicketFormComponent } from './ticket-component/Feature-component/ticket-form/ticket-form.component';
+import { TicketFormComponent } from './components/Feature-component/ticket-form/ticket-form.component';
 import { FormsModule } from '@angular/forms';
-import { TicketAdminComponent } from './ticket-component/Feature-component/ticket-admin/ticket-admin.component';
+import { TicketAdminComponent } from './components/Feature-component/ticket-admin/ticket-admin.component';
 import { MatIconModule } from '@angular/material/icon';
-import { UpdateStatusFormComponent } from './ticket-component/Ui-component/update-status-form/update-status-form.component';
+import { UpdateStatusFormComponent } from './components/Ui-component/update-status-form/update-status-form.component';
 import { StoreModule } from '@ngrx/store';
 import { ticketReducer } from './store/ticket.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TicketEffects } from './store/ticket.effect';
+import { SharedModule } from '../../shared-module/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { TicketEffects } from './store/ticket.effect';
   imports: [
     CommonModule,
     HttpClientModule,
-    ShareModule,
+    SharedModule,
     ReactiveFormsModule,
     FormsModule,
     MatIconModule,

@@ -63,7 +63,6 @@ export class globalEffects {
             ofType(init),
 
             tap(() => {
-
                 console.log('Application started!');
                 const rawUesr = this.cs.get("user")
                 const rawOrg = this.cs.get("org")

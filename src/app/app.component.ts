@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoaderService } from './shared-module/services/loader.service';
+import { ErrorService } from './services/error.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent{
   title = 'Stockwise-frontend';
+
+  constructor(public loaderService:LoaderService,
+    public errorService: ErrorService){
+  }
 }

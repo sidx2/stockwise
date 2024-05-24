@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-
 enum Estatus {
   "placed",
   "fulfilled",
