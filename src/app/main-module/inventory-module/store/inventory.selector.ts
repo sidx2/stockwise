@@ -13,4 +13,7 @@ export const usrAssetSelector = createSelector(
     (state: InventoryState) => state.userAssets
 );
 
-
+export const getLoading = createSelector(
+    selectInventoryState,
+    (state: InventoryState) => state.loading
+);

@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { orgSelector } from '../../../store/global.selectors';
 import { Category } from '../../category-module/models/category';
 import { getCategoryRequest } from '../../category-module/store/category.action';
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { IGlobalState } from '../../../store/global.reducers';
+import { selectCategories } from '../../category-module/store/category.selector';
+import { CategoryState } from '../../category-module/store/category.reducer';
 
 interface PieChartOptions {
   responsive: boolean;
@@ -42,28 +44,23 @@ export class DashboardComponent implements OnInit {
   
   @ViewChild('pieChart') private pieChartRef!: ElementRef<HTMLCanvasElement>;
 
-  categories$: Observable<Category[]> | null = null;
+  categories$: Observable<Category[]>;
   orgId: string = '';
 
   constructor(
-    private store: Store<{ global: IGlobalState, categories: Category[] }>,
+    private store: Store<{ global: IGlobalState, categories: CategoryState }>,
     private router: Router,
-  ) { }
-
-  ngOnInit(): void {
-    
+  ) { 
+    this.categories$ = this.store.pipe(select(selectCategories));
     this.store.select(orgSelector).subscribe((org) => {
       this.orgId = org?._id;
-
-      console.log(this.orgId);
-
-      if (this.orgId) {
+      if(this.orgId) {
         this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
       }
     });
+  }
 
-    this.categories$ = this.store.select('categories');
-
+  ngOnInit(): void {
     this.categories$.subscribe(categories => {
       if (categories) {
         this.createPieChart(categories);

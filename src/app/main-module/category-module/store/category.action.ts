@@ -12,3 +12,6 @@ export const setCategories = createAction('[Category] Set Categories', props<{ c
 export const addCategory = createAction('[Category] Add Category', props<{ category: Category }>());
 export const removeCategory = createAction('[Category] Remove Category', props<{ categoryId: string }>());
 export const updateCategory = createAction('[Category] Update Category', props<{ updatedCategory: Category }>());
+
+// loading
+export const setLoading = createAction('[Category] set loading')

@@ -3,8 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest, checkoutMailRequest } from './inventory.action';
+import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest, checkoutMailRequest, setLoading} from './inventory.action';
 import { MailService } from '../Services/mail.service';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class InventoryEffects {
@@ -13,10 +14,12 @@ export class InventoryEffects {
         private actions$: Actions,
         private inventoryService: InventoryService,
         private mailService: MailService,
-    ) { }
+        private store: Store
+    ) {}
 
     loadInventoryItems$ = createEffect(() => this.actions$.pipe(
         ofType(getItemRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.getItems(action.orgId).pipe(
                 map(response => setItems({ items: response })),
@@ -30,6 +33,7 @@ export class InventoryEffects {
 
     createItem$ = createEffect(() => this.actions$.pipe(
         ofType(createItemRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.createItem(action.item).pipe(
                 map(response => addItem({ item: response })),
@@ -43,6 +47,7 @@ export class InventoryEffects {
 
     updateItem$ = createEffect(() => this.actions$.pipe(
         ofType(updateItemRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.updateItem(action.updatedItem).pipe(
                 map(response => updateItem({ updatedItem: response })),
@@ -56,6 +61,8 @@ export class InventoryEffects {
 
     deleteItem$ = createEffect(() => this.actions$.pipe(
         ofType(deleteItemRequest),
+        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.deleteItem(action.itemId).pipe(
                 map(response => removeItem({ itemId: response?._id })),
@@ -69,6 +76,7 @@ export class InventoryEffects {
 
     checkoutItem$ = createEffect(() => this.actions$.pipe(
         ofType(checkoutItemRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.checkoutItem(action.assignedToDetails).pipe(
                 map(response => updateItem({ updatedItem: response })),
@@ -82,6 +90,7 @@ export class InventoryEffects {
 
     checkinItem$ = createEffect(() => this.actions$.pipe(
         ofType(checkinItemRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.checkinItem(action.checkinDetails).pipe(
                 map(response => updateItem({ updatedItem: response })),
@@ -95,6 +104,7 @@ export class InventoryEffects {
 
     loadUserAssets$ = createEffect(() => this.actions$.pipe(
         ofType(getUserAssets),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap(() =>
             this.inventoryService.getUserAsset().pipe(
                 map(response => setUserAssets({ userAssets: response })),
@@ -108,6 +118,7 @@ export class InventoryEffects {
 
     sendMail$ = createEffect(() => this.actions$.pipe(
         ofType(checkoutMailRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.mailService.sendCheckoutMail(action.checkoutMailDetails).pipe(
                 catchError(error => {

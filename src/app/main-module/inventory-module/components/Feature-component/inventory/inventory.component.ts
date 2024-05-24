@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { map, take, filter } from 'rxjs/operators';
 import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest, checkoutMailRequest } from '../../../store/inventory.action';
@@ -13,6 +13,8 @@ import { fetchEmployees } from '../../../../employees-module/store/employees.act
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 import { IGlobalState } from '../../../../../store/global.reducers';
+import { getLoading } from '../../../store/inventory.selector';
+import { CategoryState } from '../../../../category-module/store/category.reducer';
 
 @Component({
   selector: 'app-inventory',
@@ -25,7 +27,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   categories$: Observable<Category[]>;
   employees$: Observable<Employee[]>;
   filteredItems$: Observable<Item[]> | null = null;
-  private orgSubscription: Subscription | undefined;
+  orgSubscription: Subscription | undefined;
+  loadingSubscription: Subscription | undefined;
 
   selectedCategory: Category | null = null;
   updateItemCategory: Category | null = null;
@@ -36,6 +39,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   selectedItem: Item | null = null;
 
   // conditional rendering
+  isLoading: boolean = false;
   isEditMode: boolean = false;
   showDetailedView: boolean = false;
   showCheckout: boolean = false;
@@ -47,11 +51,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
-  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: Category[], employees: Employee[] }>, private actions$: Actions) {
+  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions) {
 
     this.items$ = this.store.select(state => state.inventory.items);
-    this.categories$ = this.store.select('categories');
+    this.categories$ = this.store.select(state => state.categories.categories);
     this.employees$ = this.store.select(employeesSelector)
+    
+    this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading: boolean) => {
+      this.isLoading = loading;
+    });
   }
 
   ngOnInit(): void {
@@ -94,13 +102,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
       if (this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
       }
-    });
-    
+    }); 
   }
 
   ngOnDestroy(): void {
     if (this.orgSubscription) {
       this.orgSubscription.unsubscribe();
+    }
+    if(this.loadingSubscription){
+      this.loadingSubscription.unsubscribe();
     }
   }
 

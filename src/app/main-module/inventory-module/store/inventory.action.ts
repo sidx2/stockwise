@@ -22,5 +22,8 @@ export const updateItem = createAction('[Item] Update Item', props<{ updatedItem
 export const getUserAssets = createAction('[UserAssets] Get UserAsset Request');
 export const setUserAssets = createAction('[UserAssets] Set UserAsset', props<{ userAssets: UserAsset[] }>());
 
+// loading
+export const setLoading = createAction('[Item] set loading')
+
 
 
