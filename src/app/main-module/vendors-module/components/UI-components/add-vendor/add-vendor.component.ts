@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Vendor } from '../../../store/vendor.reducers';
 
 @Component({
   selector: 'app-add-vendor',
@@ -8,17 +9,36 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class AddVendorComponent {
   visible = false
-  @Output() addVendor = new EventEmitter<any>()
+  @Output() addVendor = new EventEmitter<Vendor>()
 
   addVendorForm = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required]),
-    address: new FormControl("", [Validators.required]),
+    name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
+    email: new FormControl("", [Validators.required, Validators.email]),
+    address: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
     phone: new FormControl("", [Validators.required]),
   })
 
   toggleDialog() {
-    this.visible = !this.visible
+    this.visible = !this.visible;
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.addVendorForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('email')) {
+      return 'Invalid email address.';
+    }
+    if (control?.hasError('minlength')) {
+      return 'Must be at least ' + control.getError('minlength').requiredLength + ' characters long.';
+    }
+    if (control?.hasError('maxlength')) {
+      return 'Cannot exceed ' + control.getError('maxlength').requiredLength + ' characters.';
+    }
+
+    return '';
   }
 
   onAddVendor() {
@@ -26,7 +46,7 @@ export class AddVendorComponent {
       alert("All fields are required")
       return;
     }
-    this.addVendor.emit({ vendor: this.addVendorForm.value })
+    this.addVendor.emit(this.addVendorForm.value as Vendor)
     this.toggleDialog();
   }
 }

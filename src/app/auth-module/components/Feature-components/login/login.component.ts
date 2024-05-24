@@ -56,6 +56,22 @@ export class LoginComponent {
     });
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.loginForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('email')) {
+      return 'Invalid email address.';
+    }
+    if (control?.hasError('minlength')) {
+      return `Must be at least ${control.getError('minlength').requiredLength} characters long.`;
+    }
+
+    return '';
+  }
+  
   onFormSubmit() {
     console.log(this.loginForm.value)
     if (this.loginForm.invalid) {

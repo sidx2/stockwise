@@ -1,14 +1,4 @@
 <input type="text" id="searchInput" placeholder="Search for vendor" (input)="search($event)">
-<!-- <div *ngFor="let item of editors"> {{ item }} </div>
-@for (vendor of vendors; track vendor._id) {
-
-    @if (editors.includes(vendor._id)) {
-        
-        <div>
-            the vendor {{ vendor._id }} is in editors
-        </div>
-    }
-} -->
 <table>
     <thead>
         <tr>
@@ -20,7 +10,7 @@
         </tr>
     </thead>
     <tbody *ngFor="let vendor of (vendors | paginate: {itemsPerPage: psize, currentPage: currPage}); index as i">
-        @if (editors.includes(vendor._id)) {
+        @if (isEditingVendor(vendor)) {
             <tr class="editing">
                 <td> {{ vendor.name }} </td>
                 <td> {{ vendor.email }} </td>
@@ -36,11 +26,10 @@
                     </button>
                 </td>
             </tr>
-            <div class="editor-box">sid Pardeshi</div>
+            <div class="editor-box">{{ getEditorName(vendor) }}</div>
 
         }
-        @else if (vendor._id != editing) {
-            <!-- *ngIf="vendor._id != editing; else editBlock" -->
+        @else if (vendor._id != editingId) {
         <tr >
             <td> {{ vendor.name }} </td>
             <td> {{ vendor.email }} </td>

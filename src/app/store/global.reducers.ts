@@ -69,10 +69,6 @@ export const globalReducer = createReducer(
 
     on(clearState, (state) => {
         console.log("Clearing state...");
-        return {
-            user: {} as User,
-            org: {} as Org,
-            isLoggedIn: false
-        };
+        return initialState;
     }),
 )

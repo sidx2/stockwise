@@ -90,6 +90,10 @@ export class OrderComponent {
   }
 
   placeOrder() {
+    if (!this.OrderFormArray.length) {
+      alert("Please add at least one order!");
+      return;
+    }
     if (!this.OrderFormArray.valid) {
       alert("All fields are required! and quantity should be between 1 and 999");
       return;
