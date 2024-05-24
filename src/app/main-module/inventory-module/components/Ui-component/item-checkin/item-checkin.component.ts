@@ -34,9 +34,9 @@ export class ItemCheckinComponent implements OnInit {
     } else {
       const formData = this.checkinFormGroup.value;
       checkInData = {
-        itemId: String(this.selectedItem?._id),
+        itemId: this.selectedItem?._id || '',
         quantity: +formData?.quantity,
-        userId: String(formData?.selectedEmployee?.userId)
+        userId: formData?.selectedEmployee?.userId || ''
       };
     }
 

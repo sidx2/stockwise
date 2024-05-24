@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { TicketComponent } from './components/Feature-component/ticket/ticket.component';
 import { TicketCardComponent } from './components/Ui-component/ticket-card/ticket-card.component';
 import { TicketHeaderComponent } from './components/Ui-component/ticket-header/ticket-header.component';
-import { ShareModule } from '../share-module/share.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TicketFormComponent } from './components/Feature-component/ticket-form/ticket-form.component';
@@ -15,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { ticketReducer } from './store/ticket.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TicketEffects } from './store/ticket.effect';
+import { SharedModule } from '../../shared-module/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { TicketEffects } from './store/ticket.effect';
   imports: [
     CommonModule,
     HttpClientModule,
-    ShareModule,
+    SharedModule,
     ReactiveFormsModule,
     FormsModule,
     MatIconModule,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoaderService } from './services/loader.service';
+import { LoaderService } from './shared-module/services/loader.service';
 import { ErrorService } from './services/error.service';
 
 @Component({

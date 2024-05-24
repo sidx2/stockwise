@@ -11,7 +11,7 @@ import { employeesReducer } from './store/employees.reducers';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from "primeng/button"
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ShareModule } from '../share-module/share.module';
+import { SharedModule } from '../../shared-module/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddEmployeeComponent } from './components/UI-components/add-employee/add-employee.component';
@@ -26,7 +26,7 @@ import { AddEmployeeComponent } from './components/UI-components/add-employee/ad
   imports: [
     CommonModule,
     EmployeesRoutingModule,
-    ShareModule,
+    SharedModule,
     MatIconModule,
     MatTooltipModule,
     FormsModule,

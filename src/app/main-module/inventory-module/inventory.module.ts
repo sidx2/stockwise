@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { InventoryComponent } from './components/Feature-component/inventory/inventory.component';
-import { ShareModule } from '../share-module/share.module';
+import { SharedModule } from '../../shared-module/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InventoryTableComponent } from './components/Ui-component/inventory-table/inventory-table.component';
 import { InventoryHeaderComponent } from './components/Ui-component/inventory-header/inventory-header.component';
@@ -31,7 +31,7 @@ import { InventoryRoutingModule } from './inventory-routing.module';
   imports: [
     CommonModule,
     HttpClientModule,
-    ShareModule,
+    SharedModule,
     ReactiveFormsModule,
     MatIconModule,
     MatTooltipModule,

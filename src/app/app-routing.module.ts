@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
+import { ErrorPageComponent } from './shared-module/components/error-page/error-page.component';
 
 const routes: Routes = [
   {
@@ -14,8 +15,7 @@ const routes: Routes = [
   },
   {
     path: '**', 
-    redirectTo: 'auth',
-    pathMatch: 'full'
+    component: ErrorPageComponent
   }
 ];
 

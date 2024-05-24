@@ -12,6 +12,7 @@ import { getCategoryRequest } from '../../../../category-module/store/category.a
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { Actions, ofType } from '@ngrx/effects';
+import { IGlobalState } from '../../../../../store/global.reducers';
 
 @Component({
   selector: 'app-inventory',
@@ -46,7 +47,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
-  constructor(private store: Store<{ global: any, inventory: InventoryState, categories: Category[], employees: Employee[] }>, private actions$: Actions) {
+  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: Category[], employees: Employee[] }>, private actions$: Actions) {
 
     this.items$ = this.store.select(state => state.inventory.items);
     this.categories$ = this.store.select('categories');
