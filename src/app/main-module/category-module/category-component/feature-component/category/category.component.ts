@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Category } from '../../../models/category';
-import { CategoryState } from '../../../store/category.reducer';
+import { Category, CategoryState } from '../../../models/category';
+import { IGlobalState } from '../../../../../store/global.reducers';
 import { Store, select } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
 import { Observable, Subscription } from 'rxjs';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory, updateCategory } from '../../../store/category.action';
-import { Actions, ofType } from '@ngrx/effects';
-
-import { IGlobalState } from '../../../../../store/global.reducers';
-import { getLoading } from '../../../store/category.selector';
+import { categorySelector, getLoading } from '../../../store/category.selector';
+import { orgSelector } from '../../../../../store/global.selectors';
 
 @Component({
   selector: 'app-category',
@@ -30,10 +29,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
   loadingSubscription: Subscription | undefined;
 
   constructor(private store: Store<{ categories: CategoryState, global: IGlobalState }>, private actions$: Actions) {
-    this.categories$ = this.store.select(state => state.categories.categories);
+
+    this.categories$ = this.store.pipe(select(categorySelector));
+
     this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading)=> this.isLoading = loading);
-    this.orgSubscription = this.store.select('global').subscribe((global) => {
-      this.orgId = global.org._id;
+
+    this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
+      this.orgId = org._id;
     })
   }
 

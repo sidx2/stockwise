@@ -1,12 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { setCategories, addCategory, removeCategory, updateCategory, setLoading} from './category.action';
-import { Category } from '../models/category';
+import { Category, CategoryState } from '../models/category';
 import { logoutUserSuccess } from '../../../store/global.actions';
-
-export interface CategoryState {
-  categories: Category[]
-  loading: boolean
-}
 
 export const initialState: CategoryState = {
   categories: [],

@@ -7,8 +7,8 @@ import { getCategoryRequest } from '../../category-module/store/category.action'
 import { Observable } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { IGlobalState } from '../../../store/global.reducers';
-import { selectCategories } from '../../category-module/store/category.selector';
-import { CategoryState } from '../../category-module/store/category.reducer';
+import { categorySelector } from '../../category-module/store/category.selector';
+import { CategoryState } from '../../category-module/models/category';
 
 interface PieChartOptions {
   responsive: boolean;
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
     private store: Store<{ global: IGlobalState, categories: CategoryState }>,
     private router: Router,
   ) { 
-    this.categories$ = this.store.pipe(select(selectCategories));
+    this.categories$ = this.store.pipe(select(categorySelector));
     this.store.select(orgSelector).subscribe((org) => {
       this.orgId = org?._id;
       if(this.orgId) {

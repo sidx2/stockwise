@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { InventoryState } from './inventory.reducer';
+import { InventoryState } from '../models/inventory';
 
 export const selectInventoryState = createFeatureSelector<InventoryState>('inventory');
 

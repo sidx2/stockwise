@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest, checkoutMailRequest, setLoading} from './inventory.action';
+import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest, checkoutMailRequest, setLoading, resetLoading} from './inventory.action';
 import { MailService } from '../Services/mail.service';
 import { Store } from '@ngrx/store';
 
@@ -24,6 +24,7 @@ export class InventoryEffects {
             this.inventoryService.getItems(action.orgId).pipe(
                 map(response => setItems({ items: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in loading inventory items:', error);
                     return of();
                 })
@@ -38,6 +39,7 @@ export class InventoryEffects {
             this.inventoryService.createItem(action.item).pipe(
                 map(response => addItem({ item: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in loading creating new item:', error);
                     return of();
                 })
@@ -52,6 +54,7 @@ export class InventoryEffects {
             this.inventoryService.updateItem(action.updatedItem).pipe(
                 map(response => updateItem({ updatedItem: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in updating item:', error);
                     return of();
                 })
@@ -67,6 +70,7 @@ export class InventoryEffects {
             this.inventoryService.deleteItem(action.itemId).pipe(
                 map(response => removeItem({ itemId: response?._id })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in loading deleting item:', error);
                     return of();
                 })
@@ -81,6 +85,7 @@ export class InventoryEffects {
             this.inventoryService.checkoutItem(action.assignedToDetails).pipe(
                 map(response => updateItem({ updatedItem: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in checkout item:', error);
                     return of();
                 })
@@ -95,6 +100,7 @@ export class InventoryEffects {
             this.inventoryService.checkinItem(action.checkinDetails).pipe(
                 map(response => updateItem({ updatedItem: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in chheckin item:', error);
                     return of();
                 })
@@ -109,6 +115,7 @@ export class InventoryEffects {
             this.inventoryService.getUserAsset().pipe(
                 map(response => setUserAssets({ userAssets: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in loading userAssets:', error);
                     return of();
                 })
@@ -122,6 +129,7 @@ export class InventoryEffects {
         switchMap((action) =>
             this.mailService.sendCheckoutMail(action.checkoutMailDetails).pipe(
                 catchError(error => {
+                    this.store.dispatch(resetLoading()); 
                     console.error('Error in sending mail:', error); 
                     return of(); 
                 })

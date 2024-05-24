@@ -61,3 +61,8 @@ export interface CheckoutEventData {
     checkoutMailDetails: CheckoutMailDetails;
 }
 
+export interface InventoryState {
+    items: Item[];
+    userAssets: UserAsset[];
+    loading: boolean
+}

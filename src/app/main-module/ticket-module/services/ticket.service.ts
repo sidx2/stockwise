@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Ticket, UpdateStatus } from '../models/ticket.model';
+import { Ticket } from '../models/ticket.model';
 import { BASE_URL } from '../../../constants/constants';
 
 @Injectable({

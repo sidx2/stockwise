@@ -12,9 +12,13 @@ export interface Ticket {
     createdAt?: Date;
 }
 
-
 export interface UpdateStatus {
     ticketId?: string,
     status: string,
     remark?: string
+}
+
+export interface TicketAdminState {
+    allTickets: Ticket[];
+    loading: boolean
 }

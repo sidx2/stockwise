@@ -1,9 +1,9 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { CategoryState } from './category.reducer';
+import { CategoryState } from '../models/category';
 
 export const selectCategoryState = createFeatureSelector<CategoryState>('categories');
 
-export const selectCategories = createSelector(
+export const categorySelector = createSelector(
     selectCategoryState,
     (state: CategoryState) => state.categories
 );

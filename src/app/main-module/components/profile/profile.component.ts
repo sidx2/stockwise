@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { InventoryState } from '../../inventory-module/store/inventory.reducer';
+import { InventoryState } from '../../inventory-module/models/inventory';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserAsset } from '../../inventory-module/models/inventory';

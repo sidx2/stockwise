@@ -3,13 +3,15 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketAdminService } from '../services/ticket-admin.service';
-import { getAllTicketRequest, updateTicketStatusRequest, updateTicket, setAllTickets } from './ticket-admin.action';
+import { getAllTicketRequest, updateTicketStatusRequest, updateTicket, setAllTickets, setLoading } from './ticket-admin.action';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class TicketAdminEffects {
 
     loadAllTicket$ = createEffect(() => this.actions$.pipe(
         ofType(getAllTicketRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.ticketAdminService.getAllTickets(action.orgId).pipe( 
                 map(response => setAllTickets({ allTickets: response })),
@@ -23,6 +25,7 @@ export class TicketAdminEffects {
 
     updateTicketStatus$ = createEffect(() => this.actions$.pipe(
         ofType(updateTicketStatusRequest),
+        tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.ticketAdminService.updateTicketStatus(action.updatedStatus).pipe(
                 map(response => updateTicket({ ticket: response })),
@@ -34,9 +37,9 @@ export class TicketAdminEffects {
         )
     ));
     
-
     constructor(
         private actions$: Actions,
         private ticketAdminService: TicketAdminService,
+        private store: Store
     ) { }
 }

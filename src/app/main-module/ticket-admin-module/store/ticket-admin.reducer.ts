@@ -1,29 +1,26 @@
 import { createReducer, on } from '@ngrx/store';
-import { Ticket } from '../models/ticket-admin';
-import { setAllTickets, updateTicket } from './ticket-admin.action';
+import { Ticket, TicketAdminState } from '../models/ticket-admin';
+import { setAllTickets, setLoading, updateTicket } from './ticket-admin.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
 
-export interface TicketAdminState {
-    allTickets: Ticket[];
-}
-
 export const initialState: TicketAdminState = {
-    allTickets: []
+    allTickets: [],
+    loading: false
 };
 
 export const ticketAdminReducer = createReducer(
     initialState,
 
     on(setAllTickets, (state, { allTickets }) => {
-        return { ...state, allTickets: allTickets };
+        return { ...state, allTickets: allTickets, loading: false };
     }),
 
-    on(updateTicket, (state, { ticket }) => {
-        const updatedAllTickets = state.allTickets.map(t =>
-          t._id === ticket._id ? ticket : t
-        );
-        return { ...state, allTickets: updatedAllTickets};
-    }),
+    on(updateTicket, (state, { ticket }) => ({
+        ...state,
+        allTickets: state.allTickets.map(t => t._id === ticket._id ? ticket : t),
+        loading: false
+    })),
     
+    on(setLoading, (state)=> ({...state, loading: true})),
     on(logoutUserSuccess, ()=>  initialState)
 );

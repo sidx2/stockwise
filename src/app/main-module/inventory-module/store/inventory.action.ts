@@ -23,7 +23,8 @@ export const getUserAssets = createAction('[UserAssets] Get UserAsset Request');
 export const setUserAssets = createAction('[UserAssets] Set UserAsset', props<{ userAssets: UserAsset[] }>());
 
 // loading
-export const setLoading = createAction('[Item] set loading')
+export const setLoading = createAction('[Item] set loading');
+export const resetLoading = createAction('[Item] reset loading');
 
 
 

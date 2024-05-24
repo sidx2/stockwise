@@ -1,13 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
-import { Item, UserAsset } from '../models/inventory';
-import { addItem, removeItem, setItems, updateItem, setUserAssets, setLoading } from './inventory.action';
+import { InventoryState, Item, UserAsset } from '../models/inventory';
+import { addItem, removeItem, setItems, updateItem, setUserAssets, setLoading, resetLoading } from './inventory.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
-
-export interface InventoryState {
-  items: Item[];
-  userAssets: UserAsset[];
-  loading: boolean
-}
 
 const initialState: InventoryState = {
   items: [],
@@ -41,5 +35,7 @@ export const inventoryReducer = createReducer(
   })), 
 
   on(setLoading, (state)=> ({...state, loading: true})),
-  on(logoutUserSuccess, ()=>  initialState) 
+  on(resetLoading, (state)=> ({...state, loading: false})),
+
+  on(logoutUserSuccess, ()=>  initialState)
 );

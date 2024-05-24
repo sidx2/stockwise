@@ -3,18 +3,18 @@ import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { map, take, filter } from 'rxjs/operators';
 import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest, checkoutMailRequest } from '../../../store/inventory.action';
-import { Category } from '../../../../category-module/models/category';
+import { Category, CategoryState} from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
-import { InventoryState } from '../../../store/inventory.reducer';
+import { InventoryState, CheckinDetails } from '../../../models/inventory';
 import { Employee } from '../../../../employees-module/store/employees.reducers';
-import { CheckinDetails } from '../../../models/inventory';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 import { IGlobalState } from '../../../../../store/global.reducers';
-import { getLoading } from '../../../store/inventory.selector';
-import { CategoryState } from '../../../../category-module/store/category.reducer';
+import { getLoading, inventorySelector } from '../../../store/inventory.selector';
+import { orgSelector } from '../../../../../store/global.selectors';
+import { categorySelector } from '../../../../category-module/store/category.selector';
 
 @Component({
   selector: 'app-inventory',
@@ -27,8 +27,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   categories$: Observable<Category[]>;
   employees$: Observable<Employee[]>;
   filteredItems$: Observable<Item[]> | null = null;
-  orgSubscription: Subscription | undefined;
-  loadingSubscription: Subscription | undefined;
+  orgSubscription: Subscription;
+  loadingSubscription: Subscription
 
   selectedCategory: Category | null = null;
   updateItemCategory: Category | null = null;
@@ -53,21 +53,20 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions) {
 
-    this.items$ = this.store.select(state => state.inventory.items);
-    this.categories$ = this.store.select(state => state.categories.categories);
-    this.employees$ = this.store.select(employeesSelector)
+    this.items$ = this.store.pipe(select(inventorySelector));
+    this.categories$ = this.store.pipe(select(categorySelector));
+    this.employees$ = this.store.select(employeesSelector);
     
     this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading: boolean) => {
       this.isLoading = loading;
     });
+
+    this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
+      this.orgId = org._id;
+    })
   }
 
   ngOnInit(): void {
-
-    this.orgSubscription = this.store.select('global').subscribe((global) => {
-      this.orgId = global.org._id;
-      this.orgName = global.org.name;
-    })
 
     this.store.dispatch(getCategoryRequest({orgId: this.orgId}));
     this.store.dispatch(getItemRequest({orgId: this.orgId}));
