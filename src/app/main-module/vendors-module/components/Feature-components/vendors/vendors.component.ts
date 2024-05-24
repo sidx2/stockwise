@@ -8,7 +8,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { IVendorsState, Vendor } from '../../../store/vendor.reducers';
-import { IEmployeesState } from '../../../../../employees-module/models/employee';
+import { IEmployeesState } from '../../../../employees-module/models/employee';
 
 @Component({
   selector: 'app-vendors',

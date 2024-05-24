@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Employee, IEmployeesState } from '../../../../../employees-module/models/employee';
+import { Employee, IEmployeesState } from '../../../models/employee';
 
 @Component({
   selector: 'app-employees-table',
@@ -34,7 +34,7 @@ export class EmployeesTableComponent {
   }
 
   onCancel() {
-    this.editing = "-1";
+    this.editing = "-1"
   }
 
   onDone() {

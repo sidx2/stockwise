@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
 import { employeesSelector } from '../../../store/employees.selectors';
-import { orgSelector } from '../../../../../store/global.selectors';
-import { IGlobalState } from '../../../../../store/global.reducers';
 import { Observable } from 'rxjs';
-import { Employee, IAddEmployee, IEmployeesState } from '../../../../../employees-module/models/employee';
+import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
+import { IGlobalState } from '../../../../../store/global.reducers';
+import { orgSelector } from '../../../../../store/global.selectors';
 
 @Component({
   selector: 'app-employees',
