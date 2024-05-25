@@ -1,18 +1,17 @@
-/* profile-page.component.css */
 
 .profilePage {
   width: 100%;
 }
 
 .profilePage .header {
-    background-color: white;
-    border-bottom: 1px solid rgb(212, 212, 212);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem;
-    position: sticky;
-    top: 3.7rem;
+  background-color: white;
+  border-bottom: 1px solid rgb(212, 212, 212);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  position: sticky;
+  top: 3.7rem;
 }
 
 .profile {
@@ -76,7 +75,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 0.4rem;
   background-color: #f0f2f4;
 }
@@ -151,19 +150,16 @@ hr {
     width: 100%;
     padding: 0.5rem;
   }
+
+  .userInfo{
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
 }
 
 @media screen and (max-width: 600px) {
-  .profile {
-    width: 100%;
-    padding: 0.5rem;
-  }
-
   .asset {
     flex-direction: column;
-  }
-
-  .userInfo {
-    gap: 2rem;
   }
 }

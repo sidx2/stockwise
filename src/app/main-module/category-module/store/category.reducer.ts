@@ -1,31 +1,39 @@
 import { createReducer, on } from '@ngrx/store';
-import { setCategories, addCategory, removeCategory, updateCategory} from './category.action';
-import { Category } from '../models/category';
+import { setCategories, addCategory, removeCategory, updateCategory, setLoading} from './category.action';
+import { Category, CategoryState } from '../models/category';
+import { logoutUserSuccess } from '../../../store/global.actions';
 
-export const initialState: Category[] = [];
+export const initialState: CategoryState = {
+  categories: [],
+  loading: false
+}
 
 export const categoryReducer = createReducer(
   initialState,
 
-  on(setCategories, (_, { categories }) => {
-    return categories;
+  on(setCategories, (state, { categories }) => {
+    return {...state, categories: categories, loading: false}
   }),
 
-  on(addCategory, (state, { category }) => [...state, category]),
+  on(addCategory, (state, { category }) => ({
+    ...state, 
+    categories: [...state.categories, category],
+    loading: false
+  })),
 
-  on(removeCategory, (state, { categoryId }) => 
-    state.filter(category => category._id !== categoryId)
-  ),
+  on(removeCategory, (state, { categoryId }) => ({
+    ...state,
+    categories: state.categories.filter(category => category._id !== categoryId),
+    loading: false
+  })),
 
-  on(updateCategory, (state, {updatedCategory})=>{
-    const updatedState = state.map(category => {
-      if (category._id === updatedCategory._id) {
-        return updatedCategory;
-      } else {
-        return category;
-      }
-    });
-    return updatedState;
-  }),
+  on(updateCategory, (state, { updatedCategory }) => ({
+    ...state,
+    categories: state.categories.map(category =>
+      category._id === updatedCategory._id ? updatedCategory : category),
+    loading: false
+  })),
 
+  on(setLoading, (state)=> ({...state, loading: true})),
+  on(logoutUserSuccess, ()=>  initialState)
 );

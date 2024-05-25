@@ -124,11 +124,7 @@ export class CategoryFormComponent implements OnInit {
           orgId: this.selectedCategory?.orgId,
           vendors: selectedVendorsId,
         });
-        
       }
-
-    } else {
-
-    }
+    } 
   }
 }

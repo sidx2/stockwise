@@ -1,38 +1,23 @@
-<div class="ticketClasses" [ngClass]="'ticket'" *ngIf="ticket">
+<div class="ticket" *ngIf="ticket">
   <div class="ticket-header">
-    <div class="ticked-header-info">
-      <span class="ticket_id">#A12Bc3</span>
-      <span
-        [ngClass]="['ticketStatusClasses', 'ticketStatus', ticket.status]"
-        >{{ ticket.status | uppercase }}</span
-      >
+    <div class="ticket-header-info">
+      <span class="ticket-id">#A12Bc3</span>
+      <span class="ticket-status" [ngClass]="['status', ticket.status]">{{ ticket.status | uppercase }}</span>
     </div>
-    <div class="ticketDate">
+    <div class="ticket-date">
       <mat-icon>event</mat-icon>
       {{ ticket.createdAt | date : "MMM dd, yyyy, hh:mm a" }}
     </div>
   </div>
-  
-  <div>
-    <ng-content select="[ticket-user]"></ng-content>
-  </div>
 
-  <div>
-    <ng-content select="[ticket-assetId]"></ng-content>
-  </div>
-  
-  <div class="ticketDetails">
+  <div class="ticket-details">
     <h3>{{ ticket.issueType }}</h3>
     <p>{{ ticket.description }}</p>
   </div>
 
-  <div class="additionalDetails">
-    <h4 *ngIf="ticket.remark">
+  <div class="ticket-remark" *ngIf="ticket.remark">
+    <h4>
       Remark: <span>{{ ticket.remark }}</span>
     </h4>
-  </div>
-
-  <div class="ticket-action">
-    <ng-content select="[ticket-action]"></ng-content>
   </div>
 </div>

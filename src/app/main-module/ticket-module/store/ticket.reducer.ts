@@ -1,15 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
-import { Ticket } from '../models/ticket.model';
-import { addTicket, setUserTickets, setAllTickets, updateTicket } from './ticket.action';
-
-export interface TicketState {
-    userTickets: Ticket[];
-    allTickets: Ticket[];
-}
+import { TicketState } from '../models/ticket.model';
+import { addTicket, setUserTickets, setLoading } from './ticket.action';
+import { logoutUserSuccess } from '../../../store/global.actions';
 
 export const initialState: TicketState = {
     userTickets: [],
-    allTickets: []
+    loading: false
 };
 
 export const ticketReducer = createReducer(
@@ -17,25 +13,13 @@ export const ticketReducer = createReducer(
 
     on(setUserTickets, (state, { userTickets }) => {
         console.log("User tickets are fetched successfully.");
-        return { ...state, userTickets: userTickets };
-    }),
-
-    on(setAllTickets, (state, { allTickets }) => {
-        console.log("All tickets are fetched successfully.");
-        return { ...state, allTickets: allTickets };
+        return { ...state, userTickets: userTickets, loading: false };
     }),
 
     on(addTicket, (state, { ticket }) => {
-        return { ...state, userTickets: [...state.userTickets, ticket] };
+        return { ...state, userTickets: [...state.userTickets, ticket], loading: false};
     }),
 
-    on(updateTicket, (state, { ticket }) => {
-        const updatedAllTickets = state.allTickets.map(t =>
-          t._id === ticket._id ? ticket : t
-        );
-        const updatedUserTickets = state.userTickets.map(t =>
-          t._id === ticket._id ? ticket : t
-        );
-        return { ...state, allTickets: updatedAllTickets, userTickets: updatedUserTickets };
-      }),
+    on(setLoading, (state)=> ({...state, loading: true})),
+    on(logoutUserSuccess, ()=>  initialState)
 );

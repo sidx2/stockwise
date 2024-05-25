@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Ticket, UpdateStatus } from '../models/ticket.model';
+import { Ticket } from '../models/ticket.model';
 import { BASE_URL } from '../../../constants/constants';
 
 @Injectable({
@@ -12,14 +12,6 @@ export class TicketService {
 
   getUserTickets() {
     return this.http.get<Ticket[]>(`${BASE_URL}/ticket/userTickets`);
-  }
-
-  getAllTickets(orgId: string) {
-    return this.http.get<Ticket[]>(`${BASE_URL}/ticket/${orgId}`);
-  }
-
-  updateTicketStatus(updatedStatus: UpdateStatus){
-    return this.http.put<Ticket>(`${BASE_URL}/ticket/update`, updatedStatus);
   }
 
   createTicket(ticket: Ticket){

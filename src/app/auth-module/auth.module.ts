@@ -27,7 +27,7 @@ import { LoginComponent } from './components/Feature-components/login/login.comp
     FloatLabelModule,
     InputTextModule,
     ReactiveFormsModule,
-    // StoreModule.forFeature("auth", authReducer),
+    StoreModule.forFeature("auth", authReducer),
     EffectsModule.forFeature([authEffects])
   ]
 })

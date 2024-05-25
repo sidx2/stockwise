@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, clearState } from "./global.actions"
+import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, logoutUserSuccess } from "./global.actions"
 
 export interface User {
     _id: string
@@ -67,7 +67,7 @@ export const globalReducer = createReducer(
         return ({ ...state, org: { ...state.org, ...action.org }, isLoggedIn: true });
     }),
 
-    on(clearState, (state) => {
+    on(logoutUserSuccess, (state) => {
         console.log("Clearing state...");
         return initialState;
     }),
