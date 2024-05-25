@@ -1,4 +1,4 @@
-import { Org } from "../../../store/global.reducers"
+import { Org } from "../../../models/global"
 
 export interface Admin {
     name: string,

@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { createOrgFailre, createOrgSuccess, signupFailre, signupSuccess } from "./auth.actions";
-import { Org, User } from "../../store/global.reducers";
+import { Org, User } from "../../models/global";
 
 export interface IAuthState {
     user: User,

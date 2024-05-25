@@ -4,8 +4,8 @@ import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmploye
 import { employeesSelector } from '../../../store/employees.selectors';
 import { Observable } from 'rxjs';
 import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
-import { IGlobalState } from '../../../../../store/global.reducers';
 import { orgSelector } from '../../../../../store/global.selectors';
+import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-employees',

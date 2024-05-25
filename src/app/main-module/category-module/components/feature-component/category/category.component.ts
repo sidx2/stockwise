@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Category, CategoryState } from '../../../models/category';
-import { IGlobalState } from '../../../../../store/global.reducers';
 import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Observable, Subject } from 'rxjs';
@@ -8,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory, updateCategory } from '../../../store/category.action';
 import { categorySelector, getLoading } from '../../../store/category.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
+import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-category',

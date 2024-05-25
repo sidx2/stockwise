@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { Vendor } from '../../../store/vendor.reducers';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
 import { Editor } from '../../../models/vendor';
-import { IGlobalState, User } from '../../../../../store/global.reducers';
 import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, takeUntil } from 'rxjs';
+import { IGlobalState, User } from '../../../../../models/global';
 
 @Component({
   selector: 'app-vendors-table',

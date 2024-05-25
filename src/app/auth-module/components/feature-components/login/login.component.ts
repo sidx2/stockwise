@@ -5,8 +5,8 @@ import { Actions, ofType } from "@ngrx/effects";
 import { Router } from "@angular/router"
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
-import { IGlobalState } from '../../../../store/global.reducers';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IGlobalState } from '../../../../models/global';
 
 @Component({
   selector: 'app-auth',

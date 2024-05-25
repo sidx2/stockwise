@@ -3,9 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { switchMap } from 'rxjs';
 import { orgSelector } from '../../../store/global.selectors';
-import { Socket } from 'ngx-socket-io';
-import { IGlobalState } from '../../../store/global.reducers';
 import { Vendor } from '../store/vendor.reducers';
+import { IGlobalState } from '../../../models/global';
 
 @Injectable({
   providedIn: 'root'

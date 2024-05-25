@@ -1,7 +1,8 @@
 import { createAction, props } from "@ngrx/store";
+import { User } from "../../models/global";
 
-export const signupRequest = createAction("signupRequest", props<any>());
-export const signupSuccess = createAction("signuptSuccess", props<any>());
+export const signupRequest = createAction("signupRequest", props<{ user: any }>());
+export const signupSuccess = createAction("signupSuccess", props<{ user: User }>());
 export const signupFailre = createAction("signuptFailre", props<any>());
 
 export const createOrgRequest = createAction("createOrgRequest", props<any>());

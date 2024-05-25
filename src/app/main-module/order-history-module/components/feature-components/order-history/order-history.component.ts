@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { fetchHistoryRequest, updateStatusRequest } from '../../../store/order-history.actions';
 import { historySelector } from '../../../store/order-history.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
-import { IGlobalState } from '../../../../../store/global.reducers';
 import { IHistoryState, IStatusUpdated, Order } from '../../../models/order-history';
+import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-order-history',

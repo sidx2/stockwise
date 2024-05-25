@@ -7,9 +7,9 @@ import { getCategoryRequest } from '../../category-module/store/category.action'
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Chart from 'chart.js/auto';
-import { IGlobalState } from '../../../store/global.reducers';
 import { categorySelector } from '../../category-module/store/category.selector';
 import { CategoryState } from '../../category-module/models/category';
+import { IGlobalState } from '../../../models/global';
 
 @Component({
   selector: 'app-dashboard',

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGlobalState } from '../store/global.reducers';
 import { Store } from '@ngrx/store';
+import { IGlobalState } from '../models/global';
 
 @Component({
   selector: 'app-main',

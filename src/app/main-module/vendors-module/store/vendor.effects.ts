@@ -5,7 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { VendorsService } from "../services/vendors.service";
 import { fetchVendorsRequest, fetchVendorsFailure, fetchVendorsSuccess, updateVendorRequest, updateVendorSuccess, updateVendorFailure, deleteVendorRequest, deleteVendorSuccess, deleteVendorFailure, addVendorSuccess, addVendorFailure, addVendorRequest } from "./vendor.actions";
-import { IGlobalState } from "../../../store/global.reducers";
+import { IGlobalState } from "../../../models/global";
 
 @Injectable()
 export class vendorEffects {

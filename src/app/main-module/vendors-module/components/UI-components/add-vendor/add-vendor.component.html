@@ -1,6 +1,6 @@
 <div class="addVendor">
     <button (click)="toggleDialog()" label="Add Vendor">Add Vendor</button>
-    <p-dialog [modal]="true" [(visible)]="visible" [style]="{ width: '22rem' }">
+    <app-modal *ngIf="visible">
       <h3>Add new vendor</h3>
       <form [formGroup]="addVendorForm" (submit)="onAddVendor()">
         <div class="flex align-items-center gap-3 mb-3">
@@ -36,6 +36,6 @@
           <button type="submit" label="Add">Add</button>
         </div>
       </form>
-    </p-dialog>
+    </app-modal>
   </div>
   

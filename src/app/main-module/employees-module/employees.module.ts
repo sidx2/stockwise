@@ -7,8 +7,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { EmployeeEffects } from './store/employees.effects';
 import { employeesReducer } from './store/employees.reducers';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from "primeng/button"
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from '../../shared-module/shared.module';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,8 +31,6 @@ import { EmployeesComponent } from './components/feature-components/employees/em
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
-    DialogModule,
-    ButtonModule,
     ReactiveFormsModule,
     NgxPaginationModule,
     StoreModule.forFeature("employees", employeesReducer),

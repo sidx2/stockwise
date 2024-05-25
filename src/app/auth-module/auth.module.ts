@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AuthRoutingModule } from './auth-routing.module';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './components/feature-components/signup/signup.component';
 import { StoreModule } from '@ngrx/store';
@@ -23,9 +20,6 @@ import { LoginComponent } from './components/feature-components/login/login.comp
   imports: [
     CommonModule,
     AuthRoutingModule,
-    ButtonModule,
-    FloatLabelModule,
-    InputTextModule,
     ReactiveFormsModule,
     StoreModule.forFeature("auth", authReducer),
     EffectsModule.forFeature([authEffects])
