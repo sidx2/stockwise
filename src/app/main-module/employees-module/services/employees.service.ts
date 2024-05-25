@@ -1,20 +1,25 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Employee, IAddEmployee } from '../models/employee';
 import { orgSelector } from '../../../store/global.selectors';
 import { IGlobalState } from '../../../models/global';
+import { Subject, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeesService {
+export class EmployeesService implements OnDestroy {
   orgId!: string
+  destroySubject = new Subject<void>();
+
   constructor(
     private http: HttpClient,
     private store: Store<{ gloabl: IGlobalState }>,
   ) {
-    this.store.select(orgSelector).subscribe((org) => {
+    this.store.select(orgSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((org) => {
       console.log("org in employee service is : ", org);
       this.orgId = org._id
     })
@@ -48,5 +53,10 @@ export class EmployeesService {
     console.log("empId in update: ", employeeId);
     return this.http.delete("http://localhost:9999/user/deleteUser", { body: { _id: employeeId } })
 
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 }

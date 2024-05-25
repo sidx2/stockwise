@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
 import { productVendorsSelector } from '../../../store/order.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { userSelector } from '../../../../../store/global.selectors';
-import { tap } from 'rxjs';
+import { Subject, pipe, takeUntil, tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { IOrderState } from '../../../store/order.reducers';
 import { IPlaceOrder, OrderForm, Product } from '../../../models/order';
@@ -18,10 +18,11 @@ import { IGlobalState, Org, User } from '../../../../../models/global';
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
-export class OrderComponent {
+export class OrderComponent implements OnDestroy {
   dynamicForm: FormGroup;
   org!: Org
   user!: User
+  destroySubject = new Subject<void>();
 
   products: Product[] = [];
   selectedProductVendors: Vendor[][] = [];
@@ -31,15 +32,22 @@ export class OrderComponent {
     private store: Store<{ order: IOrderState, global: IGlobalState }>,
     private actions$: Actions,
   ) {
-    this.store.select(orgSelector).subscribe((org) => { this.org = org; })
-    this.store.select(userSelector).subscribe((user) => { this.user = user; })
+    this.store.select(orgSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((org) => { this.org = org; })
+    this.store.select(userSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((user) => { this.user = user; })
 
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])
     })
 
     this.store.dispatch(getProductVendorsRequest())
-    this.store.select(productVendorsSelector).subscribe((pv) => {
+
+    this.store.select(productVendorsSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((pv) => {
       this.products = pv;
     })
 
@@ -129,5 +137,10 @@ export class OrderComponent {
   cleanForms() {
     this.OrderFormArray.clear();
     this.selectedProductVendors = [];
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 }

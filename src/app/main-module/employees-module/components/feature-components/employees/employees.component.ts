@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addEmployeeRequest, createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
 import { employeesSelector } from '../../../store/employees.selectors';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { IGlobalState } from '../../../../../models/global';
@@ -12,36 +12,44 @@ import { IGlobalState } from '../../../../../models/global';
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.scss'
 })
-export class EmployeesComponent {
-    store = inject (Store<{ employees: IEmployeesState, global: IGlobalState }>)
-    employees: Observable<Employee[]>
-    visible: boolean = false
+export class EmployeesComponent implements OnDestroy {
+  store = inject(Store<{ employees: IEmployeesState, global: IGlobalState }>)
+  employees: Observable<Employee[]>
+  visible: boolean = false
 
-    orgId!: string
+  orgId!: string
+  destroySubject = new Subject<void>();
 
-    constructor() {
-      this.store.dispatch(fetchEmployees())
-      this.employees = this.store.select(employeesSelector)
+  constructor() {
+    this.store.dispatch(fetchEmployees())
+    this.employees = this.store.select(employeesSelector)
 
-      this.store.select(orgSelector).subscribe((org) => {
-        this.orgId = org._id;
-      })
-    }
+    this.store.select(orgSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((org) => {
+      this.orgId = org._id;
+    })
+  }
 
-    showDialog() {
-      this.visible = !this.visible
-    }
+  showDialog() {
+    this.visible = !this.visible
+  }
 
-    onAddEmployee(user: IAddEmployee) {
-      this.visible = !this.visible
-      this.store.dispatch(createUserRequest({ user, orgId: this.orgId}))
-    }
+  onAddEmployee(user: IAddEmployee) {
+    this.visible = !this.visible
+    this.store.dispatch(createUserRequest({ user, orgId: this.orgId }))
+  }
 
-    onUpdateEmployee(employee: Employee) {
-      this.store.dispatch(updateEmployeeRequest({ employee }))
-    }
-    
-    onDeleteEmploye(employeeId: string) {
-      this.store.dispatch(deleteEmployeeRequest({ employeeId }))
-    }
+  onUpdateEmployee(employee: Employee) {
+    this.store.dispatch(updateEmployeeRequest({ employee }))
+  }
+
+  onDeleteEmploye(employeeId: string) {
+    this.store.dispatch(deleteEmployeeRequest({ employeeId }))
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
+  }
 }
