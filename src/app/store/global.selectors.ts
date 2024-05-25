@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { IGlobalState } from "../models/global";
 
-const globalFeatureSelector = createFeatureSelector<any>("global");
+const globalFeatureSelector = createFeatureSelector<IGlobalState>("global");
 
 export const userSelector = createSelector(
     globalFeatureSelector,

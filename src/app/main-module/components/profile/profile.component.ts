@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { IGlobalState, User } from '../../../models/global';
 import { InventoryState } from '../../inventory-module/models/inventory';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -16,9 +17,9 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class ProfileComponent implements OnInit {
   userAssets$: Observable<UserAsset[]> | null = null
-  user$: Observable<any> | null = null;
+  user$: Observable<User> | null = null;
 
-  constructor(private store: Store<{ global: any, inventory: InventoryState }>, private router: Router, private cs: CookieService) {
+  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState }>, private router: Router, private cs: CookieService) {
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
     this.user$ = this.store.select(state => state.global.user);
   }

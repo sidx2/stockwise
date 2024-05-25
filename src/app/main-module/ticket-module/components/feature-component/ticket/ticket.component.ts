@@ -11,6 +11,7 @@ import { getLoading, ticketSelector } from '../../../store/ticket.selector';
 import { usrAssetSelector } from '../../../../inventory-module/store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { takeUntil } from 'rxjs/operators';
+import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-ticket',
@@ -30,7 +31,7 @@ export class TicketComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   isTicketFormVisible: boolean = false;
 
-  constructor(private store: Store<{ global: any, tickets: TicketState, inventory: InventoryState}>) {
+  constructor(private store: Store<{ global: IGlobalState, tickets: TicketState, inventory: InventoryState}>) {
     this.tickets$ = this.store.pipe(select(ticketSelector));
     this.filteredTickets$ = this.tickets$;
     this.userAssets$ = this.store.pipe(select(usrAssetSelector));

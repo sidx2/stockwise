@@ -12,7 +12,7 @@ export interface Category {
     identificationType: "unique" | "non-unique";
     orgId: string;
     customFields: CustomField[]
-    vendors: Vendor[];
+    vendors: string[];
     numberOfAssets: number
 }
 
