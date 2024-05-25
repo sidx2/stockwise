@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { map, take, filter } from 'rxjs/operators';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { map, takeUntil, filter, take } from 'rxjs/operators';
 import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest, checkoutMailRequest } from '../../../store/inventory.action';
 import { Category, CategoryState} from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
@@ -28,7 +28,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   employees$: Observable<Employee[]>;
   filteredItems$: Observable<Item[]> | null = null;
   orgSubscription: Subscription;
-  loadingSubscription: Subscription
+  loadingSubscription: Subscription;
+  destroy$: Subject<void> = new Subject();
 
   selectedCategory: Category | null = null;
   updateItemCategory: Category | null = null;
@@ -38,7 +39,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   itemIdToDelete: string = '';
   selectedItem: Item | null = null;
 
-  // conditional rendering
   isLoading: boolean = false;
   isEditMode: boolean = false;
   showDetailedView: boolean = false;
@@ -74,29 +74,30 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.categories$.pipe(
       filter(categories => categories.length > 0),
-      take(1),
+      takeUntil(this.destroy$),
     ).subscribe(categories => {
       this.selectedCategory = categories[0];
       this.onCategoryChange();
     });
 
-    // item created successfully
     this.actions$.pipe(
-      ofType(addItem)
+      ofType(addItem),
+      takeUntil(this.destroy$)
     ).subscribe( ()=> {
       this.hideInventoryForm();
     })
 
-    // item updated successfully
     this.actions$.pipe(
-      ofType(updateItem)
+      ofType(updateItem),
+      takeUntil(this.destroy$)
     ).subscribe( ()=> {
       this.hideInventoryForm();
     })
 
     this.actions$.pipe(
       ofType(checkoutItemRequest),  
-      take(1)
+      take(1),
+      takeUntil(this.destroy$)
     ).subscribe(() => {
       if (this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
@@ -105,12 +106,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.orgSubscription) {
-      this.orgSubscription.unsubscribe();
-    }
-    if(this.loadingSubscription){
-      this.loadingSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onCategoryChange(): void {
@@ -120,6 +117,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
         const selectedCategoryId = this.selectedCategory?._id;
         return selectedCategoryId ? items.filter(item => item.categoryId === selectedCategoryId) : items;
       }),
+      takeUntil(this.destroy$)
     );
   }
 
@@ -165,11 +163,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.isEditMode = true;
     this.showInventoryForm();
 
-    // Find the category details of the selected item
-    this.categories$.subscribe((categories: Category[]) => {
-
+    this.categories$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((categories: Category[]) => {
       const updateItemCategory = categories.find(category => category._id === selectedItem.categoryId);
-
       if (updateItemCategory) {
         this.updateItemCategory = updateItemCategory;
       }
@@ -192,19 +189,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
   checkoutItemHandler(event:CheckoutEventData) {
     const assignedToDetails: CheckoutDetails = event.assignedToDetails;
     const checkoutMailDetails: CheckoutMailDetails = event.checkoutMailDetails;
-
     checkoutMailDetails.orgName = this.orgName;
-
-    console.log("inside parent");
     this.checkoutMailDetails = checkoutMailDetails;
-
     this.store.dispatch(checkoutItemRequest({assignedToDetails}));
     this.hideCheckoutItemHandler();
   }
 
   // checkin
   showCheckinItemHandler(selectedItem: Item) {
-    console.log("checkin", selectedItem);
     this.selectedItem = selectedItem;
     this.showCheckin = true
   }
@@ -241,5 +233,4 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.selectedItem = null;
     this.showLifecycle = false;
   }
-
 }

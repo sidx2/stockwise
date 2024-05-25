@@ -3,7 +3,8 @@ import { Category, CategoryState } from '../../../models/category';
 import { IGlobalState } from '../../../../../store/global.reducers';
 import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory, updateCategory } from '../../../store/category.action';
 import { categorySelector, getLoading } from '../../../store/category.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
@@ -25,46 +26,33 @@ export class CategoryComponent implements OnInit, OnDestroy {
   showDeleteConfirmation: boolean = false;
   orgId: string = '';
 
-  private orgSubscription: Subscription | undefined;
-  loadingSubscription: Subscription | undefined;
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store<{ categories: CategoryState, global: IGlobalState }>, private actions$: Actions) {
-
     this.categories$ = this.store.pipe(select(categorySelector));
-
-    this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading)=> this.isLoading = loading);
-
-    this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
-      this.orgId = org._id;
-    })
   }
 
   ngOnInit(): void {
     
-    this.fetchCategoryHandler();
+    this.store.pipe(select(getLoading)).pipe(takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
+    
+    this.store.pipe(select(orgSelector)).pipe(takeUntil(this.destroy$)).subscribe((org) => {
+      this.orgId = org._id;
+      this.fetchCategoryHandler();
+    });
 
-    // catgory created successfully
-    this.actions$.pipe(
-      ofType(addCategory)
-    ).subscribe(() => {
+    this.actions$.pipe(ofType(addCategory), takeUntil(this.destroy$)).subscribe(() => {
       this.hideCategoryForm();
-    })
+    });
 
-    // category updated successfully
-    this.actions$.pipe(
-      ofType(updateCategory)
-    ).subscribe(() => {
+    this.actions$.pipe(ofType(updateCategory), takeUntil(this.destroy$)).subscribe(() => {
       this.hideCategoryForm();
-    })
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.orgSubscription) {
-      this.orgSubscription.unsubscribe();
-    }
-    if(this.loadingSubscription){
-      this.loadingSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchCategoryHandler(): void {
@@ -105,7 +93,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.selectedCategory = selectedCategory;
   }
 
-  // Modal events
   closeModal() {
     this.showDeleteConfirmation = false;
   }

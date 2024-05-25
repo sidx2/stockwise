@@ -14,31 +14,57 @@
         <td>{{ item.name }}</td>
         <td>{{ item.serialNumber }}</td>
         <td>{{ item.status }}</td>
-        <td>{{ item.assignedTo && item.assignedTo.length > 0 ? item.assignedTo[0].userName : 'Not Assigned' }}</td>
+        <td>
+          {{
+            item.assignedTo && item.assignedTo.length > 0
+              ? item.assignedTo[0].userName
+              : "Not Assigned"
+          }}
+        </td>
         <td>
           <div class="actions">
             <button appButtonPrimaryLight (click)="updateItemHandler(item)">
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)" *ngIf="item?.assignedTo?.length === 0">
+            <button
+              appButtonPrimaryLight
+              (click)="deleteItemHandler(item?._id)"
+              [disabled]="item?.assignedTo?.length !== 0"
+            >
               <mat-icon>delete</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)">
+            <button
+              appButtonPrimaryLight
+              (click)="showDetailedViewHandler(item)"
+            >
               <mat-icon matTooltip="info">info</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="showLifecycleHandler(item)" 
-            *ngIf="item && item.lifecycle != undefined && item.lifecycle.length > 0">
+            <button
+              appButtonPrimaryLight
+              (click)="showLifecycleHandler(item)"
+              *ngIf="
+                item && item.lifecycle != undefined && item.lifecycle.length > 0
+              "
+            >
               <mat-icon matTooltip="lifecycle">sync</mat-icon>
             </button>
-           
-            <button appButtonPrimaryLight *ngIf="item?.assignedTo?.length === 0" (click)="checkoutItemHandler(item)">
+
+            <button
+              appButtonPrimaryLight
+              *ngIf="item?.assignedTo?.length === 0"
+              (click)="checkoutItemHandler(item)"
+            >
               <mat-icon matTooltip="checkout">assignment_ind</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight *ngIf="item?.assignedTo?.length === 1" (click)="checkinItemHandler(item)">
+            <button
+              appButtonPrimaryLight
+              *ngIf="item?.assignedTo?.length === 1"
+              (click)="checkinItemHandler(item)"
+            >
               <mat-icon matTooltip="checkin">assignment_return</mat-icon>
             </button>
           </div>
@@ -63,7 +89,10 @@
         <td>{{ item.quantity }}</td>
         <td>{{ item.checkedOutQuantity }}</td>
         <td>
-          <div *ngIf="item.assignedTo && item.assignedTo.length > 0" class="assignedTo">
+          <div
+            *ngIf="item.assignedTo && item.assignedTo.length > 0"
+            class="assignedTo"
+          >
             <div *ngFor="let assignedItem of item.assignedTo">
               {{ assignedItem.userName }} - {{ assignedItem.quantity }}
             </div>
@@ -78,19 +107,43 @@
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)" *ngIf="item?.assignedTo?.length === 0">
+            <button
+              appButtonPrimaryLight
+              (click)="deleteItemHandler(item?._id)"
+              [disabled]="item?.assignedTo?.length !== 0"
+            >
               <mat-icon>delete</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="showDetailedViewHandler(item)" >
+            <button
+              appButtonPrimaryLight
+              (click)="showDetailedViewHandler(item)"
+            >
               <mat-icon matTooltip="ino">info</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight *ngIf="item && item.checkedOutQuantity !== undefined && item.quantity !== undefined && item.checkedOutQuantity < item.quantity" (click)="checkoutItemHandler(item)">
+            <button
+              appButtonPrimaryLight
+              *ngIf="
+                item &&
+                item.checkedOutQuantity !== undefined &&
+                item.quantity !== undefined &&
+                item.checkedOutQuantity < item.quantity
+              "
+              (click)="checkoutItemHandler(item)"
+            >
               <mat-icon matTooltip="checkout">assignment_ind</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight *ngIf="item && item.checkedOutQuantity !== undefined && item.checkedOutQuantity > 0" (click)="checkinItemHandler(item)">
+            <button
+              appButtonPrimaryLight
+              *ngIf="
+                item &&
+                item.checkedOutQuantity !== undefined &&
+                item.checkedOutQuantity > 0
+              "
+              (click)="checkinItemHandler(item)"
+            >
               <mat-icon matTooltip="checkin">assignment_return</mat-icon>
             </button>
           </div>

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Observable, Subscription, filter, map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription, filter, map, Subject } from 'rxjs';
 import { UserAsset, Item } from '../../../../inventory-module/models/inventory';
 import { TicketAdminState, Ticket, UpdateStatus } from '../../../models/ticket-admin';
 import { InventoryState } from '../../../../inventory-module/models/inventory';
@@ -9,18 +9,20 @@ import { getLoading, ticketSelector } from '../../../store/ticket-admin.selector
 import { inventorySelector, usrAssetSelector } from '../../../../inventory-module/store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { getItemRequest } from '../../../../inventory-module/store/inventory.action';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket-admin',
   templateUrl: './ticket-admin.component.html',
   styleUrl: './ticket-admin.component.scss'
 })
-export class TicketAdminComponent {
+export class TicketAdminComponent implements OnInit, OnDestroy {
   tickets$: Observable<Ticket[]>;
   filteredTickets$: Observable<Ticket[]>;
   items$: Observable<Item[]>;
   private orgSubscription!: Subscription;
   loadingSubscription!: Subscription;
+  private destroy$: Subject<void> = new Subject();
 
   selectedTicketId: string = '';
   selectedItem: Item | null = null;
@@ -37,8 +39,10 @@ export class TicketAdminComponent {
     this.filteredTickets$ = this.tickets$
     this.items$ = this.store.pipe(select(inventorySelector));
 
-    this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading: boolean) => {
-      this.isLoading = loading;
+    this.loadingSubscription = this.store.pipe(select(getLoading))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading: boolean) => {
+        this.isLoading = loading;
     });
 
     this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
@@ -88,7 +92,8 @@ export class TicketAdminComponent {
 
   showAssetInfo(assetId: string){
     this.items$.pipe(
-      map(items => items.find(item => item._id === assetId))
+      map(items => items.find(item => item._id === assetId)),
+      takeUntil(this.destroy$)
     ).subscribe(selectedItem => {
       if (selectedItem) {
         this.selectedItem = selectedItem;
@@ -103,7 +108,13 @@ export class TicketAdminComponent {
   }
 
   ngOnDestroy(): void {
-    this.orgSubscription.unsubscribe();
-    this.loadingSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.orgSubscription) {
+      this.orgSubscription.unsubscribe();
+    }
+    if (this.loadingSubscription) {
+      this.loadingSubscription.unsubscribe();
+    }
   }
 }

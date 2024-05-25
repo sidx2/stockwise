@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subscription, map, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { Ticket } from '../../../models/ticket.model';
 import { UserAsset } from '../../../../inventory-module/models/inventory';
@@ -10,6 +10,7 @@ import { getUserAssets } from '../../../../inventory-module/store/inventory.acti
 import { getLoading, ticketSelector } from '../../../store/ticket.selector';
 import { usrAssetSelector } from '../../../../inventory-module/store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket',
@@ -22,6 +23,7 @@ export class TicketComponent implements OnInit, OnDestroy {
   userAssets$: Observable<UserAsset[]>;
   private orgSubscription!: Subscription;
   loadingSubscription!: Subscription;
+  private destroy$: Subject<void> = new Subject();
 
   orgId: string = '';
   filterTag: string = 'all';
@@ -39,13 +41,14 @@ export class TicketComponent implements OnInit, OnDestroy {
  }
 
   ngOnInit(): void {
-  
     this.store.dispatch(getUserTicketRequest());
     this.store.dispatch(getUserAssets());
     this.filteredTickets$ = this.tickets$;
 
-    this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading: boolean) => {
-      this.isLoading = loading;
+    this.loadingSubscription = this.store.pipe(select(getLoading))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading: boolean) => {
+        this.isLoading = loading;
     });
   }
 
@@ -82,7 +85,13 @@ export class TicketComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.orgSubscription.unsubscribe();
-    this.loadingSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.orgSubscription) {
+      this.orgSubscription.unsubscribe();
+    }
+    if (this.loadingSubscription) {
+      this.loadingSubscription.unsubscribe();
+    }
   }
 }

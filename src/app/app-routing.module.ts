@@ -1,16 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { ErrorPageComponent } from './shared-module/components/error-page/error-page.component';
 
 const routes: Routes = [
-  // {
-  //   path: "",
-  //   pathMatch: "full",
-  //   component: RouterComponent
-  // },
   {
-    canActivate: [authGuard],
+    canActivate: [AuthGuard],
     path: '',
     loadChildren: () => import('./main-module/main.module').then(m => m.MainModule),
   },
