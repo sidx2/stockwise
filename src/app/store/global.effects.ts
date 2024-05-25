@@ -10,22 +10,19 @@ import { IGlobalState } from "../models/global";
 
 @Injectable()
 export class globalEffects {
+    constructor(
+        private action$: Actions,
+        private authService$: AuthService,
+        private orgService$: OrgService,
+        private cs: CookieService,
+        private store: Store<{ global: IGlobalState }>,
+    ) { }
 
-    action$ = inject(Actions)
-    authService$ = inject(AuthService)
-    orgService$ = inject(OrgService)
-    cs = inject(CookieService);
-    store = inject(Store<{ global: IGlobalState }>)
-
-    constructor() {
-        console.log("action$", this.action$)
-    }
     loginUser$ = createEffect(() =>
-
         this.action$.pipe(
             ofType(loginUser),
-            switchMap((u) =>
-                this.authService$.login(u.user).pipe(
+            switchMap(({ credentials }) =>
+                this.authService$.login(credentials).pipe(
                     map((res: any) => {
                         console.log("res:", res)
                         return loginUserSuccess(res)
@@ -39,12 +36,10 @@ export class globalEffects {
     )
 
     fetchOrg$ = createEffect(() =>
-
         this.action$.pipe(
             ofType(fetchOrg),
-            switchMap((u) => {
-                console.log("u: ", u)
-                return this.orgService$.getOrgByUserId(u.id).pipe(
+            switchMap(({ userId }) => {
+                return this.orgService$.getOrgByUserId(userId).pipe(
                     map((res: any) => {
                         console.log("res:", res)
                         return fetchOrgSuccess(res)
@@ -94,7 +89,6 @@ export class globalEffects {
             ofType(fetchOrgSuccess),
 
             tap((t) => {
-
                 console.log("t in tap: ", t);
                 try {
                     this.cs.set("org", JSON.stringify(t))

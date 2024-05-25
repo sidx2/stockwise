@@ -23,7 +23,7 @@ export interface Order {
 }
 
 export interface IStatusUpdated {
-    orderId: string,
+    _id: string,
     updatedStatus: string,
 
 }

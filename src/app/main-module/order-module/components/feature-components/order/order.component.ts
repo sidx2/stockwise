@@ -8,7 +8,7 @@ import { userSelector } from '../../../../../store/global.selectors';
 import { tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { IOrderState } from '../../../store/order.reducers';
-import { OrderForm, Product } from '../../../models/order';
+import { IPlaceOrder, OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/store/vendor.reducers';
 import { CartItem } from '../../../../order-history-module/models/order-history';
 import { IGlobalState, Org, User } from '../../../../../models/global';
@@ -99,7 +99,7 @@ export class OrderComponent {
       return;
     }
 
-    const cart = this.OrderFormArray.value.map((orderForm: OrderForm) => {
+    const cart: CartItem[] = this.OrderFormArray.value.map((orderForm: OrderForm) => {
       const cartItem: CartItem = { 
         item: { _id: "", name: "", categoryId: "" },
         vendor: orderForm.vendor,
@@ -112,7 +112,7 @@ export class OrderComponent {
       return cartItem;
     })
 
-    const order = {
+    const order: IPlaceOrder = {
       org: { _id: this.org._id },
       admin: { 
         _id: this.user._id, 
@@ -120,7 +120,7 @@ export class OrderComponent {
       cart,
     }
 
-    this.store.dispatch(placeOrderRequest(order))
+    this.store.dispatch(placeOrderRequest({ order }))
 
     this.cleanForms();
     alert("Your Order was placed! You can check them in history")

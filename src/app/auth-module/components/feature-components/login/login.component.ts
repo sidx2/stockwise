@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGlobalState } from '../../../../models/global';
+import { LoginCredentials } from '../../../models/auth';
 
 @Component({
   selector: 'app-auth',
@@ -31,24 +32,24 @@ export class LoginComponent {
     this.actions$.pipe(
       ofType(loginUserSuccess),
       takeUntil(this.destroySubject)
-    ).subscribe((data) => {
-      console.log("data in AuthComponent: ", data);
+    ).subscribe(({ user }) => {
+      console.log("user in AuthComponent: ", user);
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
 
       // set cookies
-      this.cookieService.set("token", data.token, expiryDate)
-      this.cookieService.set("user", JSON.stringify(data), expiryDate)
+      this.cookieService.set("token", user.token!, expiryDate)
+      this.cookieService.set("user", JSON.stringify(user), expiryDate)
       this.cookieService.set("isLoggedin", "true", expiryDate)
 
-      this.store.dispatch(setUser({ user: data }))
-      this.store.dispatch(fetchOrg({ id: data.id }))
+      this.store.dispatch(setUser({ user }))
+      this.store.dispatch(fetchOrg({ userId: user._id }))
     });
 
     this.actions$.pipe(
       ofType(fetchOrgSuccess),
       takeUntil(this.destroySubject)
-    ).subscribe((org) => {
+    ).subscribe(({ org }) => {
       this.cookieService.set("org", JSON.stringify(org))
       this.store.dispatch(setOrg({ org: org }));
 
@@ -78,7 +79,13 @@ export class LoginComponent {
       alert("Invalid credentials");
       return;
     };
-    this.store.dispatch(loginUser({ user: this.loginForm.value }));
+
+    const credentials: LoginCredentials = {
+      email: this.loginForm.value.email!,
+      password: this.loginForm.value.password!,
+    }
+
+    this.store.dispatch(loginUser({ credentials }));
   }
 
   ngOnDestroy(): void {

@@ -1,22 +1,18 @@
 import { createAction, props } from "@ngrx/store";
+import { LoginCredentials } from "../auth-module/models/auth";
+import { Org, User } from "../models/global";
 
 export const getUser = createAction("getUser");
+export const setUser = createAction("setUser", props<{ user: User }>());
 
-export const setUser = createAction("setUser", props<any>());
+export const loginUser = createAction("loginUser", props<{ credentials: LoginCredentials }>());
+export const loginUserSuccess = createAction("loginUserSuccess", props<{ user: User}>());
+export const loginUserFailure = createAction("loginUserFailure", props<{ error: string }>());
 
-export const loginUser = createAction("loginUser", props<any>());
-
-export const loginUserSuccess = createAction("loginUserSuccess", props<any>());
-
-export const loginUserFailure = createAction("loginUserFailure", props<any>());
-
-export const fetchOrg = createAction("fetchOrg", props<any>());
-
-export const setOrg = createAction("setOrg", props<any>());
-
-export const fetchOrgSuccess = createAction("fetchOrgSuccess", props<any>());
-
-export const fetchOrgFailure = createAction("fetchOrgFailure", props<any>());
+export const setOrg = createAction("setOrg", props<{ org: Org }>());
+export const fetchOrg = createAction("fetchOrg", props<{ userId: string }>());
+export const fetchOrgSuccess = createAction("fetchOrgSuccess", props<{ org: Org }>());
+export const fetchOrgFailure = createAction("fetchOrgFailure", props<{ error: string }>());
 
 export const init = createAction("init");
 

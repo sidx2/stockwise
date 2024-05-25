@@ -1,23 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
-export interface LoginCredentials {
-  email: string,
-  password: string,
-}
-
-export interface SignupCredentials {
-  email: string,
-  name: string,
-  password: string,
-  role: string,
-}
-
-export interface CreateOrgCredentials {
-  email: string,
-  name: string,
-}
+import { CreateOrgCredentials, LoginCredentials, SignupCredentials } from '../models/auth';
 
 @Injectable({
   providedIn: 'root'

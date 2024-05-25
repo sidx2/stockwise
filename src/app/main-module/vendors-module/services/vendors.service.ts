@@ -30,9 +30,9 @@ export class VendorsService {
     );
   }
 
-  updateVendor(vendor: any) {
+  updateVendor(vendor: Vendor) {
     console.log("vendor in updateVendor: ", vendor)
-    return this.http.put("http://localhost:9999/vendor/update", vendor.vendor);
+    return this.http.put("http://localhost:9999/vendor/update", vendor);
   }
   
   deleteVendor(vendorId: string) {

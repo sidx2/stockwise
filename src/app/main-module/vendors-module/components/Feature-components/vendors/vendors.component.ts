@@ -9,7 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { IVendorsState, Vendor } from '../../../store/vendor.reducers';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
-import { Editor } from '../../../models/vendor';
+import { Editor, IVendorUpdate } from '../../../models/vendor';
 
 @Component({
   selector: 'app-vendors',
@@ -49,8 +49,8 @@ export class VendorsComponent implements OnInit {
     this.actions$.pipe(
       ofType(updateVendorSuccess),
       takeUntil(this.destroySubject),
-    ).subscribe((vendor) => {
-      this.appService.vendorUpdated(vendor);
+    ).subscribe(({ vendor }) => {
+      this.appService.vendorUpdated({ vendor, orgId: vendor.orgId });
     });
   }
 
@@ -60,7 +60,7 @@ export class VendorsComponent implements OnInit {
       takeUntil(this.destroySubject)
     ).subscribe((data) => {
       console.log('vendorUpdated event received:', data);
-      this.store.dispatch(updateVendorRemote({ vendor: data }))
+      this.store.dispatch(updateVendorRemote({ vendor: data as Vendor }))
     });
 
     this.socket.fromEvent('startedEditing').pipe(
@@ -91,10 +91,11 @@ export class VendorsComponent implements OnInit {
     this.store.dispatch(updateVendorRequest({ vendor }));
   }
 
-  onDeleteVendor(_id: string) {
-    this.store.dispatch(deleteVendorRequest({ _id }))
+  onDeleteVendor(vendorId: string) {
+    this.store.dispatch(deleteVendorRequest({ vendorId }))
   }
 
+  // socket
   onStartedEditing(event: Editor) {
     this.appService.startedEditing(this.orgId, event);
   }

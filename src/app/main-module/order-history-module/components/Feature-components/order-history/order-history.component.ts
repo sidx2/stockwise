@@ -19,13 +19,13 @@ export class OrderHistoryComponent {
     private store: Store<{ history: IHistoryState, global: IGlobalState }>
   ) {
     this.store.select(orgSelector).subscribe((org) => { this.orgId = org._id; })
-    this.store.dispatch(fetchHistoryRequest({ _id: this.orgId }));
+    this.store.dispatch(fetchHistoryRequest({ orgId: this.orgId }));
     this.store.select(historySelector).subscribe((data) => { this.history = data.history; })
   }
 
   onStatusUpdate(event: IStatusUpdated) {
     this.store.dispatch(updateStatusRequest({ 
-      orderId: event.orderId, 
+      _id: event._id, 
       updatedStatus: event.updatedStatus 
     }))
   }

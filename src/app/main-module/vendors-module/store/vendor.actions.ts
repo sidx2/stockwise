@@ -1,19 +1,20 @@
 import { createAction, props } from "@ngrx/store";
+import { Vendor } from "./vendor.reducers";
 
 export const fetchVendorsRequest = createAction("fetchVendorsRequest");
-export const fetchVendorsSuccess = createAction("fetchVendorsSuccess", props<any>())
-export const fetchVendorsFailure = createAction("fetchVendorsFailure", props<any>())
+export const fetchVendorsSuccess = createAction("fetchVendorsSuccess", props<{ vendors: Vendor[] }>())
+export const fetchVendorsFailure = createAction("fetchVendorsFailure", props<{ error: string }>())
 
-export const addVendorRequest = createAction("addVendorsRequest", props<any>());
-export const addVendorSuccess = createAction("addVendorsSuccess", props<any>())
-export const addVendorFailure = createAction("addVendorsFailure", props<any>())
+export const addVendorRequest = createAction("addVendorsRequest", props<{ vendor: Vendor, orgId: string }>());
+export const addVendorSuccess = createAction("addVendorsSuccess", props<{ vendor: Vendor }>())
+export const addVendorFailure = createAction("addVendorsFailure", props<{ error: string }>())
 
-export const updateVendorRequest = createAction("updateVendorRequest", props<any>())
-export const updateVendorSuccess = createAction("updateVendorSuccess", props<any>())
-export const updateVendorFailure = createAction("updateVendorFailure", props<any>())
+export const updateVendorRequest = createAction("updateVendorRequest", props<{ vendor: Vendor }>())
+export const updateVendorSuccess = createAction("updateVendorSuccess", props<{ vendor: Vendor }>())
+export const updateVendorFailure = createAction("updateVendorFailure", props<{ error: string }>())
 
-export const updateVendorRemote = createAction("updateVendorRemote", props<any>());
+export const updateVendorRemote = createAction("updateVendorRemote", props<{ vendor: Vendor }>());
 
-export const deleteVendorRequest = createAction("deleteVendorRequest", props<any>())
-export const deleteVendorSuccess = createAction("deleteVendorSuccess", props<any>())
-export const deleteVendorFailure = createAction("deleteVendorFailure", props<any>())
+export const deleteVendorRequest = createAction("deleteVendorRequest", props<{ vendorId: string }>())
+export const deleteVendorSuccess = createAction("deleteVendorSuccess", props<{ vendor: Vendor }>())
+export const deleteVendorFailure = createAction("deleteVendorFailure", props<{ error: string }>())

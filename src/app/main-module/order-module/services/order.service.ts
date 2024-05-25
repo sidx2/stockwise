@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { orgSelector } from '../../../store/global.selectors';
 import { IGlobalState } from '../../../models/global';
+import { IPlaceOrder } from '../models/order';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class OrderService {
     })
   }
 
-  placeOrder(order: any) {
+  placeOrder(order: IPlaceOrder) {
     return this.http.post("http://localhost:9999/order/create", order)
   }
 }

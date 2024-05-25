@@ -1,19 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-
-enum Estatus {
-  "placed",
-  "fulfilled",
-  "pending",
-  "rejected"
-}
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderHistoryService {
-  http = inject(HttpClient)
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   fetchHistory(orgId: string) {
     console.log("orgId in fetchhistory: ", orgId);
