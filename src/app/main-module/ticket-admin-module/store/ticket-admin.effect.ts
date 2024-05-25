@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketAdminService } from '../services/ticket-admin.service';
-import { getAllTicketRequest, updateTicketStatusRequest, setLoading, resetLoading, getAllTicketSuccess, getAllTicketFailure } from './ticket-admin.action';
+import { getAllTicketRequest, updateTicketStatusRequest, setLoading, resetLoading, getAllTicketSuccess, getAllTicketFailure, updateTicketStatusSuccess, updateTicketStatusFailure } from './ticket-admin.action';
 import { Store } from '@ngrx/store';
 import { updateStatusFailure, updateStatusSuccess } from '../../order-history-module/store/order-history.actions';
 
@@ -28,9 +28,9 @@ export class TicketAdminEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.ticketAdminService.updateTicketStatus(action.updatedStatus).pipe(
-                map(response => updateStatusSuccess({ ticket: response })),
+                map(response => updateTicketStatusSuccess({ ticket: response })),
                 catchError(errorResponse => {
-                    return of(updateStatusFailure({errorMessage: errorResponse.error.error})); 
+                    return of(updateTicketStatusFailure({errorMessage: errorResponse.error.error})); 
                 })
             )
         )

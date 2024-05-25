@@ -1,8 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
-import { Ticket, TicketAdminState } from '../models/ticket-admin';
-import { getAllTicketFailure, getAllTicketSuccess, resetLoading, setLoading } from './ticket-admin.action';
+import {TicketAdminState } from '../models/ticket-admin';
+import { getAllTicketFailure, getAllTicketSuccess, resetLoading, setLoading, updateTicketStatusFailure, updateTicketStatusRequest, updateTicketStatusSuccess } from './ticket-admin.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
-import { updateStatusFailure, updateStatusSuccess } from '../../order-history-module/store/order-history.actions';
 
 export const initialState: TicketAdminState = {
     allTickets: [],
@@ -23,13 +22,13 @@ export const ticketAdminReducer = createReducer(
         errorMessage
     })),
 
-    on(updateStatusSuccess, (state, { ticket }) => ({
+    on(updateTicketStatusSuccess, (state, { ticket }) => ({
         ...state,
         allTickets: state.allTickets.map(t => t._id === ticket._id ? ticket : t),
         loading: false
     })),
 
-    on(updateStatusFailure, (state, {errorMessage})=>({
+    on(updateTicketStatusFailure, (state, {errorMessage})=>({
         ...state,
         loading: false,
         errorMessage
