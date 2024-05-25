@@ -7,7 +7,6 @@ export const getItemRequest = createAction('[Item] Get Item Request', props<{org
 export const createItemRequest = createAction('[Item] Create Item Request', props<{ item: Item }>());
 export const deleteItemRequest = createAction('[Item] Delete Item Request', props<{ itemId: string }>());
 export const updateItemRequest = createAction('[Item] Update Item Request', props<{ updatedItem: Item }>());
-
 export const checkoutItemRequest = createAction('[Item] Checkout Item Request', props<{assignedToDetails: CheckoutDetails}>());
 export const checkoutMailRequest = createAction('[Item] Checkout Item Request', props<{checkoutMailDetails: CheckoutMailDetails}>());
 export const checkinItemRequest = createAction('[Item] Checkin Item Request', props<{checkinDetails: CheckinDetails}>());

@@ -8,11 +8,15 @@ import { Ticket } from '../../../../ticket-module/models/ticket.model';
 })
 export class TicketAdminCardComponent {
 
-  @Input() ticket: Ticket | null = null
+  @Input() ticket!: Ticket;
   @Output() updateStatusEmmiter: EventEmitter<string> = new EventEmitter();
+  @Output() showAssetInfoEmmiter: EventEmitter<string> = new EventEmitter();
 
   updateStatusHandler(ticketId: string | undefined){
-    console.log("inside ticket admin card");
     this.updateStatusEmmiter.emit(ticketId);
+  }
+
+  showAssetInfoHandler(assetId: string | undefined){
+    this.showAssetInfoEmmiter.emit(assetId);
   }
 }

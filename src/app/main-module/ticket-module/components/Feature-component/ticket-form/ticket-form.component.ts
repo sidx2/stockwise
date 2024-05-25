@@ -24,6 +24,8 @@ export class TicketFormComponent implements OnInit {
     this.ticketFormGroup.get('issueType')?.valueChanges.subscribe((issueType: string) => {
       if (issueType && issueType !== 'newAssetRequest') {
         this.ticketFormGroup.addControl('assetId', new FormControl('', Validators.required));
+      }else{
+        this.ticketFormGroup.removeControl('assetId');
       }
     });
   }

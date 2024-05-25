@@ -38,12 +38,18 @@
   </div>
 
   <ng-container *ngIf="filteredTickets$ | async as tickets">
-    <app-ticket-admin-card *ngFor="let ticket of tickets" [ticket]="ticket" (updateStatusEmmiter)="showUpdateStatusForm($event)">
+    <app-ticket-admin-card *ngFor="let ticket of tickets" [ticket]="ticket" (updateStatusEmmiter)="showUpdateStatusForm($event)" 
+    (showAssetInfoEmmiter)="showAssetInfo($event)"
+  >
     </app-ticket-admin-card>
   </ng-container>
 </div>
 
 <app-modal (closeModalEvent)="hideUpdateStatusForm()" *ngIf="isUpdateFormVisible"> 
     <app-update-status-form (updateStatusEmmiter)="updateStatusHandler($event)"></app-update-status-form>
+</app-modal>
+
+<app-modal  (closeModalEvent)="hideAssetInfo()" *ngIf="isAssetInfoVisible">
+  <app-asset-details [selectedItem]="selectedItem"></app-asset-details>
 </app-modal>
 

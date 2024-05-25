@@ -15,55 +15,64 @@
   color: #4a4a4a;
 }
 
-.ticket-header .ticked-header-info {
+.ticket-header .ticket-header-info {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
 
-.ticket-header .ticketDate {
+.ticket-header .ticket-date {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
 
-.ticketInfo .ticketStatus {
+.ticket-status {
   padding: 0.5rem 1rem;
   border-radius: 0.2rem;
   font-size: 1rem;
   font-weight: 420;
 }
 
-.ticketStatus.open {
+.status.open {
   color: #0183ff;
 }
 
-.ticketStatus.resolved {
+.status.resolved {
   color: #01a416;
 }
 
-.ticketStatus.processing {
+.status.processing {
   color: #c98301;
 }
 
-.ticketDetails {
+.ticket-details {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.ticketDetails h3 {
+.ticket-details h3 {
   font-weight: 500;
+  font-size: 1.2rem; 
 }
 
-.ticketAction {
+.ticket-details p {
+  font-size: 1rem; 
+}
+
+.ticket-remark h4 {
+  font-size: 1rem; 
+}
+
+.ticket-remark h4 span {
+  font-weight: 400;
+}
+
+.ticket-action {
   width: 100%;
   display: flex;
   justify-content: flex-end;
-}
-
-.additionalDetails h4 span {
-  font-weight: 400;
 }
 
 @media screen and (max-width: 700px) {

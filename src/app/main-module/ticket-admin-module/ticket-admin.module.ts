@@ -13,13 +13,15 @@ import { TicketAdminEffects } from './store/ticket-admin.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { TicketAdminRoutingModule } from './ticket-admin-routing.module';
 import { TicketAdminHeaderComponent } from './components/Ui-component/ticket-admin-header/ticket-admin-header.component';
+import { AssetDetailsComponent } from './components/Ui-component/asset-details/asset-details.component';
 
 @NgModule({
   declarations: [
     TicketAdminComponent,
     TicketAdminCardComponent,
     UpdateStatusFormComponent,
-    TicketAdminHeaderComponent
+    TicketAdminHeaderComponent,
+    AssetDetailsComponent
   ],
   imports: [
     CommonModule,
