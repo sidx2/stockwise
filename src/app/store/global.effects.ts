@@ -21,8 +21,8 @@ export class globalEffects {
     loginUser$ = createEffect(() =>
         this.action$.pipe(
             ofType(loginUser),
-            switchMap((u) =>
-                this.authService$.login(u.user).pipe(
+            switchMap(({ credentials }) =>
+                this.authService$.login(credentials).pipe(
                     map((res: any) => {
                         console.log("res:", res)
                         return loginUserSuccess(res)
@@ -38,8 +38,8 @@ export class globalEffects {
     fetchOrg$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchOrg),
-            switchMap((u) => {
-                return this.orgService$.getOrgByUserId(u.id).pipe(
+            switchMap(({ userId }) => {
+                return this.orgService$.getOrgByUserId(userId).pipe(
                     map((res: any) => {
                         console.log("res:", res)
                         return fetchOrgSuccess(res)
