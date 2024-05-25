@@ -35,17 +35,18 @@ export class SignupComponent {
 
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
-      this.cookieService.set("token", data.user.token??"", expiryDate)
+      this.cookieService.set("token", data.user.token ?? "", expiryDate)
       this.cookieService.set("user", JSON.stringify(data.user), expiryDate)
       this.cookieService.set("isLoggedin", "true", expiryDate)
 
       const org = {
-        name: this.signupForm.value.orgName,
-        email: this.signupForm.value.email,
+        name: this.signupForm.value.orgName!,
+        email: this.signupForm.value.email!,
       }
 
       this.store.dispatch(setUser({ user: data.user }))
       this.store.dispatch(createOrgRequest({ org, token: this.cookieService.get("token") }))
+
     });
 
     this.actions$.pipe(
@@ -81,11 +82,11 @@ export class SignupComponent {
       alert("Invalid credentials");
       return;
     }
-    
+
     const user = {
-      name: this.signupForm.value.name,
-      email: this.signupForm.value.email,
-      password: this.signupForm.value.password,
+      name: this.signupForm.value.name!,
+      email: this.signupForm.value.email!,
+      password: this.signupForm.value.password!,
       role: "admin"
     }
 

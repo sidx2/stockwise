@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
+import { addEmployeeRequest, createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
 import { employeesSelector } from '../../../store/employees.selectors';
 import { Observable } from 'rxjs';
 import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
@@ -32,17 +32,16 @@ export class EmployeesComponent {
       this.visible = !this.visible
     }
 
-    onAddEmployee(employee: IAddEmployee) {
+    onAddEmployee(user: IAddEmployee) {
       this.visible = !this.visible
-      this.store.dispatch(createUserRequest({user: employee, orgId: this.orgId}))
+      this.store.dispatch(createUserRequest({ user, orgId: this.orgId}))
     }
 
     onUpdateEmployee(employee: Employee) {
       this.store.dispatch(updateEmployeeRequest({ employee }))
     }
     
-    onDeleteEmploye(_id: string) {
-      
-      this.store.dispatch(deleteEmployeeRequest({ _id }))
+    onDeleteEmploye(employeeId: string) {
+      this.store.dispatch(deleteEmployeeRequest({ employeeId }))
     }
 }

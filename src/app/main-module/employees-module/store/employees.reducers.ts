@@ -33,7 +33,7 @@ export const employeesReducer = createReducer(
     }),
     on(deleteEmployeeSuccess, (state, action) => {
         console.log("deleteEmployee", "state:", state, "action: ", action)
-        const newEmployees = state.employees.filter((e) => e._id !== action._id)
+        const newEmployees = state.employees.filter((e) => e._id !== action.employeeId)
         
         return ({...state, employees: newEmployees});
     }),

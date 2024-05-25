@@ -56,9 +56,9 @@ export class EmployeesTableComponent {
       this.deleteEmployee.emit(_id)
   }
 
-  search(e: any) {
+  search(e: Event) {
     if (!this._emps.length) this._emps = this.employees
     this.currPage = 1;
-    this.employees = this._emps.filter((emp: any) => JSON.stringify(emp).toLowerCase().includes(e.target.value))
+    this.employees = this._emps.filter((emp: Employee) => JSON.stringify(emp).toLowerCase().includes((e.target as HTMLInputElement).value))
   }
 }

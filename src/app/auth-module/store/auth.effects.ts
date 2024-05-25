@@ -1,15 +1,15 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 import { AuthService } from "../services/auth.service";
-import { createOrgFailre, createOrgRequest, createOrgSuccess, signupFailre, signupRequest, signupSuccess } from "./auth.actions";
+import { createOrgFailure, createOrgRequest, createOrgSuccess, signupFailure, signupRequest, signupSuccess } from "./auth.actions";
 
 @Injectable()
 export class authEffects {
-    action$ = inject(Actions)
-    authService$ = inject(AuthService)
-
-    constructor() { }
+    constructor(
+        private action$: Actions,
+        private authService$: AuthService,
+    ) { }
 
     signupUser$ = createEffect(() =>
         this.action$.pipe(
@@ -21,7 +21,7 @@ export class authEffects {
                         return signupSuccess({user: res})
                     }),
                     catchError((err) =>
-                        of(signupFailre({ error: "Something went wrong" }))
+                        of(signupFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -38,7 +38,7 @@ export class authEffects {
                         return createOrgSuccess({org: res})
                     }),
                     catchError((err) =>
-                        of(createOrgFailre({ error: "Something went wrong" }))
+                        of(createOrgFailure({ error: "Something went wrong" }))
                     )
                 )
             )

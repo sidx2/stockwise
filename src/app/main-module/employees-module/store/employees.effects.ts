@@ -3,16 +3,13 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeFailure, deleteEmployeeRequest, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployeeFailure, updateEmployeeRequest, updateEmployeeSuccess } from "./employees.actions";
 import { catchError, map, of, switchMap } from "rxjs";
 import { EmployeesService } from "../services/employees.service";
-import { Store } from "@ngrx/store";
-import { CookieService } from "ngx-cookie-service";
 
 @Injectable()
 export class EmployeeEffects {
-    action$ = inject(Actions)
-    employeesService$ = inject(EmployeesService)
-    store = inject(Store<{ employees: any }>)
-    cs = inject(CookieService)
-    // orgId = JSON.parse(this.cs.get("org"))._id
+    constructor(
+        private action$: Actions,
+        private employeesService$: EmployeesService,
+    ) {}
 
     fetchEmployees$ = createEffect(() =>
         this.action$.pipe(
@@ -21,7 +18,7 @@ export class EmployeeEffects {
                 this.employeesService$.fetchEmployees().pipe(
                     map((res: any) => {
                         console.log("res:", res)
-                        return fetchEmployeesSuccess({ employees: res})
+                        return fetchEmployeesSuccess({ employees: res })
                     }),
                     catchError((err) =>
                         of(fetchEmployeesFailure({ error: "Something went wrong" }))
@@ -32,48 +29,48 @@ export class EmployeeEffects {
     )
 
     updateEmployee$ = createEffect(() =>
-    this.action$.pipe(
-        ofType(updateEmployeeRequest),
-        switchMap((emp) =>
-            this.employeesService$.updateEmployee(emp).pipe(
-                map((res: any) => {
-                    console.log("res:", res)
-                    return updateEmployeeSuccess({ employee: res})
-                }),
-                catchError((err) =>
-                    of(updateEmployeeFailure({ error: "Something went wrong" }))
+        this.action$.pipe(
+            ofType(updateEmployeeRequest),
+            switchMap(({employee}) =>
+                this.employeesService$.updateEmployee(employee).pipe(
+                    map((res: any) => {
+                        console.log("res:", res)
+                        return updateEmployeeSuccess({ employee: res })
+                    }),
+                    catchError((err) =>
+                        of(updateEmployeeFailure({ error: "Something went wrong" }))
+                    )
                 )
             )
         )
     )
-)
 
-deleteEmployee$ = createEffect(() =>
-this.action$.pipe(
-    ofType(deleteEmployeeRequest),
-    switchMap((emp) =>
-        this.employeesService$.deleteEmployee(emp).pipe(
-            map((res: any) => {
-                console.log("res:", res)
-                return deleteEmployeeSuccess({ _id: emp._id })
-            }),
-            catchError((err) =>
-                of(deleteEmployeeFailure({ error: "Something went wrong" }))
+    deleteEmployee$ = createEffect(() =>
+        this.action$.pipe(
+            ofType(deleteEmployeeRequest),
+            switchMap(({ employeeId }) =>
+                this.employeesService$.deleteEmployee(employeeId).pipe(
+                    map((res: any) => {
+                        console.log("res:", res)
+                        return deleteEmployeeSuccess({ employeeId })
+                    }),
+                    catchError((err) =>
+                        of(deleteEmployeeFailure({ error: "Something went wrong" }))
+                    )
+                )
             )
         )
     )
-)
-)
 
     createUser$ = createEffect(() =>
         this.action$.pipe(
             ofType(createUserRequest),
-            switchMap((data) =>
-                this.employeesService$.createUser(data.user).pipe(
+            switchMap(({ user, orgId }) =>
+                this.employeesService$.createUser(user).pipe(
                     map((res: any) => {
                         console.log("createUser res:", res)
                         // this.store.dispatch(addEmployeeRequest({ employee: res }))
-                        return createUserSuccess({ user: res, orgId: data.orgId })
+                        return createUserSuccess({ user: res, orgId })
                     }),
                     catchError((err) =>
                         of(createUserFailure({ error: "Something went wrong" }))
@@ -86,11 +83,11 @@ this.action$.pipe(
     addEmployee$ = createEffect(() =>
         this.action$.pipe(
             ofType(createUserSuccess),
-            switchMap((data) =>
-                this.employeesService$.addEmployee(data.user, data.orgId).pipe(
+            switchMap(({ user, orgId }) =>
+                this.employeesService$.addEmployee(user, orgId).pipe(
                     map((res: any) => {
                         console.log("addEmp res:", res)
-                        return addEmployeeSuccess({ employee: data.user })
+                        return addEmployeeSuccess({ employee: res })
                     }),
                     catchError((err) =>
                         of(addEmployeeFailure({ error: "Something went wrong" }))
