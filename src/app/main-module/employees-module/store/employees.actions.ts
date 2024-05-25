@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Employee, IAddEmployee } from "../models/employee";
-import { User } from "../../../store/global.reducers";
+import { User } from "../../../models/global";
 
 export const fetchEmployees = createAction("fetchEmployees");
 export const fetchEmployeesSuccess = createAction("fetchEmployeesSuccess", props<{ employees: Employee[] }>());

@@ -1,6 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { User } from "../../models/global";
-import { Org } from "../../store/global.reducers";
+import { Org, User } from "../../models/global";
 import { CreateOrgCredentials, SignupCredentials } from "../models/auth";
 
 export const signupRequest = createAction("signupRequest", props<{ user: SignupCredentials }>());
