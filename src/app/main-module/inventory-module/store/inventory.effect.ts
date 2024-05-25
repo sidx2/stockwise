@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, removeItem, setItems, setUserAssets, updateItem, updateItemRequest, checkoutMailRequest, setLoading, resetLoading} from './inventory.action';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, getUserAssetsSuccess, updateItemRequest, checkoutMailRequest, setLoading, getItemSuccess, createItemSuccess, updateItemSuccess, deleteItemSuccess, getItemFailure, createItemFailure, updateItemFailure, deleteItemFailure, checkoutItemFailure, getUserAssetsFailure, checkoutItemSuccess} from './inventory.action';
 import { MailService } from '../Services/mail.service';
 import { Store } from '@ngrx/store';
 
@@ -22,11 +22,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.getItems(action.orgId).pipe(
-                map(response => setItems({ items: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in loading inventory items:', error);
-                    return of();
+                map(response => getItemSuccess({ items: response })),
+                catchError(errorResponse => {
+                    return of(getItemFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -37,11 +35,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.createItem(action.item).pipe(
-                map(response => addItem({ item: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in loading creating new item:', error);
-                    return of();
+                map(response => createItemSuccess({ item: response })),
+                catchError(errorResponse => {
+                    return of(createItemFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -52,11 +48,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.updateItem(action.updatedItem).pipe(
-                map(response => updateItem({ updatedItem: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in updating item:', error);
-                    return of();
+                map(response => updateItemSuccess({ updatedItem: response })),
+                catchError(errorResponse => {
+                    return of(updateItemFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -68,11 +62,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.deleteItem(action.itemId).pipe(
-                map(response => removeItem({ itemId: response?._id })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in loading deleting item:', error);
-                    return of();
+                map(response => deleteItemSuccess({ itemId: response?._id! })),
+                catchError(errorResponse => {
+                    return of(deleteItemFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -83,11 +75,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.checkoutItem(action.assignedToDetails).pipe(
-                map(response => updateItem({ updatedItem: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in checkout item:', error);
-                    return of();
+                map(response => checkoutItemSuccess({ updatedItem: response })),
+                catchError(errorResponse => {
+                    return of(checkoutItemFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -98,11 +88,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.inventoryService.checkinItem(action.checkinDetails).pipe(
-                map(response => updateItem({ updatedItem: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in chheckin item:', error);
-                    return of();
+                map(response => updateItemSuccess({ updatedItem: response })),
+                catchError(errorResponse => {
+                    return of(checkoutItemFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -113,11 +101,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap(() =>
             this.inventoryService.getUserAsset().pipe(
-                map(response => setUserAssets({ userAssets: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in loading userAssets:', error);
-                    return of();
+                map(response => getUserAssetsSuccess({ userAssets: response })),
+                catchError(errorResponse => {
+                    return of(getUserAssetsFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -128,9 +114,7 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.mailService.sendCheckoutMail(action.checkoutMailDetails).pipe(
-                catchError(error => {
-                    this.store.dispatch(resetLoading()); 
-                    console.error('Error in sending mail:', error); 
+                catchError(errorResponse => {
                     return of(); 
                 })
             )

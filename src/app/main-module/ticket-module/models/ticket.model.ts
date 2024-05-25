@@ -14,5 +14,6 @@ export interface Ticket {
 
 export interface TicketState {
     userTickets: Ticket[];
-    loading: boolean
+    loading: boolean,
+    errorMessage: string
 }

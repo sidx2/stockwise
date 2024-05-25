@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
-import { addItem, checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItem, updateItemRequest, checkoutMailRequest } from '../../../store/inventory.action';
+import {checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess } from '../../../store/inventory.action';
 import { Category, CategoryState} from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState, CheckinDetails } from '../../../models/inventory';
@@ -81,21 +81,21 @@ export class InventoryComponent implements OnInit, OnDestroy {
     });
 
     this.actions$.pipe(
-      ofType(addItem),
+      ofType(createItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe( ()=> {
       this.hideInventoryForm();
     })
 
     this.actions$.pipe(
-      ofType(updateItem),
+      ofType(updateItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe( ()=> {
       this.hideInventoryForm();
     })
 
     this.actions$.pipe(
-      ofType(checkoutItemRequest),  
+      ofType(checkoutItemSuccess),  
       take(1),
       takeUntil(this.destroy$)
     ).subscribe(() => {
@@ -223,7 +223,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   // lifecycle
-
   showLifecycleHandler(selectedItem: Item){
     this.selectedItem = selectedItem;
     this.showLifecycle = true;

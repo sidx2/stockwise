@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
-} from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ErrorService } from '../services/error.service';
@@ -21,18 +15,15 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
 
     return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
+      catchError((errorResponse: HttpErrorResponse) => {
         let errorMessage = 'An error occurred';
 
-        if (error.error && error.error.error) {
-          errorMessage = error.error.error;
+        if (errorResponse.status === 404) {
+          errorMessage = 'Resource not found';
+        } else if (errorResponse.error && errorResponse.error.error) {
+          errorMessage = errorResponse.error.error;
+        }
 
-        } else if (error.status === 400 && error.error.message) {
-          errorMessage = error.error.message;
-        }
-        else {
-          errorMessage = `${error.status} - ${error.message}`;
-        }
         this.errorService.emmitError(errorMessage);
         return throwError(errorMessage);
       })

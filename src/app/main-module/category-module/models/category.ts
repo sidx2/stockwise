@@ -18,7 +18,8 @@ export interface Category {
 
 export interface CategoryState {
     categories: Category[]
-    loading: boolean
+    loading: boolean,
+    errorMessage: string
 }
 
 

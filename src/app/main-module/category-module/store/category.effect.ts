@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, delayWhen, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CategoryService } from '../services/category.service';
-import { createCategoryRequest, getCategoryRequest, setCategories, addCategory, deleteCategoryRequest, removeCategory, updateCategoryRequest, updateCategory, resetLoading } from './category.action';
+import { createCategoryRequest, getCategoryRequest, deleteCategoryRequest, updateCategoryRequest, resetLoading, getCategorySuccess, createCategorySuccess, deleteCategorySuccess, updateCategorySuccess, getCategoryFailure, createCategoryFailure, deleteCategoryFailure, updateCategoryFailure } from './category.action';
 import { Store } from '@ngrx/store';
 import { setLoading } from './category.action';
 
@@ -15,11 +15,9 @@ export class CategoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.categoryService.getCategories(action.orgId).pipe(
-                map(response => setCategories({ categories: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading())
-                    console.error('Error in loading categories:', error);
-                    return of();
+                map(response => getCategorySuccess({ categories: response })),
+                catchError(errorRespone => {
+                    return of(getCategoryFailure({errorMessage: errorRespone.error.error}));
                 })
             )
         )
@@ -30,11 +28,9 @@ export class CategoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.categoryService.createCategory(action.category).pipe(
-                map((createdCategory) => addCategory({ category: createdCategory })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading())
-                    console.error('Error in creating category:', error);
-                    return of(); 
+                map((createdCategory) => createCategorySuccess({ category: createdCategory })),
+                catchError(errorRespone => {
+                    return of(createCategoryFailure({errorMessage: errorRespone.error.error})); 
                 })
             )
         )
@@ -45,11 +41,9 @@ export class CategoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap(action =>
             this.categoryService.deleteCategory(action.categoryId).pipe(
-                map((deletedCategory) => removeCategory({ categoryId: deletedCategory._id })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading())
-                    console.error('Error in deleting category:', error);
-                    return of(); 
+                map((deletedCategory) => deleteCategorySuccess({ categoryId: deletedCategory._id })),
+                catchError(errorRespone => {
+                    return of(deleteCategoryFailure({errorMessage: errorRespone.error.error})); 
                 })
             )
         )
@@ -60,11 +54,9 @@ export class CategoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap(action =>
             this.categoryService.updateCategory(action.updatedCategory).pipe(
-                map((updatedCategory) => updateCategory({updatedCategory})),
-                catchError(error => {
-                    this.store.dispatch(resetLoading())
-                    console.error('Error in updating category:', error);
-                    return of(); 
+                map((updatedCategory) => updateCategorySuccess({updatedCategory})),
+                catchError(errorRespone => {
+                    return of(updateCategoryFailure({errorMessage: errorRespone.error.error})); 
                 })
             )
         )
