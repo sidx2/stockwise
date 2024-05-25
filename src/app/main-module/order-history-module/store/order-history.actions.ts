@@ -1,9 +1,10 @@
 import { createAction, props } from "@ngrx/store";
+import { IStatusUpdated, Order } from "../models/order-history";
 
-export const fetchHistoryRequest = createAction("fetchHistoryRequest", props<any>());
-export const fetchHistorySuccess = createAction("fetchHistorySuccess", props<any>());
-export const fetchHistoryFailure = createAction("fetchHistoryFailure", props<any>());
+export const fetchHistoryRequest = createAction("fetchHistoryRequest", props<{ orgId: string }>());
+export const fetchHistorySuccess = createAction("fetchHistorySuccess", props<{ history: Order[] }>());
+export const fetchHistoryFailure = createAction("fetchHistoryFailure", props<{ error: string }>());
 
-export const updateStatusRequest = createAction("updateStatusRequest", props<any>());
-export const updateStatusSuccess = createAction("updateStatusSuccess", props<any>());
-export const updateStatusFailure = createAction("updateStatusFailure", props<any>());
+export const updateStatusRequest = createAction("updateStatusRequest", props<IStatusUpdated>());
+export const updateStatusSuccess = createAction("updateStatusSuccess", props<IStatusUpdated>());
+export const updateStatusFailure = createAction("updateStatusFailure", props<{ error: string }>());

@@ -25,7 +25,7 @@ export class OrderCardComponent {
   }
 
   onStatusUpdate(updatedStatus: string) {
-    this.statusUpdated.emit({ orderId: this.editingId, updatedStatus });
+    this.statusUpdated.emit({ _id: this.editingId, updatedStatus });
     this.edit("-1");
   }
 }

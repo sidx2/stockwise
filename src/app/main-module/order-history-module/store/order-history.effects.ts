@@ -15,8 +15,8 @@ export class historyEffects {
     fetchHistory$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchHistoryRequest),
-            switchMap((data) =>
-                this.historyService$.fetchHistory(data._id).pipe(
+            switchMap(({ orgId }) =>
+                this.historyService$.fetchHistory(orgId).pipe(
                     map((res: any) => {
                         console.log("res in history:", res)
                         return fetchHistorySuccess({history: res})
@@ -33,10 +33,10 @@ export class historyEffects {
     this.action$.pipe(
         ofType(updateStatusRequest),
         switchMap((data) =>
-            this.historyService$.markFulfilled(data.updatedStatus, data.orderId).pipe(
+            this.historyService$.markFulfilled(data.updatedStatus, data._id).pipe(
                 map((res: any) => {
                     console.log("res in update status:", res)
-                    return updateStatusSuccess({_id: data.orderId, updatedStatus: data.updatedStatus})
+                    return updateStatusSuccess({_id: data._id, updatedStatus: data.updatedStatus})
                 }),
                 catchError((err) =>
                     of(updateStatusFailure({ error: "Something went wrong" }))
