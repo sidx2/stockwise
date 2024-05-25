@@ -1,10 +1,11 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
 <div class="inventory" *ngIf="!isInventoryFormVisible">
-  <app-inventory-header class="category_header">
+
+  <app-header class="category_header">
     <h3>Inventory Items</h3>
     <button appButtonPrimary (click)="showInventoryForm()">Add Item</button>
-  </app-inventory-header>
+  </app-header>
 
   <div class="filterOption">
     <input appCustomInputStyle type="text" class="searchBar" placeholder="Search item" [(ngModel)]="searchText">
@@ -37,10 +38,10 @@
 
 <div class="inventory" *ngIf="isInventoryFormVisible">
 
-  <app-inventory-header class="category_header">
+  <app-header class="category_header">
     <h3>{{ !isEditMode ? "New Item" : "Update Item" }}</h3>
     <button appButtonPrimary (click)="hideInventoryForm()">Cancel</button>
-  </app-inventory-header>
+  </app-header>
 
   <app-inventory-form
     [categories]="categories$ | async"

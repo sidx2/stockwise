@@ -1,10 +1,10 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
 <div class="category" *ngIf="!isCategoryFormVisible">
-  <app-category-header class="category_header">
+  <app-header class="category_header">
     <h3>Active Categories</h3>
     <button appButtonPrimary (click)="showCategoryForm()">+ New</button>
-  </app-category-header>
+  </app-header>
 
   <app-category-table
     [categories]="categories$ | async"
@@ -15,10 +15,10 @@
 
 <div class="category" *ngIf="isCategoryFormVisible">
 
-  <app-category-header class="category_header">
+  <app-header class="category_header">
     <h3>{{ !isEditMode ? "New Category" : "Update Category" }}</h3>
     <button appButtonPrimary (click)="hideCategoryForm()">Cancel</button>
-  </app-category-header>
+  </app-header>
 
   <app-category-form
     *ngIf="isCategoryFormVisible"

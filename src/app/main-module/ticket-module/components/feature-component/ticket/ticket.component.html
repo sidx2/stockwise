@@ -1,14 +1,14 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
-<app-ticket-header *ngIf="!isTicketFormVisible">
+<app-header *ngIf="!isTicketFormVisible">
   <h3>Tickets</h3>
   <button appButtonPrimary (click)="showTicketForm()">+ Ticket</button>
-</app-ticket-header>
+</app-header>
 
-<app-ticket-header *ngIf="isTicketFormVisible">
+<app-header *ngIf="isTicketFormVisible">
   <h3>New Ticket</h3>
   <button appButtonPrimary (click)="hideTicketForm()">Cancel</button>
-</app-ticket-header>
+</app-header>
 
 <div class="tickets" *ngIf="!isTicketFormVisible">
 

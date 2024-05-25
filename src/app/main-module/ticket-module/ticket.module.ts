@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TicketComponent } from './components/feature-component/ticket/ticket.component';
 import { TicketCardComponent } from './components/ui-component/ticket-card/ticket-card.component';
-import { TicketHeaderComponent } from './components/ui-component/ticket-header/ticket-header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TicketFormComponent } from './components/feature-component/ticket-form/ticket-form.component';
@@ -19,7 +18,6 @@ import { TicketRoutingModule } from './ticket-routing.module';
   declarations: [
     TicketComponent,
     TicketCardComponent,
-    TicketHeaderComponent,
     TicketFormComponent,
   ],
   imports: [

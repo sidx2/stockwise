@@ -1,9 +1,9 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
-<app-ticket-admin-header *ngIf="!isTicketFormVisible">
+<app-header *ngIf="!isTicketFormVisible">
   <h3>Ticket Administration</h3>
   <button appButtonPrimary>Refresh</button>
-</app-ticket-admin-header>
+</app-header>
 
 <div class="tickets" *ngIf="!isTicketFormVisible">
   <div class="filter_buttons">

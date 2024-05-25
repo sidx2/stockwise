@@ -10,7 +10,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { InventoryComponent } from './components/feature-component/inventory/inventory.component';
 import { InventoryTableComponent } from './components/ui-component/inventory-table/inventory-table.component';
-import { InventoryHeaderComponent } from './components/ui-component/inventory-header/inventory-header.component';
 import { InventoryFormComponent } from './components/feature-component/inventory-form/inventory-form.component';
 import { ItemDetailedViewComponent } from './components/ui-component/item-detailed-view/item-detailed-view.component';
 import { ItemCheckoutComponent } from './components/ui-component/item-checkout/item-checkout.component';
@@ -23,7 +22,6 @@ import { InventoryRoutingModule } from './inventory-routing.module';
     InventoryComponent,
     InventoryFormComponent,
     InventoryTableComponent,
-    InventoryHeaderComponent,
     ItemFilterPipe,
     ItemDetailedViewComponent,
     ItemCheckoutComponent,

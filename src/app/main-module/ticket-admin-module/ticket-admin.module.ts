@@ -12,7 +12,6 @@ import { ticketAdminReducer } from './store/ticket-admin.reducer';
 import { TicketAdminEffects } from './store/ticket-admin.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { TicketAdminRoutingModule } from './ticket-admin-routing.module';
-import { TicketAdminHeaderComponent } from './components/ui-component/ticket-admin-header/ticket-admin-header.component';
 import { AssetDetailsComponent } from './components/ui-component/asset-details/asset-details.component';
 
 @NgModule({
@@ -20,7 +19,6 @@ import { AssetDetailsComponent } from './components/ui-component/asset-details/a
     TicketAdminComponent,
     TicketAdminCardComponent,
     UpdateStatusFormComponent,
-    TicketAdminHeaderComponent,
     AssetDetailsComponent
   ],
   imports: [

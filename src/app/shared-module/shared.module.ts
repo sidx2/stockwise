@@ -10,16 +10,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TooltipDirective } from './directive/tooltip.directive';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
     ModalComponent,
     LoaderComponent,
+    ErrorPageComponent,
+    HeaderComponent,
+
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,
     TooltipDirective,
-    ErrorPageComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +33,9 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
   exports: [
     ModalComponent,
     LoaderComponent,
+    HeaderComponent, 
+    ErrorPageComponent,
+
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,

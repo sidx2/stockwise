@@ -7,6 +7,7 @@
             (addEmployee)="onAddEmployee($event)"
         ></app-add-employee>
     </div>
+    
     <div class="vendors-table">
         <app-employees-table 
             [employees]="(employees | async)??[]" 
