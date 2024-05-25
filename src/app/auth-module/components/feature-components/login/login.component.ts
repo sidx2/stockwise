@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fetchOrg, fetchOrgSuccess, loginUser, loginUserSuccess, setOrg, setUser } from '../../../../store/global.actions';
 import { Actions, ofType } from "@ngrx/effects";
@@ -14,7 +14,7 @@ import { LoginCredentials } from '../../../models/auth';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   destroySubject = new Subject<void>();
 
   loginForm = new FormGroup({

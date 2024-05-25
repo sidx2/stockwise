@@ -15,14 +15,14 @@ import { IGlobalState, User } from '../../../../../models/global';
 export class VendorsTableComponent implements OnInit {
   @Input() vendors!: Vendor[]
   @Input() editors!: Editor[]
-  
+
   @Output() startedEditing = new EventEmitter<Editor>();
   @Output() cancelledEditing = new EventEmitter<string>();
   @Output() changeVendor = new EventEmitter<Vendor>();
-  
+
   @Output() updateVendor = new EventEmitter<Vendor>();
   @Output() deleteVendor = new EventEmitter<string>();
-  
+
   _vends: Vendor[] = [] // for search purpose
   visisble: boolean = false
   editingId: string = "-1"
@@ -51,10 +51,6 @@ export class VendorsTableComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  ngOnDestroy(): void {
-    this.destroySubject.next();
-    this.destroySubject.complete();
-  }
 
   onEdit(_id: string) {
     if (this.editingId != "-1") {
@@ -100,18 +96,18 @@ export class VendorsTableComponent implements OnInit {
 
   onDelete(_id: string) {
     console.log("_id in onDelete", _id)
-    if (confirm("Are you sure want to delete this vendor")) 
+    if (confirm("Are you sure want to delete this vendor"))
       this.deleteVendor.emit(_id)
   }
 
   onVendorChanged() {
     this.changeVendor.emit({
-        _id: this.editingId,
-        name: this.m_name,
-        email: this.m_email,
-        address: this.m_address,
-        phone: this.m_phone,
-        orgId: this.m_orgId
+      _id: this.editingId,
+      name: this.m_name,
+      email: this.m_email,
+      address: this.m_address,
+      phone: this.m_phone,
+      orgId: this.m_orgId
     })
   }
 
@@ -126,9 +122,14 @@ export class VendorsTableComponent implements OnInit {
   search(e: Event) {
     if (!this._vends.length) this._vends = this.vendors;
     this.currPage = 1;
-    this.vendors = this._vends.filter((vend: Vendor) => 
+    this.vendors = this._vends.filter((vend: Vendor) =>
       JSON.stringify(vend)
-      .toLowerCase()
-      .includes((e.target as HTMLInputElement).value));
+        .toLowerCase()
+        .includes((e.target as HTMLInputElement).value));
+  }
+  
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 }

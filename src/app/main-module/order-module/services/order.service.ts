@@ -1,21 +1,25 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { orgSelector } from '../../../store/global.selectors';
 import { IGlobalState } from '../../../models/global';
 import { IPlaceOrder } from '../models/order';
+import { Subject, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class OrderService implements OnDestroy {
   orgId!: string
+  destroySubject = new Subject<void>();
 
   constructor(
     private http: HttpClient,
     private store: Store<{ global: IGlobalState }>
   ) {
-      this.store.select(orgSelector).subscribe((org) => {
+      this.store.select(orgSelector).pipe(
+        takeUntil(this.destroySubject),
+      ).subscribe((org) => {
         this.orgId = org._id
       })
    }
@@ -28,5 +32,10 @@ export class OrderService {
 
   placeOrder(order: IPlaceOrder) {
     return this.http.post("http://localhost:9999/order/create", order)
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
@@ -8,19 +8,22 @@ import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from
 import { setOrg, setUser } from '../../../../store/global.actions';
 import { IAuthState } from '../../../store/auth.reducers';
 import { IGlobalState } from '../../../../models/global';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
-export class SignupComponent {
+export class SignupComponent implements OnDestroy {
   signupForm = new FormGroup({
     orgName: new FormControl("", [Validators.required, Validators.minLength(3)]),
     name: new FormControl("", [Validators.required, Validators.minLength(3)]),
     email: new FormControl("", [Validators.required, Validators.email]),
     password: new FormControl("", [Validators.required, Validators.minLength(6)])
   })
+
+  destroySubject = new Subject<void>();
 
   constructor(
     private store: Store<{ global: IGlobalState, auth: IAuthState }>,
@@ -30,6 +33,7 @@ export class SignupComponent {
   ) {
     this.actions$.pipe(
       ofType(signupSuccess),
+      takeUntil(this.destroySubject),
     ).subscribe((data) => {
       console.log("data in signup: ", data);
 
@@ -51,6 +55,7 @@ export class SignupComponent {
 
     this.actions$.pipe(
       ofType(createOrgSuccess),
+      takeUntil(this.destroySubject),
     ).subscribe((data) => {
       console.log("data in signup succes: ", data)
       this.cookieService.set("org", JSON.stringify(data.org))
@@ -91,5 +96,10 @@ export class SignupComponent {
     }
 
     this.store.dispatch(signupRequest({ user }));
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 }

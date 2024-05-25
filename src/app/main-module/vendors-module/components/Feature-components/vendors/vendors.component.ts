@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
 import { vendorsSelector } from '../../../store/vendor.selectors';
@@ -9,14 +9,14 @@ import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { IVendorsState, Vendor } from '../../../store/vendor.reducers';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
-import { Editor, IVendorUpdate } from '../../../models/vendor';
+import { Editor } from '../../../models/vendor';
 
 @Component({
   selector: 'app-vendors',
   templateUrl: './vendors.component.html',
   styleUrl: './vendors.component.scss'
 })
-export class VendorsComponent implements OnInit {
+export class VendorsComponent implements OnInit, OnDestroy {
   vendors!: Vendor[];
   editors: Editor[] = []
 
@@ -78,34 +78,35 @@ export class VendorsComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
-    this.destroySubject.next();
-    this.destroySubject.complete();
-  }
-
+  
   onAddVendor(vendor: Vendor) {
     this.store.dispatch(addVendorRequest({ vendor: vendor, orgId: this.orgId }))
   }
-
+  
   onUpdateVendor(vendor: Vendor) {
     this.store.dispatch(updateVendorRequest({ vendor }));
   }
-
+  
   onDeleteVendor(vendorId: string) {
     this.store.dispatch(deleteVendorRequest({ vendorId }))
   }
-
+  
   // socket
   onStartedEditing(event: Editor) {
     this.appService.startedEditing(this.orgId, event);
   }
-
+  
   onCancelledEditing(vendorId: string) {
     this.appService.cancelledEditing(this.orgId, vendorId);
   }
-
+  
   onVendorChanged(vendor: Vendor) {
     const newVendor = {vendor: vendor, orgId: this.orgId}
     this.appService.vendorUpdated(newVendor);
+  }
+  
+  ngOnDestroy() {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 }
