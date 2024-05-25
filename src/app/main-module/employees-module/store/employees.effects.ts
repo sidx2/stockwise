@@ -87,7 +87,7 @@ export class EmployeeEffects {
                 this.employeesService$.addEmployee(user, orgId).pipe(
                     map((res: any) => {
                         console.log("addEmp res:", res)
-                        return addEmployeeSuccess({ employee: res })
+                        return addEmployeeSuccess({ employee: user })
                     }),
                     catchError((err) =>
                         of(addEmployeeFailure({ error: "Something went wrong" }))
