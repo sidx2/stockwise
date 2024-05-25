@@ -9,6 +9,7 @@ import { changePasswordRequest, changePasswordSuccess, logoutUserSuccess } from 
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Actions, ofType } from '@ngrx/effects';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   isChangePasswordVisible: boolean = false
 
-  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState }>, private router: Router, private cs: CookieService, private actions$: Actions) {
+  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState }>, private router: Router, private cs: CookieService, private actions$: Actions, private toastr: ToastrService) {
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
     this.user$ = this.store.select(state => state.global.user);
   }
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(changePasswordSuccess),
       takeUntil(this.destroy$)
-    ).subscribe( ()=> {
+      ).subscribe( ()=> {
+      this.toastr.success("Password changed successfully");
       this.hideChangePassword()
     })
   }

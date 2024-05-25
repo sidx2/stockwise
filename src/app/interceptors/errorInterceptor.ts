@@ -16,17 +16,14 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((errorResponse: HttpErrorResponse) => {
-        let errorMessage = 'An error occurred';
-
         if (errorResponse.status === 404) {
-          errorMessage = 'Resource not found';
+          let errorMessage = 'Resource not found';
+          this.errorService.emmitError(errorMessage);
+          return throwError(errorMessage);
           
-        } else if (errorResponse.error && errorResponse.error.error) {
-          errorMessage = errorResponse.error.error;
+        } else {
+          return throwError(errorResponse);
         }
-
-        this.errorService.emmitError(errorMessage);
-        return throwError(errorMessage);
       })
     );
   }

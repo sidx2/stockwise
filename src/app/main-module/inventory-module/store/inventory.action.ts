@@ -33,7 +33,10 @@ export const getUserAssetsFailure = createAction('[UserAssets] Get UserAsset Fai
 
 // loading
 export const setLoading = createAction('[Item] set loading');
-export const resetLoading = createAction('[Item] reset loading');
+// export const resetLoading = createAction('[Item] reset loading');
+
+// clear error message
+export const clearErrorMessage = createAction('[Item] clear error message');
 
 
 

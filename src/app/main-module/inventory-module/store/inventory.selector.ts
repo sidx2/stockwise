@@ -17,3 +17,8 @@ export const getLoading = createSelector(
     selectInventoryState,
     (state: InventoryState) => state.loading
 );
+
+export const getErrorMessage = createSelector(
+    selectInventoryState,
+    (state: InventoryState) => state.errorMessage
+);
