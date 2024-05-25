@@ -37,7 +37,7 @@ export class ItemCheckoutComponent {
           quantity: formData.quantity
         }
       }
-
+      
       const checkoutMailDetails: CheckoutMailDetails = {
         userEmail: formData.employee.email,
         messageContent: `You've been assigned a new asset: ${this.selectedItem?.name}. Please visit your profile to view the details of the new asset.`,

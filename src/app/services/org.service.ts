@@ -18,7 +18,6 @@ export class OrgService {
   }
 
   getOrgByUserId(userId: string) {
-      return this.http.get(`${BASE_URL}/org/getOrg/`)
-
+    return this.http.get(`${BASE_URL}/org/getOrg/`)
   }
 }

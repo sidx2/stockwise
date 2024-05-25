@@ -101,6 +101,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       if (this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
+        this.checkoutMailDetails = null;
       }
     }); 
   }
@@ -189,9 +190,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
   checkoutItemHandler(event:CheckoutEventData) {
     const assignedToDetails: CheckoutDetails = event.assignedToDetails;
     const checkoutMailDetails: CheckoutMailDetails = event.checkoutMailDetails;
+
     checkoutMailDetails.orgName = this.orgName;
     this.checkoutMailDetails = checkoutMailDetails;
-    this.store.dispatch(checkoutItemRequest({assignedToDetails}));
+
+    this.store.dispatch(checkoutItemRequest({assignedToDetails, checkoutMailDetails}));
     this.hideCheckoutItemHandler();
   }
 

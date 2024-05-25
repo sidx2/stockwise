@@ -20,6 +20,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         if (errorResponse.status === 404) {
           errorMessage = 'Resource not found';
+          
         } else if (errorResponse.error && errorResponse.error.error) {
           errorMessage = errorResponse.error.error;
         }

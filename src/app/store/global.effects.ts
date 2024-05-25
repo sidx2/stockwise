@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 import { AuthService } from "../auth-module/services/auth.service";
-import { fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser } from "./global.actions";
+import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser } from "./global.actions";
 import { CookieService } from "ngx-cookie-service";
 import { Store } from "@ngrx/store";
 import { OrgService } from "../services/org.service";
@@ -44,7 +44,7 @@ export class globalEffects {
                 return this.orgService$.getOrgByUserId(userId).pipe(
                     map((res: any) => {
                         console.log("res:", res)
-                        return fetchOrgSuccess({ org: res})
+                        return fetchOrgSuccess({ org: res })
                     }),
                     catchError((err) => {
                         console.log("err: ", err)
@@ -74,7 +74,7 @@ export class globalEffects {
                 console.log("user in init:", user)
                 console.log("org in init:", org)
                 console.log("user.id in init: ", user.id)
-                
+
                 try {
                     this.store.dispatch(setUser({ user: user }))
                     this.store.dispatch(setOrg({ org: org }));
@@ -99,5 +99,18 @@ export class globalEffects {
                     console.log(e);
                 }
             })
-        ), { dispatch: false });
+        ), { dispatch: false }
+    );
+
+    changePassword$ = createEffect(() =>
+        this.action$.pipe(
+            ofType(changePasswordRequest),
+            switchMap(({ newPassword }) =>
+                this.authService$.changePassword(newPassword).pipe(
+                    map(() => changePasswordSuccess()),
+                    catchError(error => of(changePasswordFailure({ error })))
+                )
+            )
+        )
+    )
 }

@@ -14,7 +14,7 @@ export class EmployeeEffects {
     fetchEmployees$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchEmployees),
-            switchMap((u) =>
+            switchMap(() =>
                 this.employeesService$.fetchEmployees().pipe(
                     map((res: any) => {
                         console.log("res:", res)
