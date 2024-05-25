@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TicketAdminComponent } from './components/Feature-component/ticket-admin/ticket-admin.component';
+import { TicketAdminComponent } from './components/feature-component/ticket-admin/ticket-admin.component';
 
 const routes: Routes = [{ path: '', component: TicketAdminComponent }];
 

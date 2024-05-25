@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthWrapperComponent } from './components/Feature-components/auth-wrapper/auth-wrapper.component';
-import { SignupComponent } from './components/Feature-components/signup/signup.component';
-import { LoginComponent } from './components/Feature-components/login/login.component';
+import { AuthWrapperComponent } from './components/feature-components/auth-wrapper/auth-wrapper.component';
+import { SignupComponent } from './components/feature-components/signup/signup.component';
+import { LoginComponent } from './components/feature-components/login/login.component';
 
 const routes: Routes = [
   {

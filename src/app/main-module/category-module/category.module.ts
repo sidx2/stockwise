@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { CategoryComponent } from './category-component/feature-component/category/category.component';
-import { CategoryTableComponent } from './category-component/ui-component/category-table/category-table.component';
-import { CategoryHeaderComponent } from './category-component/ui-component/category-header/category-header.component';
+import { CategoryComponent } from './components/feature-component/category/category.component';
+import { CategoryTableComponent } from './components/ui-component/category-table/category-table.component';
+import { CategoryHeaderComponent } from './components/ui-component/category-header/category-header.component';
 import { SharedModule } from '../../shared-module/shared.module';
-import { CategoryFormComponent } from './category-component/feature-component/category-form/category-form.component';
+import { CategoryFormComponent } from './components/feature-component/category-form/category-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CategoryRoutingModule } from './category-routing.module';
