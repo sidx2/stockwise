@@ -5,6 +5,7 @@ import { Employee, IAddEmployee } from '../models/employee';
 import { orgSelector } from '../../../store/global.selectors';
 import { IGlobalState } from '../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
+import { BASE_URL } from '../../../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -28,17 +29,17 @@ export class EmployeesService implements OnDestroy {
 
   fetchEmployees() {
     console.log("orgId in fetchEmployees is : ", this.orgId)
-    return this.http.get(`http://localhost:9999/org/employees/${this.orgId}`)
+    return this.http.get(`${BASE_URL}/org/employees/${this.orgId}`)
   }
 
   createUser(employee: IAddEmployee) {
     console.log("user in createUser(): ", employee);
-    return this.http.post("http://localhost:9999/user/createUser", employee)
+    return this.http.post(`${BASE_URL}/user/createUser`, employee)
   }
 
   addEmployee(employeeId: Employee, orgId: string) {
     console.log("emp in addEmp: ", employeeId, "orgId: ", orgId);
-    return this.http.post("http://localhost:9999/org/add", {
+    return this.http.post(`${BASE_URL}/org/add`, {
       employeeId: employeeId._id,
       orgId
     })
@@ -46,12 +47,12 @@ export class EmployeesService implements OnDestroy {
 
   updateEmployee(employee: Employee) {
     console.log("emp in update: ", employee);
-    return this.http.put("http://localhost:9999/user/updateUser", employee)
+    return this.http.put(`${BASE_URL}/user/updateUser`, employee)
   }
 
   deleteEmployee(employeeId: string) {
     console.log("empId in update: ", employeeId);
-    return this.http.delete("http://localhost:9999/user/deleteUser", { body: { _id: employeeId } })
+    return this.http.delete(`${BASE_URL}/user/deleteUser`, { body: { _id: employeeId } })
 
   }
 

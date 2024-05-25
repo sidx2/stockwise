@@ -1,3 +1,4 @@
+<app-loader *ngIf="isLoading"></app-loader>
 <form class="login-form" [formGroup]="loginForm" (submit)="onFormSubmit()">
   <img src="https://cdn-icons-png.flaticon.com/512/7527/7527289.png" alt="Login icon">
   <h2>Login To Stockwise</h2>

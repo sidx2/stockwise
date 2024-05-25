@@ -7,7 +7,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGlobalState } from '../../../../models/global';
-import { LoginCredentials } from '../../../models/auth';
+import { IAuthState, LoginCredentials } from '../../../models/auth';
+import { authStateSelector } from '../../../store/auth.selectors';
 
 @Component({
   selector: 'app-auth',
@@ -17,18 +18,26 @@ import { LoginCredentials } from '../../../models/auth';
 export class LoginComponent implements OnDestroy {
   destroySubject = new Subject<void>();
 
+  isLoading: boolean = false;
+
   loginForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
     password: new FormControl("", [Validators.required, Validators.minLength(6)])
   })
 
   constructor(
-    private store: Store<{ global: IGlobalState }>,
+    private store: Store<{ global: IGlobalState, auth: IAuthState }>,
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
   ) {
-  
+
+    this.store.select(authStateSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((authState) => {
+      this.isLoading = authState.loading;
+    })
+
     this.actions$.pipe(
       ofType(loginUserSuccess),
       takeUntil(this.destroySubject)
@@ -74,7 +83,7 @@ export class LoginComponent implements OnDestroy {
 
     return '';
   }
-  
+
   onFormSubmit() {
     console.log(this.loginForm.value)
     if (this.loginForm.invalid) {

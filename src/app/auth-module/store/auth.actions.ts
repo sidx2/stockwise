@@ -9,3 +9,6 @@ export const signupFailure = createAction("signupFailure", props<{ error: string
 export const createOrgRequest = createAction("createOrgRequest", props<{ org: CreateOrgCredentials, token: string }>());
 export const createOrgSuccess = createAction("createOrgSuccess", props<{ org: Org }>());
 export const createOrgFailure = createAction("createOrgFailure", props<{ error: string }>());
+
+export const setLoading = createAction('setLoading');
+export const resetLoading = createAction('resetLoading');
