@@ -1,16 +1,15 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap, tap } from "rxjs";
-import { CookieService } from "ngx-cookie-service";
+import { catchError, map, of, switchMap } from "rxjs";
 import { OrderHistoryService } from "../services/order-history.service";
 import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions";
 
 @Injectable()
 export class historyEffects {
-    action$ = inject(Actions)
-    historyService$ = inject(OrderHistoryService)
-
-    constructor() { }
+    constructor(
+        private action$: Actions,
+        private historyService$: OrderHistoryService,
+    ) { }
 
     fetchHistory$ = createEffect(() =>
         this.action$.pipe(
@@ -19,7 +18,7 @@ export class historyEffects {
                 this.historyService$.fetchHistory(orgId).pipe(
                     map((res: any) => {
                         console.log("res in history:", res)
-                        return fetchHistorySuccess({history: res})
+                        return fetchHistorySuccess({ history: res })
                     }),
                     catchError((err) =>
                         of(fetchHistoryFailure({ error: "Something went wrong" }))
@@ -36,7 +35,7 @@ export class historyEffects {
             this.historyService$.markFulfilled(data.updatedStatus, data._id).pipe(
                 map((res: any) => {
                     console.log("res in update status:", res)
-                    return updateStatusSuccess({_id: data._id, updatedStatus: data.updatedStatus})
+                    return updateStatusSuccess({ _id: data._id, updatedStatus: data.updatedStatus })
                 }),
                 catchError((err) =>
                     of(updateStatusFailure({ error: "Something went wrong" }))

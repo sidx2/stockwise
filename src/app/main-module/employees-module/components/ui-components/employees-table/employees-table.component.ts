@@ -15,14 +15,15 @@ export class EmployeesTableComponent {
   @Output() deleteEmployee = new EventEmitter<string>();
 
   editing: string = "-1"
-  store = inject(Store<{ employees: IEmployeesState }>);
-
+  
   m_name!: string
   m_email!: string
   m_role!: string
-
+  
   psize: number = 10;
   currPage: number = 1;
+  
+  constructor() {}
 
   onEdit(_id: string) {
     this.editing = _id
