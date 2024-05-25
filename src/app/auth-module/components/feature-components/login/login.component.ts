@@ -41,7 +41,9 @@ export class LoginComponent implements OnDestroy {
     this.actions$.pipe(
       ofType(loginUserSuccess),
       takeUntil(this.destroySubject)
+      
     ).subscribe(({ user }) => {
+
       console.log("user in AuthComponent: ", user);
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days

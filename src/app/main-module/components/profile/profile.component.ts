@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { IGlobalState, User } from '../../../models/global';
 import { InventoryState } from '../../inventory-module/models/inventory';
@@ -16,8 +15,11 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
+
   userAssets$: Observable<UserAsset[]> | null = null
   user$: Observable<User> | null = null;
+
+  isChangePasswordVisible: boolean = false
 
   constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState }>, private router: Router, private cs: CookieService) {
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
@@ -34,5 +36,17 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(["auth/login"]);
   }
 
+  showChangePassword(){
+    this.isChangePasswordVisible = true;
+  }
+
+  hideChangePassword(){
+    this.isChangePasswordVisible = false;
+  }
+
+  changePasswordHandler(updatedPassword: string){
+    console.log("updated password", updatedPassword)
+    this.hideChangePassword();
+  }
 }
 
