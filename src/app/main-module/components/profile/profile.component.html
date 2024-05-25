@@ -20,7 +20,10 @@
         <h3>
           Role: <span>{{ user.role }}</span>
         </h3>
+
+        <button (click)="showChangePassword()">Change Password</button>
       </div>
+
     </div>
 
     <hr />
@@ -68,3 +71,7 @@
     </div>
   </div>
 </div>
+
+<app-modal *ngIf="isChangePasswordVisible" (closeModalEvent)="hideChangePassword()" (changePasswordEmmiter)="changePasswordHandler($event)">
+  <app-change-password></app-change-password>
+</app-modal>

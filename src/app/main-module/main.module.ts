@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared-module/shared.module';
 import { InventoryModule } from './inventory-module/inventory.module';
 import { CategoryModule } from './category-module/category.module';
@@ -31,6 +32,7 @@ import { employeesReducer } from './employees-module/store/employees.reducers';
 import { CategoryEffects } from './category-module/store/category.effect';
 import { vendorEffects } from './vendors-module/store/vendor.effects';
 import { EmployeeEffects } from './employees-module/store/employees.effects';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 @NgModule({
@@ -41,10 +43,12 @@ import { EmployeeEffects } from './employees-module/store/employees.effects';
     DashboardComponent,
     ProfileComponent,
     LandingPageComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
+    FormsModule,
     SharedModule,
     InventoryModule,
     CategoryModule,
