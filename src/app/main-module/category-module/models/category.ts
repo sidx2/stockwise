@@ -12,13 +12,14 @@ export interface Category {
     identificationType: "unique" | "non-unique";
     orgId: string;
     customFields: CustomField[]
-    vendors: Vendor[];
+    vendors: string[];
     numberOfAssets: number
 }
 
 export interface CategoryState {
     categories: Category[]
-    loading: boolean
+    loading: boolean,
+    errorMessage: string
 }
 
 

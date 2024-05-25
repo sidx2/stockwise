@@ -7,11 +7,17 @@ export const createCategoryRequest = createAction('[Category] Create Category Re
 export const deleteCategoryRequest = createAction('[Category] Delete Category Request', props<{ categoryId: string }>());
 export const updateCategoryRequest = createAction('[Category] Update Category Request', props<{ updatedCategory: Category }>());
 
-// Actions updating state
-export const setCategories = createAction('[Category] Set Categories', props<{ categories: Category[] }>());
-export const addCategory = createAction('[Category] Add Category', props<{ category: Category }>());
-export const removeCategory = createAction('[Category] Remove Category', props<{ categoryId: string }>());
-export const updateCategory = createAction('[Category] Update Category', props<{ updatedCategory: Category }>());
+// Success actions
+export const getCategorySuccess = createAction('[Category] Get Categories Success', props<{ categories: Category[] }>());
+export const createCategorySuccess = createAction('[Category] Create Category Success', props<{ category: Category }>());
+export const deleteCategorySuccess = createAction('[Category] Delete Category Success', props<{ categoryId: string }>());
+export const updateCategorySuccess = createAction('[Category] Update Category Success', props<{ updatedCategory: Category }>());
+
+// Failure actions
+export const getCategoryFailure = createAction('[Category] Get Categories Failure', props<{ errorMessage: string }>());
+export const createCategoryFailure = createAction('[Category] Create Category Failure', props<{ errorMessage: string }>());
+export const deleteCategoryFailure = createAction('[Category] Delete Category Failure', props<{ errorMessage: string }>());
+export const updateCategoryFailure = createAction('[Category] Update Category Failure', props<{ errorMessage: string }>());
 
 // loading
 export const setLoading = createAction('[Category] set loading')

@@ -1,28 +1,39 @@
 import { createReducer, on } from '@ngrx/store';
-import { Ticket, TicketAdminState } from '../models/ticket-admin';
-import { resetLoading, setAllTickets, setLoading, updateTicket } from './ticket-admin.action';
+import {TicketAdminState } from '../models/ticket-admin';
+import { getAllTicketFailure, getAllTicketSuccess, resetLoading, setLoading, updateTicketStatusFailure, updateTicketStatusRequest, updateTicketStatusSuccess } from './ticket-admin.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
 
 export const initialState: TicketAdminState = {
     allTickets: [],
-    loading: false
+    loading: false,
+    errorMessage: ''
 };
 
 export const ticketAdminReducer = createReducer(
     initialState,
 
-    on(setAllTickets, (state, { allTickets }) => {
+    on(getAllTicketSuccess, (state, { allTickets }) => {
         return { ...state, allTickets: allTickets, loading: false };
     }),
 
-    on(updateTicket, (state, { ticket }) => ({
+    on(getAllTicketFailure, (state, {errorMessage})=>({
+        ...state,
+        loading: false,
+        errorMessage
+    })),
+
+    on(updateTicketStatusSuccess, (state, { ticket }) => ({
         ...state,
         allTickets: state.allTickets.map(t => t._id === ticket._id ? ticket : t),
         loading: false
     })),
+
+    on(updateTicketStatusFailure, (state, {errorMessage})=>({
+        ...state,
+        loading: false,
+        errorMessage
+    })),
     
     on(setLoading, (state)=> ({...state, loading: true})),
-    on(resetLoading, (state)=> ({...state, loading: true})),
-
     on(logoutUserSuccess, ()=>  initialState)
 );

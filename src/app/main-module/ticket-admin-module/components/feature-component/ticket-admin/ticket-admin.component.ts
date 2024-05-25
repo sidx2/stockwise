@@ -10,6 +10,7 @@ import { inventorySelector, usrAssetSelector } from '../../../../inventory-modul
 import { orgSelector } from '../../../../../store/global.selectors';
 import { getItemRequest } from '../../../../inventory-module/store/inventory.action';
 import { takeUntil } from 'rxjs/operators';
+import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-ticket-admin',
@@ -34,7 +35,7 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   isUpdateFormVisible: boolean = false;
   isAssetInfoVisible: boolean = false;
 
-  constructor(private store: Store<{ global: any, ticketsAdmin: TicketAdminState, inventory: InventoryState }>) {
+  constructor(private store: Store<{ global: IGlobalState, ticketsAdmin: TicketAdminState, inventory: InventoryState }>) {
     this.tickets$ = this.store.pipe(select(ticketSelector));
     this.filteredTickets$ = this.tickets$
     this.items$ = this.store.pipe(select(inventorySelector));

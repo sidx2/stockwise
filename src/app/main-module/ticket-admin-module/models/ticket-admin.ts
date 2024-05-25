@@ -20,5 +20,6 @@ export interface UpdateStatus {
 
 export interface TicketAdminState {
     allTickets: Ticket[];
-    loading: boolean
+    loading: boolean,
+    errorMessage: string
 }

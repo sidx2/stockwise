@@ -1,28 +1,29 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
 import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { vendorsSelector } from '../../../../vendors-module/store/vendor.selectors';
-import { IVendorsState } from '../../../../vendors-module/store/vendor.reducers';
+import { IVendorsState, Vendor } from '../../../../vendors-module/store/vendor.reducers';
 
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit {
+export class CategoryFormComponent implements OnInit, OnDestroy {
 
   @Output() createCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
   @Output() updateCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
 
   @Input() selectedCategory: Category | null = null;
+  private destroy$ = new Subject<void>();
 
   categoryFormGroup: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
 
-  vendors$!: Observable<any[]>; 
+  vendors$!: Observable<Vendor[]>; 
 
   constructor(private store: Store<{ vendors: IVendorsState }>) {
     this.store.dispatch(fetchVendorsRequest());
@@ -70,8 +71,8 @@ export class CategoryFormComponent implements OnInit {
       });
     }
 
-    this.vendors$.subscribe((vendors: any) => {
-      const selectedVendors = category.vendors?.map((vendorId: any) => {
+    this.vendors$.pipe(takeUntil(this.destroy$)).subscribe((vendors: Vendor[]) => {
+      const selectedVendors = category.vendors?.map((vendorId: string) => {
         const vendor = vendors.find((vendor: any) => vendor?._id === vendorId);
         return { _id: vendor?._id, name: vendor?.name }; 
       });
@@ -106,6 +107,10 @@ export class CategoryFormComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(); 
+    this.destroy$.complete();
+  }
 
   onSubmit() {
     if (this.categoryFormGroup.valid) {
@@ -113,7 +118,7 @@ export class CategoryFormComponent implements OnInit {
       console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
-      const selectedVendorsId =  this.categoryFormGroup.get('selectedVendors')?.value?.map((vendor: any) => vendor._id);
+      const selectedVendorsId =  this.categoryFormGroup.get('selectedVendors')?.value?.map((vendor: Vendor) => vendor._id);
 
       if (!this.isEditMode) {
         this.createCategoryEmmiter.emit({...formData, vendors: selectedVendorsId});

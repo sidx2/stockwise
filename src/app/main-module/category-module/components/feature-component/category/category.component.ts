@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, addCategory, updateCategory } from '../../../store/category.action';
+import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, createCategorySuccess, updateCategorySuccess } from '../../../store/category.action';
 import { categorySelector, getLoading } from '../../../store/category.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { IGlobalState } from '../../../../../models/global';
@@ -41,11 +41,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.fetchCategoryHandler();
     });
 
-    this.actions$.pipe(ofType(addCategory), takeUntil(this.destroy$)).subscribe(() => {
+    this.actions$.pipe(ofType(createCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.hideCategoryForm();
     });
 
-    this.actions$.pipe(ofType(updateCategory), takeUntil(this.destroy$)).subscribe(() => {
+    this.actions$.pipe(ofType(updateCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.hideCategoryForm();
     });
   }
