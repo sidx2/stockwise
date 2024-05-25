@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { authEffects } from './store/auth.effects';
 import { AuthWrapperComponent } from './components/feature-components/auth-wrapper/auth-wrapper.component';
 import { LoginComponent } from './components/feature-components/login/login.component';
+import { SharedModule } from '../shared-module/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { LoginComponent } from './components/feature-components/login/login.comp
   ],
   imports: [
     CommonModule,
+    SharedModule,
     AuthRoutingModule,
     ReactiveFormsModule,
     StoreModule.forFeature("auth", authReducer),

@@ -1,3 +1,5 @@
+import { Org, User } from "../../models/global";
+
 export interface LoginCredentials {
     email: string,
     password: string,
@@ -13,4 +15,10 @@ export interface SignupCredentials {
 export interface CreateOrgCredentials {
     email: string,
     name: string,
+}
+
+export interface IAuthState {
+    user: User,
+    org: Org,
+    loading: boolean,
 }
