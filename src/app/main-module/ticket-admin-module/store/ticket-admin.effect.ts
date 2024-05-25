@@ -3,8 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketAdminService } from '../services/ticket-admin.service';
-import { getAllTicketRequest, updateTicketStatusRequest, updateTicket, setAllTickets, setLoading, resetLoading } from './ticket-admin.action';
+import { getAllTicketRequest, updateTicketStatusRequest, setLoading, resetLoading, getAllTicketSuccess, getAllTicketFailure } from './ticket-admin.action';
 import { Store } from '@ngrx/store';
+import { updateStatusFailure, updateStatusSuccess } from '../../order-history-module/store/order-history.actions';
 
 @Injectable()
 export class TicketAdminEffects {
@@ -14,11 +15,9 @@ export class TicketAdminEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.ticketAdminService.getAllTickets(action.orgId).pipe( 
-                map(response => setAllTickets({ allTickets: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading())
-                    console.error('Error in loading all tickets:', error);
-                    return of();
+                map(response => getAllTicketSuccess({ allTickets: response })),
+                catchError(errorResponse => {
+                    return of(getAllTicketFailure({errorMessage: errorResponse.error.error}));
                 })
             )
         )
@@ -29,11 +28,9 @@ export class TicketAdminEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.ticketAdminService.updateTicketStatus(action.updatedStatus).pipe(
-                map(response => updateTicket({ ticket: response })),
-                catchError(error => {
-                    this.store.dispatch(resetLoading())
-                    console.error('Error in updating ticket:', error);
-                    return of(); 
+                map(response => updateStatusSuccess({ ticket: response })),
+                catchError(errorResponse => {
+                    return of(updateStatusFailure({errorMessage: errorResponse.error.error})); 
                 })
             )
         )
