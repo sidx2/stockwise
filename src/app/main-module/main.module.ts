@@ -22,6 +22,15 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { inventoryReducer } from './inventory-module/store/inventory.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { InventoryEffects } from './inventory-module/store/inventory.effect';
+import { categoryReducer } from './category-module/store/category.reducer';
+import { vendorReducer } from './vendors-module/store/vendor.reducers';
+import { employeesReducer } from './employees-module/store/employees.reducers';
+import { CategoryEffects } from './category-module/store/category.effect';
+import { vendorEffects } from './vendors-module/store/vendor.effects';
+import { EmployeeEffects } from './employees-module/store/employees.effects';
 
 
 @NgModule({
@@ -47,6 +56,16 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     MatIconModule,
     MatCardModule,
     MatListModule,
+
+
+    StoreModule.forFeature('inventory', inventoryReducer),
+    StoreModule.forFeature('categories', categoryReducer),
+    StoreModule.forFeature('vendors', vendorReducer),
+    StoreModule.forFeature('employees', employeesReducer),
+  
+    EffectsModule.forFeature([InventoryEffects, CategoryEffects, vendorEffects, EmployeeEffects])
+
   ],
+
 })
 export class MainModule { }

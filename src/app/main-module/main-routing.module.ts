@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import { adminGuard } from './admin.guard';
+import { AdminGuard } from './admin.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path:'',
-        canActivate: [adminGuard],
+        canActivate: [AdminGuard],
 
         children: [
           {

@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <h3>Employees</h3>
+        </div>
+        <app-add-employee
+            (addEmployee)="onAddEmployee($event)"
+        ></app-add-employee>
+    </div>
+    <div class="vendors-table">
+        <app-employees-table 
+            [employees]="(employees | async)??[]" 
+            (updateEmployee)="onUpdateEmployee($event)"
+            (deleteEmployee)="onDeleteEmploye($event)"
+        ></app-employees-table>
+    </div>
+</div>

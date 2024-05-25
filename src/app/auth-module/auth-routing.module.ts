@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthComponent } from './components/Feature-components/auth/auth.component';
-import { SignupComponent } from './components/UI-components/signup/signup.component';
-import { AuthWrapperComponent } from './components/Feature-components/auth-wrapper/auth-wrapper.component';
+import { AuthWrapperComponent } from './components/feature-components/auth-wrapper/auth-wrapper.component';
+import { SignupComponent } from './components/feature-components/signup/signup.component';
+import { LoginComponent } from './components/feature-components/login/login.component';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: AuthComponent,
+        component: LoginComponent,
       },
       {
         path: 'signup',

@@ -10,7 +10,7 @@ import { IGlobalState } from "./global.reducers";
 
 @Injectable()
 export class globalEffects {
-    
+
     action$ = inject(Actions)
     authService$ = inject(AuthService)
     orgService$ = inject(OrgService)
@@ -31,7 +31,7 @@ export class globalEffects {
                         return loginUserSuccess(res)
                     }),
                     catchError((err) =>
-                        of(loginUserFailure({ error: "something fucked up! LoL!" }))
+                        of(loginUserFailure({ error: "Something went wrong" }))
                     )
                 )
             )
@@ -51,7 +51,7 @@ export class globalEffects {
                     }),
                     catchError((err) => {
                         console.log("err: ", err)
-                        return of(fetchOrgFailure({ error: "something fucked up! LoL!" }))
+                        return of(fetchOrgFailure({ error: "Something went wrong" }))
                     }
                     )
                 )
@@ -67,13 +67,17 @@ export class globalEffects {
                 console.log('Application started!');
                 const rawUesr = this.cs.get("user")
                 const rawOrg = this.cs.get("org")
+
                 console.log("rawUser:", rawUesr)
                 console.log("rawOrg:", rawOrg)
+
                 const user = JSON.parse(rawUesr)
                 const org = JSON.parse(rawOrg)
+
                 console.log("user in init:", user)
                 console.log("org in init:", org)
                 console.log("user.id in init: ", user.id)
+                
                 try {
                     this.store.dispatch(setUser({ user: user }))
                     this.store.dispatch(setOrg({ org: org }));

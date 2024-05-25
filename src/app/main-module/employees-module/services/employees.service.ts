@@ -1,23 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { orgSelector } from '../../../store/global.selectors';
+import { Employee } from '../models/employee';
 import { IGlobalState } from '../../../store/global.reducers';
-import { Employee } from '../store/employees.reducers';
+import { orgSelector } from '../../../store/global.selectors';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeesService {
-
+  http = inject(HttpClient)
+  store = inject(Store<{ gloabl: IGlobalState }>);
   orgId!: string
-
-  constructor(public store: Store<{ gloabl: IGlobalState }>, private http: HttpClient) {
-    this.store.select(orgSelector).subscribe((org) => {
+  constructor(
+    ) {
+    this.store.select(orgSelector).subscribe((org) =>  {
       console.log("org in employee service is : ", org);
       this.orgId = org._id
     })
-  }
+
+   }
 
   fetchEmployees() {
     console.log("orgId in fetchEmployees is : ", this.orgId)
@@ -41,7 +43,7 @@ export class EmployeesService {
     console.log("emp in update: ", emp);
     return this.http.put("http://localhost:9999/user/updateUser", emp.employee)
   }
-
+  
   deleteEmployee(empId: string) {
     console.log("empId in update: ", empId);
     return this.http.delete("http://localhost:9999/user/deleteUser", { body: { _id: empId } })

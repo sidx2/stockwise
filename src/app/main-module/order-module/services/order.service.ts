@@ -3,15 +3,17 @@ import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { orgSelector } from '../../../store/global.selectors';
 import { IGlobalState } from '../../../store/global.reducers';
+
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  http = inject(HttpClient)
-  store = inject(Store<{ global: IGlobalState }>)
   orgId!: string
 
-  constructor() {
+  constructor(
+    private http: HttpClient,
+    private store: Store<{ global: IGlobalState }>
+  ) {
       this.store.select(orgSelector).subscribe((org) => {
         this.orgId = org._id
       })

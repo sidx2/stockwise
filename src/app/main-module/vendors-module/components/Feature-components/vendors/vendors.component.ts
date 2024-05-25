@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
 import { vendorsSelector } from '../../../store/vendor.selectors';
@@ -7,8 +7,9 @@ import { AppService } from '../../../../../services/app.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
-import { IEmployeesState } from '../../../../employees-module/store/employees.reducers';
 import { IVendorsState, Vendor } from '../../../store/vendor.reducers';
+import { IEmployeesState } from '../../../../employees-module/models/employee';
+import { Editor } from '../../../models/vendor';
 
 @Component({
   selector: 'app-vendors',
@@ -17,59 +18,54 @@ import { IVendorsState, Vendor } from '../../../store/vendor.reducers';
 })
 export class VendorsComponent implements OnInit {
   vendors!: Vendor[];
-  _vendors!: Vendor[];
-
-  editors = []
+  editors: Editor[] = []
 
   visible: boolean = false
-  cdr = inject(ChangeDetectorRef)
-
   orgId!: string
-
-  selectedVendors!: Vendor[];
-
-  appService = inject(AppService)
-  actions$ = inject(Actions)
-  socket = inject(Socket);
 
   destroySubject = new Subject<void>();
 
   constructor(
-    private store: Store<{ vendors: IVendorsState, employees: IEmployeesState }>
+    private store: Store<{ vendors: IVendorsState, employees: IEmployeesState }>,
+    private appService: AppService,
+    private actions$: Actions,
+    private socket: Socket,
   ) {
     this.store.dispatch(fetchVendorsRequest());
 
     this.store.select(vendorsSelector).pipe(
       takeUntil(this.destroySubject)
     ).subscribe(vendors => {
-      console.log("vendors in vendors: ", vendors)
       this.vendors = vendors;
-      this._vendors = vendors;
     })
 
-    this.store.select(orgSelector).subscribe((org) => {
-      console.log("org in employees component: ", org);
+    this.store.select(orgSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((org) => {
       this.appService.joinRoom(org._id)
       this.orgId = org._id
     })
 
     this.actions$.pipe(
       ofType(updateVendorSuccess),
+      takeUntil(this.destroySubject),
     ).subscribe((vendor) => {
-      console.log("vendor in : ", vendor);
       this.appService.vendorUpdated(vendor);
     });
   }
 
+
   ngOnInit() {
-    this.socket.fromEvent('vendorUpdated').subscribe((data: any) => {
+    this.socket.fromEvent('vendorUpdated').pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((data) => {
       console.log('vendorUpdated event received:', data);
       this.store.dispatch(updateVendorRemote({ vendor: data }))
     });
 
     this.socket.fromEvent('startedEditing').pipe(
       takeUntil(this.destroySubject)
-    ).subscribe((data: any) => {
+    ).subscribe((data) => {
       console.log('startedEditing event received:', data);
       this.editors.push(data as never);
     });
@@ -78,7 +74,7 @@ export class VendorsComponent implements OnInit {
       takeUntil(this.destroySubject)
     ).subscribe((data) => {
       console.log('cancelledEditing event received:', data);
-      this.editors = this.editors.filter((e) => e !== data);
+      this.editors = this.editors.filter((e) => e._id !== data);
     });
   }
 
@@ -87,36 +83,28 @@ export class VendorsComponent implements OnInit {
     this.destroySubject.complete();
   }
 
-  onAddVendor(event: any) {
-    console.log("event: ", event);
-
-    this.store.dispatch(addVendorRequest({ vendor: event.vendor, orgId: this.orgId }))
+  onAddVendor(vendor: Vendor) {
+    this.store.dispatch(addVendorRequest({ vendor: vendor, orgId: this.orgId }))
   }
 
-  onUpdateVendor(event: any) {
-    console.log("event: ", event);
-    this.store.dispatch(updateVendorRequest({ vendor: event.vendor }));
+  onUpdateVendor(vendor: Vendor) {
+    this.store.dispatch(updateVendorRequest({ vendor }));
   }
 
-  onDeleteVendor(event: any) {
-    console.log("event: ", event);
-    this.store.dispatch(deleteVendorRequest({ _id: event._id }))
+  onDeleteVendor(_id: string) {
+    this.store.dispatch(deleteVendorRequest({ _id }))
   }
 
-  onStartedEditing(event: any) {
-    console.log("event: ", event);
+  onStartedEditing(event: Editor) {
     this.appService.startedEditing(this.orgId, event);
   }
 
-  onCancelledEditing(event: any) {
-    console.log("event: ", event);
-    this.appService.cancelledEditing(this.orgId, event);
+  onCancelledEditing(vendorId: string) {
+    this.appService.cancelledEditing(this.orgId, vendorId);
   }
 
-  onVendorChanged(vendor: any) {
-    vendor = {...vendor.vendor, orgId: this.orgId}
-    console.log("vendoer changed: ", vendor);
-
-    this.appService.vendorUpdated({vendor});
+  onVendorChanged(vendor: Vendor) {
+    const newVendor = {vendor: vendor, orgId: this.orgId}
+    this.appService.vendorUpdated(newVendor);
   }
 }
