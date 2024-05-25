@@ -12,3 +12,4 @@ export const updateTicket = createAction('[Ticket Admin] update Ticket', props<{
 
 //loading
 export const setLoading = createAction('[Ticket Admin] set loading')
+export const resetLoading = createAction('[Ticket Admin] reset loading')

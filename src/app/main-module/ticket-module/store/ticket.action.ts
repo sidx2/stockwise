@@ -15,3 +15,4 @@ export const addTicket = createAction('[Ticket] add Ticket', props<{ticket: Tick
 
 //loading
 export const setLoading = createAction('[Ticket] set loading')
+export const resetLoading = createAction('[Ticket] reset loading')

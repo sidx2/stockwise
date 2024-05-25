@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delayWhen, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CategoryService } from '../services/category.service';
-import { createCategoryRequest, getCategoryRequest, setCategories, addCategory, deleteCategoryRequest, removeCategory, updateCategoryRequest, updateCategory } from './category.action';
+import { createCategoryRequest, getCategoryRequest, setCategories, addCategory, deleteCategoryRequest, removeCategory, updateCategoryRequest, updateCategory, resetLoading } from './category.action';
 import { Store } from '@ngrx/store';
 import { setLoading } from './category.action';
 
@@ -17,6 +17,7 @@ export class CategoryEffects {
             this.categoryService.getCategories(action.orgId).pipe(
                 map(response => setCategories({ categories: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading())
                     console.error('Error in loading categories:', error);
                     return of();
                 })
@@ -31,6 +32,7 @@ export class CategoryEffects {
             this.categoryService.createCategory(action.category).pipe(
                 map((createdCategory) => addCategory({ category: createdCategory })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading())
                     console.error('Error in creating category:', error);
                     return of(); 
                 })
@@ -45,6 +47,7 @@ export class CategoryEffects {
             this.categoryService.deleteCategory(action.categoryId).pipe(
                 map((deletedCategory) => removeCategory({ categoryId: deletedCategory._id })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading())
                     console.error('Error in deleting category:', error);
                     return of(); 
                 })
@@ -59,6 +62,7 @@ export class CategoryEffects {
             this.categoryService.updateCategory(action.updatedCategory).pipe(
                 map((updatedCategory) => updateCategory({updatedCategory})),
                 catchError(error => {
+                    this.store.dispatch(resetLoading())
                     console.error('Error in updating category:', error);
                     return of(); 
                 })

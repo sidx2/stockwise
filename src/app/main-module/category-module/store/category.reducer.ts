@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setCategories, addCategory, removeCategory, updateCategory, setLoading} from './category.action';
+import { setCategories, addCategory, removeCategory, updateCategory, setLoading, resetLoading} from './category.action';
 import { Category, CategoryState } from '../models/category';
 import { logoutUserSuccess } from '../../../store/global.actions';
 
@@ -35,5 +35,7 @@ export const categoryReducer = createReducer(
   })),
 
   on(setLoading, (state)=> ({...state, loading: true})),
+  on(resetLoading, (state)=> ({...state, loading: false})),
+  
   on(logoutUserSuccess, ()=>  initialState)
 );

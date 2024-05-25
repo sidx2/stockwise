@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { TicketState } from '../models/ticket.model';
-import { addTicket, setUserTickets, setLoading } from './ticket.action';
+import { addTicket, setUserTickets, setLoading, resetLoading } from './ticket.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
 
 export const initialState: TicketState = {
@@ -21,5 +21,7 @@ export const ticketReducer = createReducer(
     }),
 
     on(setLoading, (state)=> ({...state, loading: true})),
+    on(resetLoading, (state)=> ({...state, loading: false})),
+
     on(logoutUserSuccess, ()=>  initialState)
 );

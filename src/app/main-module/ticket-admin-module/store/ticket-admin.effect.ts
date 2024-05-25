@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketAdminService } from '../services/ticket-admin.service';
-import { getAllTicketRequest, updateTicketStatusRequest, updateTicket, setAllTickets, setLoading } from './ticket-admin.action';
+import { getAllTicketRequest, updateTicketStatusRequest, updateTicket, setAllTickets, setLoading, resetLoading } from './ticket-admin.action';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -16,6 +16,7 @@ export class TicketAdminEffects {
             this.ticketAdminService.getAllTickets(action.orgId).pipe( 
                 map(response => setAllTickets({ allTickets: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading())
                     console.error('Error in loading all tickets:', error);
                     return of();
                 })
@@ -30,6 +31,7 @@ export class TicketAdminEffects {
             this.ticketAdminService.updateTicketStatus(action.updatedStatus).pipe(
                 map(response => updateTicket({ ticket: response })),
                 catchError(error => {
+                    this.store.dispatch(resetLoading())
                     console.error('Error in updating ticket:', error);
                     return of(); 
                 })

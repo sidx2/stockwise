@@ -15,3 +15,4 @@ export const updateCategory = createAction('[Category] Update Category', props<{
 
 // loading
 export const setLoading = createAction('[Category] set loading')
+export const resetLoading = createAction('[Category] reset loading')
