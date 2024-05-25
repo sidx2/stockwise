@@ -6,9 +6,9 @@ import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
 import { setOrg, setUser } from '../../../../store/global.actions';
-import { IAuthState } from '../../../store/auth.reducers';
 import { IGlobalState } from '../../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
+import { IAuthState } from '../../../models/auth';
 
 @Component({
   selector: 'app-signup',

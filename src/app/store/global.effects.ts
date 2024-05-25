@@ -25,10 +25,12 @@ export class globalEffects {
                 this.authService$.login(credentials).pipe(
                     map((res: any) => {
                         console.log("res:", res)
-                        return loginUserSuccess(res)
+                        return loginUserSuccess({ user: res })
                     }),
-                    catchError((err) =>
-                        of(loginUserFailure({ error: "Something went wrong" }))
+                    catchError((err) => {
+                        console.log("err login: ", err);
+                        return of(loginUserFailure({ error: "Something went wrong" }))
+                    }
                     )
                 )
             )
@@ -42,7 +44,7 @@ export class globalEffects {
                 return this.orgService$.getOrgByUserId(userId).pipe(
                     map((res: any) => {
                         console.log("res:", res)
-                        return fetchOrgSuccess(res)
+                        return fetchOrgSuccess({ org: res})
                     }),
                     catchError((err) => {
                         console.log("err: ", err)

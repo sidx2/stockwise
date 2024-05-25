@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { BASE_URL } from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class OrgService {
   }
 
   getOrgByUserId(userId: string) {
-      return this.http.get("http://localhost:9999/org/getOrg/")
+      return this.http.get(`${BASE_URL}/org/getOrg/`)
+
   }
 }

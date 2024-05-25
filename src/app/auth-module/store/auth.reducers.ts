@@ -1,15 +1,12 @@
 import { createReducer, on } from "@ngrx/store";
-import { createOrgFailure, createOrgSuccess, signupFailure, signupSuccess } from "./auth.actions";
+import { createOrgFailure, createOrgSuccess, resetLoading, setLoading, signupFailure, signupSuccess } from "./auth.actions";
 import { Org, User } from "../../models/global";
-
-export interface IAuthState {
-    user: User,
-    org: Org,
-}
+import { IAuthState } from "../models/auth";
 
 export const initialState: IAuthState = {
     user: {} as User,
     org: {} as Org,
+    loading: false
 }
 
 export const authReducer = createReducer(
@@ -29,5 +26,12 @@ export const authReducer = createReducer(
     on(createOrgFailure, (state, action) => {
         console.log("createOrgFailure", "state: ", state, "action: ", action)
         return (state);
+    }),
+
+    on(setLoading, (state) => {
+        return ({ ...state, loading: true });
+    }),
+    on(resetLoading, (state) => {
+        return ({...state, loading: false });
     })
 )
