@@ -21,7 +21,7 @@
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)">
+            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)" *ngIf="item?.assignedTo?.length === 0">
               <mat-icon>delete</mat-icon>
             </button>
 
@@ -78,7 +78,7 @@
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)">
+            <button appButtonPrimaryLight (click)="deleteItemHandler(item?._id)" *ngIf="item?.assignedTo?.length === 0">
               <mat-icon>delete</mat-icon>
             </button>
 
