@@ -1,11 +1,11 @@
 
 import { Component, OnInit } from '@angular/core';
-import { InventoryState } from '../../inventory-module/store/inventory.reducer';
+import { InventoryState } from '../../inventory-module/models/inventory';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserAsset } from '../../inventory-module/models/inventory';
 import { getUserAssets } from '../../inventory-module/store/inventory.action';
-import { clearState } from '../../../store/global.actions';
+import { logoutUserSuccess } from '../../../store/global.actions';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
 
   onLogout(): void {
     this.cs.deleteAll();
-    this.store.dispatch(clearState())
+    this.store.dispatch(logoutUserSuccess())
     this.router.navigate(["auth/login"]);
   }
 

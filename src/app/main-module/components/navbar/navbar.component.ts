@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { clearState } from '../../../store/global.actions';
 import { IGlobalState } from '../../../models/global';
 
 @Component({
@@ -37,7 +36,7 @@ export class NavbarComponent implements OnInit {
     console.log("Toggling sidebar...");
     this.isSidebarOpen = !this.isSidebarOpen;
     console.log("isSidebarOpen", this.isSidebarOpen);
-    event.stopPropagation(); // Stop propagation here
+    event.stopPropagation(); 
   }
   
   closeSidebar() {

@@ -1,0 +1,55 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
+<app-header *ngIf="!isTicketFormVisible">
+  <h3>Ticket Administration</h3>
+  <button appButtonPrimary>Refresh</button>
+</app-header>
+
+<div class="tickets" *ngIf="!isTicketFormVisible">
+  <div class="filter_buttons">
+    <button
+      class="filter_button"
+      [class.active]="filterTag === 'all'"
+      (click)="handleFilterChange('all')"
+    >
+      All
+    </button>
+    <button
+      class="filter_button"
+      [class.active]="filterTag === 'new'"
+      (click)="handleFilterChange('new')"
+    >
+      New
+    </button>
+    <button
+      class="filter_button"
+      [class.active]="filterTag === 'processing'"
+      (click)="handleFilterChange('processing')"
+    >
+      Processing
+    </button>
+    <button
+      class="filter_button"
+      [class.active]="filterTag === 'resolved'"
+      (click)="handleFilterChange('resolved')"
+    >
+      Resolved
+    </button>
+  </div>
+
+  <ng-container *ngIf="filteredTickets$ | async as tickets">
+    <app-ticket-admin-card *ngFor="let ticket of tickets" [ticket]="ticket" (updateStatusEmmiter)="showUpdateStatusForm($event)" 
+    (showAssetInfoEmmiter)="showAssetInfo($event)"
+  >
+    </app-ticket-admin-card>
+  </ng-container>
+</div>
+
+<app-modal (closeModalEvent)="hideUpdateStatusForm()" *ngIf="isUpdateFormVisible"> 
+    <app-update-status-form (updateStatusEmmiter)="updateStatusHandler($event)"></app-update-status-form>
+</app-modal>
+
+<app-modal  (closeModalEvent)="hideAssetInfo()" *ngIf="isAssetInfoVisible">
+  <app-asset-details [selectedItem]="selectedItem"></app-asset-details>
+</app-modal>
+

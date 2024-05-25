@@ -1,6 +1,29 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, clearState } from "./global.actions"
-import { IGlobalState, Org, User } from "../models/global";
+import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, logoutUserSuccess } from "./global.actions"
+
+export interface User {
+    _id: string
+    name: string
+    email: string
+    password: string,
+    role: string,
+}
+
+export interface Org {
+    _id: string
+    name: string,
+    email: string,
+    admins: [],
+    employees: [],
+    address: string
+}
+
+// Reducers for global module
+export interface IGlobalState {
+    user: User,
+    org: Org,
+    isLoggedIn: boolean
+}
 
 export const initialState: IGlobalState = {
     user: {} as User,
@@ -44,7 +67,7 @@ export const globalReducer = createReducer(
         return ({ ...state, org: { ...state.org, ...action.org }, isLoggedIn: true });
     }),
 
-    on(clearState, (state) => {
+    on(logoutUserSuccess, (state) => {
         console.log("Clearing state...");
         return initialState;
     }),

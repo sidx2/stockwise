@@ -1,0 +1,32 @@
+<div class="ticket" *ngIf="ticket">
+  <div class="ticket-header">
+    <div class="ticket-header-info">
+      <span class="ticket-id">#A12Bc3</span>
+      <span [ngClass]="['ticket-status', 'status', ticket.status]">{{ ticket.status | uppercase }}</span>
+    </div>
+    <div class="ticket-date">
+      <mat-icon>event</mat-icon>
+      {{ ticket.createdAt | date : "MMM dd, yyyy, hh:mm a" }}
+    </div>
+  </div>
+
+  <div>
+    Raised By: <span>{{ ticket.userName }}</span>
+  </div>
+
+  <div class="ticket-details">
+    <h3>{{ ticket.issueType }}</h3>
+    <p>{{ ticket.description }}</p>
+  </div>
+
+  <div class="ticket-remark" *ngIf="ticket.remark">
+    <h4>
+      Ticket Remark: <span>{{ ticket.remark }}</span>
+    </h4>
+  </div>
+
+  <div class="ticket-action" *ngIf="ticket.status !== 'resolved'">
+    <button *ngIf="ticket.assetId" appButtonPrimary (click)="showAssetInfoHandler(ticket.assetId)">Asset Info</button>
+    <button appButtonPrimary (click)="updateStatusHandler(ticket._id)">Update Status</button>
+  </div>
+</div>

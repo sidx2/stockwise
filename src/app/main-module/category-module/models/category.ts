@@ -16,6 +16,9 @@ export interface Category {
     numberOfAssets: number
 }
 
-
+export interface CategoryState {
+    categories: Category[]
+    loading: boolean
+}
 
 

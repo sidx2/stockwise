@@ -10,6 +10,7 @@ import { IGlobalState } from "../models/global";
 
 @Injectable()
 export class globalEffects {
+
     action$ = inject(Actions)
     authService$ = inject(AuthService)
     orgService$ = inject(OrgService)
@@ -66,13 +67,17 @@ export class globalEffects {
                 console.log('Application started!');
                 const rawUesr = this.cs.get("user")
                 const rawOrg = this.cs.get("org")
+
                 console.log("rawUser:", rawUesr)
                 console.log("rawOrg:", rawOrg)
+
                 const user = JSON.parse(rawUesr)
                 const org = JSON.parse(rawOrg)
+
                 console.log("user in init:", user)
                 console.log("org in init:", org)
                 console.log("user.id in init: ", user.id)
+                
                 try {
                     this.store.dispatch(setUser({ user: user }))
                     this.store.dispatch(setOrg({ org: org }));

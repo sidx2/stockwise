@@ -1,0 +1,84 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
+<div class="inventory" *ngIf="!isInventoryFormVisible">
+
+  <app-header class="category_header">
+    <h3>Inventory Items</h3>
+    <button appButtonPrimary (click)="showInventoryForm()">Add Item</button>
+  </app-header>
+
+  <div class="filterOption">
+    <input appCustomInputStyle type="text" class="searchBar" placeholder="Search item" [(ngModel)]="searchText">
+
+    <select
+      appCustomInputStyle
+      class="filter"
+      name="selectedCategory"
+      id="selectedCategory"
+      [(ngModel)]="selectedCategory"
+      (change)="onCategoryChange()"
+    >
+      <option *ngFor="let category of categories$ | async" [ngValue]="category">
+        {{ category.name }}
+      </option>
+    </select>
+  </div>
+
+  <app-inventory-table
+    [items]="filteredItems$ | async | itemFilter: searchText"
+    [identificationType]="selectedCategory?.identificationType"
+    (deleteItemEmmiter)="deleteItemHandler($event)"
+    (updateItemEmmiter)="showUpdateItemForm($event)"
+    (detailedViewEmmiter)="showDetailedViewHandler($event)"
+    (checkoutEmmiter)="showCheckoutItemHandler($event)"
+    (checkinEmmiter)="showCheckinItemHandler($event)"
+    (lifecycleEmmiter)="showLifecycleHandler($event)"
+  ></app-inventory-table>
+</div>
+
+<div class="inventory" *ngIf="isInventoryFormVisible">
+
+  <app-header class="category_header">
+    <h3>{{ !isEditMode ? "New Item" : "Update Item" }}</h3>
+    <button appButtonPrimary (click)="hideInventoryForm()">Cancel</button>
+  </app-header>
+
+  <app-inventory-form
+    [categories]="categories$ | async"
+    [updateItemCategory]="updateItemCategory"
+    (createItemEmmiter)="createItemHandler($event)"
+    (updateItemEmmiter)="updateItemHandler($event)"
+    [selectedItem]="selectedItem"
+  ></app-inventory-form>
+</div>
+
+<app-modal *ngIf="showDeleteConfirmation" (closeModalEvent)="cancelDelete()">
+  <div class="deleteConfirmation">
+    <h2>Confirm Delete</h2>
+    <p>
+      Are you sure you want to delete this item? This action cannot be undone.
+    </p>
+    <div class="delete-confirmation-buttons">
+      <button class="cancel-btn" (click)="cancelDelete()">Cancel</button>
+      <button class="delete-btn" (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</app-modal>
+
+<app-modal (closeModalEvent)="hideDetailedViewHandler()" *ngIf="showDetailedView">
+  <app-item-detailed-view [selectedItem]="selectedItem" ></app-item-detailed-view>
+</app-modal>
+
+<app-modal *ngIf="showCheckout" (closeModalEvent)="hideCheckoutItemHandler()">
+  <app-item-checkout [selectedItem]="selectedItem" [employees]="employees$ | async" (checkoutEmitter)="checkoutItemHandler($event)"></app-item-checkout>
+</app-modal>
+
+<app-modal *ngIf="showCheckin" (closeModalEvent)="hideCheckinItemHandler()">
+  <app-item-checkin [selectedItem]="selectedItem" (checkinEmmiter)="checkinItemHandler($event)"></app-item-checkin>
+</app-modal>
+
+<app-modal *ngIf="showLifecycle" (closeModalEvent)="hideLifecycleHandler()">
+  <app-item-lifecycle [selectedItem]="selectedItem"></app-item-lifecycle>
+</app-modal>
+
+

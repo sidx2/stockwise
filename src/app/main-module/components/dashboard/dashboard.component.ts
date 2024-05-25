@@ -1,76 +1,61 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { orgSelector } from '../../../store/global.selectors';
 import { Category } from '../../category-module/models/category';
 import { getCategoryRequest } from '../../category-module/store/category.action';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import Chart from 'chart.js/auto';
+import { categorySelector } from '../../category-module/store/category.selector';
+import { CategoryState } from '../../category-module/models/category';
 import { IGlobalState } from '../../../models/global';
-
-interface PieChartOptions {
-  responsive: boolean;
-  maintainAspectRatio: boolean;
-  plugins?: {
-    datalabels?: {
-      formatter: (value: number, ctx: any) => string;
-      color: string;
-      font: {
-        weight: string;
-        size: number;
-      };
-    };
-  };
-  title: {
-    display: boolean;
-    text: string;
-  };
-  legend: {
-    position: string;
-  };
-  tooltip: {
-    enabled: boolean;
-  };
-}
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
-  
+export class DashboardComponent implements OnInit, OnDestroy {
+
   @ViewChild('pieChart') private pieChartRef!: ElementRef<HTMLCanvasElement>;
 
-  categories$: Observable<Category[]> | null = null;
+  categories$: Observable<Category[]>;
   orgId: string = '';
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private store: Store<{ global: IGlobalState, categories: Category[] }>,
+    private store: Store<{ global: IGlobalState, categories: CategoryState }>,
     private router: Router,
-  ) { }
+  ) {
+    this.categories$ = this.store.pipe(select(categorySelector));
+
+    this.store.select(orgSelector)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((org) => {
+        this.orgId = org?._id;
+        if (this.orgId) {
+          this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
+        }
+      }
+    );
+  }
 
   ngOnInit(): void {
-    
-    this.store.select(orgSelector).subscribe((org) => {
-      this.orgId = org?._id;
+    this.categories$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(categories => {
+        if (categories) {
+          this.createPieChart(categories);
+        } else {
+          console.log("Not able to create piechart");
+        }
+      });
+  }
 
-      console.log(this.orgId);
-
-      if (this.orgId) {
-        this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
-      }
-    });
-
-    this.categories$ = this.store.select('categories');
-
-    this.categories$.subscribe(categories => {
-      if (categories) {
-        this.createPieChart(categories);
-      }else{
-       console.log("Not able to create piechart")
-      }
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createPieChart(categories?: Category[]): void {
@@ -94,10 +79,9 @@ export class DashboardComponent implements OnInit {
     const data = categories.map(category => category.numberOfAssets);
     const labels = categories.map(category => category.name);
 
-    // Prepare options object
     const options: any = {
       responsive: true,
-      maintainAspectRatio: false, // Set to false to customize aspect ratio
+      maintainAspectRatio: false, 
       title: {
         display: true,
         text: 'Assets per Category'
@@ -136,7 +120,6 @@ export class DashboardComponent implements OnInit {
       'rgba(153, 102, 255, 0.5)',
       'rgba(255, 159, 64, 0.5)',
     ];
-
 
     new Chart(ctx, {
       type: 'pie',
