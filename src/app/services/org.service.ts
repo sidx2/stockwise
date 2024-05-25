@@ -1,19 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { userSelector } from '../store/global.selectors';
+import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrgService {
-  http = inject(HttpClient)
-  cs = inject(CookieService)
   userId;
-  constructor() { 
+  constructor(private cs: CookieService, private http: HttpClient) { 
       try {
-
         this.userId = JSON.parse(this.cs.get("user")).id
       }
       catch(e) {

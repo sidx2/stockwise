@@ -1,16 +1,11 @@
-import { APP_INITIALIZER, NgModule, inject, isDevMode } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { init } from './store/global.actions';
-import { Actions } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { IGlobalState } from './store/global.reducers';
 
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -62,7 +57,7 @@ const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
     }),
 
     StoreModule.forRoot({ global: globalReducer, categories: categoryReducer, inventory: inventoryReducer, vendors: vendorReducer, employees: employeesReducer }),
-    
+
     EffectsModule.forRoot([globalEffects, CategoryEffects, InventoryEffects, vendorEffects, EmployeeEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -73,12 +68,6 @@ const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
   ],
   providers: [
     provideClientHydration(),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [Actions],
-      multi: true
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -95,9 +84,3 @@ const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
 })
 export class AppModule { }
 
-export function initializeApp() {
-  const store = inject(Store<{ global: IGlobalState }>)
-  return () => {
-    store.dispatch(init());
-  }
-}
