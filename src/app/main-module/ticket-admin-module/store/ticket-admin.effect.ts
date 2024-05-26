@@ -14,7 +14,7 @@ export class TicketAdminEffects {
         ofType(getAllTicketRequest),
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
-            this.ticketAdminService.getAllTickets(action.orgId).pipe( 
+            this.ticketAdminService.getAllTickets().pipe( 
                 map(response => getAllTicketSuccess({ allTickets: response })),
                 catchError(errorResponse => {
                     return of(getAllTicketFailure({errorMessage: errorResponse.error.error}));

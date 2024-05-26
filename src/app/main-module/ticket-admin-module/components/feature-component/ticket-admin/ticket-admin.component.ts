@@ -27,7 +27,6 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
 
   selectedTicketId: string = '';
   selectedItem: Item | null = null;
-  orgId: string = '';
   filterTag: string = 'all';
 
   isLoading: boolean = false;
@@ -47,10 +46,6 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
         this.isLoading = loading;
       });
 
-    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
-      this.orgId = org._id;
-    })
-
     this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
       if (errorMessage) {
         toastr.error(errorMessage);
@@ -60,9 +55,9 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(getAllTicketRequest({ orgId: this.orgId }))
+    this.store.dispatch(getAllTicketRequest())
     this.filteredTickets$ = this.tickets$;
-    this.store.dispatch(getItemRequest({ orgId: this.orgId }))
+    this.store.dispatch(getItemRequest())
 
     this.actions$.pipe(ofType(updateTicketStatusSuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.toastr.success("Ticket status updated successfully");

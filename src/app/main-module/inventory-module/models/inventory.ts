@@ -17,7 +17,7 @@ export interface Item {
     name: string;
     identificationType: 'unique' | 'non-unique';
     categoryId: string;
-    orgId: string;
+    orgId?: string;
     quantity: number;
     serialNumber?: string;
     customFieldsData?: Record<string, any>;

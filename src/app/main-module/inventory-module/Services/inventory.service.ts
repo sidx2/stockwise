@@ -10,8 +10,8 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  getItems(orgId: string) {
-    return this.http.get<Item[]>(`${BASE_URL}/inventory/${orgId}`); 
+  getItems() {
+    return this.http.get<Item[]>(`${BASE_URL}/inventory/items`); 
   }
 
   createItem(item: Item){

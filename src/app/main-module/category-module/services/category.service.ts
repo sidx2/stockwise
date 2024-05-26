@@ -10,8 +10,8 @@ import { BASE_URL } from '../../../constants/constants';
 export class CategoryService {
   constructor(private http: HttpClient) { }
 
-  getCategories(orgId: string): Observable<Category[]> {
-    return this.http.get<Category[]>(`${BASE_URL}/category/${orgId}`);
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${BASE_URL}/category/categories`);
   }
 
   createCategory(category: Category): Observable<Category> {

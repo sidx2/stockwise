@@ -8,7 +8,7 @@ export interface Category {
     _id: string;
     name: string;
     identificationType: "unique" | "non-unique";
-    orgId: string;
+    orgId?: string;
     customFields: CustomField[]
     vendors: string[];
     numberOfAssets: number

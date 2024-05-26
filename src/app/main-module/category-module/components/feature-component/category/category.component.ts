@@ -25,7 +25,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   isEditMode: boolean = false;
   showDeleteConfirmation: boolean = false;
-  orgId: string = '';
 
   private destroy$ = new Subject<void>();
 
@@ -41,11 +40,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.store.dispatch(clearErrorMessage())
       }
     })
-
-    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
-      this.orgId = org._id;
-      this.fetchCategoryHandler();
-    });
   }
 
   ngOnInit(): void {
@@ -68,11 +62,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   fetchCategoryHandler(): void {
     console.log("Fetching categories...");
-    this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
+    this.store.dispatch(getCategoryRequest());
   }
 
   createCategoryHandler(category: Category) {
-    category.orgId = this.orgId;
     this.store.dispatch(createCategoryRequest({ category: category }));
   }
 

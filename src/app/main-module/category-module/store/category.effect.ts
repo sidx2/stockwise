@@ -14,7 +14,7 @@ export class CategoryEffects {
         ofType(getCategoryRequest),
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
-            this.categoryService.getCategories(action.orgId).pipe(
+            this.categoryService.getCategories().pipe(
                 map(response => getCategorySuccess({ categories: response })),
                 catchError(errorRespone => {
                     return of(getCategoryFailure({errorMessage: errorRespone.error.error}));

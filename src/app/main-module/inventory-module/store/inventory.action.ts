@@ -3,7 +3,7 @@ import { CheckoutMailDetails, Item, UserAsset } from '../models/inventory';
 import { CheckinDetails, CheckoutDetails } from '../models/inventory';
 
 // Actions triggering backend requests
-export const getItemRequest = createAction('[Item] Get Item Request', props<{orgId: string}>());
+export const getItemRequest = createAction('[Item] Get Item Request');
 export const createItemRequest = createAction('[Item] Create Item Request', props<{ item: Item }>());
 export const deleteItemRequest = createAction('[Item] Delete Item Request', props<{ itemId: string }>());
 export const updateItemRequest = createAction('[Item] Update Item Request', props<{ updatedItem: Item }>());
