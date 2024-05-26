@@ -13,7 +13,7 @@ export const authReducer = createReducer(
     initialState,
     on(signupSuccess, (state, action) => {
         console.log("signupSuccess", "state: ", state, "action: ", action)
-        return ({...state, user: action.user})
+        return ({ ...state, user: action.user, loading: false })
     }),
     on(signupFailure, (state, action) => {
         console.log("signupFailure", "state: ", state, "action: ", action)
@@ -21,7 +21,7 @@ export const authReducer = createReducer(
     }),
     on(createOrgSuccess, (state, action) => {
         console.log("createOrgSuccess", "state: ", state, "action: ", action)
-        return ({...state, org: action.org})
+        return ({ ...state, org: action.org, loading: false })
     }),
     on(createOrgFailure, (state, action) => {
         console.log("createOrgFailure", "state: ", state, "action: ", action)
@@ -32,6 +32,6 @@ export const authReducer = createReducer(
         return ({ ...state, isLoading: true });
     }),
     on(resetLoading, (state) => {
-        return ({...state, isLoading: false });
+        return ({ ...state, isLoading: false });
     })
 )

@@ -15,7 +15,7 @@ import { IGlobalState } from '../../../../../models/global';
 export class EmployeesComponent implements OnDestroy {
   store = inject(Store<{ employees: IEmployeesState, global: IGlobalState }>)
   employees!: Employee[];
-  visible: boolean = false;
+  isVisibleAddEmployee: boolean = false;
   isLoading: boolean = false;
 
   orgId!: string;
@@ -38,13 +38,17 @@ export class EmployeesComponent implements OnDestroy {
 
   }
 
-  showDialog() {
-    this.visible = !this.visible;
+  showAddEmployee(){
+    this.isVisibleAddEmployee = true;
+  }
+
+  hideAddEmployee(){
+    this.isVisibleAddEmployee = false;
   }
 
   onAddEmployee(user: IAddEmployee) {
-    this.visible = !this.visible
     this.store.dispatch(createUserRequest({ user, orgId: this.orgId }))
+    this.hideAddEmployee();
   }
 
   onUpdateEmployee(employee: Employee) {

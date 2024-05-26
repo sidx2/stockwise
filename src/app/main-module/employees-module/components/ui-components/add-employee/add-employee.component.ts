@@ -10,17 +10,13 @@ import { IAddEmployee } from '../../../models/employee';
 })
 export class AddEmployeeComponent {
   @Output() addEmployee = new EventEmitter<IAddEmployee>();
-  visible = false
+  @Output() closeAddEmployee = new EventEmitter();
 
   addEmployeeForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
     email: new FormControl("", [Validators.required, Validators.email]),
     role: new FormControl("user", [Validators.required]),
   })
-
-  toggleDialog() {
-    this.visible = !this.visible;
-  }
 
   getErrorMessage(controlName: string): string {
     const control = this.addEmployeeForm.get(controlName);
@@ -57,6 +53,10 @@ export class AddEmployeeComponent {
 
     this.addEmployeeForm.reset();
     this.addEmployee.emit(employee);
-    this.toggleDialog();
   }
+
+  onCloseVendor(){
+    this.closeAddEmployee.emit()
+  }
+
 }
