@@ -17,7 +17,7 @@ export class orderEffects {
             switchMap(() =>
                 this.orderService$.getProductVendors().pipe(
                     map((res: any) => {
-                        console.log("res:", res)
+                        console.log("res productvedors:", res)
                         return getProductVendorsSuccess({ productVendors: res })
                     }),
                     catchError((err) =>

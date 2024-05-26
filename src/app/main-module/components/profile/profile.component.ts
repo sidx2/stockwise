@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
     this.isChangePasswordVisible = false;
   }
 
-  changePasswordHandler(updatedPassword: string){
+  changePasswordHandler(updatedPassword: Event){
     console.log("updated password", updatedPassword)
     this.hideChangePassword();
   }
