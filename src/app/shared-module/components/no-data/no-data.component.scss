@@ -1,0 +1,23 @@
+.noData {
+  width: 100%;
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.noData img {
+  height: 30rem;
+  width: 30rem;
+}
+
+@media screen and (max-width: 700px) {
+  .noData {
+    height: 25rem;
+  }
+
+  .noData img {
+    width: 20rem;
+    height: 20rem;
+  }
+}

@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { setLoading, getCategorySuccess, createCategorySuccess, deleteCategorySuccess, updateCategorySuccess, getCategoryFailure, createCategoryFailure, deleteCategoryFailure, updateCategoryFailure, clearErrorMessage} from './category.action';
-import { Category, CategoryState } from '../models/category';
+import {CategoryState } from '../models/category';
 import { logoutUserSuccess } from '../../../store/global.actions';
 
 export const initialState: CategoryState = {

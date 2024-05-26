@@ -13,8 +13,8 @@
     ></app-add-vendor>
   </app-modal>
 
-  <div class="vendors-table">
-    <app-vendors-table
+  <div class="vendors-table" *ngIf="vendors.length > 0">
+    <app-vendors-table 
       [vendors]="vendors"
       [editors]="editors"
       (startedEditing)="onStartedEditing($event)"
@@ -23,5 +23,9 @@
       (updateVendor)="onUpdateVendor($event)"
       (deleteVendor)="onDeleteVendor($event)"
     ></app-vendors-table>
+  </div>
+
+  <div *ngIf="vendors.length === 0">
+    <app-no-data></app-no-data>
   </div>
 </div>

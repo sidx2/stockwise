@@ -25,9 +25,9 @@ import { ToastrService } from 'ngx-toastr';
 export class InventoryComponent implements OnInit, OnDestroy {
 
   items$: Observable<Item[]>;
-  categories$: Observable<Category[]>;
+  categories$!: Observable<Category[]>;
   employees!: Employee[];
-  filteredItems$: Observable<Item[]> | null = null;
+  filteredItems$!: Observable<Item[]>;;
   destroy$: Subject<void> = new Subject();
 
   selectedCategory: Category | null = null;

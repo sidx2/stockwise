@@ -11,6 +11,7 @@ import { TooltipDirective } from './directive/tooltip.directive';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { HeaderComponent } from './components/header/header.component';
+import { NoDataComponent } from './components/no-data/no-data.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HeaderComponent } from './components/header/header.component';
     LoaderComponent,
     ErrorPageComponent,
     HeaderComponent,
+    NoDataComponent,
 
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,
@@ -35,6 +37,7 @@ import { HeaderComponent } from './components/header/header.component';
     LoaderComponent,
     HeaderComponent, 
     ErrorPageComponent,
+    NoDataComponent,
 
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,

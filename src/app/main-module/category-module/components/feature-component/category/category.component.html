@@ -6,7 +6,7 @@
     <button appButtonPrimary (click)="showCategoryForm()">+ New</button>
   </app-header>
 
-  <app-category-table
+  <app-category-table 
     [categories]="categories$ | async"
     (deleteCategoryEmitter)="deleteCategoryHandler($event)"
     (updateCategoryEmitter)="showUpdateCategoryForm($event)"
