@@ -63,7 +63,7 @@ export const vendorReducer = createReducer(
         console.log("updateVendorSuccess:", "state: ", state, "action ->", action);
         const newVenors = state.vendors.map((vendor: Vendor) => {
             if (vendor._id == action.vendor._id) {
-                vendor = action.vendor
+                vendor = {...vendor, ...action.vendor}
             }
             return vendor
         })
