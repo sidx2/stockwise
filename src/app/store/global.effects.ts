@@ -11,6 +11,7 @@ import {
     setLoading as setAuthLoading,
     resetLoading as resetAuthLoading
 } from "../auth-module/store/auth.actions";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class globalEffects {
@@ -20,6 +21,7 @@ export class globalEffects {
         private orgService$: OrgService,
         private cs: CookieService,
         private store: Store<{ global: IGlobalState }>,
+        private toastr: ToastrService,
     ) { }
 
     loginUser$ = createEffect(() =>
@@ -31,12 +33,15 @@ export class globalEffects {
                     map((res: any) => {
                         console.log("res:", res);
                         this.store.dispatch(resetAuthLoading());
+                        this.toastr.success("Welcome back!");
                         return loginUserSuccess({ user: res });
                     }),
                     catchError((err) => {
                         console.log("err login: ", err);
                         this.store.dispatch(resetAuthLoading());
-                        return of(loginUserFailure({ error: err.error.error }))
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Failed to login. ${error}`);
+                        return of(loginUserFailure({ error }))
                     }
                     )
                 )
@@ -58,7 +63,8 @@ export class globalEffects {
                     catchError((err) => {
                         console.log("fetch org err: ", err);
                         this.store.dispatch(resetAuthLoading());
-                        return of(fetchOrgFailure({ error: err.error.error }));
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        return of(fetchOrgFailure({ error }));
                     }
                     )
                 )
