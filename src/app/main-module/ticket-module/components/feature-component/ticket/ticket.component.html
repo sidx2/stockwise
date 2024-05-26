@@ -37,10 +37,15 @@
   </div>
 
   <ng-container *ngIf="filteredTickets$ | async as tickets">
-    <app-ticket-card
-      *ngFor="let ticket of tickets"
-      [ticket]="ticket"
-    ></app-ticket-card>
+    <div *ngIf="tickets.length > 0">
+      <app-ticket-card
+        *ngFor="let ticket of tickets"
+        [ticket]="ticket"
+      ></app-ticket-card>
+    </div>
+    <div *ngIf="tickets.length === 0">
+      <app-no-data></app-no-data>
+    </div>
   </ng-container>
 </div>
 

@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Ticket, UpdateStatus } from '../models/ticket-admin';
 
 // Actions triggering backend requests
-export const getAllTicketRequest = createAction('[Ticket] Get All Tickets Request', props<{orgId: string}>());
+export const getAllTicketRequest = createAction('[Ticket] Get All Tickets Request');
 export const updateTicketStatusRequest = createAction('[Ticket] Update Ticket Request', props<{updatedStatus: UpdateStatus}>());
 
 // Success actions

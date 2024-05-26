@@ -10,8 +10,8 @@ export class TicketAdminService {
 
   constructor(private http: HttpClient) { }
 
-  getAllTickets(orgId: string) {
-    return this.http.get<Ticket[]>(`${BASE_URL}/ticket/${orgId}`);
+  getAllTickets() {
+    return this.http.get<Ticket[]>(`${BASE_URL}/ticket/allTickets`);
   }
 
   updateTicketStatus(updatedStatus: UpdateStatus){

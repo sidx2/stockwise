@@ -1,4 +1,4 @@
-<div class="inventory_table">
+<div class="inventory_table" *ngIf="items && items.length > 0">
   <table *ngIf="identificationType === 'unique'">
     <thead>
       <tr>
@@ -151,4 +151,8 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<div *ngIf="!items || items.length === 0">
+  <app-no-data></app-no-data>
 </div>

@@ -1,3 +1,4 @@
+// DashboardComponent.ts
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
@@ -18,7 +19,7 @@ import { IGlobalState } from '../../../models/global';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-  @ViewChild('pieChart') private pieChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chartContainer') private chartContainer!: ElementRef<HTMLDivElement>;
 
   categories$: Observable<Category[]>;
   orgId: string = '';
@@ -29,26 +30,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {
     this.categories$ = this.store.pipe(select(categorySelector));
-
-    this.store.select(orgSelector)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((org) => {
-        this.orgId = org?._id;
-        if (this.orgId) {
-          this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
-        }
-      }
-    );
   }
 
   ngOnInit(): void {
+    this.store.dispatch(getCategoryRequest());
+
     this.categories$
       .pipe(takeUntil(this.destroy$))
       .subscribe(categories => {
-        if (categories) {
-          this.createPieChart(categories);
+        console.log(categories);
+        if (categories && categories.length > 0) {
+          this.renderPieChart(categories);
         } else {
-          console.log("Not able to create piechart");
+          console.log("Not able to render pie chart");
         }
       });
   }
@@ -58,17 +52,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  createPieChart(categories?: Category[]): void {
-    if (!categories) {
-      console.error("No categories provided");
-      return;
-    }
-
-    const canvas = this.pieChartRef?.nativeElement;
-    if (!canvas) {
-      console.error("Canvas element not found");
-      return;
-    }
+  renderPieChart(categories: Category[]): void {
+    const canvas = document.createElement('canvas');
+    canvas.width = 450; 
+    canvas.height = 450; 
+    this.chartContainer.nativeElement.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -81,7 +69,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const options: any = {
       responsive: true,
-      maintainAspectRatio: false, 
+      maintainAspectRatio: false,
       title: {
         display: true,
         text: 'Assets per Category'

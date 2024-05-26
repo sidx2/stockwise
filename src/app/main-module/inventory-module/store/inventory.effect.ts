@@ -21,7 +21,7 @@ export class InventoryEffects {
         ofType(getItemRequest),
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
-            this.inventoryService.getItems(action.orgId).pipe(
+            this.inventoryService.getItems().pipe(
                 map(response => getItemSuccess({ items: response })),
                 catchError(errorResponse => {
                     return of(getItemFailure({errorMessage: errorResponse.error.error}));

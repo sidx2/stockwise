@@ -1,4 +1,4 @@
-<div class="category_table">
+<div class="category_table" *ngIf="categories && categories.length > 0"> 
   <table>
     <thead>
       <tr>
@@ -31,3 +31,8 @@
     </tbody>
   </table>
 </div>
+
+<div *ngIf="!categories || categories.length === 0">
+  <app-no-data></app-no-data>
+</div>
+

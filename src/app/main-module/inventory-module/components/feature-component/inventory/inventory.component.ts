@@ -25,9 +25,9 @@ import { ToastrService } from 'ngx-toastr';
 export class InventoryComponent implements OnInit, OnDestroy {
 
   items$: Observable<Item[]>;
-  categories$: Observable<Category[]>;
+  categories$!: Observable<Category[]>;
   employees!: Employee[];
-  filteredItems$: Observable<Item[]> | null = null;
+  filteredItems$!: Observable<Item[]>;;
   destroy$: Subject<void> = new Subject();
 
   selectedCategory: Category | null = null;
@@ -46,7 +46,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   showLifecycle: boolean = false;
 
   searchText: string = ''
-  orgId: string = '';
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
@@ -63,11 +62,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading: boolean) => {
       this.isLoading = loading;
     });
-
-    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
-      this.orgId = org._id;
-    })
-
+    
     this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
       if (errorMessage) {
         toastr.error(errorMessage);
@@ -78,8 +73,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
-    this.store.dispatch(getItemRequest({ orgId: this.orgId }));
+    this.store.dispatch(getCategoryRequest());
+    this.store.dispatch(getItemRequest());
     this.store.dispatch(fetchEmployees());
 
     this.categories$.pipe(
@@ -156,12 +151,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   createItemHandler(item: Item) {
-    item.orgId = this.orgId;
     this.store.dispatch(createItemRequest({ item }));
   }
 
   updateItemHandler(updatedItem: Item) {
-    updatedItem.orgId = this.orgId;
     this.store.dispatch(updateItemRequest({ updatedItem }));
   }
 

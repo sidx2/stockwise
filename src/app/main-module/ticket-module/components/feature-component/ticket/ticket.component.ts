@@ -26,7 +26,6 @@ export class TicketComponent implements OnInit, OnDestroy {
   userAssets$: Observable<UserAsset[]>;
   private destroy$: Subject<void> = new Subject();
 
-  orgId: string = '';
   filterTag: string = 'all';
   isLoading: boolean = false;
   isTicketFormVisible: boolean = false;
@@ -35,10 +34,6 @@ export class TicketComponent implements OnInit, OnDestroy {
     this.tickets$ = this.store.pipe(select(ticketSelector));
     this.filteredTickets$ = this.tickets$;
     this.userAssets$ = this.store.pipe(select(usrAssetSelector));
-    
-    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
-      this.orgId = org._id;
-    })
 
     this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage)=> {
       if(errorMessage){
@@ -65,7 +60,6 @@ export class TicketComponent implements OnInit, OnDestroy {
   }
 
   createTicketHandler(ticket: Ticket): void {
-    ticket.orgId = this.orgId;
     console.log("ticket data received", ticket);
     this.store.dispatch(createTicketRequest({ ticket }));
   }
