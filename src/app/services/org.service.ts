@@ -10,7 +10,7 @@ export class OrgService {
   userId;
   constructor(private cs: CookieService, private http: HttpClient) { 
       try {
-        this.userId = JSON.parse(this.cs.get("user")).id
+        this.userId = JSON.parse(this.cs.get("user") || "{}")._id
       }
       catch(e) {
         console.log(e)

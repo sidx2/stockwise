@@ -13,17 +13,14 @@ export class AuthService {
   ) { }
 
   login(credentials: LoginCredentials) {
-    console.log("Credentials for login: ", credentials);
     return this.http.post(`${BASE_URL}/auth/login/`, credentials);
   }
 
   signup(credentials: SignupCredentials) {
-    console.log("Credentials for signup: ", credentials);
     return this.http.post(`${BASE_URL}/auth/signup`, credentials);
   }
 
   createOrg(credentials: CreateOrgCredentials, token: string) {
-    console.log("Credentials for create org: ", credentials, token);
     return this.http.post(`${BASE_URL}/org/create`, credentials, {headers: {Authorization: `Bearer ${token}`}});
   }
 

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Employee, IEmployeesState } from '../../../models/employee';
+import { Employee } from '../../../models/employee';
 
 @Component({
   selector: 'app-employees-table',

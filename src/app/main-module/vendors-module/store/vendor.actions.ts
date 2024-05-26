@@ -5,7 +5,7 @@ export const fetchVendorsRequest = createAction("fetchVendorsRequest");
 export const fetchVendorsSuccess = createAction("fetchVendorsSuccess", props<{ vendors: Vendor[] }>())
 export const fetchVendorsFailure = createAction("fetchVendorsFailure", props<{ error: string }>())
 
-export const addVendorRequest = createAction("addVendorsRequest", props<{ vendor: Vendor, orgId: string }>());
+export const addVendorRequest = createAction("addVendorsRequest", props<{ vendor: Vendor }>());
 export const addVendorSuccess = createAction("addVendorsSuccess", props<{ vendor: Vendor }>())
 export const addVendorFailure = createAction("addVendorsFailure", props<{ error: string }>())
 

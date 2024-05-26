@@ -18,8 +18,8 @@ export class historyEffects {
         this.action$.pipe(
             ofType(fetchHistoryRequest),
             tap(() => { this.store.dispatch(setHistoryLoading()); }),
-            switchMap(({ orgId }) =>
-                this.historyService$.fetchHistory(orgId).pipe(
+            switchMap(() =>
+                this.historyService$.fetchHistory().pipe(
                     map((res: any) => {
                         console.log("res in history:", res);
                         this.store.dispatch(resetHistoryLoading());
@@ -39,7 +39,7 @@ export class historyEffects {
         ofType(updateStatusRequest),
         tap(() => { this.store.dispatch(setHistoryLoading()); }),
         switchMap((data) =>
-            this.historyService$.markFulfilled(data.updatedStatus, data._id).pipe(
+            this.historyService$.updateStatus(data.updatedStatus, data._id).pipe(
                 map((res: any) => {
                     console.log("res in update status:", res);
                     this.store.dispatch(resetHistoryLoading());

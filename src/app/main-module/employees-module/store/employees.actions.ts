@@ -10,8 +10,8 @@ export const deleteEmployeeRequest = createAction("deleteEmployee", props<{ empl
 export const deleteEmployeeSuccess = createAction("deleteEmployeeSuccess", props<{ employeeId: string }>())
 export const deleteEmployeeFailure = createAction("deleteEmployeeFailure", props<{ error: string }>())
 
-export const createUserRequest = createAction("createUserRequest", props<{ user: IAddEmployee, orgId: string }>());
-export const createUserSuccess = createAction("createUserSuccess", props<{ user: User, orgId: string }>());
+export const createUserRequest = createAction("createUserRequest", props<{ user: IAddEmployee }>());
+export const createUserSuccess = createAction("createUserSuccess", props<{ user: User }>());
 export const createUserFailure = createAction("createUserFailure", props<{ error: string }>());
 
 export const updateEmployeeRequest = createAction("updateEmployeeRequest", props<{ employee: Employee }>());

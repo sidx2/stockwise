@@ -80,7 +80,7 @@ export class vendorEffects {
             ofType(addVendorRequest),
             tap(() => { this.store.dispatch(setVendorLoading()) }),
             switchMap((data) =>
-                this.vendorsService$.addVendor(data.vendor, data.orgId).pipe(
+                this.vendorsService$.addVendor(data.vendor).pipe(
                     map((res: any) => {
                         console.log("addEmp res:", res);
                         this.store.dispatch(resetVendorLoading());

@@ -2,10 +2,8 @@ import { Component, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
 import { employeesStateSelector } from '../../../store/employees.selectors';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
-import { orgSelector } from '../../../../../store/global.selectors';
-import { IGlobalState } from '../../../../../models/global';
 
 @Component({
   selector: 'app-employees',
@@ -13,12 +11,11 @@ import { IGlobalState } from '../../../../../models/global';
   styleUrl: './employees.component.scss'
 })
 export class EmployeesComponent implements OnDestroy {
-  store = inject(Store<{ employees: IEmployeesState, global: IGlobalState }>)
+  store = inject(Store<{ employees: IEmployeesState }>)
   employees!: Employee[];
   visible: boolean = false;
   isLoading: boolean = false;
 
-  orgId!: string;
   destroySubject = new Subject<void>();
 
   constructor() {
@@ -29,13 +26,6 @@ export class EmployeesComponent implements OnDestroy {
       this.isLoading = state.isLoading;
       this.employees = state.employees;
     })
-
-    this.store.select(orgSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((org) => {
-      this.orgId = org._id;
-    })
-
   }
 
   showDialog() {
@@ -44,7 +34,7 @@ export class EmployeesComponent implements OnDestroy {
 
   onAddEmployee(user: IAddEmployee) {
     this.visible = !this.visible
-    this.store.dispatch(createUserRequest({ user, orgId: this.orgId }))
+    this.store.dispatch(createUserRequest({ user }))
   }
 
   onUpdateEmployee(employee: Employee) {

@@ -1,35 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Injectable } from '@angular/core';
 import { Employee, IAddEmployee } from '../models/employee';
-import { orgSelector } from '../../../store/global.selectors';
-import { IGlobalState } from '../../../models/global';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { BASE_URL } from '../../../constants/constants';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeesService implements OnDestroy {
-  orgId!: string
+export class EmployeesService {
   destroySubject = new Subject<void>();
 
   constructor(
     private http: HttpClient,
-    private store: Store<{ gloabl: IGlobalState }>,
-  ) {
-    this.store.select(orgSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((org) => {
-      console.log("org in employee service is : ", org);
-      this.orgId = org._id
-    })
-
-  }
+  ) {}
 
   fetchEmployees() {
-    console.log("orgId in fetchEmployees is : ", this.orgId)
-    return this.http.get(`${BASE_URL}/org/employees/${this.orgId}`)
+    console.log("orgId in fetchEmployees is : ")
+    return this.http.get(`${BASE_URL}/org/employees/`)
   }
 
   createUser(employee: IAddEmployee) {
@@ -37,12 +24,9 @@ export class EmployeesService implements OnDestroy {
     return this.http.post(`${BASE_URL}/user/createUser`, employee)
   }
 
-  addEmployee(employeeId: Employee, orgId: string) {
-    console.log("emp in addEmp: ", employeeId, "orgId: ", orgId);
-    return this.http.post(`${BASE_URL}/org/add`, {
-      employeeId: employeeId._id,
-      orgId
-    })
+  addEmployee(employee: Employee) {
+    console.log("emp in addEmp: ", employee, "orgId: ");
+    return this.http.post(`${BASE_URL}/org/add`, { employeeId: employee._id })
   }
 
   updateEmployee(employee: Employee) {
@@ -54,10 +38,5 @@ export class EmployeesService implements OnDestroy {
     console.log("empId in update: ", employeeId);
     return this.http.delete(`${BASE_URL}/user/deleteUser`, { body: { _id: employeeId } })
 
-  }
-
-  ngOnDestroy(): void {
-    this.destroySubject.next();
-    this.destroySubject.complete();
   }
 }

@@ -82,7 +82,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
 
   
   onAddVendor(vendor: Vendor) {
-    this.store.dispatch(addVendorRequest({ vendor: vendor, orgId: this.orgId }))
+    this.store.dispatch(addVendorRequest({ vendor: vendor }))
   }
   
   onUpdateVendor(vendor: Vendor) {

@@ -81,13 +81,13 @@ export class EmployeeEffects {
         this.action$.pipe(
             ofType(createUserRequest),
             tap(() => { this.store.dispatch(setEmployeeLoading()); }),
-            switchMap(({ user, orgId }) =>
+            switchMap(({ user }) =>
                 this.employeesService$.createUser(user).pipe(
                     map((res: any) => {
                         console.log("createUser res:", res);
                         this.store.dispatch(resetEmployeeLoading());
                         // this.store.dispatch(addEmployeeRequest({ employee: res }))
-                        return createUserSuccess({ user: res, orgId })
+                        return createUserSuccess({ user: res })
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
@@ -102,8 +102,8 @@ export class EmployeeEffects {
     addEmployee$ = createEffect(() =>
         this.action$.pipe(
             ofType(createUserSuccess),
-            switchMap(({ user, orgId }) =>
-                this.employeesService$.addEmployee(user, orgId).pipe(
+            switchMap(({ user }) =>
+                this.employeesService$.addEmployee(user).pipe(
                     map((res: any) => {
                         console.log("addEmp res:", res);
                         this.store.dispatch(resetEmployeeLoading());

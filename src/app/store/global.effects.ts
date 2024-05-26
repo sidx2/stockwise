@@ -72,18 +72,18 @@ export class globalEffects {
 
             tap(() => {
                 console.log('Application started!');
-                const rawUesr = this.cs.get("user")
+                const rawUser = this.cs.get("user")
                 const rawOrg = this.cs.get("org")
 
-                console.log("rawUser:", rawUesr)
+                console.log("rawUser:", rawUser)
                 console.log("rawOrg:", rawOrg)
 
-                const user = JSON.parse(rawUesr)
-                const org = JSON.parse(rawOrg)
+                const user = JSON.parse(rawUser || "{}")
+                const org = JSON.parse(rawOrg || "{}")
 
                 console.log("user in init:", user)
                 console.log("org in init:", org)
-                console.log("user.id in init: ", user.id)
+                console.log("user.id in init: ", user._id)
 
                 try {
                     this.store.dispatch(setUser({ user: user }))
