@@ -31,7 +31,7 @@ export class authEffects {
                     catchError((err) => {
                         this.store.dispatch(resetLoading());
                         console.log("err in signup failure:", err);
-                        const error = err.error.error || err.error.message || "Something went wrong! Could not signup"
+                        const error = err.error.error || "Something went wrong! Could not signup"
                         this.toastr.error(error);
                         return of(signupFailure({ error }))
                     }
@@ -55,7 +55,7 @@ export class authEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetLoading());
-                        const error = err.error.error || err.error.message || "Something went wrong";
+                        const error = err.error.error || "Something went wrong";
                         this.toastr.error(error);
                         return of(createOrgFailure({ error }))
 
