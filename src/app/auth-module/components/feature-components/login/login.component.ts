@@ -35,7 +35,7 @@ export class LoginComponent implements OnDestroy {
     this.store.select(authStateSelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((authState) => {
-      this.isLoading = authState.loading;
+      this.isLoading = authState.isLoading;
     })
 
     this.actions$.pipe(

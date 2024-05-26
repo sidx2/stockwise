@@ -1,7 +1,7 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { addEmployeeRequest, createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
-import { employeesSelector } from '../../../store/employees.selectors';
+import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
+import { employeesSelector, employeesStateSelector } from '../../../store/employees.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
 import { orgSelector } from '../../../../../store/global.selectors';
@@ -16,6 +16,7 @@ export class EmployeesComponent implements OnDestroy {
   store = inject(Store<{ employees: IEmployeesState, global: IGlobalState }>)
   employees: Observable<Employee[]>
   visible: boolean = false
+  isLoading: boolean = false
 
   orgId!: string
   destroySubject = new Subject<void>();
@@ -28,6 +29,12 @@ export class EmployeesComponent implements OnDestroy {
       takeUntil(this.destroySubject),
     ).subscribe((org) => {
       this.orgId = org._id;
+    })
+
+    this.store.select(employeesStateSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((state) => {
+      this.isLoading = state.isLoading;
     })
   }
 

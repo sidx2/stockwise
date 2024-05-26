@@ -7,3 +7,8 @@ export const historySelector = createSelector(
     historyFeatureSelector,
     (state) => state
 )
+
+export const historyStateSelector = createSelector(
+    historyFeatureSelector,
+    (state) => state
+)

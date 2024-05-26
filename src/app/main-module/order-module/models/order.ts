@@ -1,5 +1,10 @@
 import { CartItem } from "../../order-history-module/models/order-history";
-import { Vendor } from "../../vendors-module/store/vendor.reducers";
+import { Vendor } from "../../vendors-module/models/vendor";
+
+export interface IOrderState {
+    productVendors: Product[],
+    isLoading: boolean,
+}
 
 export interface Product {
     _id: string,

@@ -20,5 +20,5 @@ export interface CreateOrgCredentials {
 export interface IAuthState {
     user: User,
     org: Org,
-    loading: boolean,
+    isLoading: boolean,
 }

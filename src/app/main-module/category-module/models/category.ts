@@ -1,5 +1,3 @@
-import { Vendor } from "../../vendors-module/store/vendor.reducers";
-
 export interface CustomField {
     label: string;
     type: string;

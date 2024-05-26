@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Vendor } from '../../../store/vendor.reducers';
+import { Vendor } from '../../../models/vendor';
 
 @Component({
   selector: 'app-add-vendor',

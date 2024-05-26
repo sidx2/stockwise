@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
-import { vendorsSelector } from '../../../store/vendor.selectors';
+import { vendorsSelector, vendorsStateSelector } from '../../../store/vendor.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { AppService } from '../../../../../services/app.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
-import { IVendorsState, Vendor } from '../../../store/vendor.reducers';
+import { IVendorsState, Vendor } from '../../../models/vendor';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
 import { Editor } from '../../../models/vendor';
 
@@ -21,6 +21,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
   editors: Editor[] = []
 
   visible: boolean = false
+  isLoading: boolean = false
   orgId!: string
 
   destroySubject = new Subject<void>();
@@ -31,6 +32,12 @@ export class VendorsComponent implements OnInit, OnDestroy {
     private actions$: Actions,
     private socket: Socket,
   ) {
+    this.store.select(vendorsStateSelector).pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(state => {
+      this.isLoading = state.isLoading;
+    })
+
     this.store.dispatch(fetchVendorsRequest());
 
     this.store.select(vendorsSelector).pipe(

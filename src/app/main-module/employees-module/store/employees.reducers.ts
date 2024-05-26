@@ -1,9 +1,10 @@
 import { createReducer, on } from "@ngrx/store"
-import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, updateEmployeeSuccess } from "./employees.actions"
+import { addEmployeeFailure, addEmployeeRequest, addEmployeeSuccess, createUserFailure, createUserRequest, createUserSuccess, deleteEmployeeSuccess, fetchEmployees, fetchEmployeesFailure, fetchEmployeesSuccess, resetEmployeeLoading, setEmployeeLoading, updateEmployeeSuccess } from "./employees.actions"
 import { IEmployeesState } from "../models/employee"
 
 export const initialState: IEmployeesState = {
-    employees: []
+    employees: [],
+    isLoading: false
 }
 
 export const employeesReducer = createReducer(
@@ -66,5 +67,15 @@ export const employeesReducer = createReducer(
     on(addEmployeeFailure, (state,action) => {
         console.log("addEmployeeFailure", "state:", state, "action: ", action)
         return (state)
+    }),
+    
+    // loading
+    on(setEmployeeLoading, (state) => {
+        console.log("setEmployeeLoading", "state:", state, "action: ", undefined)
+        return ({ ...state, isLoading: true });
+    }),
+    on(resetEmployeeLoading, (state) => {
+        console.log("resetEmployeeLoading", "state:", state, "action: ", undefined)
+        return ({...state, isLoading: false });
     })
 )

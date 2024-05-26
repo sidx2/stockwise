@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { vendorsSelector } from '../../../../vendors-module/store/vendor.selectors';
-import { IVendorsState, Vendor } from '../../../../vendors-module/store/vendor.reducers';
+import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor';
 
 @Component({
   selector: 'app-category-form',

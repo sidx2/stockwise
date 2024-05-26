@@ -2,14 +2,14 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
-import { productVendorsSelector } from '../../../store/order.selectors';
+import { productVendorsSelector, productVendorsStateSelector } from '../../../store/order.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, pipe, takeUntil, tap } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
-import { IOrderState } from '../../../store/order.reducers';
+import { IOrderState } from '../../../models/order';
 import { IPlaceOrder, OrderForm, Product } from '../../../models/order';
-import { Vendor } from '../../../../vendors-module/store/vendor.reducers';
+import { Vendor } from '../../../../vendors-module/models/vendor';
 import { CartItem } from '../../../../order-history-module/models/order-history';
 import { IGlobalState, Org, User } from '../../../../../models/global';
 
@@ -20,8 +20,9 @@ import { IGlobalState, Org, User } from '../../../../../models/global';
 })
 export class OrderComponent implements OnDestroy {
   dynamicForm: FormGroup;
-  org!: Org
-  user!: User
+  org!: Org;
+  user!: User;
+  isLoading: boolean = false;
   destroySubject = new Subject<void>();
 
   products: Product[] = [];
@@ -32,9 +33,14 @@ export class OrderComponent implements OnDestroy {
     private store: Store<{ order: IOrderState, global: IGlobalState }>,
     private actions$: Actions,
   ) {
+    this.store.select(productVendorsStateSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((state) => { this.isLoading = state.isLoading; })
+    
     this.store.select(orgSelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((org) => { this.org = org; })
+
     this.store.select(userSelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((user) => { this.user = user; })
@@ -50,13 +56,6 @@ export class OrderComponent implements OnDestroy {
     ).subscribe((pv) => {
       this.products = pv;
     })
-
-    this.actions$.pipe(
-      ofType(placeOrderSuccess),
-      tap((order) => {
-        alert("Order placed successfully!");
-      })
-    )
   }
 
   get OrderFormArray() {

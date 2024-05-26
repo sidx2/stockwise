@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fetchHistoryRequest, updateStatusRequest } from '../../../store/order-history.actions';
-import { historySelector } from '../../../store/order-history.selectors';
+import { historySelector, historyStateSelector } from '../../../store/order-history.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { IHistoryState, IStatusUpdated, Order } from '../../../models/order-history';
 import { IGlobalState } from '../../../../../models/global';
@@ -13,8 +13,10 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './order-history.component.scss'
 })
 export class OrderHistoryComponent implements OnDestroy {
-  orgId!: string
-  history: Order[] = []
+  orgId!: string;
+  history: Order[] = [];
+  isLoading: boolean = false;
+
   destroySubject = new Subject<void>();
 
   constructor(
@@ -22,8 +24,14 @@ export class OrderHistoryComponent implements OnDestroy {
   ) {
     this.store.select(orgSelector).pipe(
       takeUntil(this.destroySubject),
-    ).subscribe((org) => { this.orgId = org._id; })
+    ).subscribe((org) => { this.orgId = org._id; });
+
+    this.store.select(historyStateSelector).pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((state) => { this.isLoading = state.isLoading; });
+
     this.store.dispatch(fetchHistoryRequest({ orgId: this.orgId }));
+    
     this.store.select(historySelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((data) => { this.history = data.history; })

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { switchMap } from 'rxjs';
 import { orgSelector } from '../../../store/global.selectors';
-import { Vendor } from '../store/vendor.reducers';
+import { Vendor } from '../models/vendor';
 import { IGlobalState } from '../../../models/global';
 import { BASE_URL } from '../../../constants/constants';
 
