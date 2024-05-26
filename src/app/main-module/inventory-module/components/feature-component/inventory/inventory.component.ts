@@ -116,6 +116,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.toastr.success('Item checkin successfully');
       this.store.dispatch(clearErrorMessage());
+      this.hideCheckinItemHandler()
     })
 
     this.actions$.pipe(
@@ -236,7 +237,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   checkinItemHandler(checkinDetails: CheckinDetails) {
     this.store.dispatch(checkinItemRequest({ checkinDetails }))
-    this.hideCheckinItemHandler()
   }
 
   // detailed view
