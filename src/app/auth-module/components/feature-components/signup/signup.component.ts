@@ -5,7 +5,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
-import { init, setOrg, setUser } from '../../../../store/global.actions';
+import { setOrg, setUser } from '../../../../store/global.actions';
 import { IGlobalState } from '../../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
 import { IAuthState } from '../../../models/auth';
