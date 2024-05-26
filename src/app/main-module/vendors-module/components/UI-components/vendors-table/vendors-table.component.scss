@@ -140,11 +140,6 @@ button:hover {
   background-color: #ccc;
 }
 
-/* Style the pagination controls */
-.pagination-controls {
-  margin-top: 20px;
-}
-
 /* Style the fixed bottom container */
 .fixed-container {
   position: fixed;
@@ -166,6 +161,8 @@ button:hover {
   box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-around;
+  z-index: 5;
+
 }
 
 .pending {
