@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fetchHistoryRequest, updateStatusRequest } from '../../../store/order-history.actions';
-import { historySelector, historyStateSelector } from '../../../store/order-history.selectors';
+import { historyStateSelector } from '../../../store/order-history.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { IHistoryState, IStatusUpdated, Order } from '../../../models/order-history';
 import { IGlobalState } from '../../../../../models/global';
@@ -26,15 +26,15 @@ export class OrderHistoryComponent implements OnDestroy {
       takeUntil(this.destroySubject),
     ).subscribe((org) => { this.orgId = org._id; });
 
+    this.store.dispatch(fetchHistoryRequest({ orgId: this.orgId }));
+
     this.store.select(historyStateSelector).pipe(
       takeUntil(this.destroySubject),
-    ).subscribe((state) => { this.isLoading = state.isLoading; });
+    ).subscribe((state) => {
+      this.history = state.history;
+      this.isLoading = state.isLoading;
+    });
 
-    this.store.dispatch(fetchHistoryRequest({ orgId: this.orgId }));
-    
-    this.store.select(historySelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((data) => { this.history = data.history; })
   }
 
   onStatusUpdate(event: IStatusUpdated) {

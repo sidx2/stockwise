@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
-import { vendorsSelector, vendorsStateSelector } from '../../../store/vendor.selectors';
+import { vendorsStateSelector } from '../../../store/vendor.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { AppService } from '../../../../../services/app.service';
 import { Actions, ofType } from '@ngrx/effects';
@@ -35,16 +35,11 @@ export class VendorsComponent implements OnInit, OnDestroy {
     this.store.select(vendorsStateSelector).pipe(
       takeUntil(this.destroySubject)
     ).subscribe(state => {
+      this.vendors = state.vendors;
       this.isLoading = state.isLoading;
     })
 
     this.store.dispatch(fetchVendorsRequest());
-
-    this.store.select(vendorsSelector).pipe(
-      takeUntil(this.destroySubject)
-    ).subscribe(vendors => {
-      this.vendors = vendors;
-    })
 
     this.store.select(orgSelector).pipe(
       takeUntil(this.destroySubject),

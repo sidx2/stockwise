@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
-import { productVendorsSelector, productVendorsStateSelector } from '../../../store/order.selectors';
+import { productVendorsStateSelector } from '../../../store/order.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, pipe, takeUntil, tap } from 'rxjs';
@@ -25,7 +25,7 @@ export class OrderComponent implements OnDestroy {
   isLoading: boolean = false;
   destroySubject = new Subject<void>();
 
-  products: Product[] = [];
+  productVendors: Product[] = [];
   selectedProductVendors: Vendor[][] = [];
 
   constructor(
@@ -35,7 +35,10 @@ export class OrderComponent implements OnDestroy {
   ) {
     this.store.select(productVendorsStateSelector).pipe(
       takeUntil(this.destroySubject),
-    ).subscribe((state) => { this.isLoading = state.isLoading; })
+    ).subscribe((state) => { 
+      this.productVendors = state.productVendors;
+      this.isLoading = state.isLoading; 
+    })
     
     this.store.select(orgSelector).pipe(
       takeUntil(this.destroySubject),
@@ -50,12 +53,6 @@ export class OrderComponent implements OnDestroy {
     })
 
     this.store.dispatch(getProductVendorsRequest())
-
-    this.store.select(productVendorsSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((pv) => {
-      this.products = pv;
-    })
   }
 
   get OrderFormArray() {
@@ -76,8 +73,8 @@ export class OrderComponent implements OnDestroy {
 
   onProductChange(index: number) {
     const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
-    const productIndex = this.products.findIndex(product => product.item._id === selectedProduct);
-    this.selectedProductVendors[index] = this.products[productIndex].vendors;
+    const productIndex = this.productVendors.findIndex(pv => pv.item._id === selectedProduct);
+    this.selectedProductVendors[index] = this.productVendors[productIndex].vendors;
 
     console.log("selectedProductVendors:", this.selectedProductVendors);
   }
@@ -113,7 +110,7 @@ export class OrderComponent implements OnDestroy {
         quantity: orderForm.quantity,
       };
 
-      cartItem.item = this.products.filter((product) => {
+      cartItem.item = this.productVendors.filter((product) => {
         return product.item._id == orderForm.product
       })[0].item;
       return cartItem;
