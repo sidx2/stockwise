@@ -20,12 +20,10 @@ input[type="text"] {
 }
 
 #searchInput {
-  width: inherit;
+  width: 100%;
   text-align: left;
   border: 1px solid black;
 }
-
-/* Style the table */
 
 table {
   width: 100%;
@@ -40,36 +38,54 @@ table {
   }
 
   tbody {
-    
     .editing {
       border: 1px solid transparent;
       border-radius: 7px;
-      background-image: linear-gradient(white, white), 
-                        linear-gradient(45deg, #ff0000, #ff9900, #ccff00, #33ff00, #00ff66, #00ffff, #0066ff, #3300ff, #cc00ff, #ff00cc, #ff0066, #ff0000);
+      background-image: linear-gradient(white, white),
+        linear-gradient(
+          45deg,
+          #ff0000,
+          #ff9900,
+          #ccff00,
+          #33ff00,
+          #00ff66,
+          #00ffff,
+          #0066ff,
+          #3300ff,
+          #cc00ff,
+          #ff00cc,
+          #ff0066,
+          #ff0000
+        );
       background-origin: border-box;
       background-clip: content-box, border-box;
       animation: neonGlow 2s linear infinite;
       position: relative;
     }
-    
+
     @keyframes neonGlow {
       0% {
-        box-shadow: 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000;
+        box-shadow: 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000,
+          0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000;
       }
       25% {
-        box-shadow: 0 0 3px #ff9900, 0 0 2px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900;
+        box-shadow: 0 0 3px #ff9900, 0 0 2px #ff9900, 0 0 3px #ff9900,
+          0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900;
       }
       50% {
-        box-shadow: 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00;
+        box-shadow: 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00,
+          0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00;
       }
       75% {
-        box-shadow: 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 4px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff;
+        box-shadow: 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff,
+          0 0 4px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff;
       }
       100% {
-        box-shadow: 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc;
+        box-shadow: 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc,
+          0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc;
       }
     }
-    
+
     .editor-box {
       position: absolute;
       background-color: rgba(255, 255, 255, 0.9);
@@ -84,8 +100,6 @@ table {
       transform: translateX(-50%);
       white-space: nowrap;
     }
-    
-
   }
 }
 
@@ -153,7 +167,6 @@ button:hover {
 }
 
 .paginationControls {
-
   position: fixed;
   bottom: 0;
   left: 0;

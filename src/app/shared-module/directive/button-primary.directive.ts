@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[appButtonPrimary]'
@@ -8,7 +8,6 @@ export class ButtonPrimaryDirective implements OnInit {
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit(): void {
-    // Apply the default styles
     this.applyDefaultStyles();
   }
 
@@ -39,6 +38,18 @@ export class ButtonPrimaryDirective implements OnInit {
   get cursor(): string {
     return this.elementRef.nativeElement.disabled ? 'not-allowed' : 'pointer';
   }
+
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    if (!this.elementRef.nativeElement.disabled) {
+      this.elementRef.nativeElement.style.backgroundColor = '#0166cc'; 
+    }
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    if (!this.elementRef.nativeElement.disabled) {
+      this.elementRef.nativeElement.style.backgroundColor = '#0183ff'; 
+    }
+  }
 }
-
-
