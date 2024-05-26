@@ -3,7 +3,7 @@ import { IEmployeesState } from "../models/employee";
 
 export const employeesFeatureSelector = createFeatureSelector<IEmployeesState>("employees")
 
-export const employeesSelector = createSelector(
+export const employeesStateSelector = createSelector(
     employeesFeatureSelector,
-    (state) => state.employees
-)
+    (state) => state
+);

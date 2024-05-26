@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { IVendorsState } from "./vendor.reducers";
+import { IVendorsState } from "../models/vendor";
 
 export const vendorsFeatureSelector = createFeatureSelector<IVendorsState>("vendors")
 
-export const vendorsSelector = createSelector(
+export const vendorsStateSelector = createSelector(
     vendorsFeatureSelector,
-    (state) => state.vendors
+    (state) => state
 )

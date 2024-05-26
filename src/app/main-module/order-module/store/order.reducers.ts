@@ -1,12 +1,10 @@
 import { createReducer, on } from "@ngrx/store";
-import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess } from "./order.actions";
-
-export interface IOrderState {
-    productVendors: Array<any>
-}
+import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess, resetOrderLoading, setOrderLoading } from "./order.actions";
+import { IOrderState } from "../models/order";
 
 export const initialState: IOrderState = {
-    productVendors: []
+    productVendors: [],
+    isLoading: false,
 }
 
 export const orderReducer = createReducer(
@@ -37,4 +35,14 @@ export const orderReducer = createReducer(
         console.log("placeOrderFailure", "state: ", state, "action:", action)
         return (state);
     }),
+
+    // loading...
+    on(setOrderLoading, (state) => {
+        console.log("setOrderLoading", "state:", state, "action: ", undefined)
+        return ({ ...state, isLoading: true });
+    }),
+    on(resetOrderLoading, (state) => {
+        console.log("resetOrderLoading", "state:", state, "action: ", undefined)
+        return ({...state, isLoading: false });
+    })
 )

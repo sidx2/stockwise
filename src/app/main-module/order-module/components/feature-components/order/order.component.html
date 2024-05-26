@@ -1,10 +1,11 @@
+<app-loader *ngIf="isLoading"></app-loader>
 <div >
   <form [formGroup]="dynamicForm">
     <div formArrayName="OrderFormArray" class="form-container">
       <div *ngFor="let formGroup of OrderFormArray.controls; let i=index" [formGroupName]="i" class="form-group">
         <label for="product">Product:</label>
         <select id="product" formControlName="product" (change)="onProductChange(i)">
-          <option *ngFor="let product of products" [value]="product.item._id">{{ product.item.name }}</option>
+          <option *ngFor="let pv of productVendors" [value]="pv.item._id">{{ pv.item.name }}</option>
         </select>
 
         <label for="vendor">Vendor:</label>

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, pipe } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
 import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess } from '../../../store/inventory.action';
 import { Category, CategoryState } from '../../../../category-module/models/category';
@@ -10,7 +10,7 @@ import { getCategoryRequest } from '../../../../category-module/store/category.a
 import { Actions, ofType } from '@ngrx/effects';
 import { IGlobalState } from '../../../../../models/global';
 import { Employee } from '../../../../employees-module/models/employee';
-import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
+import { employeesStateSelector } from '../../../../employees-module/store/employees.selectors';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { getErrorMessage, getLoading, inventorySelector } from '../../../store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
@@ -26,7 +26,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   items$: Observable<Item[]>;
   categories$: Observable<Category[]>;
-  employees$: Observable<Employee[]>;
+  employees!: Employee[];
   filteredItems$: Observable<Item[]> | null = null;
   destroy$: Subject<void> = new Subject();
 
@@ -54,8 +54,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));
-    this.employees$ = this.store.select(employeesSelector);
-
+    this.store.select(employeesStateSelector).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((state) => {
+      this.employees = state.employees;
+    });
+    
     this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading: boolean) => {
       this.isLoading = loading;
     });

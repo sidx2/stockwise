@@ -28,5 +28,6 @@ export interface IStatusUpdated {
 
 }
 export interface IHistoryState {
-    history: Order[]
+    history: Order[],
+    isLoading: boolean
 }

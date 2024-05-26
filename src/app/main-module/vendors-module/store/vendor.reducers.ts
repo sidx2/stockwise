@@ -1,22 +1,10 @@
 import { createReducer, on } from "@ngrx/store"
-import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, updateVendorFailure, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
-
-export interface Vendor {
-    _id: string
-    name: string,
-    address: string,
-    email: string,
-    phone: string,
-    orgId: string
-}
-
-// Reducers for global module
-export interface IVendorsState {
-    vendors: Vendor[]
-}
+import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, resetVendorLoading, setVendorLoading, updateVendorFailure, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
+import { IVendorsState, Vendor } from "../models/vendor";
 
 export const initialState: IVendorsState = {
-    vendors: []
+    vendors: [],
+    isLoading: false,
 }
 
 export const vendorReducer = createReducer(
@@ -98,4 +86,14 @@ export const vendorReducer = createReducer(
         console.log("deleteVendorFailure:", "state: ", state, "action ->", action);
         return (state);
     }),
+
+    // loading...
+    on(setVendorLoading, (state) => {
+        console.log("setVendorLoading", "state:", state, "action: ", undefined)
+        return ({ ...state, isLoading: true });
+    }),
+    on(resetVendorLoading, (state) => {
+        console.log("resetVendorLoading", "state:", state, "action: ", undefined)
+        return ({...state, isLoading: false });
+    })
 )
