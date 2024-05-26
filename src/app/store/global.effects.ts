@@ -39,7 +39,7 @@ export class globalEffects {
                     catchError((err) => {
                         console.log("err login: ", err);
                         this.store.dispatch(resetAuthLoading());
-                        const error = err.error.error || err.error.message || "Something went wrong";
+                        const error = err.error.error || "Something went wrong";
                         this.toastr.error(`Failed to login. ${error}`);
                         return of(loginUserFailure({ error }))
                     }
@@ -63,7 +63,7 @@ export class globalEffects {
                     catchError((err) => {
                         console.log("fetch org err: ", err);
                         this.store.dispatch(resetAuthLoading());
-                        const error = err.error.error || err.error.message || "Something went wrong";
+                        const error = err.error.error || "Something went wrong";
                         return of(fetchOrgFailure({ error }));
                     }
                     )
