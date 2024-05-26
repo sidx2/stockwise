@@ -132,10 +132,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.toastr.success('Item Checkout successfully');
       this.store.dispatch(clearErrorMessage());
 
-      if (this.checkoutMailDetails) {
-        this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
-        this.checkoutMailDetails = null;
-      }
+      // if (this.checkoutMailDetails) {
+      //   this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
+      //   this.checkoutMailDetails = null;
+      // }
     });
   }
 
