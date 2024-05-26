@@ -27,7 +27,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(fetchEmployeesFailure({ error: "Something went wrong" }));
+                        return of(fetchEmployeesFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
                     }
                     )
                 )
@@ -48,7 +48,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(updateEmployeeFailure({ error: "Something went wrong" }))
+                        return of(updateEmployeeFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
                     }
                     )
                 )
@@ -69,7 +69,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(deleteEmployeeFailure({ error: "Something went wrong" }));
+                        return of(deleteEmployeeFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
                     }
                     )
                 )
@@ -91,7 +91,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(createUserFailure({ error: "Something went wrong" }));
+                        return of(createUserFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
                     }
                     )
                 )
@@ -111,7 +111,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(addEmployeeFailure({ error: "Something went wrong" }));
+                        return of(addEmployeeFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
                     })
                 )
             )

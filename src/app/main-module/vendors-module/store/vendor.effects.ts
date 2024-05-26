@@ -27,7 +27,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(fetchVendorsFailure({ error: "Something went wrong" }))
+                        return of(fetchVendorsFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
                     })
                 )
             )
@@ -48,7 +48,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(updateVendorFailure({ error: "Something went wrong" }))
+                        return of(updateVendorFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
                     })
                 )
             )
@@ -68,7 +68,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(deleteVendorFailure({ error: "Something went wrong" }))
+                        return of(deleteVendorFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
                     })
                 )
             )
@@ -88,7 +88,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(addVendorFailure({ error: "Something went wrong" }))
+                        return of(addVendorFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
                     })
                 )
             )

@@ -27,7 +27,7 @@ export class historyEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetHistoryLoading());
-                        return of(fetchHistoryFailure({ error: "Something went wrong" }));
+                        return of(fetchHistoryFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
                     })
                 )
             )
@@ -47,7 +47,7 @@ export class historyEffects {
                 }),
                 catchError((err) => {
                     this.store.dispatch(resetHistoryLoading());
-                    return of(updateStatusFailure({ error: "Something went wrong" }));
+                    return of(updateStatusFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
                 })
             )
         )

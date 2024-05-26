@@ -27,7 +27,8 @@ export class authEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetLoading());
-                        return of(signupFailure({ error: "Something went wrong" }))
+                        console.log("err in signup failure:", err);
+                        return of(signupFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
                     }
                     )
                 )
@@ -48,7 +49,7 @@ export class authEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetLoading());
-                        return of(createOrgFailure({ error: "Something went wrong" }))
+                        return of(createOrgFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
 
                     })
                 )
