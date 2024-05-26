@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, logoutUserSuccess } from "./global.actions"
 import { IGlobalState, Org, User } from "../models/global"
-import { setVendorLoading } from "../main-module/vendors-module/store/vendor.actions"
 
 export const initialState: IGlobalState = {
     user: {} as User,
@@ -38,7 +37,7 @@ export const globalReducer = createReducer(
     }),
     on(setOrg, (state, action) => {
         console.log("setOrg:", "state: ", state, "action ->", action);
-        return ({ ...state, org: { ...state.org, ...action.org }, });
+        return ({ ...state, org: { ...state.org, ...action.org }, isLoggedIn: true });
     }),
     on(fetchOrgSuccess, (state, action) => {
         console.log("fetchOrgSuccess:", "state: ", state, "action ->", action);
