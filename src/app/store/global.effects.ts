@@ -36,7 +36,7 @@ export class globalEffects {
                     catchError((err) => {
                         console.log("err login: ", err);
                         this.store.dispatch(resetAuthLoading());
-                        return of(loginUserFailure({ error: "Something went wrong" }))
+                        return of(loginUserFailure({ error: err.error.error }))
                     }
                     )
                 )
@@ -56,9 +56,9 @@ export class globalEffects {
                         return fetchOrgSuccess({ org: res });
                     }),
                     catchError((err) => {
-                        console.log("err: ", err);
+                        console.log("fetch org err: ", err);
                         this.store.dispatch(resetAuthLoading());
-                        return of(fetchOrgFailure({ error: "Something went wrong" }));
+                        return of(fetchOrgFailure({ error: err.error.error }));
                     }
                     )
                 )

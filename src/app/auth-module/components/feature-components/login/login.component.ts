@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGlobalState } from '../../../../models/global';
 import { IAuthState, LoginCredentials } from '../../../models/auth';
 import { authStateSelector } from '../../../store/auth.selectors';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -30,6 +31,7 @@ export class LoginComponent implements OnDestroy {
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
+    private toastr: ToastrService
   ) {
 
     this.store.select(authStateSelector).pipe(
