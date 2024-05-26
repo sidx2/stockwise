@@ -8,11 +8,10 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 export class ChangePasswordComponent {
   @Output() changePasswordEmmiter : EventEmitter<string> = new EventEmitter();
-  password: string = 'hello'
+  password: string = ''
 
   onSubmit(){
     console.log("changed password", this.password)
     this.changePasswordEmmiter.emit(this.password);
   }
-
 }

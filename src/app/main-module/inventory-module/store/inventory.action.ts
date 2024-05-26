@@ -7,7 +7,7 @@ export const getItemRequest = createAction('[Item] Get Item Request', props<{org
 export const createItemRequest = createAction('[Item] Create Item Request', props<{ item: Item }>());
 export const deleteItemRequest = createAction('[Item] Delete Item Request', props<{ itemId: string }>());
 export const updateItemRequest = createAction('[Item] Update Item Request', props<{ updatedItem: Item }>());
-export const checkoutItemRequest = createAction('[Item] Checkout Item Request', props<{assignedToDetails: CheckoutDetails}>());
+export const checkoutItemRequest = createAction('[Item] Checkout Item Request', props<{assignedToDetails: CheckoutDetails, checkoutMailDetails: CheckoutMailDetails}>());
 export const checkoutMailRequest = createAction('[Item] Checkout Item Request', props<{checkoutMailDetails: CheckoutMailDetails}>());
 export const checkinItemRequest = createAction('[Item] Checkin Item Request', props<{checkinDetails: CheckinDetails}>());
 
@@ -33,7 +33,10 @@ export const getUserAssetsFailure = createAction('[UserAssets] Get UserAsset Fai
 
 // loading
 export const setLoading = createAction('[Item] set loading');
-export const resetLoading = createAction('[Item] reset loading');
+// export const resetLoading = createAction('[Item] reset loading');
+
+// clear error message
+export const clearErrorMessage = createAction('[Item] clear error message');
 
 
 

@@ -26,4 +26,8 @@ export class AuthService {
     console.log("Credentials for create org: ", credentials, token);
     return this.http.post(`${BASE_URL}/org/create`, credentials, {headers: {Authorization: `Bearer ${token}`}});
   }
+
+  changePassword(newPassword: string){
+    return this.http.post(`${BASE_URL}/auth/changePassword`, {password: newPassword})
+  }
 }

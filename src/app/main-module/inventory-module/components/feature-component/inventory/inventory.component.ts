@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
-import {checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess } from '../../../store/inventory.action';
+import {checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage } from '../../../store/inventory.action';
 import { Category, CategoryState} from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState, CheckinDetails } from '../../../models/inventory';
@@ -12,9 +12,10 @@ import { IGlobalState } from '../../../../../models/global';
 import { Employee } from '../../../../employees-module/models/employee';
 import { employeesSelector } from '../../../../employees-module/store/employees.selectors';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
-import { getLoading, inventorySelector } from '../../../store/inventory.selector';
+import { getErrorMessage, getLoading, inventorySelector } from '../../../store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { categorySelector } from '../../../../category-module/store/category.selector';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inventory',
@@ -51,7 +52,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
-  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions) {
+  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
 
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));
@@ -63,6 +64,13 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
       this.orgId = org._id;
+    })
+
+    this.store.pipe(select(getErrorMessage)).subscribe((errorMessage)=> {
+      if(errorMessage){
+        toastr.error(errorMessage);
+        this.store.dispatch(clearErrorMessage())
+      }
     })
   }
 
@@ -84,6 +92,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       ofType(createItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe( ()=> {
+      this.toastr.success('Item created successfully')
       this.hideInventoryForm();
     })
 
@@ -91,6 +100,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       ofType(updateItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe( ()=> {
+      this.toastr.success('Item updated successfully')
       this.hideInventoryForm();
     })
 
@@ -99,9 +109,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
       take(1),
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      if (this.checkoutMailDetails) {
-        this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
-      }
+      this.toastr.success('Item Checkout successfully')
+
+      // if (this.checkoutMailDetails) {
+      //   this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
+      //   this.checkoutMailDetails = null;
+      // }
     }); 
   }
 
@@ -189,9 +202,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
   checkoutItemHandler(event:CheckoutEventData) {
     const assignedToDetails: CheckoutDetails = event.assignedToDetails;
     const checkoutMailDetails: CheckoutMailDetails = event.checkoutMailDetails;
+
     checkoutMailDetails.orgName = this.orgName;
     this.checkoutMailDetails = checkoutMailDetails;
-    this.store.dispatch(checkoutItemRequest({assignedToDetails}));
+
+    this.store.dispatch(checkoutItemRequest({assignedToDetails, checkoutMailDetails}));
     this.hideCheckoutItemHandler();
   }
 

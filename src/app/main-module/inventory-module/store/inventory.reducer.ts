@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { InventoryState, Item, UserAsset } from '../models/inventory';
-import {setLoading, resetLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess } from './inventory.action';
+import { InventoryState } from '../models/inventory';
+import {setLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess } from './inventory.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
 
 const initialState: InventoryState = {
@@ -66,6 +66,5 @@ export const inventoryReducer = createReducer(
   })),
 
   on(setLoading, (state)=> ({...state, loading: true})),
-  
   on(logoutUserSuccess, ()=>  initialState)
 );
