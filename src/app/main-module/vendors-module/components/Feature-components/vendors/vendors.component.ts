@@ -20,7 +20,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
   vendors!: Vendor[];
   editors: Editor[] = []
 
-  visible: boolean = false
+  isVisibleAddVendor: boolean = false
   isLoading: boolean = false
   orgId!: string
 
@@ -56,7 +56,6 @@ export class VendorsComponent implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnInit() {
     this.socket.fromEvent('vendorUpdated').pipe(
       takeUntil(this.destroySubject)
@@ -80,9 +79,17 @@ export class VendorsComponent implements OnInit, OnDestroy {
     });
   }
 
-  
+  showAddVendor(){
+    this.isVisibleAddVendor = true;
+  }
+
+  hideAddVendor(){
+    this.isVisibleAddVendor = false;
+  }
+
   onAddVendor(vendor: Vendor) {
     this.store.dispatch(addVendorRequest({ vendor: vendor }))
+    this.hideAddVendor()
   }
   
   onUpdateVendor(vendor: Vendor) {

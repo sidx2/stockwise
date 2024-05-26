@@ -1,21 +1,27 @@
 <app-loader *ngIf="isLoading"></app-loader>
+
 <div class="container">
-    <div class="header">
-        <div class="title">
-            <h3>Vendors</h3>
-        </div>
-        <app-add-vendor (addVendor)="onAddVendor($event)"></app-add-vendor>
-    </div>
-    <div class="vendors-table">
-        <app-vendors-table 
-            [vendors]="vendors"
-            [editors]="editors"
-            (startedEditing)="onStartedEditing($event)"
-            (cancelledEditing)="onCancelledEditing($event)"
-            (changeVendor)="onVendorChanged($event)"
-            
-            (updateVendor)="onUpdateVendor($event)"
-            (deleteVendor)="onDeleteVendor($event)"
-        ></app-vendors-table>
-    </div>
+  <app-header class="category_header">
+    <h3>Vendors</h3>
+    <button appButtonPrimary (click)="showAddVendor()">Add Vendor</button>
+  </app-header>
+
+  <app-modal *ngIf="isVisibleAddVendor" (closeModalEvent)="hideAddVendor()">
+    <app-add-vendor
+      (closeAddVendor)="hideAddVendor()"
+      (addVendor)="onAddVendor($event)"
+    ></app-add-vendor>
+  </app-modal>
+
+  <div class="vendors-table">
+    <app-vendors-table
+      [vendors]="vendors"
+      [editors]="editors"
+      (startedEditing)="onStartedEditing($event)"
+      (cancelledEditing)="onCancelledEditing($event)"
+      (changeVendor)="onVendorChanged($event)"
+      (updateVendor)="onUpdateVendor($event)"
+      (deleteVendor)="onDeleteVendor($event)"
+    ></app-vendors-table>
+  </div>
 </div>

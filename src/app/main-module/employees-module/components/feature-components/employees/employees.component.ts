@@ -13,7 +13,7 @@ import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employe
 export class EmployeesComponent implements OnDestroy {
   store = inject(Store<{ employees: IEmployeesState }>)
   employees!: Employee[];
-  visible: boolean = false;
+  isVisibleAddEmployee: boolean = false;
   isLoading: boolean = false;
 
   destroySubject = new Subject<void>();
@@ -28,13 +28,17 @@ export class EmployeesComponent implements OnDestroy {
     })
   }
 
-  showDialog() {
-    this.visible = !this.visible;
+  showAddEmployee(){
+    this.isVisibleAddEmployee = true;
+  }
+
+  hideAddEmployee(){
+    this.isVisibleAddEmployee = false;
   }
 
   onAddEmployee(user: IAddEmployee) {
-    this.visible = !this.visible
     this.store.dispatch(createUserRequest({ user }))
+    this.hideAddEmployee();
   }
 
   onUpdateEmployee(employee: Employee) {

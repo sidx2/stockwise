@@ -1,7 +1,7 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
 <div class="category" *ngIf="!isCategoryFormVisible">
-  <app-header class="category_header">
+  <app-header>
     <h3>Active Categories</h3>
     <button appButtonPrimary (click)="showCategoryForm()">+ New</button>
   </app-header>

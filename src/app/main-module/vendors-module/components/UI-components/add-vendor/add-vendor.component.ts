@@ -8,8 +8,8 @@ import { Vendor } from '../../../models/vendor';
   styleUrl: './add-vendor.component.scss'
 })
 export class AddVendorComponent {
-  visible = false
   @Output() addVendor = new EventEmitter<Vendor>()
+  @Output() closeAddVendor = new EventEmitter()
 
   addVendorForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
@@ -17,10 +17,6 @@ export class AddVendorComponent {
     address: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
     phone: new FormControl("", [Validators.required]),
   })
-
-  toggleDialog() {
-    this.visible = !this.visible;
-  }
 
   getErrorMessage(controlName: string): string {
     const control = this.addVendorForm.get(controlName);
@@ -37,7 +33,6 @@ export class AddVendorComponent {
     if (control?.hasError('maxlength')) {
       return 'Cannot exceed ' + control.getError('maxlength').requiredLength + ' characters.';
     }
-
     return '';
   }
 
@@ -47,6 +42,9 @@ export class AddVendorComponent {
       return;
     }
     this.addVendor.emit(this.addVendorForm.value as Vendor)
-    this.toggleDialog();
+  }
+
+  onCloseVendor(){
+    this.closeAddVendor.emit()
   }
 }

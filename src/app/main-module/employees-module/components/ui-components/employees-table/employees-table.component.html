@@ -1,58 +1,73 @@
-<input type="text" id="searchInput" placeholder="Search for employee" (input)="search($event)">
-<table>
+<input
+  type="text"
+  appCustomInputStyle
+  id="searchInput"
+  placeholder="Search for employee"
+  (input)="search($event)"
+/>
+
+<div class="employee_table">
+  <table>
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Action</th>
-        </tr>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
     </thead>
-    <tbody *ngFor="let emp of (employees | paginate: {itemsPerPage: psize, currentPage: currPage}); index as i">
-        <tr *ngIf="emp._id != editing; else elseBlock">
-            <td> {{ emp.name  }} </td>
-            <td> {{ emp.email }} </td>
-            <td> {{ emp.role  }} </td>
-            <td>
-                <button appButtonPrimaryLight (click)="onEdit(emp._id)">
-                    <mat-icon>edit</mat-icon>
-                </button>
+    <tbody
+      *ngFor="
+        let emp of employees
+          | paginate : { itemsPerPage: psize, currentPage: currPage };
+        index as i
+      "
+    >
+      <tr *ngIf="emp._id != editing; else elseBlock">
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.email }}</td>
+        <td>{{ emp.role }}</td>
+        <td>
+          <button appButtonPrimaryLight (click)="onEdit(emp._id)">
+            <mat-icon>edit</mat-icon>
+          </button>
 
-                <button appButtonPrimaryLight (click)="onDelete(emp._id)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </td>
+          <button appButtonPrimaryLight (click)="onDelete(emp._id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+
+      <ng-template #elseBlock>
+        <tr class="pending">
+          <td>
+            <input type="text" [(ngModel)]="m_name" value="{{ emp.name }}" />
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="m_email" value="{{ emp.email }}" />
+          </td>
+          <td>
+            <select [(ngModel)]="m_role">
+              <option value="admin">Admin</option>
+              <option value="employee">Employee</option>
+              <option value="user">User</option>
+            </select>
+          </td>
+          <td>
+            <button appButtonPrimaryLight (click)="onCancel()">
+              <mat-icon>cancel</mat-icon>
+            </button>
+
+            <button type="submit" appButtonPrimaryLight (click)="onDone()">
+              <mat-icon>done</mat-icon>
+            </button>
+          </td>
         </tr>
-
-        <ng-template #elseBlock>
-            <tr class="pending">
-                <td>
-                    <input type="text" [(ngModel)]="m_name" value={{emp.name}}>
-                </td>
-                <td>
-                    <input type="text" [(ngModel)]="m_email" value={{emp.email}}>
-                </td>
-                <td>
-                    <select [(ngModel)]="m_role">
-                        <option value="admin">Admin</option>
-                        <option value="employee">Employee</option>
-                        <option value="user">User</option>
-                    </select>
-                </td>
-                <td>
-                    <button appButtonPrimaryLight (click)="onCancel()">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-
-                    <button type="submit" appButtonPrimaryLight (click)="onDone()">
-                        <mat-icon>done</mat-icon>
-                    </button>
-                </td>
-            </tr>
-        </ng-template>
+      </ng-template>
     </tbody>
-</table>
+  </table>
+</div>
 
 <div class="paginationControls">
-    <pagination-controls (pageChange)="currPage=$event"></pagination-controls>
+  <pagination-controls (pageChange)="currPage = $event"></pagination-controls>
 </div>

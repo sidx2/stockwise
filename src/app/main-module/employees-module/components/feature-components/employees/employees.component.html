@@ -1,19 +1,21 @@
 <app-loader *ngIf="isLoading"></app-loader>
-<div class="container">
-    <div class="header">
-        <div class="title">
-            <h3>Employees</h3>
-        </div>
-        <app-add-employee
-            (addEmployee)="onAddEmployee($event)"
-        ></app-add-employee>
-    </div>
-    
-    <div class="vendors-table">
-        <app-employees-table 
-            [employees]="employees" 
-            (updateEmployee)="onUpdateEmployee($event)"
-            (deleteEmployee)="onDeleteEmploye($event)"
-        ></app-employees-table>
-    </div>
+
+<app-header>
+  <h3>Employees</h3>
+  <button appButtonPrimary (click)="showAddEmployee()">Add Employee</button>
+</app-header>
+
+<app-modal *ngIf="isVisibleAddEmployee" (closeModalEvent)="hideAddEmployee()">
+  <app-add-employee
+    (closeAddEmployee)="hideAddEmployee()"
+    (addEmployee)="onAddEmployee($event)"
+  ></app-add-employee>
+</app-modal>
+
+<div class="employee-table">
+  <app-employees-table
+    [employees]="employees"
+    (updateEmployee)="onUpdateEmployee($event)"
+    (deleteEmployee)="onDeleteEmploye($event)"
+  ></app-employees-table>
 </div>
