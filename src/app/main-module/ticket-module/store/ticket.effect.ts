@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketService } from '../services/ticket.service';
-import { createTicketFailure, createTicketRequest, createTicketSuccess, getUserTicketFailure, getUserTicketRequest, getUserTicketSuccess, resetLoading, setLoading} from './ticket.action';
+import { createTicketFailure, createTicketRequest, createTicketSuccess, getUserTicketFailure, getUserTicketRequest, getUserTicketSuccess, setLoading} from './ticket.action';
 import { Store } from '@ngrx/store';
 
 @Injectable()

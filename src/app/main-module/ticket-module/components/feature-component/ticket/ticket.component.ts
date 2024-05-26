@@ -5,13 +5,15 @@ import { Ticket } from '../../../models/ticket.model';
 import { UserAsset } from '../../../../inventory-module/models/inventory';
 import { TicketState } from '../../../models/ticket.model';
 import { InventoryState } from '../../../../inventory-module/models/inventory';
-import { createTicketRequest, getUserTicketRequest } from '../../../store/ticket.action';
+import { clearErrorMessage, createTicketRequest, createTicketSuccess, getUserTicketRequest } from '../../../store/ticket.action';
 import { getUserAssets } from '../../../../inventory-module/store/inventory.action';
-import { getLoading, ticketSelector } from '../../../store/ticket.selector';
+import { getErrorMessage, getLoading, ticketSelector } from '../../../store/ticket.selector';
 import { usrAssetSelector } from '../../../../inventory-module/store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { IGlobalState } from '../../../../../models/global';
+import { ToastrService } from 'ngx-toastr';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-ticket',
@@ -22,8 +24,6 @@ export class TicketComponent implements OnInit, OnDestroy {
   tickets$: Observable<Ticket[]>;
   filteredTickets$: Observable<Ticket[]>;
   userAssets$: Observable<UserAsset[]>;
-  private orgSubscription!: Subscription;
-  loadingSubscription!: Subscription;
   private destroy$: Subject<void> = new Subject();
 
   orgId: string = '';
@@ -31,25 +31,36 @@ export class TicketComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   isTicketFormVisible: boolean = false;
 
-  constructor(private store: Store<{ global: IGlobalState, tickets: TicketState, inventory: InventoryState}>) {
+  constructor(private store: Store<{ global: IGlobalState, tickets: TicketState, inventory: InventoryState}>, private toastr: ToastrService, private actions$: Actions) {
     this.tickets$ = this.store.pipe(select(ticketSelector));
     this.filteredTickets$ = this.tickets$;
     this.userAssets$ = this.store.pipe(select(usrAssetSelector));
     
-    this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
+    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
       this.orgId = org._id;
     })
+
+    this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage)=> {
+      if(errorMessage){
+        toastr.error(errorMessage);
+        this.store.dispatch(clearErrorMessage())
+      }
+    })
+
+    this.store.pipe(select(getLoading), takeUntil(this.destroy$))
+    .subscribe((loading: boolean) => {
+      this.isLoading = loading;
+  });
  }
 
   ngOnInit(): void {
     this.store.dispatch(getUserTicketRequest());
     this.store.dispatch(getUserAssets());
-    this.filteredTickets$ = this.tickets$;
+    this.filteredTickets$ = this.tickets$
 
-    this.loadingSubscription = this.store.pipe(select(getLoading))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((loading: boolean) => {
-        this.isLoading = loading;
+    this.actions$.pipe(ofType(createTicketSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      this.toastr.success("Ticket raised successfully");
+      this.hideTicketForm();
     });
   }
 
@@ -57,7 +68,6 @@ export class TicketComponent implements OnInit, OnDestroy {
     ticket.orgId = this.orgId;
     console.log("ticket data received", ticket);
     this.store.dispatch(createTicketRequest({ ticket }));
-    this.hideTicketForm();
   }
 
   showTicketForm(): void {
@@ -88,11 +98,5 @@ export class TicketComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.orgSubscription) {
-      this.orgSubscription.unsubscribe();
-    }
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
-    }
   }
 }

@@ -12,3 +12,8 @@ export const getLoading = createSelector(
     selectTicketState,
     (state: TicketState) => state.loading
 );
+
+export const getErrorMessage = createSelector(
+    selectTicketState,
+    (state: TicketState) => state.errorMessage
+);

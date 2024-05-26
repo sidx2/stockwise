@@ -4,10 +4,11 @@ import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, createCategorySuccess, updateCategorySuccess } from '../../../store/category.action';
-import { categorySelector, getLoading } from '../../../store/category.selector';
+import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, createCategorySuccess, updateCategorySuccess, clearErrorMessage } from '../../../store/category.action';
+import { categorySelector, getErrorMessage, getLoading } from '../../../store/category.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { IGlobalState } from '../../../../../models/global';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category',
@@ -28,24 +29,34 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<{ categories: CategoryState, global: IGlobalState }>, private actions$: Actions) {
-    this.categories$ = this.store.pipe(select(categorySelector));
-  }
+  constructor(private store: Store<{ categories: CategoryState, global: IGlobalState }>, private actions$: Actions, private toastr: ToastrService) {
 
-  ngOnInit(): void {
-    
-    this.store.pipe(select(getLoading)).pipe(takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
-    
-    this.store.pipe(select(orgSelector)).pipe(takeUntil(this.destroy$)).subscribe((org) => {
+    this.categories$ = this.store.pipe(select(categorySelector));
+
+    this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
+
+    this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage)=> {
+      if(errorMessage){
+        toastr.error(errorMessage);
+        this.store.dispatch(clearErrorMessage())
+      }
+    })
+
+    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
       this.orgId = org._id;
       this.fetchCategoryHandler();
     });
+  }
+
+  ngOnInit(): void {
 
     this.actions$.pipe(ofType(createCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
+      this.toastr.success("Category created successfully");
       this.hideCategoryForm();
     });
 
     this.actions$.pipe(ofType(updateCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
+      this.toastr.success("Category updated successfully");
       this.hideCategoryForm();
     });
   }

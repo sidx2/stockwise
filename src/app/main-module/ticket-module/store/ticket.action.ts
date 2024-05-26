@@ -15,4 +15,6 @@ export const createTicketFailure = createAction('[Ticket] Create Ticket Failure'
 
 //loading
 export const setLoading = createAction('[Ticket] set loading')
-export const resetLoading = createAction('[Ticket] reset loading')
+
+// error
+export const clearErrorMessage = createAction('[Ticket] clear error message');

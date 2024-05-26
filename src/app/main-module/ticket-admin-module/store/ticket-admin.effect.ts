@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketAdminService } from '../services/ticket-admin.service';
-import { getAllTicketRequest, updateTicketStatusRequest, setLoading, resetLoading, getAllTicketSuccess, getAllTicketFailure, updateTicketStatusSuccess, updateTicketStatusFailure } from './ticket-admin.action';
+import { getAllTicketRequest, updateTicketStatusRequest, setLoading, getAllTicketSuccess, getAllTicketFailure, updateTicketStatusSuccess, updateTicketStatusFailure } from './ticket-admin.action';
 import { Store } from '@ngrx/store';
-import { updateStatusFailure, updateStatusSuccess } from '../../order-history-module/store/order-history.actions';
+
 
 @Injectable()
 export class TicketAdminEffects {

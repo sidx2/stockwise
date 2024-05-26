@@ -4,13 +4,15 @@ import { UserAsset, Item } from '../../../../inventory-module/models/inventory';
 import { TicketAdminState, Ticket, UpdateStatus } from '../../../models/ticket-admin';
 import { InventoryState } from '../../../../inventory-module/models/inventory';
 import { Store, select } from '@ngrx/store';
-import { getAllTicketRequest, updateTicketStatusRequest } from '../../../store/ticket-admin.action';
-import { getLoading, ticketSelector } from '../../../store/ticket-admin.selector';
-import { inventorySelector, usrAssetSelector } from '../../../../inventory-module/store/inventory.selector';
+import { clearErrorMessage, getAllTicketRequest, updateTicketStatusRequest, updateTicketStatusSuccess } from '../../../store/ticket-admin.action';
+import { getErrorMessage, getLoading, ticketSelector } from '../../../store/ticket-admin.selector';
+import { inventorySelector } from '../../../../inventory-module/store/inventory.selector';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { getItemRequest } from '../../../../inventory-module/store/inventory.action';
 import { takeUntil } from 'rxjs/operators';
 import { IGlobalState } from '../../../../../models/global';
+import { ToastrService } from 'ngx-toastr';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-ticket-admin',
@@ -21,8 +23,6 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   tickets$: Observable<Ticket[]>;
   filteredTickets$: Observable<Ticket[]>;
   items$: Observable<Item[]>;
-  private orgSubscription!: Subscription;
-  loadingSubscription!: Subscription;
   private destroy$: Subject<void> = new Subject();
 
   selectedTicketId: string = '';
@@ -35,26 +35,39 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   isUpdateFormVisible: boolean = false;
   isAssetInfoVisible: boolean = false;
 
-  constructor(private store: Store<{ global: IGlobalState, ticketsAdmin: TicketAdminState, inventory: InventoryState }>) {
+  constructor(private store: Store<{ global: IGlobalState, ticketsAdmin: TicketAdminState, inventory: InventoryState }>, private toastr: ToastrService, private actions$: Actions) {
+
     this.tickets$ = this.store.pipe(select(ticketSelector));
     this.filteredTickets$ = this.tickets$
     this.items$ = this.store.pipe(select(inventorySelector));
 
-    this.loadingSubscription = this.store.pipe(select(getLoading))
+    this.store.pipe(select(getLoading))
       .pipe(takeUntil(this.destroy$))
       .subscribe((loading: boolean) => {
         this.isLoading = loading;
-    });
+      });
 
-    this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
+    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
       this.orgId = org._id;
+    })
+
+    this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
+      if (errorMessage) {
+        toastr.error(errorMessage);
+        this.store.dispatch(clearErrorMessage())
+      }
     })
   }
 
   ngOnInit(): void {
-    this.store.dispatch(getAllTicketRequest({orgId: this.orgId}))
+    this.store.dispatch(getAllTicketRequest({ orgId: this.orgId }))
     this.filteredTickets$ = this.tickets$;
-    this.store.dispatch(getItemRequest({orgId:this.orgId}))
+    this.store.dispatch(getItemRequest({ orgId: this.orgId }))
+
+    this.actions$.pipe(ofType(updateTicketStatusSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      this.toastr.success("Ticket status updated successfully");
+      this.hideUpdateStatusForm()
+    });
   }
 
   handleFilterChange(filterTag: string): void {
@@ -74,24 +87,23 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  showUpdateStatusForm(ticketId: string){
+  showUpdateStatusForm(ticketId: string) {
     this.selectedTicketId = ticketId;
     this.isUpdateFormVisible = true;
   }
 
-  hideUpdateStatusForm(){
+  hideUpdateStatusForm() {
     this.selectedTicketId = '';
     this.isUpdateFormVisible = false
   }
 
-  updateStatusHandler(updatedStatus: UpdateStatus){
+  updateStatusHandler(updatedStatus: UpdateStatus) {
     updatedStatus.ticketId = this.selectedTicketId;
-    this.store.dispatch(updateTicketStatusRequest({updatedStatus}));
+    this.store.dispatch(updateTicketStatusRequest({ updatedStatus }));
     console.log("updated status recieved", updatedStatus)
-    this.hideUpdateStatusForm()
   }
 
-  showAssetInfo(assetId: string){
+  showAssetInfo(assetId: string) {
     this.items$.pipe(
       map(items => items.find(item => item._id === assetId)),
       takeUntil(this.destroy$)
@@ -103,7 +115,7 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
     this.isAssetInfoVisible = true;
   }
 
-  hideAssetInfo(){
+  hideAssetInfo() {
     this.selectedItem = null;
     this.isAssetInfoVisible = false;
   }
@@ -111,11 +123,6 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.orgSubscription) {
-      this.orgSubscription.unsubscribe();
-    }
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
-    }
   }
+
 }

@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
-import {checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage } from '../../../store/inventory.action';
-import { Category, CategoryState} from '../../../../category-module/models/category';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess } from '../../../store/inventory.action';
+import { Category, CategoryState } from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState, CheckinDetails } from '../../../models/inventory';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
@@ -28,8 +28,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   categories$: Observable<Category[]>;
   employees$: Observable<Employee[]>;
   filteredItems$: Observable<Item[]> | null = null;
-  orgSubscription: Subscription;
-  loadingSubscription: Subscription;
   destroy$: Subject<void> = new Subject();
 
   selectedCategory: Category | null = null;
@@ -57,17 +55,17 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));
     this.employees$ = this.store.select(employeesSelector);
-    
-    this.loadingSubscription = this.store.pipe(select(getLoading)).subscribe((loading: boolean) => {
+
+    this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading: boolean) => {
       this.isLoading = loading;
     });
 
-    this.orgSubscription = this.store.pipe(select(orgSelector)).subscribe((org) => {
+    this.store.pipe(select(orgSelector), takeUntil(this.destroy$)).subscribe((org) => {
       this.orgId = org._id;
     })
 
-    this.store.pipe(select(getErrorMessage)).subscribe((errorMessage)=> {
-      if(errorMessage){
+    this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
+      if (errorMessage) {
         toastr.error(errorMessage);
         this.store.dispatch(clearErrorMessage())
       }
@@ -76,8 +74,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.store.dispatch(getCategoryRequest({orgId: this.orgId}));
-    this.store.dispatch(getItemRequest({orgId: this.orgId}));
+    this.store.dispatch(getCategoryRequest({ orgId: this.orgId }));
+    this.store.dispatch(getItemRequest({ orgId: this.orgId }));
     this.store.dispatch(fetchEmployees());
 
     this.categories$.pipe(
@@ -91,31 +89,50 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(createItemSuccess),
       takeUntil(this.destroy$)
-    ).subscribe( ()=> {
-      this.toastr.success('Item created successfully')
+    ).subscribe(() => {
+      this.toastr.success('Item added successfully');
+      this.store.dispatch(clearErrorMessage());
       this.hideInventoryForm();
     })
 
     this.actions$.pipe(
       ofType(updateItemSuccess),
       takeUntil(this.destroy$)
-    ).subscribe( ()=> {
-      this.toastr.success('Item updated successfully')
+    ).subscribe(() => {
+      this.toastr.success('Item updated successfully');
+      this.store.dispatch(clearErrorMessage());
       this.hideInventoryForm();
     })
 
     this.actions$.pipe(
-      ofType(checkoutItemSuccess),  
+      ofType(deleteItemSuccess),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.toastr.success('Item deleted successfully');
+      this.store.dispatch(clearErrorMessage());
+    })
+
+    this.actions$.pipe(
+      ofType(checkintItemSuccess),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.toastr.success('Item checkin successfully');
+      this.store.dispatch(clearErrorMessage());
+    })
+
+    this.actions$.pipe(
+      ofType(checkoutItemSuccess),
       take(1),
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.toastr.success('Item Checkout successfully')
+      this.toastr.success('Item Checkout successfully');
+      this.store.dispatch(clearErrorMessage());
 
-      // if (this.checkoutMailDetails) {
-      //   this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
-      //   this.checkoutMailDetails = null;
-      // }
-    }); 
+      if (this.checkoutMailDetails) {
+        this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
+        this.checkoutMailDetails = null;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -199,14 +216,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.showCheckout = false
   }
 
-  checkoutItemHandler(event:CheckoutEventData) {
+  checkoutItemHandler(event: CheckoutEventData) {
     const assignedToDetails: CheckoutDetails = event.assignedToDetails;
     const checkoutMailDetails: CheckoutMailDetails = event.checkoutMailDetails;
 
     checkoutMailDetails.orgName = this.orgName;
     this.checkoutMailDetails = checkoutMailDetails;
 
-    this.store.dispatch(checkoutItemRequest({assignedToDetails, checkoutMailDetails}));
+    this.store.dispatch(checkoutItemRequest({ assignedToDetails, checkoutMailDetails }));
     this.hideCheckoutItemHandler();
   }
 
@@ -221,8 +238,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.showCheckin = false
   }
 
-  checkinItemHandler(checkinDetails: CheckinDetails){
-    this.store.dispatch(checkinItemRequest({checkinDetails}))
+  checkinItemHandler(checkinDetails: CheckinDetails) {
+    this.store.dispatch(checkinItemRequest({ checkinDetails }))
     this.hideCheckinItemHandler()
   }
 
@@ -238,12 +255,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   // lifecycle
-  showLifecycleHandler(selectedItem: Item){
+  showLifecycleHandler(selectedItem: Item) {
     this.selectedItem = selectedItem;
     this.showLifecycle = true;
   }
 
-  hideLifecycleHandler(){
+  hideLifecycleHandler() {
     this.selectedItem = null;
     this.showLifecycle = false;
   }

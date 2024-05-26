@@ -12,3 +12,8 @@ export const getLoading = createSelector(
     selectCategoryState,
     (state: CategoryState) => state.loading
 );
+
+export const getErrorMessage = createSelector(
+    selectCategoryState,
+    (state: CategoryState) => state.errorMessage
+);

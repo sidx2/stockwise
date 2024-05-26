@@ -16,7 +16,8 @@ export const getItemSuccess = createAction('[Item] Get Item Success', props<{ it
 export const createItemSuccess = createAction('[Item] Create Item Success', props<{ item: Item }>());
 export const deleteItemSuccess = createAction('[Item] Delete Item Success', props<{ itemId: string }>());
 export const updateItemSuccess = createAction('[Item] Update Item Success', props<{ updatedItem: Item }>());
-export const checkoutItemSuccess = createAction('[Item] Update Item Success', props<{ updatedItem: Item }>());
+export const checkoutItemSuccess = createAction('[Item] checkout Item Success', props<{ updatedItem: Item }>());
+export const checkintItemSuccess = createAction('[Item] checkin Item Success', props<{ updatedItem: Item }>());
 
 // Failure actions
 export const getItemFailure = createAction('[Item] Get Item Failure', props<{ errorMessage: string }>());
@@ -24,6 +25,7 @@ export const createItemFailure = createAction('[Item] Create Item Failure', prop
 export const deleteItemFailure = createAction('[Item] Delete Item Failure', props<{ errorMessage: string }>());
 export const updateItemFailure = createAction('[Item] Update Item Failure', props<{ errorMessage: string }>());
 export const checkoutItemFailure = createAction('[Item] Checkout Item Failure', props<{ errorMessage: string }>());
+export const checkinItemFailure = createAction('[Item] Checkin Item Failure', props<{ errorMessage: string }>());
 export const checkoutMailFailure = createAction('[Item] Checkout Mail Failure', props<{ errorMessage: string }>());
 
 // userAsset

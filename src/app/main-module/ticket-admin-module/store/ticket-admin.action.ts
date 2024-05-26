@@ -15,4 +15,6 @@ export const updateTicketStatusFailure = createAction('[Ticket Admin] Update Tic
 
 //loading
 export const setLoading = createAction('[Ticket Admin] set loading')
-export const resetLoading = createAction('[Ticket Admin] reset loading')
+
+// error
+export const clearErrorMessage = createAction('[Ticket Admin] clear error message');

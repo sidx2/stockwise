@@ -1,7 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { InventoryState } from '../models/inventory';
-import {setLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess } from './inventory.action';
+import {setLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess, checkintItemSuccess, clearErrorMessage } from './inventory.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
+import { state } from '@angular/animations';
 
 const initialState: InventoryState = {
   items: [],
@@ -53,7 +54,19 @@ export const inventoryReducer = createReducer(
     errorMessage: errorMessage
   })),
 
-  on(updateItemSuccess, checkoutItemSuccess, (state, { updatedItem }) => ({
+  on(updateItemSuccess, (state, { updatedItem }) => ({
+    ...state,
+    items: state.items.map((item) => (item._id === updatedItem._id ? updatedItem : item)),
+    loading: false
+  })), 
+
+  on(checkoutItemSuccess, (state, { updatedItem }) => ({
+    ...state,
+    items: state.items.map((item) => (item._id === updatedItem._id ? updatedItem : item)),
+    loading: false
+  })), 
+
+  on(checkintItemSuccess, (state, { updatedItem }) => ({
     ...state,
     items: state.items.map((item) => (item._id === updatedItem._id ? updatedItem : item)),
     loading: false
@@ -66,5 +79,6 @@ export const inventoryReducer = createReducer(
   })),
 
   on(setLoading, (state)=> ({...state, loading: true})),
+  on(clearErrorMessage, (state)=> ({...state, errorMessage: ''})),
   on(logoutUserSuccess, ()=>  initialState)
 );
