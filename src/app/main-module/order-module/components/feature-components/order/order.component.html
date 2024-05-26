@@ -1,4 +1,8 @@
 <app-loader *ngIf="isLoading"></app-loader>
+<app-header>
+  <h3>Place Order</h3>
+</app-header>
+
 <div >
   <form [formGroup]="dynamicForm">
     <div formArrayName="OrderFormArray" class="form-container">
