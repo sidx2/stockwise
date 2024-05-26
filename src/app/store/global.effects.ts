@@ -40,7 +40,7 @@ export class globalEffects {
                         console.log("err login: ", err);
                         this.store.dispatch(resetAuthLoading());
                         const error = err.error.error || err.error.message || "Something went wrong";
-                        this.toastr.success(`Failed to login. ${error}`);
+                        this.toastr.error(`Failed to login. ${error}`);
                         return of(loginUserFailure({ error }))
                     }
                     )
