@@ -43,6 +43,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
+    this.store.dispatch(getCategoryRequest());
 
     this.actions$.pipe(ofType(createCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.toastr.success("Category created successfully");
@@ -61,7 +63,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   fetchCategoryHandler(): void {
-    console.log("Fetching categories...");
     this.store.dispatch(getCategoryRequest());
   }
 

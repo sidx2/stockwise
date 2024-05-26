@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('pieChart') private pieChartRef!: ElementRef<HTMLCanvasElement>;
 
   categories$: Observable<Category[]>;
+  orgId: string = '';
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -31,6 +32,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(getCategoryRequest());
+    
     this.categories$
       .pipe(takeUntil(this.destroy$))
       .subscribe(categories => {
