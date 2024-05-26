@@ -1,9 +1,10 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions"
+import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, resetHistoryLoading, setHistoryLoading, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions"
 import { IHistoryState, Order } from "../models/order-history";
 
 export const initialState: IHistoryState = {
-    history: []
+    history: [],
+    isLoading: false
 }
 
 export const historyReducer = createReducer(
@@ -43,4 +44,14 @@ export const historyReducer = createReducer(
         console.log("updateStatusFailure", "state: ", state, "action:", action);
         return (state);
     }),
+
+    // loading...
+    on(setHistoryLoading, (state) => {
+        console.log("setHistoryLoading", "state:", state, "action: ", undefined)
+        return ({ ...state, isLoading: true });
+    }),
+    on(resetHistoryLoading, (state) => {
+        console.log("resetHistoryLoading", "state:", state, "action: ", undefined)
+        return ({...state, isLoading: false });
+    })
 )

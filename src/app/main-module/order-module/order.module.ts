@@ -8,6 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { orderReducer } from './store/order.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { orderEffects } from './store/order.effects';
+import { SharedModule } from '../../shared-module/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { orderEffects } from './store/order.effects';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
     OrderRoutingModule,
     StoreModule.forFeature("order", orderReducer),

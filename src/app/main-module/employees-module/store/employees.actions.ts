@@ -20,4 +20,7 @@ export const updateEmployeeFailure = createAction("updateEmployeeFailure", props
 
 export const addEmployeeRequest = createAction("addEmployeeRequest", props<{ employee: Employee }>());
 export const addEmployeeSuccess = createAction("addEmployeeSuccess", props<{ employee: Employee }>())
-export const addEmployeeFailure = createAction("addEmployeeFailure", props<{ error: string }>())
+export const addEmployeeFailure = createAction("addEmployeeFailure", props<{ error: string }>());
+
+export const setEmployeeLoading = createAction('setEmployeeLoading');
+export const resetEmployeeLoading = createAction('resetEmployeeLoading');

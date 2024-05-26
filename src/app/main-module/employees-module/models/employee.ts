@@ -12,6 +12,7 @@ export interface Employee {
 }
 
 export interface IEmployeesState {
-    employees: Employee[]
+    employees: Employee[],
+    isLoading: boolean,
 }
 

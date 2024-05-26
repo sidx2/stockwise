@@ -1,28 +1,34 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap } from "rxjs";
-import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess } from "./order.actions";
+import { catchError, map, of, switchMap, tap } from "rxjs";
+import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess, resetOrderLoading, setOrderLoading } from "./order.actions";
 import { OrderService } from "../services/order.service";
+import { Store } from "@ngrx/store";
+import { IOrderState } from "../models/order";
 
 @Injectable()
 export class orderEffects {
     constructor(
         private action$: Actions,
         private orderService$: OrderService,
+        private store: Store<{ order: IOrderState }>,
     ) { }
 
     getProductVendors$ = createEffect(() =>
         this.action$.pipe(
             ofType(getProductVendorsRequest),
+            tap(() => { this.store.dispatch(setOrderLoading()); }),
             switchMap(() =>
                 this.orderService$.getProductVendors().pipe(
                     map((res: any) => {
-                        console.log("res:", res)
-                        return getProductVendorsSuccess({ productVendors: res })
+                        console.log("res productvedors:", res);
+                        this.store.dispatch(resetOrderLoading());
+                        return getProductVendorsSuccess({ productVendors: res });
                     }),
-                    catchError((err) =>
-                        of(getProductVendorsFailure({ error: "Something went wrong" }))
-                    )
+                    catchError((err) =>{
+                        this.store.dispatch(resetOrderLoading());
+                        return of(getProductVendorsFailure({ error: "Something went wrong" }));
+                    })
                 )
             )
         )
@@ -31,15 +37,18 @@ export class orderEffects {
     placeOrder$ = createEffect(() =>
         this.action$.pipe(
             ofType(placeOrderRequest),
+            tap(() => { this.store.dispatch(setOrderLoading()); }),
             switchMap(({ order }) =>
                 this.orderService$.placeOrder(order).pipe(
                     map((res: any) => {
-                        console.log("order res:", res)
-                        return placeOrderSuccess(res)
+                        console.log("order res:", res);
+                        this.store.dispatch(resetOrderLoading());
+                        return placeOrderSuccess(res);
                     }),
-                    catchError((err) =>
-                        of(placeOrderFailure({ error: "Something went wrong" }))
-                    )
+                    catchError((err) => {
+                        this.store.dispatch(resetOrderLoading());
+                        return of(placeOrderFailure({ error: "Something went wrong" }))
+                    })
                 )
             )
         )

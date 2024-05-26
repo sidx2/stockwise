@@ -1,3 +1,4 @@
+<app-loader *ngIf="isLoading"></app-loader>
 <div class="container">
     <div class="header">
         <div class="title">
@@ -12,6 +13,7 @@
             (startedEditing)="onStartedEditing($event)"
             (cancelledEditing)="onCancelledEditing($event)"
             (changeVendor)="onVendorChanged($event)"
+            
             (updateVendor)="onUpdateVendor($event)"
             (deleteVendor)="onDeleteVendor($event)"
         ></app-vendors-table>

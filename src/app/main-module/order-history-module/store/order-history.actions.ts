@@ -8,3 +8,6 @@ export const fetchHistoryFailure = createAction("fetchHistoryFailure", props<{ e
 export const updateStatusRequest = createAction("updateStatusRequest", props<IStatusUpdated>());
 export const updateStatusSuccess = createAction("updateStatusSuccess", props<IStatusUpdated>());
 export const updateStatusFailure = createAction("updateStatusFailure", props<{ error: string }>());
+
+export const setHistoryLoading = createAction('setHistoryLoading');
+export const resetHistoryLoading = createAction('resetHistoryLoading');

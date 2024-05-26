@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store"
 import { fetchOrg, fetchOrgSuccess, getUser, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser, logoutUserSuccess } from "./global.actions"
 import { IGlobalState, Org, User } from "../models/global"
+import { setVendorLoading } from "../main-module/vendors-module/store/vendor.actions"
 
 export const initialState: IGlobalState = {
     user: {} as User,

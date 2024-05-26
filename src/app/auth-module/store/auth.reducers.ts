@@ -6,7 +6,7 @@ import { IAuthState } from "../models/auth";
 export const initialState: IAuthState = {
     user: {} as User,
     org: {} as Org,
-    loading: false
+    isLoading: false,
 }
 
 export const authReducer = createReducer(
@@ -29,9 +29,9 @@ export const authReducer = createReducer(
     }),
 
     on(setLoading, (state) => {
-        return ({ ...state, loading: true });
+        return ({ ...state, isLoading: true });
     }),
     on(resetLoading, (state) => {
-        return ({...state, loading: false });
+        return ({...state, isLoading: false });
     })
 )
