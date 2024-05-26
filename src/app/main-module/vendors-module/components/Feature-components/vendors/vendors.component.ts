@@ -122,7 +122,6 @@ export class VendorsComponent implements OnInit, OnDestroy {
   
   onCancelledEditing(vendorId: string) {
     const vendor = this.vendors.filter((v) => v._id === vendorId)[0];
-    console.log("cancelled editing vendor: ", vendor)
     this.appService.cancelledEditing(this.orgId, vendor);
   }
   

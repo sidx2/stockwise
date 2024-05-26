@@ -5,6 +5,7 @@ import { VendorsService } from "../services/vendors.service";
 import { fetchVendorsRequest, fetchVendorsFailure, fetchVendorsSuccess, updateVendorRequest, updateVendorSuccess, updateVendorFailure, deleteVendorRequest, deleteVendorSuccess, deleteVendorFailure, addVendorSuccess, addVendorFailure, addVendorRequest, setVendorLoading, resetVendorLoading } from "./vendor.actions";
 import { Store } from "@ngrx/store";
 import { IVendorsState } from "../models/vendor";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class vendorEffects {
@@ -12,6 +13,7 @@ export class vendorEffects {
         private action$: Actions,
         private vendorsService$: VendorsService,
         private store: Store<{ vendors: IVendorsState }>,
+        private toastr: ToastrService,
     ) { }
 
     fetchVendors$ = createEffect(() =>
@@ -27,7 +29,8 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(fetchVendorsFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        return of(fetchVendorsFailure({ error }))
                     })
                 )
             )
@@ -44,11 +47,14 @@ export class vendorEffects {
                         console.log("updateVendor res:", res);
                         // this.appService$.vendorUpdated(res);
                         this.store.dispatch(resetVendorLoading());
-                        return updateVendorSuccess({ vendor: res })
+                        this.toastr.success("vendor updated successfully!");
+                        return updateVendorSuccess({ vendor: res });
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(updateVendorFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not update vendor. ${error}`);
+                        return of(updateVendorFailure({ error }))
                     })
                 )
             )
@@ -64,11 +70,14 @@ export class vendorEffects {
                     map((res: any) => {
                         console.log("deleteVendor res:", res);
                         this.store.dispatch(resetVendorLoading());
+                        this.toastr.success("Vendor deleted successfully!");
                         return deleteVendorSuccess({ vendor: res });
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(deleteVendorFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not delete Vendor. ${error}`);
+                        return of(deleteVendorFailure({ error }))
                     })
                 )
             )
@@ -84,11 +93,14 @@ export class vendorEffects {
                     map((res: any) => {
                         console.log("addEmp res:", res);
                         this.store.dispatch(resetVendorLoading());
+                        this.toastr.success("Vendor was added to the organization successfully!");
                         return addVendorSuccess({ vendor: res });
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        return of(addVendorFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not add Vendor to the organization. ${error}`);
+                        return of(addVendorFailure({ error }));
                     })
                 )
             )

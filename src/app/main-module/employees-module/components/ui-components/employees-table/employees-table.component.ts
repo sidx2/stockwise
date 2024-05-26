@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Employee } from '../../../models/employee';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-employees-table',
@@ -22,7 +23,17 @@ export class EmployeesTableComponent {
   psize: number = 10;
   currPage: number = 1;
   
-  constructor() {}
+  private searchSubject = new Subject<string>();
+  private destroySubject = new Subject<void>();
+
+  constructor() {
+    this.searchSubject.pipe(
+      debounceTime(500),  // 0.5 seconds
+      takeUntil(this.destroySubject)
+    ).subscribe(searchTerm => {
+      this.performSearch(searchTerm);
+    });
+  }
 
   onEdit(_id: string) {
     this.editing = _id
@@ -57,8 +68,12 @@ export class EmployeesTableComponent {
   }
 
   search(e: Event) {
-    if (!this._emps.length) this._emps = this.employees
+    this.searchSubject.next((e.target as HTMLInputElement).value);
+  }
+
+  private performSearch(searchTerm: string) {
+    if (!this._emps.length) this._emps = this.employees;
     this.currPage = 1;
-    this.employees = this._emps.filter((emp: Employee) => JSON.stringify(emp).toLowerCase().includes((e.target as HTMLInputElement).value))
+    this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm.toLowerCase()));
   }
 }

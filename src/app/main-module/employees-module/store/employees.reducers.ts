@@ -4,7 +4,7 @@ import { IEmployeesState } from "../models/employee"
 
 export const initialState: IEmployeesState = {
     employees: [],
-    isLoading: false
+    isLoading: false,
 }
 
 export const employeesReducer = createReducer(
@@ -15,7 +15,7 @@ export const employeesReducer = createReducer(
     }),
     on(fetchEmployeesSuccess, (state, action) => {
         console.log("fetchEmployeesSuccess", "state:", state, "action: ", action)
-        return ({...state, employees: action.employees})
+        return ({...state, employees: action.employees })
     }),
     on(fetchEmployeesFailure, (state, action) => {
         console.log("fetchEmployeesFailure", "state:", state, "action: ", action)
@@ -30,19 +30,19 @@ export const employeesReducer = createReducer(
             return emp
         })
         
-        return ({...state, employees: newEmployees});
+        return ({...state, employees: newEmployees });
     }),
     on(deleteEmployeeSuccess, (state, action) => {
         console.log("deleteEmployee", "state:", state, "action: ", action)
         const newEmployees = state.employees.filter((e) => e._id !== action.employeeId)
         
-        return ({...state, employees: newEmployees});
+        return ({...state, employees: newEmployees });
     }),
     
     // 
     on(createUserRequest, (state, action) => {
         console.log("createUserRequest", "state:", state, "action: ", action)
-        return (state);
+        return ({...state });
     }),
     
     on(createUserSuccess, (state,action) => {
@@ -61,7 +61,7 @@ export const employeesReducer = createReducer(
     }),
     on(addEmployeeSuccess, (state, action) => {
         console.log("addEmployeeSuccess", "state:", state, "action: ", action)
-        return ({...state, employees: [...state.employees, action.employee]});
+        return ({...state, employees: [...state.employees, action.employee] });
     }),
     
     on(addEmployeeFailure, (state,action) => {

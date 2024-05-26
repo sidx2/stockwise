@@ -5,6 +5,7 @@ import { OrderHistoryService } from "../services/order-history.service";
 import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, resetHistoryLoading, setHistoryLoading, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions";
 import { IHistoryState } from "../models/order-history";
 import { Store } from "@ngrx/store";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class historyEffects {
@@ -12,6 +13,7 @@ export class historyEffects {
         private action$: Actions,
         private historyService$: OrderHistoryService,
         private store: Store<{ history: IHistoryState }>,
+        private toastr: ToastrService,
     ) { }
 
     fetchHistory$ = createEffect(() =>
@@ -27,7 +29,8 @@ export class historyEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetHistoryLoading());
-                        return of(fetchHistoryFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        return of(fetchHistoryFailure({ error }));
                     })
                 )
             )
@@ -43,11 +46,13 @@ export class historyEffects {
                 map((res: any) => {
                     console.log("res in update status:", res);
                     this.store.dispatch(resetHistoryLoading());
+                    this.toastr.success(`Order staus updated to ${data.updatedStatus}`)
                     return updateStatusSuccess({ _id: data._id, updatedStatus: data.updatedStatus });
                 }),
                 catchError((err) => {
                     this.store.dispatch(resetHistoryLoading());
-                    return of(updateStatusFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
+                    const error = err.error.error || err.error.message || "Something went wrong";
+                    return of(updateStatusFailure({ error }));
                 })
             )
         )

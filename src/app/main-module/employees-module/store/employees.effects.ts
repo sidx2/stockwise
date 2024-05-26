@@ -5,6 +5,7 @@ import { catchError, map, of, switchMap, tap } from "rxjs";
 import { EmployeesService } from "../services/employees.service";
 import { Store } from "@ngrx/store";
 import { IEmployeesState } from "../models/employee";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class EmployeeEffects {
@@ -12,6 +13,7 @@ export class EmployeeEffects {
         private action$: Actions,
         private employeesService$: EmployeesService,
         private store: Store<{ employees: IEmployeesState }>,
+        private toastr: ToastrService,
     ) { }
 
     fetchEmployees$ = createEffect(() =>
@@ -27,7 +29,8 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(fetchEmployeesFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        return of(fetchEmployeesFailure({ error }));
                     }
                     )
                 )
@@ -44,13 +47,15 @@ export class EmployeeEffects {
                     map((res: any) => {
                         console.log("res:", res);
                         this.store.dispatch(resetEmployeeLoading());
+                        this.toastr.success("Employee updated successfully!");
                         return updateEmployeeSuccess({ employee: res });
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(updateEmployeeFailure({ error: err.error.error || err.error.message || "Something went wrong" }))
-                    }
-                    )
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not update employee. ${error}`);
+                        return of(updateEmployeeFailure({ error }))
+                    })
                 )
             )
         )
@@ -65,11 +70,14 @@ export class EmployeeEffects {
                     map((res: any) => {
                         console.log("res:", res);
                         this.store.dispatch(resetEmployeeLoading());
+                        this.toastr.success("Employee deleted successfully!");
                         return deleteEmployeeSuccess({ employeeId });
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(deleteEmployeeFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not delete emploee. ${error}`);
+                        return of(deleteEmployeeFailure({ error }));
                     }
                     )
                 )
@@ -87,13 +95,15 @@ export class EmployeeEffects {
                         console.log("createUser res:", res);
                         this.store.dispatch(resetEmployeeLoading());
                         // this.store.dispatch(addEmployeeRequest({ employee: res }))
+                        this.toastr.success("User created successfully!");
                         return createUserSuccess({ user: res })
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(createUserFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
-                    }
-                    )
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not create user. ${error}`);
+                        return of(createUserFailure({ error }));
+                    })
                 )
             )
         )
@@ -107,11 +117,14 @@ export class EmployeeEffects {
                     map((res: any) => {
                         console.log("addEmp res:", res);
                         this.store.dispatch(resetEmployeeLoading());
+                        this.toastr.success("Employee was added to the organization successfully!");
                         return addEmployeeSuccess({ employee: user });
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        return of(addEmployeeFailure({ error: err.error.error || err.error.message || "Something went wrong" }));
+                        const error = err.error.error || err.error.message || "Something went wrong";
+                        this.toastr.error(`Could not add employee to the organization. ${error}`);
+                        return of(addEmployeeFailure({ error }));
                     })
                 )
             )

@@ -4,7 +4,7 @@ import { Vendor } from '../../../models/vendor';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
 import { Editor } from '../../../models/vendor';
 import { userSelector } from '../../../../../store/global.selectors';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { IGlobalState, User } from '../../../../../models/global';
 
 @Component({
@@ -37,6 +37,7 @@ export class VendorsTableComponent implements OnInit {
   psize: number = 10;
   currPage: number = 1;
 
+  private searchSubject = new Subject<string>();
   destroySubject = new Subject<void>();
 
   constructor(
@@ -47,6 +48,13 @@ export class VendorsTableComponent implements OnInit {
     ).subscribe((user) => {
       this.user = user as User
     })
+
+    this.searchSubject.pipe(
+      debounceTime(500),  // 0.5 seconds
+      takeUntil(this.destroySubject)
+    ).subscribe(searchTerm => {
+      this.performSearch(searchTerm);
+    });
   }
 
   ngOnInit(): void { }
@@ -109,11 +117,11 @@ export class VendorsTableComponent implements OnInit {
     // })
     this.changeVendor.emit({
       _id: this.editingId,
-    name: this.m_name,
-    address: this.m_address,
-    email: this.m_email,
-    phone: this.m_phone,
-    orgId: this.m_orgId
+      name: this.m_name,
+      address: this.m_address,
+      email: this.m_email,
+      phone: this.m_phone,
+      orgId: this.m_orgId
     })
   }
 
@@ -126,14 +134,18 @@ export class VendorsTableComponent implements OnInit {
   }
 
   search(e: Event) {
+    this.searchSubject.next((e.target as HTMLInputElement).value);
+  }
+
+  performSearch(searchTerm: string) {
     if (!this._vends.length) this._vends = this.vendors;
     this.currPage = 1;
     this.vendors = this._vends.filter((vend: Vendor) =>
       JSON.stringify(vend)
         .toLowerCase()
-        .includes((e.target as HTMLInputElement).value));
-  }
-  
+        .includes(searchTerm)
+    )}
+
   ngOnDestroy(): void {
     this.cancelledEditing.emit(this.editingId);
     this.destroySubject.next();

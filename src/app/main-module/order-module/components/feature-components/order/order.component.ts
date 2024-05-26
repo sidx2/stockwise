@@ -127,7 +127,6 @@ export class OrderComponent implements OnDestroy {
     this.store.dispatch(placeOrderRequest({ order }))
 
     this.cleanForms();
-    alert("Your Order was placed! You can check them in history")
   }
 
   cleanForms() {
