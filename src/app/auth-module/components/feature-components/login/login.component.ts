@@ -31,7 +31,6 @@ export class LoginComponent implements OnDestroy {
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
-    private toastr: ToastrService
   ) {
 
     this.store.select(authStateSelector).pipe(
