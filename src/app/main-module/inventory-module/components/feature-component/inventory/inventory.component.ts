@@ -13,7 +13,6 @@ import { Employee } from '../../../../employees-module/models/employee';
 import { employeesStateSelector } from '../../../../employees-module/store/employees.selectors';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
 import { getErrorMessage, getLoading, inventorySelector } from '../../../store/inventory.selector';
-import { orgSelector } from '../../../../../store/global.selectors';
 import { categorySelector } from '../../../../category-module/store/category.selector';
 import { ToastrService } from 'ngx-toastr';
 
@@ -127,10 +126,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.toastr.success('Item Checkout successfully');
       this.store.dispatch(clearErrorMessage());
 
-      // if (this.checkoutMailDetails) {
-      //   this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
-      //   this.checkoutMailDetails = null;
-      // }
+      if (this.checkoutMailDetails) {
+        this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
+        this.checkoutMailDetails = null;
+      }
     });
   }
 
