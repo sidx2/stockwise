@@ -89,7 +89,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.toastr.success('Item added successfully');
-      this.store.dispatch(clearErrorMessage());
       this.hideInventoryForm();
     })
 
@@ -107,7 +106,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.toastr.success('Item deleted successfully');
-      this.store.dispatch(clearErrorMessage());
     })
 
     this.actions$.pipe(
@@ -115,7 +113,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.toastr.success('Item checkin successfully');
-      this.store.dispatch(clearErrorMessage());
       this.hideCheckinItemHandler()
     })
 
@@ -124,8 +121,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
       take(1),
       takeUntil(this.destroy$)
     ).subscribe(() => {
+
+      console.log("checkout successful");
       this.toastr.success('Item Checkout successfully');
-      this.store.dispatch(clearErrorMessage());
 
       if (this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
@@ -221,6 +219,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.checkoutMailDetails = checkoutMailDetails;
 
     this.store.dispatch(checkoutItemRequest({ assignedToDetails, checkoutMailDetails }));
+
     this.hideCheckoutItemHandler();
   }
 

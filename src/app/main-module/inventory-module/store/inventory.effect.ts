@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, getUserAssetsSuccess, updateItemRequest, checkoutMailRequest, setLoading, getItemSuccess, createItemSuccess, updateItemSuccess, deleteItemSuccess, getItemFailure, createItemFailure, updateItemFailure, deleteItemFailure, checkoutItemFailure, getUserAssetsFailure, checkoutItemSuccess, checkintItemSuccess, checkinItemFailure} from './inventory.action';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, getUserAssetsSuccess, updateItemRequest, checkoutMailRequest, setLoading, getItemSuccess, createItemSuccess, updateItemSuccess, deleteItemSuccess, getItemFailure, createItemFailure, updateItemFailure, deleteItemFailure, checkoutItemFailure, getUserAssetsFailure, checkoutItemSuccess, checkintItemSuccess, checkinItemFailure, checkoutMailSuccess, checkoutMailFailure} from './inventory.action';
 import { MailService } from '../Services/mail.service';
 import { Store } from '@ngrx/store';
 
@@ -114,8 +114,9 @@ export class InventoryEffects {
         tap(() => this.store.dispatch(setLoading())), 
         switchMap((action) =>
             this.mailService.sendCheckoutMail(action.checkoutMailDetails).pipe(
+                map(response => checkoutMailSuccess()),
                 catchError(errorResponse => {
-                    return of(); 
+                    return of(checkoutMailFailure(errorResponse.error.error)); 
                 })
             )
         )

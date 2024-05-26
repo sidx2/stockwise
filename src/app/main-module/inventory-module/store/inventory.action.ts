@@ -8,8 +8,8 @@ export const createItemRequest = createAction('[Item] Create Item Request', prop
 export const deleteItemRequest = createAction('[Item] Delete Item Request', props<{ itemId: string }>());
 export const updateItemRequest = createAction('[Item] Update Item Request', props<{ updatedItem: Item }>());
 export const checkoutItemRequest = createAction('[Item] Checkout Item Request', props<{assignedToDetails: CheckoutDetails, checkoutMailDetails: CheckoutMailDetails}>());
-export const checkoutMailRequest = createAction('[Item] Checkout Item Request', props<{checkoutMailDetails: CheckoutMailDetails}>());
 export const checkinItemRequest = createAction('[Item] Checkin Item Request', props<{checkinDetails: CheckinDetails}>());
+export const checkoutMailRequest = createAction('[Item] Checkout Mail Request', props<{checkoutMailDetails: CheckoutMailDetails}>());
 
 // Success actions
 export const getItemSuccess = createAction('[Item] Get Item Success', props<{ items: Item[] }>());
@@ -18,6 +18,7 @@ export const deleteItemSuccess = createAction('[Item] Delete Item Success', prop
 export const updateItemSuccess = createAction('[Item] Update Item Success', props<{ updatedItem: Item }>());
 export const checkoutItemSuccess = createAction('[Item] checkout Item Success', props<{ updatedItem: Item }>());
 export const checkintItemSuccess = createAction('[Item] checkin Item Success', props<{ updatedItem: Item }>());
+export const checkoutMailSuccess = createAction('[Item] checkout mail Success');
 
 // Failure actions
 export const getItemFailure = createAction('[Item] Get Item Failure', props<{ errorMessage: string }>());

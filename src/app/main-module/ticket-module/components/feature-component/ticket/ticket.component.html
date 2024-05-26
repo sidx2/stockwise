@@ -10,7 +10,7 @@
   <button appButtonPrimary (click)="hideTicketForm()">Cancel</button>
 </app-header>
 
-<div class="tickets" *ngIf="!isTicketFormVisible">
+<div class="ticketsContainer" *ngIf="!isTicketFormVisible">
 
   <div class="filter_buttons">
     <button
@@ -37,15 +37,17 @@
   </div>
 
   <ng-container *ngIf="filteredTickets$ | async as tickets">
-    <div *ngIf="tickets.length > 0">
+    <div *ngIf="tickets.length > 0" class="tickets">
       <app-ticket-card
         *ngFor="let ticket of tickets"
         [ticket]="ticket"
       ></app-ticket-card>
     </div>
+
     <div *ngIf="tickets.length === 0">
       <app-no-data></app-no-data>
     </div>
+
   </ng-container>
 </div>
 

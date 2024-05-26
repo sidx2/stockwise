@@ -3,26 +3,52 @@
   <h3>Place Order</h3>
 </app-header>
 
-<div >
+<div>
   <form [formGroup]="dynamicForm">
-
     <div formArrayName="OrderFormArray" class="form-container">
-      <div *ngFor="let formGroup of OrderFormArray.controls; let i=index" [formGroupName]="i" class="form-group">
-        <label for="product">Product:</label>
-        <select id="product" formControlName="product" (change)="onProductChange(i)">
-          <option *ngFor="let pv of productVendors" [value]="pv.item._id">{{ pv.item.name }}</option>
-        </select>
+      <div
+        *ngFor="let formGroup of OrderFormArray.controls; let i = index"
+        [formGroupName]="i"
+        class="form-group"
+      >
+        <div class="inputDiv">
+          <label for="product">Product:</label>
+          <select
+            appCustomInputStyle
+            id="product"
+            formControlName="product"
+            (change)="onProductChange(i)"
+          >
+            <option *ngFor="let pv of productVendors" [value]="pv.item._id">
+              {{ pv.item.name }}
+            </option>
+          </select>
+        </div>
 
-        <label for="vendor">Vendor:</label>
-        <select id="vendor" formControlName="vendor">
-          <option *ngFor="let vendor of selectedProductVendors[i]" [ngValue]="vendor">{{ vendor.name }}
-          </option>
-        </select>
+        <div class="inputDiv">
+          <label for="vendor">Vendor:</label>
+          <select id="vendor" formControlName="vendor" appCustomInputStyle>
+            <option
+              *ngFor="let vendor of selectedProductVendors[i]"
+              [ngValue]="vendor"
+            >
+              {{ vendor.name }}
+            </option>
+          </select>
+        </div>
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" formControlName="quantity" name="quantity" id="quantity">
+        <div class="inputDiv">
+          <label for="quantity">Quantity:</label>
+          <input
+            appCustomInputStyle
+            type="number"
+            formControlName="quantity"
+            name="quantity"
+            id="quantity"
+          />
+        </div>
 
-        <button (click)="removeProduct(i)" class="btnRed">Remove</button>
+        <button appButtonPrimary (click)="removeProduct(i)" class="btnRed">Remove</button>
       </div>
     </div>
   </form>
@@ -33,7 +59,7 @@
 </div>
 
 <div class="form-actions">
-  <button (click)="addFormData()">Add</button>
-  <button (click)="removeAll()" class="btnRed">Remove All</button>
-  <button (click)="placeOrder()">Place Order</button>
+  <button appButtonPrimary (click)="addFormData()">Add</button>
+  <button appButtonPrimary (click)="removeAll()" class="btnRed">Remove All</button>
+  <button appButtonPrimary (click)="placeOrder()">Place Order</button>
 </div>
