@@ -6,104 +6,106 @@
   (input)="search($event)"
 />
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Address</th>
-      <th>Phone</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody
-    *ngFor="
-      let vendor of vendors
-        | paginate : { itemsPerPage: psize, currentPage: currPage };
-      index as i
-    "
-  >
-    @if (isEditingVendor(vendor)) {
-    <tr class="editing">
-      <td>{{ vendor.name }}</td>
-      <td>{{ vendor.email }}</td>
-      <td>{{ vendor.address }}</td>
-      <td>{{ vendor.phone }}</td>
-      <td>
-        <button appButtonPrimaryLight [disabled]="true">
-          <mat-icon>edit</mat-icon>
-        </button>
+<div class="vendors_table">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody
+      *ngFor="
+        let vendor of vendors
+          | paginate : { itemsPerPage: psize, currentPage: currPage };
+        index as i
+      "
+    >
+      @if (isEditingVendor(vendor)) {
+      <tr class="editing">
+        <td>{{ vendor.name }}</td>
+        <td>{{ vendor.email }}</td>
+        <td>{{ vendor.address }}</td>
+        <td>{{ vendor.phone }}</td>
+        <td>
+          <button appButtonPrimaryLight [disabled]="true">
+            <mat-icon>edit</mat-icon>
+          </button>
 
-        <button appButtonPrimaryLight [disabled]="true">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </tr>
-    <div class="editor-box">{{ getEditorName(vendor) }}</div>
+          <button appButtonPrimaryLight [disabled]="true">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+      <div class="editor-box">{{ getEditorName(vendor) }}</div>
 
-    } @else if (vendor._id != editingId) {
-    <tr>
-      <td>{{ vendor.name }}</td>
-      <td>{{ vendor.email }}</td>
-      <td>{{ vendor.address }}</td>
-      <td>{{ vendor.phone }}</td>
-      <td>
-        <button appButtonPrimaryLight (click)="onEdit(vendor._id)">
-          <mat-icon>edit</mat-icon>
-        </button>
+      } @else if (vendor._id != editingId) {
+      <tr>
+        <td>{{ vendor.name }}</td>
+        <td>{{ vendor.email }}</td>
+        <td>{{ vendor.address }}</td>
+        <td>{{ vendor.phone }}</td>
+        <td>
+          <button appButtonPrimaryLight (click)="onEdit(vendor._id)">
+            <mat-icon>edit</mat-icon>
+          </button>
 
-        <button appButtonPrimaryLight (click)="onDelete(vendor._id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </tr>
-    } @else {
-    <tr class="pending">
-      <td>
-        <input
-          type="text"
-          [(ngModel)]="m_name"
-          value="{{ vendor.name }}"
-          (ngModelChange)="onVendorChanged()"
-        />
-      </td>
-      <td>
-        <input
-          type="text"
-          [(ngModel)]="m_email"
-          value="{{ vendor.email }}"
-          (ngModelChange)="onVendorChanged()"
-        />
-      </td>
-      <td>
-        <input
-          type="text"
-          [(ngModel)]="m_address"
-          value="{{ vendor.address }}"
-          (ngModelChange)="onVendorChanged()"
-        />
-      </td>
-      <td>
-        <input
-          type="text"
-          [(ngModel)]="m_phone"
-          value="{{ vendor.phone }}"
-          (ngModelChange)="onVendorChanged()"
-        />
-      </td>
-      <th>
-        <button appButtonPrimaryLight (click)="onCancel()">
-          <mat-icon>cancel</mat-icon>
-        </button>
+          <button appButtonPrimaryLight (click)="onDelete(vendor._id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+      } @else {
+      <tr class="pending">
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="m_name"
+            value="{{ vendor.name }}"
+            (ngModelChange)="onVendorChanged()"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="m_email"
+            value="{{ vendor.email }}"
+            (ngModelChange)="onVendorChanged()"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="m_address"
+            value="{{ vendor.address }}"
+            (ngModelChange)="onVendorChanged()"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="m_phone"
+            value="{{ vendor.phone }}"
+            (ngModelChange)="onVendorChanged()"
+          />
+        </td>
+        <th>
+          <button appButtonPrimaryLight (click)="onCancel()">
+            <mat-icon>cancel</mat-icon>
+          </button>
 
-        <button type="submit" appButtonPrimaryLight (click)="onDone()">
-          <mat-icon>done</mat-icon>
-        </button>
-      </th>
-    </tr>
-    }
-  </tbody>
-</table>
+          <button type="submit" appButtonPrimaryLight (click)="onDone()">
+            <mat-icon>done</mat-icon>
+          </button>
+        </th>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
 
 <div class="paginationControls">
   <pagination-controls (pageChange)="currPage = $event"></pagination-controls>
