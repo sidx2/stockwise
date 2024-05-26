@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
 import { vendorsStateSelector } from '../../../store/vendor.selectors';
-import { orgSelector } from '../../../../../store/global.selectors';
+import { globalStateSelector, orgSelector } from '../../../../../store/global.selectors';
 import { AppService } from '../../../../../services/app.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
@@ -41,22 +41,29 @@ export class VendorsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(fetchVendorsRequest());
 
-    this.store.select(orgSelector).pipe(
+    this.store.select(globalStateSelector).pipe(
       takeUntil(this.destroySubject),
-    ).subscribe((org) => {
-      this.appService.joinRoom(org._id)
-      this.orgId = org._id
+    ).subscribe((state) => {
+      this.appService.joinRoom(state.org._id, state.user._id)
+      this.orgId = state.org._id
     })
 
     this.actions$.pipe(
       ofType(updateVendorSuccess),
       takeUntil(this.destroySubject),
     ).subscribe(({ vendor }) => {
-      this.appService.vendorUpdated({ vendor, orgId: vendor.orgId });
+      this.appService.vendorUpdated(vendor.orgId, vendor);
     });
   }
 
   ngOnInit() {
+    this.socket.fromEvent('joinedRoom').pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((editors) => {
+      console.log('joinedRoom event received:', editors);
+      this.editors = editors as Editor[]
+    });
+
     this.socket.fromEvent('vendorUpdated').pipe(
       takeUntil(this.destroySubject)
     ).subscribe((data) => {
@@ -73,9 +80,17 @@ export class VendorsComponent implements OnInit, OnDestroy {
 
     this.socket.fromEvent('cancelledEditing').pipe(
       takeUntil(this.destroySubject)
-    ).subscribe((data) => {
-      console.log('cancelledEditing event received:', data);
-      this.editors = this.editors.filter((e) => e._id !== data);
+    ).subscribe((vendor) => {
+      console.log('cancelledEditing event received:', vendor);
+      this.editors = this.editors.filter((e) => e.vendorId !== (vendor as Vendor)._id);
+      this.store.dispatch(updateVendorRemote({ vendor: vendor as Vendor }))
+    });
+
+    this.socket.fromEvent('disconnected').pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((userId) => {
+      console.log('disconnected event received:', userId);
+      this.editors = this.editors.filter((e) => e.userId !== userId);
     });
   }
 
@@ -106,12 +121,13 @@ export class VendorsComponent implements OnInit, OnDestroy {
   }
   
   onCancelledEditing(vendorId: string) {
-    this.appService.cancelledEditing(this.orgId, vendorId);
+    const vendor = this.vendors.filter((v) => v._id === vendorId)[0];
+    console.log("cancelled editing vendor: ", vendor)
+    this.appService.cancelledEditing(this.orgId, vendor);
   }
   
-  onVendorChanged(vendor: Vendor) {
-    const newVendor = {vendor: vendor, orgId: this.orgId}
-    this.appService.vendorUpdated(newVendor);
+  onVendorChanged(vendor: Partial<Vendor>) {
+    this.appService.vendorUpdated(this.orgId, vendor);
   }
   
   ngOnDestroy() {

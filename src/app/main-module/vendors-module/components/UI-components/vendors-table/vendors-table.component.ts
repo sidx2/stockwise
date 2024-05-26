@@ -18,7 +18,7 @@ export class VendorsTableComponent implements OnInit {
 
   @Output() startedEditing = new EventEmitter<Editor>();
   @Output() cancelledEditing = new EventEmitter<string>();
-  @Output() changeVendor = new EventEmitter<Vendor>();
+  @Output() changeVendor = new EventEmitter<Partial<Vendor>>();
 
   @Output() updateVendor = new EventEmitter<Vendor>();
   @Output() deleteVendor = new EventEmitter<string>();
@@ -66,7 +66,7 @@ export class VendorsTableComponent implements OnInit {
     this.m_phone = editingVendor.phone
     this.m_orgId = editingVendor.orgId
 
-    this.startedEditing.emit({ _id: this.editingId, name: this.user.name });
+    this.startedEditing.emit({ vendorId: this.editingId, name: this.user.name, userId: this.user._id });
   }
 
   onCancel() {
@@ -100,23 +100,29 @@ export class VendorsTableComponent implements OnInit {
       this.deleteVendor.emit(_id)
   }
 
-  onVendorChanged() {
+  onVendorChanged(key: string, event: Event) {
+    console.log(event)
+    // this.changeVendor.emit({
+    //   _id: this.editingId,
+    //   [key]: event,
+    //   orgId: this.m_orgId
+    // })
     this.changeVendor.emit({
       _id: this.editingId,
-      name: this.m_name,
-      email: this.m_email,
-      address: this.m_address,
-      phone: this.m_phone,
-      orgId: this.m_orgId
+    name: this.m_name,
+    address: this.m_address,
+    email: this.m_email,
+    phone: this.m_phone,
+    orgId: this.m_orgId
     })
   }
 
   isEditingVendor(vendor: Vendor): Boolean {
-    return this.editors.some((e) => e._id === vendor._id);
+    return this.editors.some((e) => e.vendorId === vendor._id);
   }
 
   getEditorName(vendor: Vendor): string {
-    return this.editors.find((e) => e._id == vendor._id)?.name ?? "";
+    return this.editors.find((e) => e.vendorId == vendor._id)?.name ?? "";
   }
 
   search(e: Event) {
@@ -129,6 +135,7 @@ export class VendorsTableComponent implements OnInit {
   }
   
   ngOnDestroy(): void {
+    this.cancelledEditing.emit(this.editingId);
     this.destroySubject.next();
     this.destroySubject.complete();
   }

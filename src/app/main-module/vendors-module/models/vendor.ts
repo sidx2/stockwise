@@ -13,7 +13,8 @@ export interface IVendorsState {
 }
 
 export interface Editor {
-    _id: string,
+    vendorId: string,
+    userId: string,
     name: string,
 }
 

@@ -65,7 +65,7 @@
             type="text"
             [(ngModel)]="m_name"
             value="{{ vendor.name }}"
-            (ngModelChange)="onVendorChanged()"
+            (ngModelChange)="onVendorChanged('name', $event)"
           />
         </td>
         <td>
@@ -73,7 +73,7 @@
             type="text"
             [(ngModel)]="m_email"
             value="{{ vendor.email }}"
-            (ngModelChange)="onVendorChanged()"
+            (ngModelChange)="onVendorChanged('email', $event)"
           />
         </td>
         <td>
@@ -81,7 +81,7 @@
             type="text"
             [(ngModel)]="m_address"
             value="{{ vendor.address }}"
-            (ngModelChange)="onVendorChanged()"
+            (ngModelChange)="onVendorChanged('address', $event)"
           />
         </td>
         <td>
@@ -89,7 +89,7 @@
             type="text"
             [(ngModel)]="m_phone"
             value="{{ vendor.phone }}"
-            (ngModelChange)="onVendorChanged()"
+            (ngModelChange)="onVendorChanged('phone', $event)"
           />
         </td>
         <th>

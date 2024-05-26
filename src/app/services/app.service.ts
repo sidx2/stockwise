@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Editor, IVendorUpdate } from '../main-module/vendors-module/models/vendor';
+import { Editor, IVendorUpdate, Vendor } from '../main-module/vendors-module/models/vendor';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +15,20 @@ export class AppService {
     this.socket.emit("editing", { p1 })
   }
 
-  joinRoom(room: string) {
-    this.socket.emit("joinRoom", room);
+  joinRoom(room: string, userId: string) {
+    this.socket.emit("joinRoom", {room, userId});
   }
 
-  vendorUpdated(vendorUpdate: IVendorUpdate) {
+  vendorUpdated(orgId: string, vendorUpdate: Partial<Vendor>) {
     console.log("_vendor in vendorUpdate: ", vendorUpdate);
-    this.socket.emit("vendorUpdated", { room: vendorUpdate.vendor.orgId, vendor: vendorUpdate.vendor });
+    this.socket.emit("vendorUpdated", { room: orgId, vendor: vendorUpdate });
   }
 
   startedEditing(orgId: string, editor: Editor) {
     this.socket.emit("startedEditing", {room: orgId, editor });
   }
 
-  cancelledEditing(orgId: string, vendorId: string) {
-    this.socket.emit("cancelledEditing", {room: orgId, vendorId});
+  cancelledEditing(orgId: string, vendor: Vendor) {
+    this.socket.emit("cancelledEditing", {room: orgId, vendor});
   }
 }
