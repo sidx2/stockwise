@@ -5,6 +5,7 @@
 
 <div >
   <form [formGroup]="dynamicForm">
+
     <div formArrayName="OrderFormArray" class="form-container">
       <div *ngFor="let formGroup of OrderFormArray.controls; let i=index" [formGroupName]="i" class="form-group">
         <label for="product">Product:</label>
@@ -25,10 +26,13 @@
       </div>
     </div>
   </form>
-
 </div>
-<div class="form-actions">
 
+<div *ngIf="this.OrderFormArray.length === 0">
+  <app-no-data></app-no-data>
+</div>
+
+<div class="form-actions">
   <button (click)="addFormData()">Add</button>
   <button (click)="removeAll()" class="btnRed">Remove All</button>
   <button (click)="placeOrder()">Place Order</button>

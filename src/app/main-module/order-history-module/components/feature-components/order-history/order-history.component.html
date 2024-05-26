@@ -4,7 +4,7 @@
   <h3>Order History</h3>
 </app-header>
 
-<div class="orders-list">
+<div class="orders-list" *ngIf="history.length > 0">
   <div
     class="order"
     [ngClass]="['order-' + order.status]"
@@ -17,3 +17,9 @@
     ></app-order-card>
   </div>
 </div>
+
+<div *ngIf="history.length === 0">
+  <app-no-data></app-no-data>
+</div>
+
+

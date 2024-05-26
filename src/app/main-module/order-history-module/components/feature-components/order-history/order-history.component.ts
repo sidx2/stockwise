@@ -27,7 +27,6 @@ export class OrderHistoryComponent implements OnDestroy {
       this.history = state.history;
       this.isLoading = state.isLoading;
     });
-
   }
 
   onStatusUpdate(event: IStatusUpdated) {
