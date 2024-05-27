@@ -10,6 +10,7 @@ import { IGlobalState } from '../../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
 import { IAuthState } from '../../../models/auth';
 import { customValidators } from '../../../../shared-module/validators/customValidators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -31,6 +32,7 @@ export class SignupComponent implements OnDestroy {
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
+    private toastr: ToastrService,
   ) {
     this.actions$.pipe(
       ofType(signupSuccess),
@@ -82,7 +84,7 @@ export class SignupComponent implements OnDestroy {
 
   onFormSubmit() {
     if (!this.signupForm.valid) {
-      alert("Invalid credentials");
+      this.toastr.error("Invalid credentials for signup")
       return;
     }
 

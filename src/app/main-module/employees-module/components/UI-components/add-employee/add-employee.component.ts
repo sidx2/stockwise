@@ -3,6 +3,7 @@ import { EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IAddEmployee } from '../../../models/employee';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-employee',
@@ -18,6 +19,10 @@ export class AddEmployeeComponent {
     email: new FormControl("", [Validators.required, customValidators.validEmail]),
     role: new FormControl("employee", [Validators.required]),
   })
+
+  constructor(
+    private toastr: ToastrService,
+  ) { }
 
   getErrorMessage(controlName: string): string {
     const control = this.addEmployeeForm.get(controlName);
@@ -42,7 +47,10 @@ export class AddEmployeeComponent {
   
   onAddEmployee() {
     if (!this.addEmployeeForm.valid) {
-      alert("Invalid input!");
+      for (const key of Object.keys(this.addEmployeeForm.value)) {
+        const error = this.getErrorMessage(key)
+        this.toastr.error(`Invalid ${key}. ${error}`);
+      }
       return;
     }
     
