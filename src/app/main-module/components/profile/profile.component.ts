@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IGlobalState, User } from '../../../models/global';
+import { User } from '../../../models/global';
 import { InventoryState } from '../../inventory-module/models/inventory';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { UserAsset } from '../../inventory-module/models/inventory';
 import { getUserAssets } from '../../inventory-module/store/inventory.action';
-import { changePasswordRequest, changePasswordSuccess, logoutUserSuccess } from '../../../store/global.actions';
+import { changePasswordRequest, changePasswordSuccess, logoutUserSuccess } from '../../../auth-module/store/auth.actions';
 import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { ToastrService } from 'ngx-toastr';
@@ -19,15 +19,21 @@ import { CookieService } from '../../../services/cookie.service';
 export class ProfileComponent implements OnInit, OnDestroy {
 
   userAssets$: Observable<UserAsset[]>;
-  user$: Observable<User>;
+  user: User
   destroy$: Subject<void> = new Subject();
   noItemImage: string = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTuSpR_FwEIFFf0C8vSnQ4kMVW7KO4iNdYgjdUok3Ew&s';
 
   isChangePasswordVisible: boolean = false
 
-  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState }>, private router: Router, private cs: CookieService, private actions$: Actions, private toastr: ToastrService) {
+  constructor(
+    private store: Store<{ inventory: InventoryState }>, 
+    private router: Router, private cs: CookieService, 
+    private actions$: Actions, private toastr: ToastrService,
+    private cookieService: CookieService,
+  ) {
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
-    this.user$ = this.store.select(state => state.global.user);
+    this.user = JSON.parse(this.cookieService.get("user")!);
+    console.log("user in profile: ", this.user);
   }
 
   ngOnInit(): void {

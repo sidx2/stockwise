@@ -2,7 +2,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { orgSelector } from '../../../store/global.selectors';
 import { Category } from '../../category-module/models/category';
 import { getCategoryRequest } from '../../category-module/store/category.action';
 import { Observable, Subject } from 'rxjs';
@@ -10,7 +9,6 @@ import { takeUntil } from 'rxjs/operators';
 import Chart from 'chart.js/auto';
 import { categorySelector } from '../../category-module/store/category.selector';
 import { CategoryState } from '../../category-module/models/category';
-import { IGlobalState } from '../../../models/global';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private store: Store<{ global: IGlobalState, categories: CategoryState }>,
+    private store: Store<{ categories: CategoryState }>,
     private router: Router,
   ) {
     this.categories$ = this.store.pipe(select(categorySelector));

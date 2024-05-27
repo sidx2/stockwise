@@ -75,6 +75,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
+                        console.log("err: ", err);
                         const error = err.error.error || "Something went wrong";
                         this.toastr.error(`Could not delete emploee. ${error}`);
                         return of(deleteEmployeeFailure({ error }));
@@ -94,7 +95,6 @@ export class EmployeeEffects {
                     map((res: any) => {
                         console.log("createUser res:", res);
                         this.store.dispatch(resetEmployeeLoading());
-                        // this.store.dispatch(addEmployeeRequest({ employee: res }))
                         this.toastr.success("User created successfully!");
                         return createUserSuccess({ user: res })
                     }),

@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
-import { setOrg, setUser } from '../../../../store/global.actions';
-import { IGlobalState } from '../../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
 import { IAuthState } from '../../../models/auth';
 import { customValidators } from '../../../../shared-module/validators/customValidators';
@@ -28,7 +26,7 @@ export class SignupComponent implements OnDestroy {
   destroySubject = new Subject<void>();
 
   constructor(
-    private store: Store<{ global: IGlobalState, auth: IAuthState }>,
+    private store: Store<{ auth: IAuthState }>,
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
@@ -44,14 +42,14 @@ export class SignupComponent implements OnDestroy {
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
       this.cookieService.set("token", data.user.token!, 3)
       this.cookieService.set("user", JSON.stringify(data.user), 3)
-      this.cookieService.set("isLoggedin", "true", 3)
+      this.cookieService.set("isLoggedIn", "true", 3)
 
       const org = {
         name: this.signupForm.value.orgName!,
         email: this.signupForm.value.email!,
       }
 
-      this.store.dispatch(setUser({ user: data.user }))
+      this.cookieService.set("user", JSON.stringify(data.user), 3);
       this.store.dispatch(createOrgRequest({ org, token: this.cookieService.get("token")! }))
 
     });
@@ -61,7 +59,6 @@ export class SignupComponent implements OnDestroy {
       takeUntil(this.destroySubject),
     ).subscribe((data) => {
       this.cookieService.set("org", JSON.stringify(data.org), 3)
-      this.store.dispatch(setOrg({ org: data.org }));
       this.router.navigate(['dashboard']);
     });
   }

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
 import { vendorsStateSelector } from '../../../store/vendor.selectors';
-import { globalStateSelector } from '../../../../../store/global.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
@@ -10,6 +9,8 @@ import { IVendorsState, Vendor } from '../../../models/vendor';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
 import { Editor } from '../../../models/vendor';
 import { SocketService } from '../../../services/socket.service';
+import { CookieService } from '../../../../../services/cookie.service';
+import { User } from '../../../../../models/global';
 
 @Component({
   selector: 'app-vendors',
@@ -23,6 +24,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
   isVisibleAddVendor: boolean = false
   isLoading: boolean = false
   orgId!: string
+  user!: User
 
   destroySubject = new Subject<void>();
 
@@ -31,6 +33,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
     private socketService: SocketService,
     private actions$: Actions,
     private socket: Socket,
+    private cookieService: CookieService,
   ) {
     this.store.select(vendorsStateSelector).pipe(
       takeUntil(this.destroySubject)
@@ -40,14 +43,10 @@ export class VendorsComponent implements OnInit, OnDestroy {
     })
 
     this.store.dispatch(fetchVendorsRequest());
-
-    this.store.select(globalStateSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((state) => {
-      console.log("globalState: ", state);
-      this.socketService.joinRoom(state.org._id, state.user._id)
-      this.orgId = state.org._id
-    })
+    
+    this.orgId = JSON.parse(this.cookieService.get("org")!)._id;
+    this.user = JSON.parse(this.cookieService.get("user")!)
+      this.socketService.joinRoom(this.orgId, this.user._id)
 
     this.actions$.pipe(
       ofType(updateVendorSuccess),

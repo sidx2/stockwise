@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {TicketAdminState } from '../models/ticket-admin';
 import { clearErrorMessage, getAllTicketFailure, getAllTicketSuccess, setLoading, updateTicketStatusFailure, updateTicketStatusSuccess } from './ticket-admin.action';
-import { logoutUserSuccess } from '../../../store/global.actions';
+import { logoutUserSuccess } from '../../../auth-module/store/auth.actions';
 
 export const initialState: TicketAdminState = {
     allTickets: [],

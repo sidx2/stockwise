@@ -8,9 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { globalReducer } from './store/global.reducers';
-import { globalEffects } from './store/global.effects';
-
 import { ToastrModule } from 'ngx-toastr';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -47,8 +44,8 @@ const config: SocketIoConfig = { url: SOCKET_URL, options: {} };
       timeOut: 3000
     }),
 
-    StoreModule.forRoot({global: globalReducer}),
-    EffectsModule.forRoot([globalEffects]),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
 
     StoreDevtoolsModule.instrument({
       maxAge: 25,

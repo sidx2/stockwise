@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { IGlobalState } from '../models/global';
+import { CookieService } from '../services/cookie.service';
 
 @Component({
   selector: 'app-main',
@@ -9,10 +7,11 @@ import { IGlobalState } from '../models/global';
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
-  global$: Observable<IGlobalState>;
-
-  constructor(private store: Store<{ global: IGlobalState}>){
-    this.global$ = this.store.select('global');
-    
+  isLoggedIn
+  constructor(
+    private cookieService: CookieService,
+  ) {
+    this.isLoggedIn = Boolean(this.cookieService.get("isLoggedIn")!)
+    console.log("isLoggedIn in main component: ", this.isLoggedIn);
   }
 }

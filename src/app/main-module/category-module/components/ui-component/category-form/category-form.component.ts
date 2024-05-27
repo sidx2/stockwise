@@ -73,7 +73,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       });
     }
 
-    // this.vendors$.pipe(takeUntil(this.destroy$)).subscribe((vendors: Vendor[]) => {
     const selectedVendors = category.vendors?.map((vendorId: string) => {
       const vendor = this.vendors.find((vendor: any) => vendor?._id === vendorId);
       return { _id: vendor?._id, name: vendor?.name };
@@ -81,8 +80,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     this.categoryFormGroup.patchValue({
       selectedVendors: selectedVendors
     });
-    // });
-
   }
 
   resetForm() {

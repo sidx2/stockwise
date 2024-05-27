@@ -1,8 +1,4 @@
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
-import { IGlobalState } from '../../../models/global';
 import { CookieService } from '../../../services/cookie.service';
 
 @Component({
@@ -11,25 +7,24 @@ import { CookieService } from '../../../services/cookie.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  globalState$: Observable<IGlobalState>;
   orgName: string = '';
+  isLoggedIn!: boolean;
   isSidebarOpen: boolean = false;
-  private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<{ global: IGlobalState }>, private router: Router, private cs: CookieService, private elementRef: ElementRef) {
-    this.globalState$ = this.store.select('global');
+  constructor(
+    private cookieService: CookieService, 
+    private elementRef: ElementRef
+  ) {
+    this.orgName = JSON.parse(this.cookieService.get("org")!).name;
+    this.isLoggedIn = Boolean(this.cookieService.get("isLoggedIn"));
+
+    console.log("orgname and isLoggedin in navbar: ", this.orgName, this.isLoggedIn);
   }
 
   ngOnInit(): void {
-   this.globalState$.pipe(takeUntil(this.destroy$)).subscribe((global) => {
-      this.orgName = global.org.name;
-    });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next()
-    this.destroy$.complete()
-  }
+  ngOnDestroy(): void {}
 
   toggleSidebar(event: MouseEvent): void {
     console.log("Toggling sidebar...");

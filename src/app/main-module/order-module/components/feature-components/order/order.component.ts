@@ -3,15 +3,14 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
 import { productVendorsStateSelector } from '../../../store/order.selectors';
-import { orgSelector } from '../../../../../store/global.selectors';
-import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, takeUntil } from 'rxjs';
 import { IOrderState } from '../../../models/order';
 import { IPlaceOrder, OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/models/vendor';
 import { CartItem } from '../../../../order-history-module/models/order-history';
-import { IGlobalState, Org, User } from '../../../../../models/global';
+import { Org, User } from '../../../../../models/global';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from '../../../../../services/cookie.service';
 
 @Component({
   selector: 'app-order',
@@ -30,8 +29,9 @@ export class OrderComponent implements OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<{ order: IOrderState, global: IGlobalState }>,
+    private store: Store<{ order: IOrderState }>,
     private toastr: ToastrService,
+    private cookieService: CookieService,
   ) {
     this.store.select(productVendorsStateSelector).pipe(
       takeUntil(this.destroySubject),
@@ -39,14 +39,9 @@ export class OrderComponent implements OnDestroy {
       this.productVendors = state.productVendors;
       this.isLoading = state.isLoading; 
     })
-    
-    this.store.select(orgSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((org) => { this.org = org; })
 
-    this.store.select(userSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((user) => { this.user = user; })
+    this.org = JSON.parse(this.cookieService.get("org")!)
+    this.user = JSON.parse(this.cookieService.get("user")!)
 
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])

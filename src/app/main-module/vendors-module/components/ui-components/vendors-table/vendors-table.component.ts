@@ -3,12 +3,12 @@ import { Store } from '@ngrx/store';
 import { Vendor } from '../../../models/vendor';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
 import { Editor } from '../../../models/vendor';
-import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { IGlobalState, User } from '../../../../../models/global';
+import { User } from '../../../../../models/global';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from '../../../../../services/cookie.service';
 
 @Component({
   selector: 'app-vendors-table',
@@ -48,14 +48,11 @@ export class VendorsTableComponent implements OnInit {
   destroySubject = new Subject<void>();
 
   constructor(
-    private store: Store<{ global: IGlobalState, employees: IEmployeesState }>,
+    private store: Store<{ employees: IEmployeesState }>,
     private toastr: ToastrService,
+    private cookieService: CookieService,
   ) {
-    this.store.select(userSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((user) => {
-      this.user = user as User
-    })
+    this.user = JSON.parse(this.cookieService.get("user")!);
 
     this.searchSubject.pipe(
       debounceTime(500),  // 0.5 seconds
