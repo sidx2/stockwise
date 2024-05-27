@@ -16,7 +16,7 @@ export const globalReducer = createReducer(
     }),
     on(setUser, (state, action) => {
         console.log("setUser:", "state: ", state, "action ->", action);
-        return ({ ...state, user: { ...state.user, ...action.user } })
+        return ({ ...state, user: { ...state.user, ...action.user }, isLoggedIn: true })
     }),
     on(loginUser, (state, action) => {
         console.log("loginUser:", "state: ", state, "action ->", action);

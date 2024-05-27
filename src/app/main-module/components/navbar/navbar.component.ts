@@ -2,8 +2,8 @@ import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { IGlobalState } from '../../../models/global';
+import { CookieService } from '../../../services/cookie.service';
 
 @Component({
   selector: 'app-navbar',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from '../services/cookie.service';
 
 @Injectable({
     providedIn: 'root'

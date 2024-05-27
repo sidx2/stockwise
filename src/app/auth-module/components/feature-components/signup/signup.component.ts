@@ -3,13 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
 import { setOrg, setUser } from '../../../../store/global.actions';
 import { IGlobalState } from '../../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
 import { IAuthState } from '../../../models/auth';
 import { customValidators } from '../../../../shared-module/validators/customValidators';
+import { ToastrService } from 'ngx-toastr';
+import { CookieService } from '../../../../services/cookie.service';
 
 @Component({
   selector: 'app-signup',
@@ -31,6 +32,7 @@ export class SignupComponent implements OnDestroy {
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
+    private toastr: ToastrService,
   ) {
     this.actions$.pipe(
       ofType(signupSuccess),
@@ -40,9 +42,9 @@ export class SignupComponent implements OnDestroy {
 
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
-      this.cookieService.set("token", data.user.token!, expiryDate)
-      this.cookieService.set("user", JSON.stringify(data.user), expiryDate)
-      this.cookieService.set("isLoggedin", "true", expiryDate)
+      this.cookieService.set("token", data.user.token!, 3)
+      this.cookieService.set("user", JSON.stringify(data.user), 3)
+      this.cookieService.set("isLoggedin", "true", 3)
 
       const org = {
         name: this.signupForm.value.orgName!,
@@ -50,7 +52,7 @@ export class SignupComponent implements OnDestroy {
       }
 
       this.store.dispatch(setUser({ user: data.user }))
-      this.store.dispatch(createOrgRequest({ org, token: this.cookieService.get("token") }))
+      this.store.dispatch(createOrgRequest({ org, token: this.cookieService.get("token")! }))
 
     });
 
@@ -58,7 +60,7 @@ export class SignupComponent implements OnDestroy {
       ofType(createOrgSuccess),
       takeUntil(this.destroySubject),
     ).subscribe((data) => {
-      this.cookieService.set("org", JSON.stringify(data.org))
+      this.cookieService.set("org", JSON.stringify(data.org), 3)
       this.store.dispatch(setOrg({ org: data.org }));
       this.router.navigate(['dashboard']);
     });
@@ -82,7 +84,7 @@ export class SignupComponent implements OnDestroy {
 
   onFormSubmit() {
     if (!this.signupForm.valid) {
-      alert("Invalid credentials");
+      this.toastr.error("Invalid credentials for signup")
       return;
     }
 

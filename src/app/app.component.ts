@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { init } from './store/global.actions';
 import { IGlobalState } from './models/global';
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from './services/cookie.service';
 
 @Component({
   selector: 'app-root',

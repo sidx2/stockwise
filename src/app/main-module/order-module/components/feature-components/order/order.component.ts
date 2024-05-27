@@ -5,13 +5,13 @@ import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '
 import { productVendorsStateSelector } from '../../../store/order.selectors';
 import { orgSelector } from '../../../../../store/global.selectors';
 import { userSelector } from '../../../../../store/global.selectors';
-import { Subject, pipe, takeUntil, tap } from 'rxjs';
-import { Actions, ofType } from '@ngrx/effects';
+import { Subject, takeUntil } from 'rxjs';
 import { IOrderState } from '../../../models/order';
 import { IPlaceOrder, OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/models/vendor';
 import { CartItem } from '../../../../order-history-module/models/order-history';
 import { IGlobalState, Org, User } from '../../../../../models/global';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-order',
@@ -26,12 +26,12 @@ export class OrderComponent implements OnDestroy {
   destroySubject = new Subject<void>();
 
   productVendors: Product[] = [];
-  selectedProductVendors: Vendor[][] = [];
+  selectedProductVendors: Partial<Vendor>[][] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<{ order: IOrderState, global: IGlobalState }>,
-    private actions$: Actions,
+    private toastr: ToastrService,
   ) {
     this.store.select(productVendorsStateSelector).pipe(
       takeUntil(this.destroySubject),
@@ -95,11 +95,14 @@ export class OrderComponent implements OnDestroy {
 
   placeOrder() {
     if (!this.OrderFormArray.length) {
-      alert("Please add at least one order!");
+      this.toastr.error("Please add at least one order!")
       return;
     }
     if (!this.OrderFormArray.valid) {
-      alert("All fields are required! and quantity should be between 1 and 999");
+      for (const key of Object.keys(this.OrderFormArray.value)) {
+        const error = this.getErrorMessage(key)
+        this.toastr.error(`Invalid ${key}. ${error}`);
+      }
       return;
     }
 
@@ -127,6 +130,24 @@ export class OrderComponent implements OnDestroy {
     this.store.dispatch(placeOrderRequest({ order }))
 
     this.cleanForms();
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.OrderFormArray.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('minlength')) {
+      const requiredLength = control.getError('minlength').requiredLength;
+      return `Must be at least ${requiredLength} characters long.`;
+    }
+    if (control?.hasError('maxlength')) {
+      const requiredLength = control.getError('maxlength').requiredLength;
+      return `Cannot exceed ${requiredLength} characters.`;
+    }
+    
+    return '';
   }
 
   cleanForms() {
