@@ -5,7 +5,7 @@
     (ngSubmit)="onSubmit()"
   >
     <div class="inputDiv">
-      <label for="status">Ticket Status</label>
+      <label for="status">Ticket Status<span class="required-star" *ngIf="updateStatusFormGroup.get('status')?.errors?.['required']">*</span></label>
       <select appCustomInputStyle id="status" formControlName="status">
         <option value="">Select status</option>
         <option value="processing">Processing</option>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="inputDiv">
-      <label for="remark">Remark</label>
+      <label for="remark">Remark<span class="required-star" *ngIf="updateStatusFormGroup.get('remark')?.errors?.['required']">*</span></label>
       <textarea
         appCustomInputStyle
         id="remark"

@@ -12,9 +12,14 @@
   gap: 0.5rem;
 }
 
+.inputDiv .required-star {
+  color: red;
+  margin-left: 3px;
+}
+
 .category_form .inputDiv input.ng-invalid.ng-touched,
 .category_form .inputDiv select.ng-invalid.ng-touched {
-  border: #ff0000 1px solid !important;
+  border: 1px solid #faa4a4 !important;
 }
 
 .inputDiv input,

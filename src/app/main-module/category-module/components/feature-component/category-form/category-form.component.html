@@ -4,7 +4,7 @@
   (ngSubmit)="onSubmit()"
 >
   <div class="inputDiv">
-    <label for="name">Category Name</label>
+    <label for="name">Category Name<span class="required-star" *ngIf="categoryFormGroup.get('name')?.errors?.['required']">*</span></label>
     <input
       appCustomInputStyle
       type="text"
@@ -15,14 +15,14 @@
   </div>
 
   <div class="inputDiv">
-    <label for="identificationType">Identification Type</label>
+    <label for="identificationType">Identification Type<span class="required-star" *ngIf="categoryFormGroup.get('identificationType')?.errors?.['required']">*</span></label>
     <select
       id="identificationType"
       appCustomInputStyle
       formControlName="identificationType"
     >
-    <option [ngValue]="null">Select Category</option>
-    <option value="unique">unique</option>
+      <option [ngValue]="null">Select Category</option>
+      <option value="unique">unique</option>
       <option value="non-unique">non-unique</option>
     </select>
   </div>
@@ -40,7 +40,7 @@
   </div>
 
   <div class="inputDiv">
-    <label for="itemImage">Item Image</label>
+    <label for="itemImage">Item Image<span class="required-star" *ngIf="categoryFormGroup.get('itemImage')?.errors?.['required']">*</span></label>
     <input
       appCustomInputStyle
       type="text"
@@ -50,20 +50,8 @@
     />
   </div>
 
-   <!-- vendor list -->
-  <!-- <div class="inputDiv">
-    <label for="vendorsList">Select vendors</label>
-    <select id="vendorsList">
-      <option value="">Select vendor</option>
-      <option *ngFor="let vendor of vendors$ | async" [value]="vendor._id">
-        {{ vendor.name }}
-      </option>
-    </select>
-  </div> -->
-
-  <!-- vendor list -->
   <div class="inputDiv" *ngIf="vendors">
-    <label for="vendorsList">Select vendors</label>
+    <label for="vendorsList">Select vendors<span class="required-star" *ngIf="categoryFormGroup.get('selectedVendors')?.errors?.['required']">*</span></label>
     <ng-multiselect-dropdown
       id="vendorsList"
       appCustomInputStyle
@@ -73,9 +61,7 @@
       formControlName="selectedVendors"
     ></ng-multiselect-dropdown>
   </div>
-  
 
-  <!-- Custom Fields -->
   <h3 class="form-section-heading">Custom Fields</h3>
   <div formArrayName="customFields" class="customFields">
     <div
@@ -84,7 +70,7 @@
       class="customField"
     >
       <div class="inputDiv">
-        <label for="customFieldName">Field Name</label>
+        <label for="customFieldName">Field Name<span class="required-star" *ngIf="customFields.controls[i].get('label')?.errors?.['required']">*</span></label>
         <input
           appCustomInputStyle
           type="text"
@@ -94,7 +80,7 @@
         />
       </div>
       <div class="inputDiv">
-        <label for="customFieldType">Field Type</label>
+        <label for="customFieldType">Field Type<span class="required-star" *ngIf="customFields.controls[i].get('type')?.errors?.['required']">*</span></label>
         <select appCustomInputStyle id="customFieldType" formControlName="type">
           <option value="">Select Field Type</option>
           <option value="text">Text</option>
