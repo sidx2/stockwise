@@ -6,8 +6,6 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, createCategorySuccess, updateCategorySuccess, clearErrorMessage } from '../../../store/category.action';
 import { categorySelector, getErrorMessage, getLoading } from '../../../store/category.selector';
-import { orgSelector } from '../../../../../store/global.selectors';
-import { IGlobalState } from '../../../../../models/global';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -28,7 +26,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<{ categories: CategoryState, global: IGlobalState }>, private actions$: Actions, private toastr: ToastrService) {
+  constructor(private store: Store<{ categories: CategoryState}>, private actions$: Actions, private toastr: ToastrService) {
 
     this.categories$ = this.store.pipe(select(categorySelector));
 

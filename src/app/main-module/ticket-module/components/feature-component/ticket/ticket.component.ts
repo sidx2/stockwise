@@ -9,9 +9,7 @@ import { clearErrorMessage, createTicketRequest, createTicketSuccess, getUserTic
 import { getUserAssets } from '../../../../inventory-module/store/inventory.action';
 import { getErrorMessage, getLoading, ticketSelector } from '../../../store/ticket.selector';
 import { usrAssetSelector } from '../../../../inventory-module/store/inventory.selector';
-import { orgSelector } from '../../../../../store/global.selectors';
 import { takeUntil } from 'rxjs/operators';
-import { IGlobalState } from '../../../../../models/global';
 import { ToastrService } from 'ngx-toastr';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -30,7 +28,7 @@ export class TicketComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   isTicketFormVisible: boolean = false;
 
-  constructor(private store: Store<{ global: IGlobalState, tickets: TicketState, inventory: InventoryState}>, private toastr: ToastrService, private actions$: Actions) {
+  constructor(private store: Store<{tickets: TicketState, inventory: InventoryState}>, private toastr: ToastrService, private actions$: Actions) {
     this.tickets$ = this.store.pipe(select(ticketSelector));
     this.filteredTickets$ = this.tickets$;
     this.userAssets$ = this.store.pipe(select(usrAssetSelector));

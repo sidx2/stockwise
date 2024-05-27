@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subject, pipe } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
 import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess, createMultipleItemRequest, createMultipleItemSuccess } from '../../../store/inventory.action';
 import { Category, CategoryState } from '../../../../category-module/models/category';
@@ -8,7 +8,6 @@ import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '.
 import { InventoryState, CheckinDetails } from '../../../models/inventory';
 import { getCategoryRequest } from '../../../../category-module/store/category.action';
 import { Actions, ofType } from '@ngrx/effects';
-import { IGlobalState } from '../../../../../models/global';
 import { Employee } from '../../../../employees-module/models/employee';
 import { employeesStateSelector } from '../../../../employees-module/store/employees.selectors';
 import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
@@ -48,7 +47,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
-  constructor(private store: Store<{ global: IGlobalState, inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
+  constructor(private store: Store<{inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
 
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));

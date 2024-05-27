@@ -7,7 +7,6 @@ import { Item } from '../models/inventory';
 export class ItemFilterPipe implements PipeTransform {
 
   transform(items: Item[] | null, searchText: string): Item[] | null{
-    console.log("Inside pipe", searchText);
     if (!items || !searchText) {
       return items;
     }
