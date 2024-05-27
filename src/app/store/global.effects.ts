@@ -2,15 +2,11 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 import { AuthService } from "../auth-module/services/auth.service";
-import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, fetchOrg, fetchOrgFailure, fetchOrgSuccess, init, loginUser, loginUserFailure, loginUserSuccess, setOrg, setUser } from "./global.actions";
-import { CookieService } from "ngx-cookie-service";
+import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, fetchOrg, fetchOrgFailure, fetchOrgSuccess, loginUser, loginUserFailure, loginUserSuccess, } from "./global.actions";
 import { Store } from "@ngrx/store";
 import { OrgService } from "../services/org.service";
 import { IGlobalState } from "../models/global";
-import {
-    setLoading as setAuthLoading,
-    resetLoading as resetAuthLoading
-} from "../auth-module/store/auth.actions";
+import {setLoading as setAuthLoading, resetLoading as resetAuthLoading} from "../auth-module/store/auth.actions";
 import { ToastrService } from "ngx-toastr";
 
 @Injectable()
@@ -19,7 +15,6 @@ export class globalEffects {
         private action$: Actions,
         private authService$: AuthService,
         private orgService$: OrgService,
-        private cs: CookieService,
         private store: Store<{ global: IGlobalState }>,
         private toastr: ToastrService,
     ) { }

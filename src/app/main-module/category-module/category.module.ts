@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CategoryComponent } from './components/feature-component/category/category.component';
 import { CategoryTableComponent } from './components/ui-component/category-table/category-table.component';
 import { SharedModule } from '../../shared-module/shared.module';
-import { CategoryFormComponent } from './components/feature-component/category-form/category-form.component';
+import { CategoryFormComponent } from './components/ui-component/category-form/category-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CategoryRoutingModule } from './category-routing.module';

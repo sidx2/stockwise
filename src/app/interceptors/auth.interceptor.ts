@@ -9,6 +9,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    if(req.url.includes('auth')){
+      return next.handle(req);
+    }
     const token = this.cookieService.get('token');
 
     if (token) {
