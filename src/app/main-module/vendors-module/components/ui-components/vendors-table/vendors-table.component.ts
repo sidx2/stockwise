@@ -29,10 +29,6 @@ export class VendorsTableComponent implements OnInit {
   editingId: string = "-1"
   user!: User
 
-  // m_name!: string
-  // m_email!: string
-  // m_address!: string
-  // m_phone!: string
   m_orgId!: string
 
   editVendorForm = new FormGroup({
@@ -77,10 +73,6 @@ export class VendorsTableComponent implements OnInit {
     this.editingId = _id
     const editingVendor: Vendor = this.vendors.filter((vendor: Vendor) => vendor._id == _id)[0]
 
-    // this.m_name = editingVendor.name
-    // this.m_email = editingVendor.email
-    // this.m_address = editingVendor.address
-    // this.m_phone = editingVendor.phone
     this.m_orgId = editingVendor.orgId
 
     const value = {
@@ -107,15 +99,6 @@ export class VendorsTableComponent implements OnInit {
       return;
     }
 
-    // this.updateVendor.emit({
-    //   _id: this.editingId,
-    //   name: this.m_name,
-    //   email: this.m_email,
-    //   address: this.m_address,
-    //   phone: this.m_phone,
-    //   orgId: this.m_orgId,
-    // })
-
     const updatedVendor: Vendor = {
       _id: this.editingId,
       name: this.editVendorForm.value.name!,
@@ -129,7 +112,6 @@ export class VendorsTableComponent implements OnInit {
 
     this.cancelledEditing.emit(this.editingId);
     this.editingId = "-1"
-    // console.log(this.m_name, this.m_email, this.m_address, this.m_phone)
   }
 
   onDelete(_id: string) {
@@ -138,21 +120,14 @@ export class VendorsTableComponent implements OnInit {
       this.deleteVendor.emit(_id)
   }
 
+  // socket
   onVendorChanged(key: string, event: Event) {
     console.log("key event", key, event)
 
-    // this.changeVendor.emit({
-    //   _id: this.editingId,
-    //   [key]: event,
-    //   orgId: this.m_orgId
-    // })
     this.changeVendor.emit({
       _id: this.editingId,
-      name: this.editVendorForm.value.name!,
-      address: this.editVendorForm.value.address!,
-      email: this.editVendorForm.value.email!,
-      phone: this.editVendorForm.value.phone!,
-      orgId: this.editVendorForm.value.orgId!
+      [key]: event,
+      orgId: this.m_orgId
     })
   }
 
@@ -164,6 +139,7 @@ export class VendorsTableComponent implements OnInit {
     return this.editors.find((e) => e.vendorId == vendor._id)?.name ?? "";
   }
 
+  // search
   search(e: Event) {
     this.searchSubject.next((e.target as HTMLInputElement).value);
   }

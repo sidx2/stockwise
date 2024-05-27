@@ -51,6 +51,28 @@ table {
       background-clip: content-box, border-box;
       animation: neonGlow 2s linear infinite;
       position: relative;
+
+      th {
+        background-color: #f2f2f2;
+        border: 1px solid #dddddd;
+        padding: 0.8rem;
+        text-align: left;
+      }
+      
+      tr:hover {
+        background-color: #f2f2f2;
+      }
+      
+      td {
+        border: 1px solid #dddddd;
+        padding: 0.8rem;
+      }
+      
+      td .assignedTo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     }
 
     @keyframes neonGlow {

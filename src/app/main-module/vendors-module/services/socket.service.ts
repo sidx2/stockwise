@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Editor, IVendorUpdate, Vendor } from '../main-module/vendors-module/models/vendor';
+import { Editor, Vendor } from '../models/vendor';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
+export class SocketService {
 
   constructor(
     private socket: Socket
-  ) {
-  }
+  ) { }
+
+
   sendMessage(p1: any) {
     this.socket.emit("editing", { p1 })
   }

@@ -2,14 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addVendorRequest, deleteVendorRequest, fetchVendorsRequest, fetchVendorsSuccess, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from '../../../store/vendor.actions';
 import { vendorsStateSelector } from '../../../store/vendor.selectors';
-import { globalStateSelector, orgSelector } from '../../../../../store/global.selectors';
-import { AppService } from '../../../../../services/app.service';
+import { globalStateSelector } from '../../../../../store/global.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { IVendorsState, Vendor } from '../../../models/vendor';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
 import { Editor } from '../../../models/vendor';
+import { SocketService } from '../../../services/socket.service';
 
 @Component({
   selector: 'app-vendors',
@@ -28,7 +28,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ vendors: IVendorsState, employees: IEmployeesState }>,
-    private appService: AppService,
+    private socketService: SocketService,
     private actions$: Actions,
     private socket: Socket,
   ) {
@@ -44,7 +44,8 @@ export class VendorsComponent implements OnInit, OnDestroy {
     this.store.select(globalStateSelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((state) => {
-      this.appService.joinRoom(state.org._id, state.user._id)
+      console.log("globalState: ", state);
+      this.socketService.joinRoom(state.org._id, state.user._id)
       this.orgId = state.org._id
     })
 
@@ -52,7 +53,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
       ofType(updateVendorSuccess),
       takeUntil(this.destroySubject),
     ).subscribe(({ vendor }) => {
-      this.appService.vendorUpdated(vendor.orgId, vendor);
+      this.socketService.vendorUpdated(vendor.orgId, vendor);
     });
   }
 
@@ -117,16 +118,16 @@ export class VendorsComponent implements OnInit, OnDestroy {
   
   // socket
   onStartedEditing(event: Editor) {
-    this.appService.startedEditing(this.orgId, event);
+    this.socketService.startedEditing(this.orgId, event);
   }
   
   onCancelledEditing(vendorId: string) {
     const vendor = this.vendors.filter((v) => v._id === vendorId)[0];
-    this.appService.cancelledEditing(this.orgId, vendor);
+    this.socketService.cancelledEditing(this.orgId, vendor);
   }
   
   onVendorChanged(vendor: Partial<Vendor>) {
-    this.appService.vendorUpdated(this.orgId, vendor);
+    this.socketService.vendorUpdated(this.orgId, vendor);
   }
   
   ngOnDestroy() {
