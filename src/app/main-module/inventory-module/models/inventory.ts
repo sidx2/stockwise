@@ -20,6 +20,7 @@ export interface Item {
     orgId?: string;
     quantity: number;
     serialNumber?: string;
+    serialNumbers?: string[];
     customFieldsData?: Record<string, any>;
     assignedTo: AssignedTo[];
     status?: string;

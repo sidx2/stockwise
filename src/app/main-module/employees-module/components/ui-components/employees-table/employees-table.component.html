@@ -41,13 +41,13 @@
       <ng-template #elseBlock [formGroup]="editEmployeeForm">
         <tr class="pending">
           <td>
-            <input type="text" formControlName="name"  [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"/>
+            <input appCustomInputStyle type="text" formControlName="name"  [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"/>
           </td>
           <td>
-            <input type="text" formControlName="email" [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"/>
+            <input appCustomInputStyle type="text" formControlName="email" [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"/>
           </td>
           <td>
-            <select formControlName="role"  [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
+            <select appCustomInputStyle formControlName="role"  [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>

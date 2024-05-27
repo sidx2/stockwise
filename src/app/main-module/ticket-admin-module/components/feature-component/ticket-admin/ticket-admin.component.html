@@ -5,7 +5,7 @@
   <button appButtonPrimary>Refresh</button>
 </app-header>
 
-<div class="tickets" *ngIf="!isTicketFormVisible">
+<div class="ticketsContainer" *ngIf="!isTicketFormVisible">
   <div class="filter_buttons">
     <button
       class="filter_button"
@@ -38,7 +38,7 @@
   </div>
 
   <ng-container *ngIf="filteredTickets$ | async as tickets">
-    <div *ngIf="tickets.length > 0">
+    <div *ngIf="tickets.length > 0" class="tickets">
       <app-ticket-admin-card
         *ngFor="let ticket of tickets"
         [ticket]="ticket"

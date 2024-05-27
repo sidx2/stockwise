@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { InventoryState } from '../models/inventory';
-import {setLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess, checkintItemSuccess, clearErrorMessage } from './inventory.action';
+import {setLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess, checkintItemSuccess, clearErrorMessage, checkoutMailSuccess, checkoutMailFailure, createMultipleItemSuccess, createMultipleItemFailure } from './inventory.action';
 import { logoutUserSuccess } from '../../../store/global.actions';
 import { state } from '@angular/animations';
 
@@ -36,12 +36,25 @@ export const inventoryReducer = createReducer(
     loading: false
   })),
 
+  
   on(createItemFailure, (state, {errorMessage})=>({
     ...state,
     loading: false,
     errorMessage: errorMessage
   })),
 
+  on(createMultipleItemSuccess, (state, { items }) => ({
+    ...state,
+    items: [...state.items, ...items],
+    loading: false
+  })),
+
+  on(createMultipleItemFailure, (state, { errorMessage }) => ({
+    ...state,
+    loading: false,
+    errorMessage
+  })),
+  
   on(deleteItemSuccess, (state, { itemId }) => ({
     ...state,
     items: state.items.filter((item) => item._id !== itemId),
@@ -76,6 +89,17 @@ export const inventoryReducer = createReducer(
     ...state,
     loading: false,
     errorMessage: errorMessage
+  })),
+
+  on(checkoutMailSuccess, (state) => ({
+    ...state,
+    loading: false
+  })),
+
+  on(checkoutMailFailure, (state, {errorMessage}) => ({
+    ...state,
+    loading: false,
+    errorMessage
   })),
 
   on(setLoading, (state)=> ({...state, loading: true})),

@@ -22,6 +22,7 @@
             <button
               appButtonPrimary
               (click)="deleteCategoryHandler(category._id)"
+              [disabled]="category.numberOfAssets != 0"
             >
               Delete
             </button>

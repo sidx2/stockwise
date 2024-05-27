@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, pipe } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
-import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess } from '../../../store/inventory.action';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess, createMultipleItemRequest, createMultipleItemSuccess } from '../../../store/inventory.action';
 import { Category, CategoryState } from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState, CheckinDetails } from '../../../models/inventory';
@@ -89,7 +89,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.toastr.success('Item added successfully');
-      this.store.dispatch(clearErrorMessage());
+      this.hideInventoryForm();
+    })
+
+    this.actions$.pipe(
+      ofType(createMultipleItemSuccess),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.toastr.success('Items added successfully');
       this.hideInventoryForm();
     })
 
@@ -107,7 +114,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.toastr.success('Item deleted successfully');
-      this.store.dispatch(clearErrorMessage());
     })
 
     this.actions$.pipe(
@@ -115,7 +121,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.toastr.success('Item checkin successfully');
-      this.store.dispatch(clearErrorMessage());
+      this.hideCheckinItemHandler()
     })
 
     this.actions$.pipe(
@@ -123,8 +129,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
       take(1),
       takeUntil(this.destroy$)
     ).subscribe(() => {
+
+      console.log("checkout successful");
       this.toastr.success('Item Checkout successfully');
-      this.store.dispatch(clearErrorMessage());
 
       if (this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
@@ -151,6 +158,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   createItemHandler(item: Item) {
     this.store.dispatch(createItemRequest({ item }));
+  }
+
+  createMultipleItemHandler(item: Item){
+    this.store.dispatch(createMultipleItemRequest({ item }));
   }
 
   updateItemHandler(updatedItem: Item) {
@@ -220,6 +231,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.checkoutMailDetails = checkoutMailDetails;
 
     this.store.dispatch(checkoutItemRequest({ assignedToDetails, checkoutMailDetails }));
+
     this.hideCheckoutItemHandler();
   }
 
@@ -236,7 +248,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   checkinItemHandler(checkinDetails: CheckinDetails) {
     this.store.dispatch(checkinItemRequest({ checkinDetails }))
-    this.hideCheckinItemHandler()
   }
 
   // detailed view

@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
 import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { vendorsStateSelector } from '../../../../vendors-module/store/vendor.selectors';
 import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor';
 
