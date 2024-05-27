@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, pipe } from 'rxjs';
 import { map, takeUntil, filter, take } from 'rxjs/operators';
-import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess } from '../../../store/inventory.action';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess, createMultipleItemRequest, createMultipleItemSuccess } from '../../../store/inventory.action';
 import { Category, CategoryState } from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
 import { InventoryState, CheckinDetails } from '../../../models/inventory';
@@ -93,6 +93,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
     })
 
     this.actions$.pipe(
+      ofType(createMultipleItemSuccess),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.toastr.success('Items added successfully');
+      this.hideInventoryForm();
+    })
+
+    this.actions$.pipe(
       ofType(updateItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe(() => {
@@ -150,6 +158,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   createItemHandler(item: Item) {
     this.store.dispatch(createItemRequest({ item }));
+  }
+
+  createMultipleItemHandler(item: Item){
+    this.store.dispatch(createMultipleItemRequest({ item }));
   }
 
   updateItemHandler(updatedItem: Item) {

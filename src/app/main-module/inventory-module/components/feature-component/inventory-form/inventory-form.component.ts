@@ -18,6 +18,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   @Input() selectedItem: Item | null = null;
 
   @Output() createItemEmmiter: EventEmitter<Item> = new EventEmitter();
+  @Output() createMultipleItemEmmiter: EventEmitter<Item> = new EventEmitter();
   @Output() updateItemEmmiter: EventEmitter<Item> = new EventEmitter();
 
   selectedCategory: Category | null = null;
@@ -52,6 +53,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
         this.selectedCategory = value;
         this.onCategoryChange();
       });
+
   }
 
   ngOnDestroy(): void {
@@ -81,7 +83,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCategoryChange() {
+  onCategoryChange(): void {
     if (this.selectedCategory) {
       const customFieldsArray = this.itemFormGroup.get('customFields') as FormArray;
       customFieldsArray.clear();
@@ -91,6 +93,12 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
         customFieldsArray.push(control);
       }
       this.addAdditionalFields();
+
+      if (this.selectedCategory.identificationType === 'unique') {
+        this.itemFormGroup.addControl('operationType', new FormControl('single', Validators.required));
+      } else {
+        this.itemFormGroup.removeControl('operationType');
+      }
     }
   }
 
@@ -159,9 +167,21 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     if (this.isEditMode) {
       newItem._id = this.selectedItem?._id;
       this.updateItemEmmiter.emit(newItem);
+
     } else {
-      newItem.itemImage = this.imageS3Key,
-      this.createItemEmmiter.emit(newItem);
+      newItem.itemImage = this.imageS3Key;
+
+      if (this.itemFormGroup.get('operationType')) {
+        const operationTypeValue = this.itemFormGroup.get('operationType')?.value;
+
+        if (operationTypeValue === 'single') {
+          this.createItemEmmiter.emit(newItem);
+        }else{
+          this.createMultipleItemEmmiter.emit(newItem);
+        }
+      } else {
+        this.createItemEmmiter.emit(newItem);
+      }
     }
   }
 }

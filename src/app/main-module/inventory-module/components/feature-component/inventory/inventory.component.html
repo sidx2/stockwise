@@ -47,6 +47,7 @@
     [categories]="categories$ | async"
     [updateItemCategory]="updateItemCategory"
     (createItemEmmiter)="createItemHandler($event)"
+    (createMultipleItemEmmiter)="createMultipleItemHandler($event)"
     (updateItemEmmiter)="updateItemHandler($event)"
     [selectedItem]="selectedItem"
   ></app-inventory-form>

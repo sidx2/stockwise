@@ -11,30 +11,44 @@ export class InventoryService {
   constructor(private http: HttpClient) { }
 
   getItems() {
-    return this.http.get<Item[]>(`${BASE_URL}/inventory/items`); 
+    return this.http.get<Item[]>(`${BASE_URL}/inventory/items`);
   }
 
-  createItem(item: Item){
-    return this.http.post<Item>(`${BASE_URL}/inventory/create`, item); 
+  createItem(item: Item) {
+    return this.http.post<Item>(`${BASE_URL}/inventory/create`, item);
   }
 
-  updateItem(updatedItem: Item){
-    return this.http.put<Item>(`${BASE_URL}/inventory/update`, {...updatedItem, itemId: updatedItem._id}); 
+  createMultipleItem(item: Item) {
+    let serialNumbers: string[] = [];
+
+    if (item.serialNumber) {
+      serialNumbers = item.serialNumber.split(',');
+    }
+
+    return this.http.post<Item[]>(`${BASE_URL}/inventory/createMultiple`, {
+      itemDetails: item,
+      serialNumbers
+    });
   }
 
-  deleteItem(itemId: String){
-    return this.http.delete<Item>(`${BASE_URL}/inventory/delete/${itemId}`); 
+
+  updateItem(updatedItem: Item) {
+    return this.http.put<Item>(`${BASE_URL}/inventory/update`, { ...updatedItem, itemId: updatedItem._id });
   }
 
-  checkoutItem(assignedToDetails: CheckoutDetails ){
-    return this.http.put<Item>(`${BASE_URL}/inventory/checkout`, assignedToDetails); 
+  deleteItem(itemId: String) {
+    return this.http.delete<Item>(`${BASE_URL}/inventory/delete/${itemId}`);
   }
 
-  checkinItem(checkinDetails: CheckinDetails){
-    return this.http.put<Item>(`${BASE_URL}/inventory/checkin`, checkinDetails); 
+  checkoutItem(assignedToDetails: CheckoutDetails) {
+    return this.http.put<Item>(`${BASE_URL}/inventory/checkout`, assignedToDetails);
   }
 
-  getUserAsset(){
-    return this.http.get<UserAsset[]>(`${BASE_URL}/inventory/item/getUserAssets`); 
+  checkinItem(checkinDetails: CheckinDetails) {
+    return this.http.put<Item>(`${BASE_URL}/inventory/checkin`, checkinDetails);
+  }
+
+  getUserAsset() {
+    return this.http.get<UserAsset[]>(`${BASE_URL}/inventory/item/getUserAssets`);
   }
 }

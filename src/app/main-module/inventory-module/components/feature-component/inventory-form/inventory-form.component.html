@@ -1,13 +1,14 @@
 <form class="inventory_form" [formGroup]="itemFormGroup" (ngSubmit)="onSubmit()">
-
-  <div class="inputDiv"*ngIf ="!isEditMode">
+  <div class="inputDiv" *ngIf="!isEditMode">
     <label for="category">Select Category</label>
     <select appCustomInputStyle id="category" formControlName="category">
       <option [ngValue]="null">Select Category</option>
-      <option *ngFor="let category of categories" [ngValue]="category">{{ category.name }}</option>
+      <option *ngFor="let category of categories" [ngValue]="category">
+        {{ category.name }}
+      </option>
     </select>
   </div>
-  
+
   <div class="inputDiv">
     <label for="name">Name</label>
     <input appCustomInputStyle id="name" type="text" formControlName="name" />
@@ -15,18 +16,25 @@
 
   <div class="inputDiv" *ngIf="!isEditMode">
     <label for="itemImage">Item Image</label>
-    <input appCustomInputStyle id="itemImage" type="file" (change)="onFileChange($event)"  />
+    <input appCustomInputStyle id="itemImage" type="file" (change)="onFileChange($event)" />
   </div>
 
-   <!-- Conditionally render additional fields -->
-   <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
-    <label for="serialNumber">Serial Number</label>
+  <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
+    <label for="operationType">Operation Type</label>
+    <select appCustomInputStyle id="operationType" formControlName="operationType">
+      <option value="single">Single</option>
+      <option value="multiple">Multiple</option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
+    <label for="serialNumber">{{ itemFormGroup.get('operationType')?.value === 'multiple' ? 'Serial Numbers (comma seperated)' : 'Serial Number' }}</label>
     <input appCustomInputStyle id="serialNumber" class="error" type="text" formControlName="serialNumber" />
   </div>
 
   <div *ngIf="selectedCategory?.identificationType === 'non-unique'" class="inputDiv">
     <label for="quantity">Quantity</label>
-    <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 1"  />
+    <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 1" />
   </div>
 
   <div class="customFields" *ngIf="selectedCategory">
@@ -37,6 +45,8 @@
       </div>
     </div>
   </div>
-  
-  <button appButtonPrimary [disabled]="!itemFormGroup.valid" type="submit">{{isEditMode ? 'Save Changes': 'Submit'}}</button>
+
+  <button appButtonPrimary [disabled]="!itemFormGroup.valid" type="submit">
+    {{ isEditMode ? "Save Changes" : "Submit" }}
+  </button>
 </form>
