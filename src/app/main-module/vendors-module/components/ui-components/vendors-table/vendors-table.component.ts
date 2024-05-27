@@ -8,6 +8,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { IGlobalState, User } from '../../../../../models/global';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-vendors-table',
@@ -37,7 +38,7 @@ export class VendorsTableComponent implements OnInit {
     email: new FormControl('', [Validators.required, customValidators.validEmail]),
     address: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
     phone: new FormControl('', [Validators.required, customValidators.validPhoneNumber]),
-    orgId: new FormControl('')
+    // orgId: new FormControl('')
   });
 
   psize: number = 10;
@@ -48,6 +49,7 @@ export class VendorsTableComponent implements OnInit {
 
   constructor(
     private store: Store<{ global: IGlobalState, employees: IEmployeesState }>,
+    private toastr: ToastrService,
   ) {
     this.store.select(userSelector).pipe(
       takeUntil(this.destroySubject),
@@ -81,7 +83,7 @@ export class VendorsTableComponent implements OnInit {
       email: editingVendor.email,
       address: editingVendor.address,
       phone: editingVendor.phone,
-      orgId: editingVendor.orgId
+      // orgId: editingVendor.orgId
     }
 
     this.editVendorForm.setValue(value);
@@ -99,8 +101,12 @@ export class VendorsTableComponent implements OnInit {
       this.editingId = "-1";
       return;
     }
+    
     if (!this.editVendorForm.valid) {
-      alert("Invalid input for updating vendor!");
+      for (const key of Object.keys(this.editVendorForm.value)) {
+        const error = this.getErrorMessage(key)
+        this.toastr.error(`Invalid ${key}. ${error}`);
+      }
       return;
     }
 
@@ -110,7 +116,7 @@ export class VendorsTableComponent implements OnInit {
       email: this.editVendorForm.value.email!,
       address: this.editVendorForm.value.address!,
       phone: this.editVendorForm.value.phone!,
-      orgId: this.editVendorForm.value.orgId!,
+      orgId: this.m_orgId,
     }
 
     this.updateVendor.emit(updatedVendor)
@@ -177,7 +183,7 @@ export class VendorsTableComponent implements OnInit {
     if (!this._vends.length) this._vends = this.vendors;
     this.currPage = 1;
     this.vendors = this._vends.filter((vend: Vendor) =>
-      JSON.stringify(vend)
+      JSON.stringify(Object.values(vend))
         .toLowerCase()
         .includes(searchTerm)
     )}
