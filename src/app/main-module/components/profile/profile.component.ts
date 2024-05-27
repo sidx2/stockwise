@@ -7,9 +7,9 @@ import { UserAsset } from '../../inventory-module/models/inventory';
 import { getUserAssets } from '../../inventory-module/store/inventory.action';
 import { changePasswordRequest, changePasswordSuccess, logoutUserSuccess } from '../../../store/global.actions';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { Actions, ofType } from '@ngrx/effects';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from '../../../services/cookie.service';
 
 @Component({
   selector: 'app-profile',
@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.cs.deleteAll();
+    this.cs.clearAll();
     this.store.dispatch(logoutUserSuccess())
     this.router.navigate(["auth/login"]);
   }

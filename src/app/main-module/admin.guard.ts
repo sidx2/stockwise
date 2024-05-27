@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from '../services/cookie.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,14 @@ export class AdminGuard implements CanActivate {
 
   canActivate(): boolean {
     const userString = this.cookieService.get('user');
-    const user = JSON.parse(userString);
+    let user;
+    try {
+      user = JSON.parse(userString!);
+    }
+    catch(e) {
+      console.log("cant parse user: ", user);
+    }
+
     if (user && user.role === 'admin') {
       return true;
     } else {
