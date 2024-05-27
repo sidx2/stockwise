@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ErrorService } from '../services/error.service';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { Observable, catchError, throwError } from "rxjs"
+import { Injectable } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private errorService: ErrorService) { }
+  constructor(private toastr: ToastrService) { }
 
   intercept(
     request: HttpRequest<any>,
@@ -16,14 +15,22 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status === 404) {
-          let errorMessage = 'Resource not found';
-          this.errorService.emmitError(errorMessage);
-          return throwError(errorMessage);
-          
-        } else {
-          return throwError(errorResponse);
+        let errorMessage = '';
+
+        switch (errorResponse.status) {
+          case 401:
+            errorMessage = 'Unauthorized';
+            break;
+          case 403:
+            errorMessage = 'Forbidden';
+            break;
+          case 500:
+            errorMessage = 'Internal Server Error';
+            break;
         }
+
+        this.toastr.error(errorMessage);
+        return throwError(errorMessage);
       })
     );
   }
