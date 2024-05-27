@@ -26,6 +26,7 @@ export class AppComponent implements OnInit{
     const user = JSON.parse(rawUser || "{}");
     const org = JSON.parse(rawOrg || "{}");
 
+    console.log("user and org while init: ", user, org);
     this.store.dispatch(init({ user, org }));
   }
 }

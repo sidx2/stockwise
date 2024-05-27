@@ -10,6 +10,7 @@ import { IGlobalState } from '../../../../models/global';
 import { IAuthState, LoginCredentials } from '../../../models/auth';
 import { authStateSelector } from '../../../store/auth.selectors';
 import { ToastrService } from 'ngx-toastr';
+import { customValidators } from '../../../../shared-module/validators/customValidators';
 
 @Component({
   selector: 'app-auth',
@@ -22,8 +23,8 @@ export class LoginComponent implements OnDestroy {
   isLoading: boolean = false;
 
   loginForm = new FormGroup({
-    email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required, Validators.minLength(6)])
+    email: new FormControl("", [Validators.required, customValidators.validEmail]),
+    password: new FormControl("", [Validators.required, customValidators.strongPassword])
   })
 
   constructor(
@@ -31,6 +32,7 @@ export class LoginComponent implements OnDestroy {
     private router: Router,
     private cookieService: CookieService,
     private actions$: Actions,
+    private toastr: ToastrService,
   ) {
 
     this.store.select(authStateSelector).pipe(
@@ -62,6 +64,7 @@ export class LoginComponent implements OnDestroy {
       ofType(fetchOrgSuccess),
       takeUntil(this.destroySubject)
     ).subscribe(({ org }) => {
+      console.log("fetchOrgSuccess:", org);
       this.cookieService.set("org", JSON.stringify(org))
       this.store.dispatch(setOrg({ org: org }));
 
@@ -75,11 +78,11 @@ export class LoginComponent implements OnDestroy {
     if (control?.hasError('required')) {
       return 'This field is required.';
     }
-    if (control?.hasError('email')) {
+    if (control?.hasError('validEmail')) {
       return 'Invalid email address.';
     }
-    if (control?.hasError('minlength')) {
-      return `Must be at least ${control.getError('minlength').requiredLength} characters long.`;
+    if (control?.hasError('strongPassword')) {
+      return control.getError('strongPassword').message;
     }
 
     return '';
@@ -88,7 +91,7 @@ export class LoginComponent implements OnDestroy {
   onFormSubmit() {
     console.log(this.loginForm.value)
     if (this.loginForm.invalid) {
-      alert("Invalid credentials");
+      this.toastr.error("Invalid credentails for login");
       return;
     };
 

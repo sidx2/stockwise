@@ -9,6 +9,7 @@ import { setOrg, setUser } from '../../../../store/global.actions';
 import { IGlobalState } from '../../../../models/global';
 import { Subject, takeUntil } from 'rxjs';
 import { IAuthState } from '../../../models/auth';
+import { customValidators } from '../../../../shared-module/validators/customValidators';
 
 @Component({
   selector: 'app-signup',
@@ -19,8 +20,8 @@ export class SignupComponent implements OnDestroy {
   signupForm = new FormGroup({
     orgName: new FormControl("", [Validators.required, Validators.minLength(3)]),
     name: new FormControl("", [Validators.required, Validators.minLength(3)]),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required, Validators.minLength(6)])
+    email: new FormControl("", [Validators.required, customValidators.validEmail]),
+    password: new FormControl("", [Validators.required, customValidators.strongPassword])
   })
 
   destroySubject = new Subject<void>();
@@ -69,12 +70,11 @@ export class SignupComponent implements OnDestroy {
     if (control?.hasError('required')) {
       return 'This field is required.';
     }
-    if (control?.hasError('email')) {
+    if (control?.hasError('validEmail')) {
       return 'Please enter a valid email address.';
     }
-    if (control?.hasError('minlength')) {
-      const requiredLength = control.getError('minlength').requiredLength;
-      return `Must be at least ${requiredLength} characters long.`;
+    if (control?.hasError('strongPassword')) {
+      return control.getError('strongPassword').message;
     }
 
     return '';

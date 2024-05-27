@@ -42,15 +42,30 @@
         <tr class="pending">
           <td>
             <input appCustomInputStyle type="text" formControlName="name"  [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"/>
+            <div *ngIf="editEmployeeForm.get('name')?.invalid && (editEmployeeForm.get('name')?.dirty || editEmployeeForm.get('name')?.touched)" class="errMsg">
+              <small class="text-danger">
+                {{ getErrorMessage('name') }}
+              </small>
+            </div>
           </td>
           <td>
-            <input appCustomInputStyle type="text" formControlName="email" [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"/>
+            <input appCustomInputStyle type="email" formControlName="email" [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"/>
+            <div *ngIf="editEmployeeForm.get('email')?.invalid && (editEmployeeForm.get('email')?.dirty || editEmployeeForm.get('email')?.touched)" class="errMsg">
+              <small class="text-danger">
+                {{ getErrorMessage('email') }}
+              </small>
+            </div>
           </td>
           <td>
             <select appCustomInputStyle formControlName="role"  [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>
+            <div *ngIf="editEmployeeForm.get('role')?.invalid && (editEmployeeForm.get('role')?.dirty || editEmployeeForm.get('role')?.touched)" class="errMsg">
+              <small class="text-danger">
+                {{ getErrorMessage('role') }}
+              </small>
+            </div>
           </td>
           <td>
             <button appButtonPrimaryLight (click)="onCancel()">

@@ -7,6 +7,7 @@ import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { IGlobalState, User } from '../../../../../models/global';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { customValidators } from '../../../../../shared-module/validators/customValidators';
 
 @Component({
   selector: 'app-vendors-table',
@@ -32,10 +33,10 @@ export class VendorsTableComponent implements OnInit {
   m_orgId!: string
 
   editVendorForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    address: new FormControl('', [Validators.required]),
-    phone: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
+    email: new FormControl('', [Validators.required, customValidators.validEmail]),
+    address: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
+    phone: new FormControl('', [Validators.required, customValidators.validPhoneNumber]),
     orgId: new FormControl('')
   });
 
@@ -94,6 +95,10 @@ export class VendorsTableComponent implements OnInit {
   }
 
   onDone() {
+    if (!this.editVendorForm.dirty) {
+      this.editingId = "-1";
+      return;
+    }
     if (!this.editVendorForm.valid) {
       alert("Invalid input for updating vendor!");
       return;
@@ -111,13 +116,37 @@ export class VendorsTableComponent implements OnInit {
     this.updateVendor.emit(updatedVendor)
 
     this.cancelledEditing.emit(this.editingId);
-    this.editingId = "-1"
+    this.editingId = "-1";
   }
 
   onDelete(_id: string) {
     console.log("_id in onDelete", _id)
     if (confirm("Are you sure want to delete this vendor"))
       this.deleteVendor.emit(_id)
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.editVendorForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('minlength')) {
+      const requiredLength = control.getError('minlength').requiredLength;
+      return `Must be at least ${requiredLength} characters long.`;
+    }
+    if (control?.hasError('maxlength')) {
+      const requiredLength = control.getError('maxlength').requiredLength;
+      return `Cannot exceed ${requiredLength} characters.`;
+    }
+    if (control?.hasError('validEmail')) {
+      return 'Please enter a valid email address.';
+    }
+    if (control?.hasError('validPhoneNumber')) {
+      return control.getError('validPhoneNumber').message;
+    }
+    
+    return '';
   }
 
   // socket
