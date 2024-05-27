@@ -20,8 +20,9 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { AuthModule } from './auth-module/auth.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/errorInterceptor';
+import { SOCKET_URL } from './constants/constants';
 
-const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
+const config: SocketIoConfig = { url: SOCKET_URL, options: {} };
 
 @NgModule({
   declarations: [

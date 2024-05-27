@@ -10,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class EmployeesTableComponent {
   @Input() employees!: Employee[]
+
   _emps: Employee[] = []
 
   @Output() updateEmployee = new EventEmitter<Employee>();

@@ -41,7 +41,7 @@ export class AddEmployeeComponent {
   
   onAddEmployee() {
     if (!this.addEmployeeForm.valid) {
-      alert("All fields are required!");
+      alert("Invalid input!");
       return;
     }
     
