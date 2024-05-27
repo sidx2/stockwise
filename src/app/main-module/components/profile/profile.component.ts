@@ -18,9 +18,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  userAssets$: Observable<UserAsset[]> | null = null
-  user$: Observable<User> | null = null;
+  userAssets$: Observable<UserAsset[]>;
+  user$: Observable<User>;
   destroy$: Subject<void> = new Subject();
+  noItemImage: string = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTuSpR_FwEIFFf0C8vSnQ4kMVW7KO4iNdYgjdUok3Ew&s';
 
   isChangePasswordVisible: boolean = false
 

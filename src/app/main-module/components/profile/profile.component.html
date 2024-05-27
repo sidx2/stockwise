@@ -38,11 +38,8 @@
           <div *ngFor="let asset of userAssets" class="asset">
             <div class="assetImage">
               <img
-                [src]="
-                  'https://stockwisebucket.s3.ap-south-1.amazonaws.com/' +
-                  asset?.itemImage
-                "
-                alt=""
+              src="{{ asset?.itemImage ? 'https://stockwisebucket.s3.ap-south-1.amazonaws.com/' + asset?.itemImage : noItemImage }}"
+              alt="image not found"
               />
             </div>
 
