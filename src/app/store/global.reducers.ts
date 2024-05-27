@@ -50,6 +50,7 @@ export const globalReducer = createReducer(
     }),
 
     on(init, (state, action) => {
-        return ({...state, user: action.user, org: state.org, isLoggedIn: true})
+        console.log("init: ", "state: ", state, "action: ", action);
+        return ({...state, user: action.user, org: action.org, isLoggedIn: true})
     })
 )

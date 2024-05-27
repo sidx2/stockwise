@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Vendor } from '../../../models/vendor';
+import { customValidators } from '../../../../../shared-module/validators/customValidators';
 
 @Component({
   selector: 'app-add-vendor',
@@ -13,9 +14,9 @@ export class AddVendorComponent {
 
   addVendorForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
-    email: new FormControl("", [Validators.required, Validators.email]),
+    email: new FormControl("", [Validators.required, customValidators.validEmail]),
     address: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
-    phone: new FormControl("", [Validators.required]),
+    phone: new FormControl("", [Validators.required, customValidators.validPhoneNumber]),
   })
 
   getErrorMessage(controlName: string): string {
@@ -24,15 +25,21 @@ export class AddVendorComponent {
     if (control?.hasError('required')) {
       return 'This field is required.';
     }
-    if (control?.hasError('email')) {
-      return 'Invalid email address.';
-    }
     if (control?.hasError('minlength')) {
-      return 'Must be at least ' + control.getError('minlength').requiredLength + ' characters long.';
+      const requiredLength = control.getError('minlength').requiredLength;
+      return `Must be at least ${requiredLength} characters long.`;
     }
     if (control?.hasError('maxlength')) {
-      return 'Cannot exceed ' + control.getError('maxlength').requiredLength + ' characters.';
+      const requiredLength = control.getError('maxlength').requiredLength;
+      return `Cannot exceed ${requiredLength} characters.`;
     }
+    if (control?.hasError('validEmail')) {
+      return 'Please enter a valid email address.';
+    }
+    if (control?.hasError('validPhoneNumber')) {
+      return control.getError('validPhoneNumber').message;
+    }
+    
     return '';
   }
 

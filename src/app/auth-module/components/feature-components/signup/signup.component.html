@@ -5,7 +5,7 @@
     <div class="p-floatLabel">
       <label for="orgname">Organization Name</label>
       <input id="orgname" formControlName="orgName" type="text" class="p-field p-inputtext-lg" pInputText>
-      <div *ngIf="signupForm.controls['orgName'].invalid && signupForm.controls['orgName'].touched" class="errMsg">
+      <div *ngIf="signupForm.controls['orgName'].invalid && signupForm.controls['orgName'].dirty && signupForm.controls['orgName'].touched" class="errMsg">
         <small class="text-danger">{{ getErrorMessage('orgName') }}</small>
       </div>
     </div>
@@ -13,7 +13,7 @@
     <div class="p-floatLabel">
       <label for="name">Your name</label>
       <input id="name" formControlName="name" type="text" class="p-field p-inputtext-lg" pInputText>
-      <div *ngIf="signupForm.controls['name'].invalid && signupForm.controls['name'].touched" class="errMsg">
+      <div *ngIf="signupForm.controls['name'].invalid && signupForm.controls['name'].dirty && signupForm.controls['name'].touched" class="errMsg">
         <small class="text-danger">{{ getErrorMessage('name') }}</small>
       </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="p-floatLabel">
       <label for="email">Email</label>
       <input id="email" formControlName="email" type="email" class="p-field p-inputtext-lg" pInputText>
-      <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched" class="errMsg">
+      <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].dirty && signupForm.controls['email'].touched" class="errMsg">
         <small class="text-danger">{{ getErrorMessage('email') }}</small>
       </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="p-floatLabel">
       <label for="password">Password</label>
       <input id="password" formControlName="password" type="password" class="p-field p-inputtext-lg" pInputText>
-      <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched" class="errMsg">
+      <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].dirty && signupForm.controls['password'].touched" class="errMsg">
         <small class="text-danger">{{ getErrorMessage('password') }}</small>
       </div>
     </div>
