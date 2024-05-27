@@ -1,6 +1,10 @@
-<form class="inventory_form" [formGroup]="itemFormGroup" (ngSubmit)="onSubmit()">
+<form
+  class="inventory_form"
+  [formGroup]="itemFormGroup"
+  (ngSubmit)="onSubmit()"
+>
   <div class="inputDiv" *ngIf="!isEditMode">
-    <label for="category">Select Category</label>
+    <label for="category">Select Category<span class="required-star" *ngIf="itemFormGroup.get('category')?.errors?.['required']">*</span></label>
     <select appCustomInputStyle id="category" formControlName="category">
       <option [ngValue]="null">Select Category</option>
       <option *ngFor="let category of categories" [ngValue]="category">
@@ -10,38 +14,90 @@
   </div>
 
   <div class="inputDiv">
-    <label for="name">Name</label>
+    <label for="name">Name<span class="required-star" *ngIf="itemFormGroup.get('name')?.errors?.['required']">*</span></label>
     <input appCustomInputStyle id="name" type="text" formControlName="name" />
   </div>
 
   <div class="inputDiv" *ngIf="!isEditMode">
-    <label for="itemImage">Item Image</label>
-    <input appCustomInputStyle id="itemImage" type="file" (change)="onFileChange($event)" />
+    <label for="itemImage">Item Image<span class="required-star" *ngIf="itemFormGroup.get('itemImage')?.errors?.['required']">*</span></label>
+    <input
+      appCustomInputStyle
+      id="itemImage"
+      type="file"
+      (change)="onFileChange($event)"
+    />
   </div>
 
-  <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
-    <label for="operationType">Operation Type</label>
-    <select appCustomInputStyle id="operationType" formControlName="operationType">
+  <div
+    *ngIf="selectedCategory?.identificationType === 'unique'"
+    class="inputDiv"
+  >
+    <label for="operationType">Operation Type<span class="required-star" *ngIf="itemFormGroup.get('operationType')?.errors?.['required']">*</span></label>
+    <select
+      appCustomInputStyle
+      id="operationType"
+      formControlName="operationType"
+    >
       <option value="single">Single</option>
       <option value="multiple">Multiple</option>
     </select>
   </div>
 
-  <div *ngIf="selectedCategory?.identificationType === 'unique'" class="inputDiv">
-    <label for="serialNumber">{{ itemFormGroup.get('operationType')?.value === 'multiple' ? 'Serial Numbers (comma seperated)' : 'Serial Number' }}</label>
-    <input appCustomInputStyle id="serialNumber" class="error" type="text" formControlName="serialNumber" />
+  <div
+    *ngIf="selectedCategory?.identificationType === 'unique'"
+    class="inputDiv"
+  >
+    <label for="serialNumber">{{
+      itemFormGroup.get("operationType")?.value === "multiple"
+        ? "Serial Numbers (comma separated)"
+        : "Serial Number"
+    }}<span class="required-star" *ngIf="itemFormGroup.get('serialNumber')?.errors?.['required']">*</span></label>
+    <input
+      appCustomInputStyle
+      id="serialNumber"
+      class="error"
+      type="text"
+      formControlName="serialNumber"
+    />
   </div>
 
-  <div *ngIf="selectedCategory?.identificationType === 'non-unique'" class="inputDiv">
-    <label for="quantity">Quantity</label>
-    <input appCustomInputStyle id="quantity" type="number" formControlName="quantity" [min]="selectedItem?.checkedOutQuantity || 1" />
+  <div
+    *ngIf="selectedCategory?.identificationType === 'non-unique'"
+    class="inputDiv"
+  >
+    <label for="quantity">Quantity<span class="required-star" *ngIf="itemFormGroup.get('quantity')?.errors?.['required']">*</span></label>
+    <input
+      appCustomInputStyle
+      id="quantity"
+      type="number"
+      formControlName="quantity"
+      [min]="selectedItem?.checkedOutQuantity || 1"
+    />
   </div>
 
   <div class="customFields" *ngIf="selectedCategory">
     <div formArrayName="customFields" class="customFields">
-      <div *ngFor="let customField of selectedCategory?.customFields; let i = index" class="inputDiv">
-        <label>{{ customField.label }}</label>
-        <input appCustomInputStyle [type]="customField.type" [formControlName]="i" />
+      <div
+        *ngFor="
+          let customField of selectedCategory?.customFields;
+          let i = index
+        "
+        class="inputDiv"
+      >
+        <label
+          >{{ customField.label
+          }}<span
+            class="required-star"
+            *ngIf="itemFormGroup.get('customFields.' + i)?.errors?.['required']"
+            >*</span
+          ></label
+        >
+
+        <input
+          appCustomInputStyle
+          [type]="customField.type"
+          [formControlName]="i"
+        />
       </div>
     </div>
   </div>

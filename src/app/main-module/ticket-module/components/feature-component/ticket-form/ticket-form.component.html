@@ -1,6 +1,12 @@
 <form class="ticket_form" (ngSubmit)="onSubmit()" [formGroup]="ticketFormGroup">
   <div class="inputDiv">
-    <label for="issue">Issue Type</label>
+    <label for="issue"
+      >Issue Type<span
+        class="required-star"
+        *ngIf="ticketFormGroup.get('issueType')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <select appCustomInputStyle id="issue" formControlName="issueType">
       <option value="">Select Issue Type</option>
       <option value="newAssetRequest">New Asset Request</option>
@@ -17,8 +23,20 @@
   </div>
 
   <!-- selecting asset -->
-  <div class="inputDiv" *ngIf="ticketFormGroup.get('issueType')?.value !== 'newAssetRequest' && ticketFormGroup.get('issueType')?.value !== ''">
-    <label for="assetId">Asset</label>
+  <div
+    class="inputDiv"
+    *ngIf="
+      ticketFormGroup.get('issueType')?.value !== 'newAssetRequest' &&
+      ticketFormGroup.get('issueType')?.value !== ''
+    "
+  >
+    <label for="assetId"
+      >Asset<span
+        class="required-star"
+        *ngIf="ticketFormGroup.get('assetId')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <select appCustomInputStyle id="assetId" formControlName="assetId">
       <option value="">Select Asset</option>
       <option *ngFor="let asset of userAssets" [value]="asset._id">
@@ -28,7 +46,13 @@
   </div>
 
   <div class="inputDiv">
-    <label for="description">Description</label>
+    <label for="description"
+      >Description<span
+        class="required-star"
+        *ngIf="ticketFormGroup.get('description')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <textarea
       appCustomInputStyle
       formControlName="description"
@@ -39,7 +63,13 @@
   </div>
 
   <div class="inputDiv">
-    <label for="priority">Priority</label>
+    <label for="priority"
+      >Priority<span
+        class="required-star"
+        *ngIf="ticketFormGroup.get('priority')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <select appCustomInputStyle id="priority" formControlName="priority">
       <option value="">Select Priority</option>
       <option value="low">Low</option>

@@ -13,9 +13,14 @@
   gap: 0.5rem;
 }
 
+.inputDiv .required-star {
+  color: red;
+  margin-left: 3px;
+}
+
 .inventory_form .inputDiv input.ng-invalid.ng-touched,
 .inventory_form .inputDiv select.ng-invalid.ng-touched {
-  border: #ff0000 1px solid !important;
+  border: 1px solid #faa4a4 !important;
 }
 
 .inventory_form .customFields{
