@@ -38,16 +38,16 @@
         </td>
       </tr>
 
-      <ng-template #elseBlock>
+      <ng-template #elseBlock [formGroup]="editEmployeeForm">
         <tr class="pending">
           <td>
-            <input type="text" [(ngModel)]="m_name" value="{{ emp.name }}" />
+            <input type="text" formControlName="name"  [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"/>
           </td>
           <td>
-            <input type="text" [(ngModel)]="m_email" value="{{ emp.email }}" />
+            <input type="text" formControlName="email" [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"/>
           </td>
           <td>
-            <select [(ngModel)]="m_role">
+            <select formControlName="role"  [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>

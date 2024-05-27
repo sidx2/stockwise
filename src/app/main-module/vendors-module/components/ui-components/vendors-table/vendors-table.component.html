@@ -59,36 +59,36 @@
         </td>
       </tr>
       } @else {
-      <tr class="pending">
+      <tr class="pending" [formGroup]="editVendorForm">
         <td>
           <input
             type="text"
-            [(ngModel)]="m_name"
-            value="{{ vendor.name }}"
+            formControlName="name"
+            [ngClass]="{'error': editVendorForm.get('name')?.invalid && editVendorForm.get('name')?.touched}"
             (ngModelChange)="onVendorChanged('name', $event)"
           />
         </td>
         <td>
           <input
             type="text"
-            [(ngModel)]="m_email"
-            value="{{ vendor.email }}"
+            formControlName="email"
+            [ngClass]="{'error': editVendorForm.get('email')?.invalid && editVendorForm.get('email')?.touched}"
             (ngModelChange)="onVendorChanged('email', $event)"
           />
         </td>
         <td>
           <input
             type="text"
-            [(ngModel)]="m_address"
-            value="{{ vendor.address }}"
+            formControlName="address"
+            [ngClass]="{'error': editVendorForm.get('address')?.invalid && editVendorForm.get('address')?.touched}"
             (ngModelChange)="onVendorChanged('address', $event)"
           />
         </td>
         <td>
           <input
             type="text"
-            [(ngModel)]="m_phone"
-            value="{{ vendor.phone }}"
+            formControlName="phone"
+            [ngClass]="{'error': editVendorForm.get('phone')?.invalid && editVendorForm.get('phone')?.touched}"
             (ngModelChange)="onVendorChanged('phone', $event)"
           />
         </td>

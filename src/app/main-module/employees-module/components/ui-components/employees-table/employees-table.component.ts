@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Employee } from '../../../models/employee';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-employees-table',
@@ -16,9 +17,11 @@ export class EmployeesTableComponent {
 
   editing: string = "-1"
   
-  m_name!: string
-  m_email!: string
-  m_role!: string
+  editEmployeeForm = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    email: new FormControl("", [Validators.required, Validators.email]),
+    role: new FormControl("", [Validators.required])
+  })
   
   psize: number = 10;
   currPage: number = 1;
@@ -39,9 +42,12 @@ export class EmployeesTableComponent {
     this.editing = _id
     const editingEmp = this.employees?.filter((emp: Employee) => emp._id == _id)[0]
 
-    this.m_name = editingEmp?.name || "";
-    this.m_email = editingEmp?.email || "";
-    this.m_role = editingEmp?.role || "";
+    const value = {
+      name: editingEmp.name,
+      email: editingEmp.email,
+      role: editingEmp.role,
+    }
+    this.editEmployeeForm.setValue(value);
   }
 
   onCancel() {
@@ -49,16 +55,19 @@ export class EmployeesTableComponent {
   }
 
   onDone() {
-    if (!this.m_name || !this.m_email || !this.m_role) {
-      alert("All fields are required!");
+    console.log("onDone")
+    if (!this.editEmployeeForm.valid) {
+      alert("Invalid values for updating employee");
       return;
     }
+
     this.updateEmployee.emit({
       _id: this.editing,
-      name: this.m_name,
-      email: this.m_email,
-      role: this.m_role
+      name: this.editEmployeeForm.value.name!,
+      email: this.editEmployeeForm.value.email!,
+      role: this.editEmployeeForm.value.role!,
     })
+
     this.editing = "-1";
   }
 

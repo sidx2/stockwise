@@ -6,6 +6,7 @@ import { Editor } from '../../../models/vendor';
 import { userSelector } from '../../../../../store/global.selectors';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { IGlobalState, User } from '../../../../../models/global';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-vendors-table',
@@ -28,11 +29,19 @@ export class VendorsTableComponent implements OnInit {
   editingId: string = "-1"
   user!: User
 
-  m_name!: string
-  m_email!: string
-  m_address!: string
-  m_phone!: string
+  // m_name!: string
+  // m_email!: string
+  // m_address!: string
+  // m_phone!: string
   m_orgId!: string
+
+  editVendorForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    address: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [Validators.required]),
+    orgId: new FormControl('')
+  });
 
   psize: number = 10;
   currPage: number = 1;
@@ -68,11 +77,21 @@ export class VendorsTableComponent implements OnInit {
     this.editingId = _id
     const editingVendor: Vendor = this.vendors.filter((vendor: Vendor) => vendor._id == _id)[0]
 
-    this.m_name = editingVendor.name
-    this.m_email = editingVendor.email
-    this.m_address = editingVendor.address
-    this.m_phone = editingVendor.phone
+    // this.m_name = editingVendor.name
+    // this.m_email = editingVendor.email
+    // this.m_address = editingVendor.address
+    // this.m_phone = editingVendor.phone
     this.m_orgId = editingVendor.orgId
+
+    const value = {
+      name: editingVendor.name,
+      email: editingVendor.email,
+      address: editingVendor.address,
+      phone: editingVendor.phone,
+      orgId: editingVendor.orgId
+    }
+
+    this.editVendorForm.setValue(value);
 
     this.startedEditing.emit({ vendorId: this.editingId, name: this.user.name, userId: this.user._id });
   }
@@ -83,23 +102,34 @@ export class VendorsTableComponent implements OnInit {
   }
 
   onDone() {
-    if (!this.m_name || !this.m_email || !this.m_address || !this.m_phone) {
-      alert("All fields are require");
+    if (!this.editVendorForm.valid) {
+      alert("Invalid input for updating vendor!");
       return;
     }
 
-    this.updateVendor.emit({
+    // this.updateVendor.emit({
+    //   _id: this.editingId,
+    //   name: this.m_name,
+    //   email: this.m_email,
+    //   address: this.m_address,
+    //   phone: this.m_phone,
+    //   orgId: this.m_orgId,
+    // })
+
+    const updatedVendor: Vendor = {
       _id: this.editingId,
-      name: this.m_name,
-      email: this.m_email,
-      address: this.m_address,
-      phone: this.m_phone,
-      orgId: this.m_orgId,
-    })
+      name: this.editVendorForm.value.name!,
+      email: this.editVendorForm.value.email!,
+      address: this.editVendorForm.value.address!,
+      phone: this.editVendorForm.value.phone!,
+      orgId: this.editVendorForm.value.orgId!,
+    }
+
+    this.updateVendor.emit(updatedVendor)
 
     this.cancelledEditing.emit(this.editingId);
     this.editingId = "-1"
-    console.log(this.m_name, this.m_email, this.m_address, this.m_phone)
+    // console.log(this.m_name, this.m_email, this.m_address, this.m_phone)
   }
 
   onDelete(_id: string) {
@@ -109,7 +139,8 @@ export class VendorsTableComponent implements OnInit {
   }
 
   onVendorChanged(key: string, event: Event) {
-    console.log(event)
+    console.log("key event", key, event)
+
     // this.changeVendor.emit({
     //   _id: this.editingId,
     //   [key]: event,
@@ -117,11 +148,11 @@ export class VendorsTableComponent implements OnInit {
     // })
     this.changeVendor.emit({
       _id: this.editingId,
-      name: this.m_name,
-      address: this.m_address,
-      email: this.m_email,
-      phone: this.m_phone,
-      orgId: this.m_orgId
+      name: this.editVendorForm.value.name!,
+      address: this.editVendorForm.value.address!,
+      email: this.editVendorForm.value.email!,
+      phone: this.editVendorForm.value.phone!,
+      orgId: this.editVendorForm.value.orgId!
     })
   }
 

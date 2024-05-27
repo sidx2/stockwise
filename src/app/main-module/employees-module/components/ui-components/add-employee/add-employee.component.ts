@@ -15,7 +15,7 @@ export class AddEmployeeComponent {
   addEmployeeForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
     email: new FormControl("", [Validators.required, Validators.email]),
-    role: new FormControl("user", [Validators.required]),
+    role: new FormControl("employee", [Validators.required]),
   })
 
   getErrorMessage(controlName: string): string {
