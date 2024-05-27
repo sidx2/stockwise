@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { IGlobalState } from '../../../models/global';
@@ -14,22 +14,21 @@ export class NavbarComponent implements OnInit {
   globalState$: Observable<IGlobalState>;
   orgName: string = '';
   isSidebarOpen: boolean = false;
-  globalStateSubscription: Subscription | undefined;
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store<{ global: IGlobalState }>, private router: Router, private cs: CookieService, private elementRef: ElementRef) {
     this.globalState$ = this.store.select('global');
   }
 
   ngOnInit(): void {
-    this.globalStateSubscription = this.globalState$.subscribe((global) => {
+   this.globalState$.pipe(takeUntil(this.destroy$)).subscribe((global) => {
       this.orgName = global.org.name;
     });
   }
 
   ngOnDestroy(): void {
-    if (this.globalStateSubscription) {
-      this.globalStateSubscription.unsubscribe();
-    }
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 
   toggleSidebar(event: MouseEvent): void {
