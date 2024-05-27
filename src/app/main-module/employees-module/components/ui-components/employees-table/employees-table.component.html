@@ -41,13 +41,13 @@
       <ng-template #elseBlock>
         <tr class="pending">
           <td>
-            <input type="text" [(ngModel)]="m_name" value="{{ emp.name }}" />
+            <input  appCustomInputStyle type="text" [(ngModel)]="m_name" value="{{ emp.name }}" />
           </td>
           <td>
-            <input type="text" [(ngModel)]="m_email" value="{{ emp.email }}" />
+            <input appCustomInputStyle type="text" [(ngModel)]="m_email" value="{{ emp.email }}" />
           </td>
           <td>
-            <select [(ngModel)]="m_role">
+            <select [(ngModel)]="m_role" appCustomInputStyle>
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>
