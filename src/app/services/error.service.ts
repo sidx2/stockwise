@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ErrorService {
 
-  errorSubject: Subject<string> | null = null;
+  errorSubject: Subject<string>;
 
   constructor(private toastr: ToastrService) { 
     this.errorSubject = new Subject();

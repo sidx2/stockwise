@@ -9,7 +9,7 @@ import { IGlobalState } from '../models/global';
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
-  global$: Observable<IGlobalState> | null = null;
+  global$: Observable<IGlobalState>;
 
   constructor(private store: Store<{ global: IGlobalState}>){
     this.global$ = this.store.select('global')
