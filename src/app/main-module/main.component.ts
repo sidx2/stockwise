@@ -12,6 +12,7 @@ export class MainComponent {
   global$: Observable<IGlobalState>;
 
   constructor(private store: Store<{ global: IGlobalState}>){
-    this.global$ = this.store.select('global')
+    this.global$ = this.store.select('global');
+    
   }
 }

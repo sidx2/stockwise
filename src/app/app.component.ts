@@ -3,6 +3,7 @@ import { ErrorService } from './services/error.service';
 import { Store } from '@ngrx/store';
 import { init } from './store/global.actions';
 import { IGlobalState } from './models/global';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,19 @@ import { IGlobalState } from './models/global';
 export class AppComponent implements OnInit{
   title = 'Stockwise-frontend';
 
-  constructor(public errorService: ErrorService,private store: Store<{ global: IGlobalState }>){}
+  constructor(
+    public errorService: ErrorService,
+    private store: Store<{ global: IGlobalState }>,
+    private cookieService: CookieService,
+  ){}
 
   ngOnInit(): void {
-    this.store.dispatch(init())
+    const rawUser = this.cookieService.get("user");
+    const rawOrg = this.cookieService.get("org");
+
+    const user = JSON.parse(rawUser || "{}");
+    const org = JSON.parse(rawOrg || "{}");
+
+    this.store.dispatch(init({ user, org }));
   }
 }

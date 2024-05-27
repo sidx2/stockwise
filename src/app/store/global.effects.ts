@@ -72,52 +72,6 @@ export class globalEffects {
         )
     )
 
-    startupEffect$ = createEffect(() =>
-        this.action$.pipe(
-            ofType(init),
-
-            tap(() => {
-                console.log('Application started!');
-                const rawUser = this.cs.get("user")
-                const rawOrg = this.cs.get("org")
-
-                console.log("rawUser:", rawUser)
-                console.log("rawOrg:", rawOrg)
-
-                const user = JSON.parse(rawUser || "{}")
-                const org = JSON.parse(rawOrg || "{}")
-
-                console.log("user in init:", user)
-                console.log("org in init:", org)
-                console.log("user.id in init: ", user._id)
-
-                try {
-                    this.store.dispatch(setUser({ user: user }))
-                    this.store.dispatch(setOrg({ org: org }));
-                    this.store.dispatch(loginUserSuccess({ user }))
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            })
-        ), { dispatch: false });
-
-    orgEffect$ = createEffect(() =>
-        this.action$.pipe(
-            ofType(fetchOrgSuccess),
-
-            tap((t) => {
-                console.log("t in tap: ", t);
-                try {
-                    this.cs.set("org", JSON.stringify(t))
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            })
-        ), { dispatch: false }
-    );
-
     changePassword$ = createEffect(() =>
         this.action$.pipe(
             ofType(changePasswordRequest),
