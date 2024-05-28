@@ -153,20 +153,20 @@ hr {
   color: 1px solid rgb(252, 248, 248);
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
   .profile {
     width: 100%;
     padding: 0.5rem;
   }
+}
 
+@media screen and (max-width: 600px) {
   .userInfo{
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
   }
-}
-
-@media screen and (max-width: 600px) {
+  
   .asset {
     flex-direction: column;
   }
