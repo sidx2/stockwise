@@ -71,16 +71,15 @@ export class EmployeeEffects {
                         console.log("res:", res);
                         this.store.dispatch(resetEmployeeLoading());
                         this.toastr.success("Employee deleted successfully!");
-                        return deleteEmployeeSuccess({ employeeId });
+                        return deleteEmployeeSuccess({ employeeId })
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
                         console.log("err: ", err);
-                        const error = err?.error || "Something went wrong";
-                        // this.toastr.error(`Could not delete emploee. ${error}`);
+                        const error = err?.error?.error || "Something went wrong";
+                        this.toastr.error(`Could not delete emploee. ${error}`);
                         return of(deleteEmployeeFailure({ error }));
-                    }
-                    )
+                    })
                 )
             )
         )
