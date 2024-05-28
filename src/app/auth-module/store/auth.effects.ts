@@ -6,7 +6,6 @@ import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, cr
 import { Store } from "@ngrx/store";
 import { IAuthState } from "../models/auth";
 import { ToastrService } from "ngx-toastr";
-// import { changePasswordFailure, changePasswordRequest, changePasswordSuccess } from "../../store/global.actions";
 
 @Injectable()
 export class authEffects {

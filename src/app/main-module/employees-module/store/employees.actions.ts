@@ -2,7 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { Employee, IAddEmployee } from "../models/employee";
 import { User } from "../../../models/global";
 
-export const fetchEmployees = createAction("fetchEmployees");
+export const fetchEmployeesRequest = createAction("fetchEmployees");
 export const fetchEmployeesSuccess = createAction("fetchEmployeesSuccess", props<{ employees: Employee[] }>());
 export const fetchEmployeesFailure = createAction("fetchEmployeesFailure", props<{ error: string }>());
 
@@ -21,6 +21,3 @@ export const updateEmployeeFailure = createAction("updateEmployeeFailure", props
 export const addEmployeeRequest = createAction("addEmployeeRequest", props<{ employee: Employee }>());
 export const addEmployeeSuccess = createAction("addEmployeeSuccess", props<{ employee: Employee }>())
 export const addEmployeeFailure = createAction("addEmployeeFailure", props<{ error: string }>());
-
-export const setEmployeeLoading = createAction('setEmployeeLoading');
-export const resetEmployeeLoading = createAction('resetEmployeeLoading');

@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, resetHistoryLoading, setHistoryLoading, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions"
+import { deleteOrderFailure, deleteOrderRequest, deleteOrderSuccess, fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions"
 import { IHistoryState, Order } from "../models/order-history";
 
 export const initialState: IHistoryState = {
@@ -10,48 +10,45 @@ export const initialState: IHistoryState = {
 export const historyReducer = createReducer(
     initialState,
     on(fetchHistoryRequest, (state, action) => {
-        console.log("fetchHistoryRequest", "state: ", state, "action:", action);
-        return (state);
+        return ({ ...state, isLoading: true });
     }),
+
     on(fetchHistorySuccess, (state, action) => {
-        console.log("fetchHistorySuccess", "state: ", state, "action:", action);
-        return ({...state, history: action.history});
+        return ({...state, history: action.history, isLoading: false });
     }),
+    
     on(fetchHistoryFailure, (state, action) => {
-        console.log("fetchHistoryFailure", "state: ", state, "action:", action);
-        return (state);
+        return ({ ...state, isLoading: false});
     }),
 
     on(updateStatusRequest, (state, action) => {
-        console.log("updateStatusRequest", "state: ", state, "action:", action);
-        return (state);
-    }),
-    on(updateStatusSuccess, (state, action) => {
-        console.log("updateStatusSuccess", "state: ", state, "action:", action);
-        action._id
-        action.updatedStatus
-
-        const newHistory = state.history.map((h: Order) => {
-            if (h._id == action._id) { 
-                return { ...h, status: action.updatedStatus }
-            }
-            return h
-        })
-
-        return ({...state, history: newHistory});
-    }),
-    on(updateStatusFailure, (state, action) => {
-        console.log("updateStatusFailure", "state: ", state, "action:", action);
-        return (state);
-    }),
-
-    // loading...
-    on(setHistoryLoading, (state) => {
-        console.log("setHistoryLoading", "state:", state, "action: ", undefined)
         return ({ ...state, isLoading: true });
     }),
-    on(resetHistoryLoading, (state) => {
-        console.log("resetHistoryLoading", "state:", state, "action: ", undefined)
-        return ({...state, isLoading: false });
-    })
+
+    on(updateStatusSuccess, (state, action) => {
+        const newHistory = state.history.map((h: Order) => {
+            if (h._id == action._id) { 
+                return { ...h, status: action.updatedStatus };
+            }
+            return h;
+        })
+
+        return ({...state, history: newHistory, isLoading: false });
+    }),
+
+    on(updateStatusFailure, (state, action) => {
+        return ({ ...state, isLoading: false });
+    }),
+
+    // delete
+    on(deleteOrderRequest, (state) => {
+        return ({ ...state, isLoading: true });
+    }),
+    on(deleteOrderSuccess, (state, action) => {
+        const newHistory = state.history.filter((h: Order) => h._id !== action.order._id.toString())
+        return ({...state, history: newHistory, isLoading: false }); 
+    }),
+    on(deleteOrderFailure, (state) => {
+        return ({ ...state, isLoading: false });
+    }),
 )

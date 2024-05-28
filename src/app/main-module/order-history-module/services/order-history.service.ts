@@ -19,4 +19,8 @@ export class OrderHistoryService {
     console.log("orgId in updatestatus: ", status, orderId);
     return this.http.post(`${BASE_URL}/order/${status}`, { id: orderId } )
   }
+
+  deleteOrder(_id: string) {
+    return this.http.delete(`${BASE_URL}/order/delete`, { body: { _id } });
+  }
 }

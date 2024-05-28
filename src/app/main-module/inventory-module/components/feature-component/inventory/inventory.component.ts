@@ -10,7 +10,7 @@ import { getCategoryRequest } from '../../../../category-module/store/category.a
 import { Actions, ofType } from '@ngrx/effects';
 import { Employee } from '../../../../employees-module/models/employee';
 import { employeesStateSelector } from '../../../../employees-module/store/employees.selectors';
-import { fetchEmployees } from '../../../../employees-module/store/employees.actions';
+import { fetchEmployeesRequest } from '../../../../employees-module/store/employees.actions';
 import { getErrorMessage, getLoading, inventorySelector } from '../../../store/inventory.selector';
 import { categorySelector } from '../../../../category-module/store/category.selector';
 import { ToastrService } from 'ngx-toastr';
@@ -73,7 +73,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(getCategoryRequest());
     this.store.dispatch(getItemRequest());
-    this.store.dispatch(fetchEmployees());
+    this.store.dispatch(fetchEmployeesRequest());
 
     this.categories$.pipe(
       filter(categories => categories.length > 0),

@@ -9,5 +9,6 @@ export const updateStatusRequest = createAction("updateStatusRequest", props<ISt
 export const updateStatusSuccess = createAction("updateStatusSuccess", props<IStatusUpdated>());
 export const updateStatusFailure = createAction("updateStatusFailure", props<{ error: string }>());
 
-export const setHistoryLoading = createAction('setHistoryLoading');
-export const resetHistoryLoading = createAction('resetHistoryLoading');
+export const deleteOrderRequest = createAction("deleteOrderRequest", props<{ _id: string }>());
+export const deleteOrderSuccess = createAction("deleteOrderSuccess", props<{ order: Order }>());
+export const deleteOrderFailure = createAction("deleteOrderFailure", props<{ error: string }>());
