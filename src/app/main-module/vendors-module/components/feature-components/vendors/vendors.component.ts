@@ -44,8 +44,8 @@ export class VendorsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(fetchVendorsRequest());
     
-    this.orgId = JSON.parse(this.cookieService.get("org")!)._id;
-    this.user = JSON.parse(this.cookieService.get("user")!)
+    this.orgId = cookieService.getOrg()._id;
+    this.user = cookieService.getUser()
       this.socketService.joinRoom(this.orgId, this.user._id)
 
     this.actions$.pipe(

@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
   ) {
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
-    this.user = JSON.parse(this.cookieService.get("user")!);
+    this.user = cookieService.getUser();
     console.log("user in profile: ", this.user);
   }
 

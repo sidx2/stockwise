@@ -40,6 +40,14 @@ export class CookieService {
     return false;
   }
 
+  getUser() {
+    return JSON.parse(this.get("user")!);
+  }
+  
+  getOrg() {
+    return JSON.parse(this.get("org")!);
+  }
+  
   clearAll(): boolean {
     if (!isPlatformBrowser(this.platformId)) { return false; }
     const cookies = document.cookie.split('; ');

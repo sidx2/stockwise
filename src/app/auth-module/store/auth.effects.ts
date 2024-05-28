@@ -29,6 +29,7 @@ export class authEffects {
                         return loginUserSuccess({ user: res });
                     }),
                     catchError((err) => {
+                        console.log("err: ", err);
                         this.store.dispatch(resetLoading());
                         const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Failed to login. ${error}`);
@@ -58,8 +59,7 @@ export class authEffects {
                         const error = err?.error?.error || "Something went wrong! Could not signup"
                         this.toastr.error(error);
                         return of(signupFailure({ error }))
-                    }
-                    )
+                    })
                 )
             )
         )

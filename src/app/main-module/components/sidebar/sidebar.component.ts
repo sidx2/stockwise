@@ -13,7 +13,7 @@ export class SidebarComponent {
   user!: User;
 
   constructor(private cookieService: CookieService){
-    this.user = JSON.parse(this.cookieService.get("user")!);
+    this.user = cookieService.getUser();
     console.log("user is sidebar: ", this.user);
   }
 
