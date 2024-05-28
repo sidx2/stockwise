@@ -2,24 +2,19 @@
   width: 100%;
 }
 
+.inventory .searchBar{
+  display: block;
+  width: 90%;
+  margin: auto;
+}
+
 .inventory .filterOption {
   padding: 1rem 0rem;
   width: 90%;
-  margin: 1rem auto;
+  margin: 0.5rem auto;
   display: flex;
-  justify-content: space-between;
   gap: 1rem;
 }
-
-.filterOption .searchBar {
-  flex: 3;
-}
-
-.filterOption .filter {
-  flex: 1;
-}
-
-// modal styling
 
 .deleteConfirmation {
   display: flex;

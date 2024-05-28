@@ -68,9 +68,14 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.store.dispatch(createCategoryRequest({ category: category }));
   }
 
-  updateCategoryHandler(updatedCategory: Category) {
-    this.store.dispatch(updateCategoryRequest({ updatedCategory }));
-    this.fetchCategoryHandler();
+  updateCategoryHandler(updatedCategoryResponse: { updatedCategory: Category, dataChanged: boolean}) {
+    if(updatedCategoryResponse.dataChanged){
+      this.store.dispatch(updateCategoryRequest({ updatedCategory: updatedCategoryResponse.updatedCategory }));
+      this.fetchCategoryHandler()
+    }
+    else{
+      this.hideCategoryForm()
+    }
   }
 
   deleteCategoryHandler(categoryId: string) {

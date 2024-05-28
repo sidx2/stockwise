@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil, filter, take } from 'rxjs/operators';
+import { map, takeUntil, take } from 'rxjs/operators';
 import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess, createMultipleItemRequest, createMultipleItemSuccess } from '../../../store/inventory.action';
 import { Category, CategoryState } from '../../../../category-module/models/category';
 import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
@@ -25,10 +25,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
   items$: Observable<Item[]>;
   categories$!: Observable<Category[]>;
   employees!: Employee[];
-  filteredItems$!: Observable<Item[]>;;
+  filteredItems$!: Observable<Item[]>;
+  filteredCategories$!: Observable<Category[]>;
   destroy$: Subject<void> = new Subject();
 
-  selectedCategory: Category | null = null;
+  selectedCategoryId: string = 'all';
+  selectedIdentificationType: string = 'unique';
   updateItemCategory: Category | null = null;
 
   isInventoryFormVisible: boolean = false;
@@ -47,7 +49,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
-  constructor(private store: Store<{inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
+  constructor(private store: Store<{ inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
 
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));
@@ -56,11 +58,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe((state) => {
       this.employees = state.employees;
     });
-    
+
     this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading: boolean) => {
       this.isLoading = loading;
     });
-    
+
     this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
       if (errorMessage) {
         toastr.error(errorMessage);
@@ -74,14 +76,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.store.dispatch(getCategoryRequest());
     this.store.dispatch(getItemRequest());
     this.store.dispatch(fetchEmployees());
-
-    this.categories$.pipe(
-      filter(categories => categories.length > 0),
-      takeUntil(this.destroy$),
-    ).subscribe(categories => {
-      this.selectedCategory = categories[0];
-      this.onCategoryChange();
-    });
 
     this.actions$.pipe(
       ofType(createItemSuccess),
@@ -137,6 +131,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
         this.checkoutMailDetails = null;
       }
     });
+
+    this.onIdentificationTypeChange()
   }
 
   ngOnDestroy(): void {
@@ -144,27 +140,48 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onCategoryChange(): void {
+
+  onIdentificationTypeChange(): void {
+    console.log("inside onidtype", this.selectedIdentificationType);
     this.searchText = '';
+
     this.filteredItems$ = this.items$.pipe(
-      map(items => {
-        const selectedCategoryId = this.selectedCategory?._id;
-        return selectedCategoryId ? items.filter(item => item.categoryId === selectedCategoryId) : items;
-      }),
+      map(items => items.filter(item => item.identificationType === this.selectedIdentificationType)),
       takeUntil(this.destroy$)
     );
+
+    this.filteredCategories$ = this.categories$.pipe(
+      map(categories => categories.filter(category => category.identificationType === this.selectedIdentificationType)),
+      takeUntil(this.destroy$)
+    );
+  }
+
+
+  onCategoryChange(): void {
+    if (this.selectedCategoryId === 'all') {
+      this.onIdentificationTypeChange();
+    } else {
+      this.filteredItems$ = this.items$.pipe(
+        map(items => items.filter(item => item.categoryId === this.selectedCategoryId)),
+        takeUntil(this.destroy$)
+      );
+    }
   }
 
   createItemHandler(item: Item) {
     this.store.dispatch(createItemRequest({ item }));
   }
 
-  createMultipleItemHandler(item: Item){
+  createMultipleItemHandler(item: Item) {
     this.store.dispatch(createMultipleItemRequest({ item }));
   }
 
-  updateItemHandler(updatedItem: Item) {
-    this.store.dispatch(updateItemRequest({ updatedItem }));
+  updateItemHandler(updatedItemresponse: { updatedItem: Item, dataChanged: boolean }) {
+    if (updatedItemresponse.dataChanged) {
+      this.store.dispatch(updateItemRequest({ updatedItem: updatedItemresponse.updatedItem }));
+    } else {
+      this.hideInventoryForm();
+    }
   }
 
   deleteItemHandler(itemId: string) {

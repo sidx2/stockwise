@@ -15,7 +15,7 @@ import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor'
 export class CategoryFormComponent implements OnInit, OnDestroy {
 
   @Output() createCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
-  @Output() updateCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
+  @Output() updateCategoryEmmiter: EventEmitter<{updatedCategory: Category, dataChanged: boolean}> = new EventEmitter();
 
   @Input() selectedCategory: Category | null = null;
   private destroy$ = new Subject<void>();
@@ -122,12 +122,12 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       if (!this.isEditMode) {
         this.createCategoryEmmiter.emit({ ...formData, vendors: selectedVendorsId });
       } else {
-        this.updateCategoryEmmiter.emit({
+        this.updateCategoryEmmiter.emit({updatedCategory:{
           ...formData,
           _id: this.selectedCategory?._id,
           orgId: this.selectedCategory?.orgId,
           vendors: selectedVendorsId,
-        });
+        }, dataChanged: this.categoryFormGroup.dirty});
       }
     }
   }

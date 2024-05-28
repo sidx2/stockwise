@@ -19,7 +19,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
   @Output() createItemEmmiter: EventEmitter<Item> = new EventEmitter();
   @Output() createMultipleItemEmmiter: EventEmitter<Item> = new EventEmitter();
-  @Output() updateItemEmmiter: EventEmitter<Item> = new EventEmitter();
+  @Output() updateItemEmmiter: EventEmitter<{ updatedItem: Item, dataChanged: boolean }> = new EventEmitter();
 
   selectedCategory: Category | null = null;
   isEditMode: boolean = false;
@@ -166,7 +166,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
     if (this.isEditMode) {
       newItem._id = this.selectedItem?._id;
-      this.updateItemEmmiter.emit(newItem);
+      this.updateItemEmmiter.emit({ updatedItem: newItem, dataChanged: this.itemFormGroup.dirty });
 
     } else {
       newItem.itemImage = this.imageS3Key;
@@ -176,7 +176,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
         if (operationTypeValue === 'single') {
           this.createItemEmmiter.emit(newItem);
-        }else{
+        } else {
           this.createMultipleItemEmmiter.emit(newItem);
         }
       } else {

@@ -137,11 +137,7 @@
 
             <button
               appButtonPrimaryLight
-              *ngIf="
-                item &&
-                item.checkedOutQuantity !== undefined &&
-                item.checkedOutQuantity > 0
-              "
+              [disabled]="item && item.checkedOutQuantity <= 0"
               (click)="checkinItemHandler(item)"
             >
               <mat-icon>assignment_return</mat-icon>
