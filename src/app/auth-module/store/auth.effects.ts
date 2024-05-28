@@ -6,7 +6,6 @@ import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, cr
 import { Store } from "@ngrx/store";
 import { IAuthState } from "../models/auth";
 import { ToastrService } from "ngx-toastr";
-// import { changePasswordFailure, changePasswordRequest, changePasswordSuccess } from "../../store/global.actions";
 
 @Injectable()
 export class authEffects {
@@ -29,6 +28,7 @@ export class authEffects {
                         return loginUserSuccess({ user: res });
                     }),
                     catchError((err) => {
+                        console.log("err: ", err);
                         this.store.dispatch(resetLoading());
                         const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Failed to login. ${error}`);
@@ -58,8 +58,7 @@ export class authEffects {
                         const error = err?.error?.error || "Something went wrong! Could not signup"
                         this.toastr.error(error);
                         return of(signupFailure({ error }))
-                    }
-                    )
+                    })
                 )
             )
         )

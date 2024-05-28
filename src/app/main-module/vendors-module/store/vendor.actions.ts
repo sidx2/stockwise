@@ -17,7 +17,4 @@ export const updateVendorRemote = createAction("updateVendorRemote", props<{ ven
 
 export const deleteVendorRequest = createAction("deleteVendorRequest", props<{ vendorId: string }>())
 export const deleteVendorSuccess = createAction("deleteVendorSuccess", props<{ vendor: Vendor }>())
-export const deleteVendorFailure = createAction("deleteVendorFailure", props<{ error: string }>())
-
-export const setVendorLoading = createAction('setVendorLoading');
-export const resetVendorLoading = createAction('resetVendorLoading');
+export const deleteVendorFailure = createAction("deleteVendorFailure", props<{ error: string }>());

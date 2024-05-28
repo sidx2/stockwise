@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, resetVendorLoading, setVendorLoading, updateVendorFailure, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
+import { addVendorFailure, addVendorRequest, addVendorSuccess, deleteVendorFailure, deleteVendorRequest, deleteVendorSuccess, fetchVendorsFailure, fetchVendorsRequest, fetchVendorsSuccess, updateVendorFailure, updateVendorRemote, updateVendorRequest, updateVendorSuccess } from "./vendor.actions";
 import { IVendorsState, Vendor } from "../models/vendor";
 
 export const initialState: IVendorsState = {
@@ -10,40 +10,32 @@ export const initialState: IVendorsState = {
 export const vendorReducer = createReducer(
     initialState,
     on(fetchVendorsRequest, (state) => {
-        console.log("fetchVendors:", "state: ", state);
-        return (state);
+        return ({ ...state, isLoading: true });
     }),
     on(fetchVendorsSuccess, (state, action) => {
-        console.log("fetchVendorsSuccess:", "state: ", state, "action ->", action);
-        return ({ ...state, vendors: action.vendors });
+        return ({ ...state, vendors: action.vendors, isLoading: false });
     }),
-    on(fetchVendorsFailure, (state, action) => {
-        console.log("fetchVendorsFailure:", "state: ", state, "action ->", action);
-        return (state);
+    on(fetchVendorsFailure, (state) => {
+        return ({ ...state, isLoading: false });
     }),
 
     // add vendors
-    on(addVendorRequest, (state, action) => {
-        console.log("addVendorRequest", "state:", state, "action: ", action)
-        return (state)
+    on(addVendorRequest, (state) => {
+        return ({ ...state, isLoading: true })
     }),
     on(addVendorSuccess, (state, action) => {
-        console.log("addVendorSuccess", "state:", state, "action: ", action)
-        return ({ ...state, vendors: [...state.vendors, action.vendor] });
+        return ({ ...state, vendors: [...state.vendors, action.vendor], isLoading: false });
     }),
 
-    on(addVendorFailure, (state, action) => {
-        console.log("addVendorFailure", "state:", state, "action: ", action)
-        return (state)
+    on(addVendorFailure, (state) => {
+        return ({ ...state, isLoading: false });
     }),
 
     // update vendor
-    on(updateVendorRequest, (state, action) => {
-        console.log("updateVendorRequest:", "state: ", state, "action ->", action);
-        return (state);
+    on(updateVendorRequest, (state) => {
+        return ({ ...state, isLoading: true });
     }),
     on(updateVendorSuccess, (state, action) => {
-        console.log("updateVendorSuccess:", "state: ", state, "action ->", action);
         const newVenors = state.vendors.map((vendor: Vendor) => {
             if (vendor._id == action.vendor._id) {
                 vendor = action.vendor
@@ -51,16 +43,14 @@ export const vendorReducer = createReducer(
             return vendor
         })
 
-        return ({ ...state, vendors: newVenors });
+        return ({ ...state, vendors: newVenors, isLoading: false });
     }),
-    on(updateVendorFailure, (state, action) => {
-        console.log("updateVendorFailure:", "state: ", state, "action ->", action);
-        return (state);
+    on(updateVendorFailure, (state) => {
+        return ({ ...state, isLoading: false });
     }),
 
     // remote update
     on(updateVendorRemote, (state, action) => {
-        console.log("updateVendorSuccess:", "state: ", state, "action ->", action);
         const newVenors = state.vendors.map((vendor: Vendor) => {
             if (vendor._id == action.vendor._id) {
                 vendor = {...vendor, ...action.vendor}
@@ -72,28 +62,14 @@ export const vendorReducer = createReducer(
     }),
 
     // delete vendor
-    on(deleteVendorRequest, (state, action) => {
-        console.log("deleteVendorRequest:", "state: ", state, "action ->", action);
-        return (state);
-    }),
-    on(deleteVendorSuccess, (state, action) => {
-        console.log("deleteVendorSuccess:", "state: ", state, "action ->", action);
-        const newVendors = state.vendors.filter((vendor: Vendor) => vendor._id !== action.vendor._id)
-
-        return ({ ...state, vendors: newVendors });
-    }),
-    on(deleteVendorFailure, (state, action) => {
-        console.log("deleteVendorFailure:", "state: ", state, "action ->", action);
-        return (state);
-    }),
-
-    // loading...
-    on(setVendorLoading, (state) => {
-        console.log("setVendorLoading", "state:", state, "action: ", undefined)
+    on(deleteVendorRequest, (state) => {
         return ({ ...state, isLoading: true });
     }),
-    on(resetVendorLoading, (state) => {
-        console.log("resetVendorLoading", "state:", state, "action: ", undefined)
-        return ({...state, isLoading: false });
-    })
+    on(deleteVendorSuccess, (state, action) => {
+        const newVendors = state.vendors.filter((vendor: Vendor) => vendor._id !== action.vendor._id)
+        return ({ ...state, vendors: newVendors, isLoading: false });
+    }),
+    on(deleteVendorFailure, (state) => {
+        return ({ ...state, isLoading: false });
+    }),
 )

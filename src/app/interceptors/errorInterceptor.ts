@@ -30,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         this.toastr.error(errorMessage);
-        return throwError(errorMessage);
+        return next.handle(request);
       })
     );
   }

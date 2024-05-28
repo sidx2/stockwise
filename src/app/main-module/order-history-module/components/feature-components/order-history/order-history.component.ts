@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fetchHistoryRequest, updateStatusRequest } from '../../../store/order-history.actions';
+import { deleteOrderRequest, fetchHistoryRequest, updateStatusRequest } from '../../../store/order-history.actions';
 import { historyStateSelector } from '../../../store/order-history.selectors';
 import { IHistoryState, IStatusUpdated, Order } from '../../../models/order-history';
 import { Subject, takeUntil } from 'rxjs';
@@ -34,6 +34,10 @@ export class OrderHistoryComponent implements OnDestroy {
       _id: event._id,
       updatedStatus: event.updatedStatus
     }))
+  }
+
+  onDeleteOrder(_id: string) {
+    this.store.dispatch(deleteOrderRequest({ _id }));
   }
 
   ngOnDestroy(): void {

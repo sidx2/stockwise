@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
     private cookieService: CookieService, 
     private elementRef: ElementRef
   ) {
-    this.orgName = JSON.parse(this.cookieService.get("org")!).name;
+    this.orgName = cookieService.getOrg().name;
     this.isLoggedIn = Boolean(this.cookieService.get("isLoggedIn"));
 
     console.log("orgname and isLoggedin in navbar: ", this.orgName, this.isLoggedIn);
@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
+
   ngOnDestroy(): void {}
 
   toggleSidebar(event: MouseEvent): void {

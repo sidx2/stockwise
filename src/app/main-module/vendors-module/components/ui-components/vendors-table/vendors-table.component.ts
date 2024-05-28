@@ -51,7 +51,7 @@ export class VendorsTableComponent implements OnInit {
     private toastr: ToastrService,
     private cookieService: CookieService,
   ) {
-    this.user = JSON.parse(this.cookieService.get("user")!);
+    this.user = cookieService.getUser();
 
     this.searchSubject.pipe(
       debounceTime(500),  // 0.5 seconds
