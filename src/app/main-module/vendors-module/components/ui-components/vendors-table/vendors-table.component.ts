@@ -48,7 +48,6 @@ export class VendorsTableComponent implements OnInit {
   destroySubject = new Subject<void>();
 
   constructor(
-    private store: Store<{ employees: IEmployeesState }>,
     private toastr: ToastrService,
     private cookieService: CookieService,
   ) {
@@ -102,7 +101,7 @@ export class VendorsTableComponent implements OnInit {
     if (!this.editVendorForm.valid) {
       for (const key of Object.keys(this.editVendorForm.value)) {
         const error = this.getErrorMessage(key)
-        this.toastr.error(`Invalid ${key}. ${error}`);
+        if (error) this.toastr.error(`Invalid ${key}. ${error}`);
       }
       return;
     }

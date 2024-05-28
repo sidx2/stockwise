@@ -29,7 +29,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         return of(fetchEmployeesFailure({ error }));
                     }
                     )
@@ -52,7 +52,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not update employee. ${error}`);
                         return of(updateEmployeeFailure({ error }))
                     })
@@ -71,16 +71,15 @@ export class EmployeeEffects {
                         console.log("res:", res);
                         this.store.dispatch(resetEmployeeLoading());
                         this.toastr.success("Employee deleted successfully!");
-                        return deleteEmployeeSuccess({ employeeId });
+                        return deleteEmployeeSuccess({ employeeId })
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
                         console.log("err: ", err);
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not delete emploee. ${error}`);
                         return of(deleteEmployeeFailure({ error }));
-                    }
-                    )
+                    })
                 )
             )
         )
@@ -100,7 +99,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not create user. ${error}`);
                         return of(createUserFailure({ error }));
                     })
@@ -122,7 +121,7 @@ export class EmployeeEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetEmployeeLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not add employee to the organization. ${error}`);
                         return of(addEmployeeFailure({ error }));
                     })

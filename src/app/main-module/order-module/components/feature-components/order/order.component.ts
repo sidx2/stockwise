@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
+import { getProductVendorsRequest, placeOrderRequest } from '../../../store/order.actions';
 import { productVendorsStateSelector } from '../../../store/order.selectors';
 import { Subject, takeUntil } from 'rxjs';
 import { IOrderState } from '../../../models/order';
@@ -35,9 +35,9 @@ export class OrderComponent implements OnDestroy {
   ) {
     this.store.select(productVendorsStateSelector).pipe(
       takeUntil(this.destroySubject),
-    ).subscribe((state) => { 
+    ).subscribe((state) => {
       this.productVendors = state.productVendors;
-      this.isLoading = state.isLoading; 
+      this.isLoading = state.isLoading;
     })
 
     this.org = JSON.parse(this.cookieService.get("org")!)
@@ -70,8 +70,6 @@ export class OrderComponent implements OnDestroy {
     const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
     const productIndex = this.productVendors.findIndex(pv => pv.item._id === selectedProduct);
     this.selectedProductVendors[index] = this.productVendors[productIndex].vendors;
-
-    console.log("selectedProductVendors:", this.selectedProductVendors);
   }
 
   removeProduct(index: number) {
@@ -94,15 +92,11 @@ export class OrderComponent implements OnDestroy {
       return;
     }
     if (!this.OrderFormArray.valid) {
-      for (const key of Object.keys(this.OrderFormArray.value)) {
-        const error = this.getErrorMessage(key)
-        this.toastr.error(`Invalid ${key}. ${error}`);
-      }
-      return;
+      this.toastr.error("All fields are required & quantity must be between 1-999")
     }
 
     const cart: CartItem[] = this.OrderFormArray.value.map((orderForm: OrderForm) => {
-      const cartItem: CartItem = { 
+      const cartItem: CartItem = {
         item: { _id: "", name: "", categoryId: "" },
         vendor: orderForm.vendor,
         quantity: orderForm.quantity,
@@ -116,33 +110,16 @@ export class OrderComponent implements OnDestroy {
 
     const order: IPlaceOrder = {
       org: { _id: this.org._id },
-      admin: { 
-        _id: this.user._id, 
-        name: this.user.name },
+      admin: {
+        _id: this.user._id,
+        name: this.user.name
+      },
       cart,
     }
 
     this.store.dispatch(placeOrderRequest({ order }))
 
     this.cleanForms();
-  }
-
-  getErrorMessage(controlName: string): string {
-    const control = this.OrderFormArray.get(controlName);
-
-    if (control?.hasError('required')) {
-      return 'This field is required.';
-    }
-    if (control?.hasError('minlength')) {
-      const requiredLength = control.getError('minlength').requiredLength;
-      return `Must be at least ${requiredLength} characters long.`;
-    }
-    if (control?.hasError('maxlength')) {
-      const requiredLength = control.getError('maxlength').requiredLength;
-      return `Cannot exceed ${requiredLength} characters.`;
-    }
-    
-    return '';
   }
 
   cleanForms() {
