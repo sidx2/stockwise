@@ -10,15 +10,9 @@ export class AdminGuard implements CanActivate {
 
   canActivate(): boolean {
     const userString = this.cookieService.get('user');
-    let user;
-    try {
-      user = JSON.parse(userString!);
-    }
-    catch(e) {
-      console.log("cant parse user: ", user);
-    }
+    const user = JSON.parse(userString!);
 
-    if (user && user.role === 'admin') {
+    if (user.role === 'admin') {
       return true;
     } else {
       this.router.navigate(['/landingPage']);

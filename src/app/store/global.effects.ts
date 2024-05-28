@@ -31,7 +31,7 @@ export class globalEffectssss {
     //                 }),
     //                 catchError((err) => {
     //                     this.store.dispatch(resetAuthLoading());
-    //                     const error = err.error.error || "Something went wrong";
+    //                     const error = err?.error?.error || "Something went wrong";
     //                     this.toastr.error(`Failed to login. ${error}`);
     //                     return of(loginUserFailure({ error }))
     //                 }
@@ -53,7 +53,7 @@ export class globalEffectssss {
     //                 }),
     //                 catchError((err) => {
     //                     this.store.dispatch(resetAuthLoading());
-    //                     const error = err.error.error || "Something went wrong";
+    //                     const error = err?.error?.error || "Something went wrong";
     //                     return of(fetchOrgFailure({ error }));
     //                 }
     //                 )

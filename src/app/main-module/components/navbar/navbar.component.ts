@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  
   ngOnDestroy(): void {}
 
   toggleSidebar(event: MouseEvent): void {

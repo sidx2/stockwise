@@ -29,7 +29,7 @@ export class orderEffects {
                     }),
                     catchError((err) =>{
                         this.store.dispatch(resetOrderLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         return of(getProductVendorsFailure({ error }));
                     })
                 )
@@ -51,7 +51,7 @@ export class orderEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetOrderLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not place order. ${error}`);
                         return of(placeOrderFailure({ error }))
                     })

@@ -29,7 +29,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         return of(fetchVendorsFailure({ error }))
                     })
                 )
@@ -52,7 +52,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not update vendor. ${error}`);
                         return of(updateVendorFailure({ error }))
                     })
@@ -75,7 +75,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not delete Vendor. ${error}`);
                         return of(deleteVendorFailure({ error }))
                     })
@@ -98,7 +98,7 @@ export class vendorEffects {
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetVendorLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not add Vendor to the organization. ${error}`);
                         return of(addVendorFailure({ error }));
                     })
