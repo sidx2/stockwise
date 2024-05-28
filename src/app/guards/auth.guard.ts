@@ -9,20 +9,22 @@ export class AuthGuard implements CanActivate {
   constructor(private cookieService: CookieService, private router: Router) { }
 
   canActivate(): boolean {
-    // const cookieString = document.cookie;
-    // const cookies = cookieString.split('; ');
+    let token;
 
-    // for (let cookie of cookies) {
-    //   const [cookieName, cookieValue] = cookie.split('=');
-    //   if (cookieName === name) {
-    //     return cookieValue;
-    //   }
-    // }
-    const token = String(this.cookieService.get("token"));
+    const cookieString = document.cookie;
+    const cookies = cookieString.split('; ');
+
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === "token") {
+        token = cookieValue;
+      }
+    }
+
+
     if (token) {
       return true;
     } else {
-      if (!token)
       this.router.navigate(['/auth']);
       return false;
     }
