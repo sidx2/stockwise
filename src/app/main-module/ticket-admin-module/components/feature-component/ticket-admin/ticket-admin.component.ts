@@ -102,6 +102,7 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(selectedItem => {
       if (selectedItem) {
+        console.log("selected item", selectedItem)
         this.selectedItem = selectedItem;
       }
     });

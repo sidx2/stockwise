@@ -57,15 +57,13 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   };
 
   setFormValues(category: Category): void {
+    this.categoryFormGroup.reset();
+
     this.categoryFormGroup.patchValue({
       name: category.name,
       identificationType: category.identificationType,
       selectedVendors: category.vendors
     });
-
-    while (this.customFields.length !== 0) {
-      this.customFields.removeAt(0);
-    }
 
     if (category.customFields && category.customFields.length > 0) {
       category.customFields.forEach((field: CustomField) => {
