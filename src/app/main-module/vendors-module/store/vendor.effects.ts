@@ -41,6 +41,7 @@ export class vendorEffects {
                     map((res: any) => {
                         console.log("updateVendor res:", res);
                         // this.appService$.vendorUpdated(res);
+                        this.toastr.error(`Vendor updated successfully!`);
                         return updateVendorSuccess({ vendor: res });
                     }),
                     catchError((err) => {
