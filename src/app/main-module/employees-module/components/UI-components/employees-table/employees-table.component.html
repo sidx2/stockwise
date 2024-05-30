@@ -1,10 +1,4 @@
-<input
-  type="text"
-  appCustomInputStyle
-  id="searchInput"
-  placeholder="Search for employee"
-  (input)="search($event)"
-/>
+<input type="text" appCustomInputStyle id="searchInput" placeholder="Search for employee" (input)="search($event)" />
 
 <div class="employee_table">
   <table>
@@ -16,13 +10,10 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody
-      *ngFor="
+    <tbody *ngFor="
         let emp of employees
           | paginate : { itemsPerPage: psize, currentPage: currPage };
-        index as i
-      "
-    >
+        index as i">
       <tr *ngIf="emp._id != editing; else elseBlock">
         <td>{{ emp.name }}</td>
         <td>{{ emp.email }}</td>
@@ -41,27 +32,36 @@
       <ng-template #elseBlock [formGroup]="editEmployeeForm">
         <tr class="pending">
           <td>
-            <input appCustomInputStyle type="text" formControlName="name"  [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"/>
-            <div *ngIf="editEmployeeForm.get('name')?.invalid && (editEmployeeForm.get('name')?.dirty || editEmployeeForm.get('name')?.touched)" class="errMsg">
+            <input appCustomInputStyle type="text" formControlName="name"
+              [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}" />
+            <div
+              *ngIf="editEmployeeForm.get('name')?.invalid && (editEmployeeForm.get('name')?.dirty || editEmployeeForm.get('name')?.touched)"
+              class="errMsg">
               <small class="text-danger">
                 {{ getErrorMessage('name') }}
               </small>
             </div>
           </td>
           <td>
-            <input appCustomInputStyle type="email" formControlName="email" [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"/>
-            <div *ngIf="editEmployeeForm.get('email')?.invalid && (editEmployeeForm.get('email')?.dirty || editEmployeeForm.get('email')?.touched)" class="errMsg">
+            <input appCustomInputStyle type="email" formControlName="email"
+              [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}" />
+            <div
+              *ngIf="editEmployeeForm.get('email')?.invalid && (editEmployeeForm.get('email')?.dirty || editEmployeeForm.get('email')?.touched)"
+              class="errMsg">
               <small class="text-danger">
                 {{ getErrorMessage('email') }}
               </small>
             </div>
           </td>
           <td>
-            <select appCustomInputStyle formControlName="role"  [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
+            <select appCustomInputStyle formControlName="role"
+              [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>
-            <div *ngIf="editEmployeeForm.get('role')?.invalid && (editEmployeeForm.get('role')?.dirty || editEmployeeForm.get('role')?.touched)" class="errMsg">
+            <div
+              *ngIf="editEmployeeForm.get('role')?.invalid && (editEmployeeForm.get('role')?.dirty || editEmployeeForm.get('role')?.touched)"
+              class="errMsg">
               <small class="text-danger">
                 {{ getErrorMessage('role') }}
               </small>

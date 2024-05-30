@@ -46,7 +46,7 @@ export const employeesReducer = createReducer(
     }),
 
     on(updateEmployeeRequest, (state) => {
-        return ({...state, isLoading: true});
+        return ({...state, isLoading: false });
     }),
 
     // delete employee
