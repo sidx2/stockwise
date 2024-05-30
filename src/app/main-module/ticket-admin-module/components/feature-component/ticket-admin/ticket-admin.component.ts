@@ -7,10 +7,8 @@ import { Store, select } from '@ngrx/store';
 import { clearErrorMessage, getAllTicketRequest, updateTicketStatusRequest, updateTicketStatusSuccess } from '../../../store/ticket-admin.action';
 import { getErrorMessage, getLoading, ticketSelector } from '../../../store/ticket-admin.selector';
 import { inventorySelector } from '../../../../inventory-module/store/inventory.selector';
-import { orgSelector } from '../../../../../store/global.selectors';
 import { getItemRequest } from '../../../../inventory-module/store/inventory.action';
-import { takeUntil } from 'rxjs/operators';
-import { IGlobalState } from '../../../../../models/global';
+import { take, takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -34,11 +32,11 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   isUpdateFormVisible: boolean = false;
   isAssetInfoVisible: boolean = false;
 
-  constructor(private store: Store<{ global: IGlobalState, ticketsAdmin: TicketAdminState, inventory: InventoryState }>, private toastr: ToastrService, private actions$: Actions) {
+  constructor(private store: Store<{ticketsAdmin: TicketAdminState, inventory: InventoryState }>, private toastr: ToastrService, private actions$: Actions) {
 
-    this.tickets$ = this.store.pipe(select(ticketSelector));
+    this.tickets$ = this.store.pipe(select(ticketSelector), takeUntil(this.destroy$));
     this.filteredTickets$ = this.tickets$
-    this.items$ = this.store.pipe(select(inventorySelector));
+    this.items$ = this.store.pipe(select(inventorySelector), takeUntil(this.destroy$));
 
     this.store.pipe(select(getLoading))
       .pipe(takeUntil(this.destroy$))
