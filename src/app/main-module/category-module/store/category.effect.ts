@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CategoryService } from '../services/category.service';
-import { createCategoryRequest, getCategoryRequest, deleteCategoryRequest, updateCategoryRequest, resetLoading, getCategorySuccess, createCategorySuccess, deleteCategorySuccess, updateCategorySuccess, getCategoryFailure, createCategoryFailure, deleteCategoryFailure, updateCategoryFailure } from './category.action';
+import { createCategoryRequest, getCategoryRequest, deleteCategoryRequest, updateCategoryRequest, getCategorySuccess, createCategorySuccess, deleteCategorySuccess, updateCategorySuccess, getCategoryFailure, createCategoryFailure, deleteCategoryFailure, updateCategoryFailure } from './category.action';
 import { Store } from '@ngrx/store';
 import { setLoading } from './category.action';
 
