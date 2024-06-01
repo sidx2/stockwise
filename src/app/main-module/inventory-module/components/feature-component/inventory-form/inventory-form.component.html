@@ -29,7 +29,7 @@
   </div>
 
   <div
-    *ngIf="selectedCategory?.identificationType === 'unique'"
+    *ngIf="selectedCategory?.identificationType === 'unique' && !isEditMode"
     class="inputDiv"
   >
     <label for="operationType">Operation Type<span class="required-star" *ngIf="itemFormGroup.get('operationType')?.errors?.['required']">*</span></label>

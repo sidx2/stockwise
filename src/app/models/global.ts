@@ -15,10 +15,3 @@ export interface Org {
     employees: [],
     address: string
 }
-
-// Reducers for global module
-export interface IGlobalState {
-    user: User,
-    org: Org,
-    isLoggedIn: boolean
-}

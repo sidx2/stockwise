@@ -20,6 +20,10 @@ export class AuthService {
     return this.http.post(`${BASE_URL}/auth/signup`, credentials);
   }
 
+  getOrgByUserId() {
+    return this.http.get(`${BASE_URL}/org/getOrg/`)
+  }
+
   createOrg(credentials: CreateOrgCredentials, token: string) {
     return this.http.post(`${BASE_URL}/org/create`, credentials, {headers: {Authorization: `Bearer ${token}`}});
   }

@@ -1,17 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { getProductVendorsRequest, placeOrderRequest, placeOrderSuccess } from '../../../store/order.actions';
+import { getProductVendorsRequest, placeOrderRequest } from '../../../store/order.actions';
 import { productVendorsStateSelector } from '../../../store/order.selectors';
-import { orgSelector } from '../../../../../store/global.selectors';
-import { userSelector } from '../../../../../store/global.selectors';
-import { Subject, pipe, takeUntil, tap } from 'rxjs';
-import { Actions, ofType } from '@ngrx/effects';
+import { Subject, takeUntil } from 'rxjs';
 import { IOrderState } from '../../../models/order';
 import { IPlaceOrder, OrderForm, Product } from '../../../models/order';
 import { Vendor } from '../../../../vendors-module/models/vendor';
 import { CartItem } from '../../../../order-history-module/models/order-history';
-import { IGlobalState, Org, User } from '../../../../../models/global';
+import { Org, User } from '../../../../../models/global';
+import { ToastrService } from 'ngx-toastr';
+import { CookieService } from '../../../../../services/cookie.service';
 
 @Component({
   selector: 'app-order',
@@ -26,27 +25,23 @@ export class OrderComponent implements OnDestroy {
   destroySubject = new Subject<void>();
 
   productVendors: Product[] = [];
-  selectedProductVendors: Vendor[][] = [];
+  selectedProductVendors: Partial<Vendor>[][] = [];
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<{ order: IOrderState, global: IGlobalState }>,
-    private actions$: Actions,
+    private store: Store<{ order: IOrderState }>,
+    private toastr: ToastrService,
+    private cookieService: CookieService,
   ) {
     this.store.select(productVendorsStateSelector).pipe(
       takeUntil(this.destroySubject),
-    ).subscribe((state) => { 
+    ).subscribe((state) => {
       this.productVendors = state.productVendors;
-      this.isLoading = state.isLoading; 
+      this.isLoading = state.isLoading;
     })
-    
-    this.store.select(orgSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((org) => { this.org = org; })
 
-    this.store.select(userSelector).pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((user) => { this.user = user; })
+    this.org = cookieService.getOrg()
+    this.user = cookieService.getUser()
 
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])
@@ -75,8 +70,6 @@ export class OrderComponent implements OnDestroy {
     const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
     const productIndex = this.productVendors.findIndex(pv => pv.item._id === selectedProduct);
     this.selectedProductVendors[index] = this.productVendors[productIndex].vendors;
-
-    console.log("selectedProductVendors:", this.selectedProductVendors);
   }
 
   removeProduct(index: number) {
@@ -95,16 +88,15 @@ export class OrderComponent implements OnDestroy {
 
   placeOrder() {
     if (!this.OrderFormArray.length) {
-      alert("Please add at least one order!");
+      this.toastr.error("Please add at least one order!")
       return;
     }
     if (!this.OrderFormArray.valid) {
-      alert("All fields are required! and quantity should be between 1 and 999");
-      return;
+      this.toastr.error("All fields are required & quantity must be between 1-999")
     }
 
     const cart: CartItem[] = this.OrderFormArray.value.map((orderForm: OrderForm) => {
-      const cartItem: CartItem = { 
+      const cartItem: CartItem = {
         item: { _id: "", name: "", categoryId: "" },
         vendor: orderForm.vendor,
         quantity: orderForm.quantity,
@@ -118,9 +110,10 @@ export class OrderComponent implements OnDestroy {
 
     const order: IPlaceOrder = {
       org: { _id: this.org._id },
-      admin: { 
-        _id: this.user._id, 
-        name: this.user.name },
+      admin: {
+        _id: this.user._id,
+        name: this.user.name
+      },
       cart,
     }
 

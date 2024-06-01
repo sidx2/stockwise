@@ -21,7 +21,6 @@ export const updateCategoryFailure = createAction('[Category] Update Category Fa
 
 // loading
 export const setLoading = createAction('[Category] set loading')
-export const resetLoading = createAction('[Category] reset loading')
 
 // clear error message
 export const clearErrorMessage = createAction('[Category] clear error message');

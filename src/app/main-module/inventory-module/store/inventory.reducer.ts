@@ -1,8 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { InventoryState } from '../models/inventory';
 import {setLoading, getItemSuccess, createItemSuccess, deleteItemSuccess, updateItemSuccess, getItemFailure, createItemFailure, deleteItemFailure, updateItemFailure, checkoutItemFailure, getUserAssetsFailure, getUserAssetsSuccess, checkoutItemSuccess, checkintItemSuccess, clearErrorMessage, checkoutMailSuccess, checkoutMailFailure, createMultipleItemSuccess, createMultipleItemFailure } from './inventory.action';
-import { logoutUserSuccess } from '../../../store/global.actions';
-import { state } from '@angular/animations';
+import { logoutUserSuccess } from '../../../auth-module/store/auth.actions';
 
 const initialState: InventoryState = {
   items: [],

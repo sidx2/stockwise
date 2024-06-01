@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 import { OrderHistoryService } from "../services/order-history.service";
-import { fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, resetHistoryLoading, setHistoryLoading, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions";
+import { deleteOrderFailure, deleteOrderRequest, deleteOrderSuccess, fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions";
 import { IHistoryState } from "../models/order-history";
 import { Store } from "@ngrx/store";
 import { ToastrService } from "ngx-toastr";
@@ -19,17 +19,13 @@ export class historyEffects {
     fetchHistory$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchHistoryRequest),
-            tap(() => { this.store.dispatch(setHistoryLoading()); }),
             switchMap(() =>
                 this.historyService$.fetchHistory().pipe(
                     map((res: any) => {
-                        console.log("res in history:", res);
-                        this.store.dispatch(resetHistoryLoading());
                         return fetchHistorySuccess({ history: res });
                     }),
                     catchError((err) => {
-                        this.store.dispatch(resetHistoryLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         return of(fetchHistoryFailure({ error }));
                     })
                 )
@@ -38,24 +34,38 @@ export class historyEffects {
     )
 
     updateStatus$ = createEffect(() =>
-    this.action$.pipe(
-        ofType(updateStatusRequest),
-        tap(() => { this.store.dispatch(setHistoryLoading()); }),
-        switchMap((data) =>
-            this.historyService$.updateStatus(data.updatedStatus, data._id).pipe(
-                map((res: any) => {
-                    console.log("res in update status:", res);
-                    this.store.dispatch(resetHistoryLoading());
-                    this.toastr.success(`Order staus updated to ${data.updatedStatus}`)
-                    return updateStatusSuccess({ _id: data._id, updatedStatus: data.updatedStatus });
-                }),
-                catchError((err) => {
-                    this.store.dispatch(resetHistoryLoading());
-                    const error = err.error.error || "Something went wrong";
-                    return of(updateStatusFailure({ error }));
-                })
+        this.action$.pipe(
+            ofType(updateStatusRequest),
+            switchMap((data) =>
+                this.historyService$.updateStatus(data.updatedStatus, data._id).pipe(
+                    map((res: any) => {
+                        this.toastr.success(`Order staus updated to ${data.updatedStatus}`)
+                        return updateStatusSuccess({ _id: data._id, updatedStatus: data.updatedStatus });
+                    }),
+                    catchError((err) => {
+                        const error = err?.error?.error || "Something went wrong";
+                        return of(updateStatusFailure({ error }));
+                    })
+                )
             )
         )
     )
-)
+
+    deleteOrder$ = createEffect(() =>
+        this.action$.pipe(
+            ofType(deleteOrderRequest),
+            switchMap(({ _id }) =>
+                this.historyService$.deleteOrder(_id).pipe(
+                    map((res: any) => {
+                        this.toastr.success(`Order deleted successfully!`)
+                        return deleteOrderSuccess({ order: res });
+                    }),
+                    catchError((err) => {
+                        const error = err?.error?.error || "Something went wrong";
+                        return of(deleteOrderFailure({ error }));
+                    })
+                )
+            )
+        )
+    )
 }

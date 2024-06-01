@@ -1,6 +1,6 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { createUserRequest, deleteEmployeeRequest, fetchEmployees, updateEmployeeRequest } from '../../../store/employees.actions';
+import { createUserRequest, deleteEmployeeRequest, fetchEmployeesRequest, updateEmployeeRequest } from '../../../store/employees.actions';
 import { employeesStateSelector } from '../../../store/employees.selectors';
 import { Subject, takeUntil } from 'rxjs';
 import { Employee, IAddEmployee, IEmployeesState } from '../../../models/employee';
@@ -19,7 +19,7 @@ export class EmployeesComponent implements OnDestroy {
   destroySubject = new Subject<void>();
 
   constructor() {
-    this.store.dispatch(fetchEmployees());
+    this.store.dispatch(fetchEmployeesRequest());
     this.store.select(employeesStateSelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((state) => {

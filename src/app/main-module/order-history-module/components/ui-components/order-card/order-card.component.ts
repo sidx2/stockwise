@@ -11,6 +11,7 @@ export class OrderCardComponent {
   @Input() history!: Order[]
 
   @Output() statusUpdated = new EventEmitter<IStatusUpdated>();
+  @Output() deleteOrder = new EventEmitter<string>();
 
   editingId: string = "-1"
   m_status!: string
@@ -22,6 +23,11 @@ export class OrderCardComponent {
     }
     this.editingId = _id
     this.m_status = this.history.filter((h: Order) => h._id == _id)[0].status;
+  }
+
+  onDelete(_id: string) {
+    if (confirm("Are you sure want to delete this Order! It will be deleted permanently."))
+    this.deleteOrder.emit(_id);
   }
 
   onStatusUpdate(updatedStatus: string) {

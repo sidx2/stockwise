@@ -15,7 +15,7 @@ import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor'
 export class CategoryFormComponent implements OnInit, OnDestroy {
 
   @Output() createCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
-  @Output() updateCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
+  @Output() updateCategoryEmmiter: EventEmitter<{updatedCategory: Category, dataChanged: boolean}> = new EventEmitter();
 
   @Input() selectedCategory: Category | null = null;
   private destroy$ = new Subject<void>();
@@ -57,15 +57,13 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   };
 
   setFormValues(category: Category): void {
+    this.categoryFormGroup.reset();
+
     this.categoryFormGroup.patchValue({
       name: category.name,
       identificationType: category.identificationType,
       selectedVendors: category.vendors
     });
-
-    while (this.customFields.length !== 0) {
-      this.customFields.removeAt(0);
-    }
 
     if (category.customFields && category.customFields.length > 0) {
       category.customFields.forEach((field: CustomField) => {
@@ -73,7 +71,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       });
     }
 
-    // this.vendors$.pipe(takeUntil(this.destroy$)).subscribe((vendors: Vendor[]) => {
     const selectedVendors = category.vendors?.map((vendorId: string) => {
       const vendor = this.vendors.find((vendor: any) => vendor?._id === vendorId);
       return { _id: vendor?._id, name: vendor?.name };
@@ -81,8 +78,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     this.categoryFormGroup.patchValue({
       selectedVendors: selectedVendors
     });
-    // });
-
   }
 
   resetForm() {
@@ -125,12 +120,12 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       if (!this.isEditMode) {
         this.createCategoryEmmiter.emit({ ...formData, vendors: selectedVendorsId });
       } else {
-        this.updateCategoryEmmiter.emit({
+        this.updateCategoryEmmiter.emit({updatedCategory:{
           ...formData,
           _id: this.selectedCategory?._id,
           orgId: this.selectedCategory?.orgId,
           vendors: selectedVendorsId,
-        });
+        }, dataChanged: this.categoryFormGroup.dirty});
       }
     }
   }

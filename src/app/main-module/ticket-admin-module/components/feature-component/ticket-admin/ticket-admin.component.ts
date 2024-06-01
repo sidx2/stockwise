@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, filter, map, Subject } from 'rxjs';
+import { Observable,map, Subject } from 'rxjs';
 import { UserAsset, Item } from '../../../../inventory-module/models/inventory';
 import { TicketAdminState, Ticket, UpdateStatus } from '../../../models/ticket-admin';
 import { InventoryState } from '../../../../inventory-module/models/inventory';
@@ -8,7 +8,7 @@ import { clearErrorMessage, getAllTicketRequest, updateTicketStatusRequest, upda
 import { getErrorMessage, getLoading, ticketSelector } from '../../../store/ticket-admin.selector';
 import { inventorySelector } from '../../../../inventory-module/store/inventory.selector';
 import { getItemRequest } from '../../../../inventory-module/store/inventory.action';
-import { take, takeUntil } from 'rxjs/operators';
+import {  takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -102,6 +102,7 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(selectedItem => {
       if (selectedItem) {
+        console.log("selected item", selectedItem)
         this.selectedItem = selectedItem;
       }
     });

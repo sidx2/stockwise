@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap } from "rxjs";
-import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess, resetOrderLoading, setOrderLoading } from "./order.actions";
+import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess } from "./order.actions";
 import { OrderService } from "../services/order.service";
 import { Store } from "@ngrx/store";
 import { IOrderState } from "../models/order";
@@ -19,17 +19,13 @@ export class orderEffects {
     getProductVendors$ = createEffect(() =>
         this.action$.pipe(
             ofType(getProductVendorsRequest),
-            tap(() => { this.store.dispatch(setOrderLoading()); }),
             switchMap(() =>
                 this.orderService$.getProductVendors().pipe(
                     map((res: any) => {
-                        console.log("res productvedors:", res);
-                        this.store.dispatch(resetOrderLoading());
                         return getProductVendorsSuccess({ productVendors: res });
                     }),
                     catchError((err) =>{
-                        this.store.dispatch(resetOrderLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         return of(getProductVendorsFailure({ error }));
                     })
                 )
@@ -40,18 +36,14 @@ export class orderEffects {
     placeOrder$ = createEffect(() =>
         this.action$.pipe(
             ofType(placeOrderRequest),
-            tap(() => { this.store.dispatch(setOrderLoading()); }),
             switchMap(({ order }) =>
                 this.orderService$.placeOrder(order).pipe(
                     map((res: any) => {
-                        console.log("order res:", res);
-                        this.store.dispatch(resetOrderLoading());
                         this.toastr.success("Order placed successfully!");
                         return placeOrderSuccess(res);
                     }),
                     catchError((err) => {
-                        this.store.dispatch(resetOrderLoading());
-                        const error = err.error.error || "Something went wrong";
+                        const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Could not place order. ${error}`);
                         return of(placeOrderFailure({ error }))
                     })

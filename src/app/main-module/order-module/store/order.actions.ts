@@ -9,6 +9,3 @@ export const getProductVendorsFailure = createAction("getProductVendorsFailure",
 export const placeOrderRequest = createAction("placeOrderRequest", props<{ order: IPlaceOrder }>())
 export const placeOrderSuccess = createAction("placeOrderSuccess", props<{ order: Order }>())
 export const placeOrderFailure = createAction("placeOrderFailure", props<{ error: string }>())
-
-export const setOrderLoading = createAction('setOrderLoading');
-export const resetOrderLoading = createAction('resetOrderLoading');

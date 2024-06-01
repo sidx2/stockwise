@@ -1,9 +1,5 @@
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
-import { IGlobalState } from '../../../models/global';
+import { CookieService } from '../../../services/cookie.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,26 +7,24 @@ import { IGlobalState } from '../../../models/global';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  globalState$: Observable<IGlobalState>;
   orgName: string = '';
+  isLoggedIn!: boolean;
   isSidebarOpen: boolean = false;
-  globalStateSubscription: Subscription | undefined;
 
-  constructor(private store: Store<{ global: IGlobalState }>, private router: Router, private cs: CookieService, private elementRef: ElementRef) {
-    this.globalState$ = this.store.select('global');
+  constructor(
+    private cookieService: CookieService, 
+    private elementRef: ElementRef
+  ) {
+    this.orgName = cookieService.getOrg().name;
+    this.isLoggedIn = Boolean(this.cookieService.get("isLoggedIn"));
+
+    console.log("orgname and isLoggedin in navbar: ", this.orgName, this.isLoggedIn);
   }
 
   ngOnInit(): void {
-    this.globalStateSubscription = this.globalState$.subscribe((global) => {
-      this.orgName = global.org.name;
-    });
   }
 
-  ngOnDestroy(): void {
-    if (this.globalStateSubscription) {
-      this.globalStateSubscription.unsubscribe();
-    }
-  }
+  ngOnDestroy(): void {}
 
   toggleSidebar(event: MouseEvent): void {
     console.log("Toggling sidebar...");
