@@ -6,7 +6,7 @@ import { Category } from '../../../category-module/models/category';
 import { getCategoryRequest } from '../../../category-module/store/category.action';
 import { categorySelector } from '../../../category-module/store/category.selector';
 import { CategoryState } from '../../../category-module/models/category';
-import { DashboardState, InventoryCount } from '../../models/dashboard';
+import { DashboardState, InventoryCount, ChartOptions } from '../../models/dashboard';
 import { getLoading, inventoryCountSelector } from '../../store/dashboard.selector';
 import { getInventoryCountsRequest } from '../../store/dashboard.action';
 
@@ -21,13 +21,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   inventoryCounts$: Observable<InventoryCount[]>;
   private destroy$ = new Subject<void>();
 
-  categoryChartData: any[] = [];
-  categoryChartOptions: any;
+  categoryChartData!: [string, number][];
+  categoryChartOptions!: ChartOptions;
   categoryChartColumns: { type: string, label: string }[] = [];
 
-  inventoryChartData: any[] = [];
-  inventoryChartOptions: any;
+  inventoryChartData!: [string, number, number][];
+  inventoryChartOptions!: ChartOptions;
   inventoryChartColumns: { type: string, label: string }[] = [];
+
   isLoading: boolean = false;
 
   constructor(
@@ -71,6 +72,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareCategoryChartData(categories: Category[]): void {
     this.categoryChartData = categories.map(category => [category.name, category.numberOfAssets]);
+
+    console.log("categoryChartData",this.categoryChartData)
+
     this.categoryChartOptions = {
       title: 'Assets per Category',
       hAxis: {
@@ -91,6 +95,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareInventoryChartData(inventoryCounts: InventoryCount[]): void {
     this.inventoryChartData = inventoryCounts.map(item => [item.itemName, item.assignedCount, item.availableCount]);
+
+    console.log("inventoryChartData",this.inventoryChartData)
+
+
     this.inventoryChartOptions = {
       title: 'Inventory Counts',
       hAxis: {
