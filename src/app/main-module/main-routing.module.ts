@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
 import { AdminGuard } from './admin.guard';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { AuthGuard } from '../guards/auth.guard';
@@ -20,7 +19,7 @@ const routes: Routes = [
         children: [
           {
             path: 'dashboard',
-            component: DashboardComponent
+            loadChildren: () => import("./dashboard-module/dashboard.module").then(m => m.DashboardModule),
           },
           {
             path: 'category',

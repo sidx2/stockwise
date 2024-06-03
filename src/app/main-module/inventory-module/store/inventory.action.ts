@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CheckoutMailDetails, Item, UserAsset } from '../models/inventory';
-import { CheckinDetails, CheckoutDetails } from '../models/inventory';
+import { CheckoutMailDetails, Item, UserAsset, CheckinDetails, CheckoutDetails } from '../models/inventory';
 
 // Actions triggering backend requests
 export const getItemRequest = createAction('[Item] Get Item Request');

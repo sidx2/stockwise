@@ -1,0 +1,64 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
+<app-header>
+  <h3>Dashboard</h3>
+</app-header>
+
+<div *ngIf="categories$ | async as categories">
+  <!-- Category Section -->
+  <div *ngIf="categories.length > 0">
+    <div class="dashboard_categories">
+      <div *ngFor="let category of categories" class="dashboard_category">
+        <h3 class="assetCount">{{ category.numberOfAssets }}</h3>
+        <h2 class="categoryName">{{ category.name }}</h2>
+      </div>
+    </div>
+
+    <app-google-chart
+      [chartType]="'BarChart'"
+      [data]="categoryChartData"
+      [options]="categoryChartOptions"
+      [columns]="categoryChartColumns"
+    >
+    </app-google-chart>
+
+    <app-google-chart
+      [chartType]="'PieChart'"
+      [data]="categoryChartData"
+      [options]="categoryChartOptions"
+      [columns]="categoryChartColumns"
+    >
+    </app-google-chart>
+  </div>
+
+  <!-- Inventory Section -->
+  <div *ngIf="inventoryCounts$ | async as inventoryCounts">
+    <div *ngIf="inventoryCounts.length > 0 && categories.length > 0">
+      <app-google-chart
+        [chartType]="'BarChart'"
+        [data]="inventoryChartData"
+        [options]="inventoryChartOptions"
+        [columns]="inventoryChartColumns"
+      >
+      </app-google-chart>
+
+      <app-google-chart
+        [chartType]="'LineChart'"
+        [data]="inventoryChartData"
+        [options]="inventoryChartOptions"
+        [columns]="inventoryChartColumns"
+      >
+      </app-google-chart>
+    </div>
+  </div>
+
+  <!-- No Data Message -->
+  <ng-container *ngIf="categories.length === 0">
+    <app-no-data></app-no-data>
+    <p class="noCategoryMessage">
+      It seems you haven't created any categories or added items yet. Click
+      <a [routerLink]="'/category'">here</a> to create a new category and add
+      items. After that, you can view the dashboard.
+    </p>
+  </ng-container>
+</div>

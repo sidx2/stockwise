@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from 'angular-google-charts';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -33,6 +33,7 @@ import { CategoryEffects } from './category-module/store/category.effect';
 import { vendorEffects } from './vendors-module/store/vendor.effects';
 import { EmployeeEffects } from './employees-module/store/employees.effects';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { DashboardModule } from './dashboard-module/dashboard.module';
 
 
 @NgModule({
@@ -40,7 +41,6 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     MainComponent, 
     NavbarComponent,
     SidebarComponent,
-    DashboardComponent,
     ProfileComponent,
     LandingPageComponent,
     ChangePasswordComponent,
@@ -50,6 +50,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     MainRoutingModule,
     FormsModule,
     SharedModule,
+    DashboardModule,
     InventoryModule,
     CategoryModule,
     OrderModule,

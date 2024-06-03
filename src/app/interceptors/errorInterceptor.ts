@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Observable, catchError, throwError } from "rxjs"
+import { Observable, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 
@@ -15,22 +16,27 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((errorResponse: HttpErrorResponse) => {
-        let errorMessage = '';
+        if (errorResponse instanceof HttpErrorResponse) {
+          let errorMessage = '';
 
-        switch (errorResponse.status) {
-          case 401:
-            errorMessage = 'Unauthorized';
-            break;
-          case 403:
-            errorMessage = 'Forbidden';
-            break;
-          case 500:
-            errorMessage = 'Internal Server Error';
-            break;
+          switch (errorResponse.status) {
+            case 401:
+              errorMessage = 'Unauthorized';
+              break;
+            case 403:
+              errorMessage = 'Forbidden';
+              break;
+            case 500:
+              errorMessage = 'Internal Server Error';
+              break;
+            default:
+              return throwError(errorResponse);
+          }
+
+          this.toastr.error(errorMessage);
         }
 
-        this.toastr.error(errorMessage);
-        return next.handle(request);
+        return throwError(errorResponse);
       })
     );
   }
