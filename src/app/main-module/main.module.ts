@@ -18,7 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 
-import { DashboardComponent } from 'angular-google-charts';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
