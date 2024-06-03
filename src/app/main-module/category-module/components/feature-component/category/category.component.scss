@@ -6,37 +6,3 @@
   font-weight: 500;
   color: black;
 }
-
-// modal styling
-
-.deleteConfirmation{
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-}
-
-.delete-confirmation-buttons{
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-.delete-confirmation-buttons button{
-  padding: 0.5rem 1rem;
-  border: none;
-  outline: none;
-  border-radius: 0.2rem;
-  color: white;
-  font-size: 1rem;
-}
-
-.delete-btn{
-  background-color: red;
-}
-
-.cancel-btn{
-  background-color: grey;
-}
-
