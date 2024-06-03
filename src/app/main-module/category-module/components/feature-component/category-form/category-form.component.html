@@ -4,7 +4,13 @@
   (ngSubmit)="onSubmit()"
 >
   <div class="inputDiv">
-    <label for="name">Category Name<span class="required-star" *ngIf="categoryFormGroup.get('name')?.errors?.['required']">*</span></label>
+    <label for="name"
+      >Category Name<span
+        class="required-star"
+        *ngIf="categoryFormGroup.get('name')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <input
       appCustomInputStyle
       type="text"
@@ -15,7 +21,13 @@
   </div>
 
   <div class="inputDiv">
-    <label for="identificationType">Identification Type<span class="required-star" *ngIf="categoryFormGroup.get('identificationType')?.errors?.['required']">*</span></label>
+    <label for="identificationType"
+      >Identification Type<span
+        class="required-star"
+        *ngIf="categoryFormGroup.get('identificationType')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <select
       id="identificationType"
       appCustomInputStyle
@@ -27,31 +39,14 @@
     </select>
   </div>
 
-  <h3 class="form-section-heading">Fixed fields</h3>
-  <div class="inputDiv">
-    <label for="itemName">Item Name</label>
-    <input
-      appCustomInputStyle
-      type="text"
-      id="itemName"
-      placeholder="Fixed field"
-      disabled
-    />
-  </div>
-
-  <div class="inputDiv">
-    <label for="itemImage">Item Image<span class="required-star" *ngIf="categoryFormGroup.get('itemImage')?.errors?.['required']">*</span></label>
-    <input
-      appCustomInputStyle
-      type="text"
-      id="itemImage"
-      placeholder="Fixed field"
-      disabled
-    />
-  </div>
-
   <div class="inputDiv" *ngIf="vendors">
-    <label for="vendorsList">Select vendors<span class="required-star" *ngIf="categoryFormGroup.get('selectedVendors')?.errors?.['required']">*</span></label>
+    <label for="vendorsList"
+      >Select vendors<span
+        class="required-star"
+        *ngIf="categoryFormGroup.get('selectedVendors')?.errors?.['required']"
+        >*</span
+      ></label
+    >
     <ng-multiselect-dropdown
       id="vendorsList"
       appCustomInputStyle
@@ -62,15 +57,80 @@
     ></ng-multiselect-dropdown>
   </div>
 
-  <h3 class="form-section-heading">Custom Fields</h3>
+  <div class="itemFields">
+    <h3 class="form-section-heading">
+      Fixed Fields for item under this Category
+    </h3>
+    <div class="inputDiv">
+      <label for="itemName">Item Name</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="itemName"
+        placeholder="Fixed field"
+        disabled
+      />
+    </div>
+
+    <div class="inputDiv">
+      <label for="itemImage">Item Image</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="itemImage"
+        placeholder="Fixed field"
+        disabled
+      />
+    </div>
+
+    <div
+      class="inputDiv"
+      *ngIf="categoryFormGroup.get('identificationType')?.value === 'unique'"
+    >
+      <label for="SerialNumber">Serial Number</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="SerialNumber"
+        placeholder="Fixed field"
+        disabled
+      />
+    </div>
+
+    <div
+      class="inputDiv"
+      *ngIf="
+        categoryFormGroup.get('identificationType')?.value === 'non-unique'
+      "
+    >
+      <label for="quantity">Quantity</label>
+      <input
+        appCustomInputStyle
+        type="text"
+        id="quantity"
+        placeholder="Fixed field"
+        disabled
+      />
+    </div>
+  </div>
+
   <div formArrayName="customFields" class="customFields">
+    <h3 class="form-section-heading">
+      Custom Fields for item under this Category
+    </h3>
     <div
       *ngFor="let customField of customFields.controls; let i = index"
       [formGroupName]="i"
       class="customField"
     >
       <div class="inputDiv">
-        <label for="customFieldName">Field Name<span class="required-star" *ngIf="customFields.controls[i].get('label')?.errors?.['required']">*</span></label>
+        <label for="customFieldName"
+          >Field Name<span
+            class="required-star"
+            *ngIf="customFields.controls[i].get('label')?.errors?.['required']"
+            >*</span
+          ></label
+        >
         <input
           appCustomInputStyle
           type="text"
@@ -80,7 +140,13 @@
         />
       </div>
       <div class="inputDiv">
-        <label for="customFieldType">Field Type<span class="required-star" *ngIf="customFields.controls[i].get('type')?.errors?.['required']">*</span></label>
+        <label for="customFieldType"
+          >Field Type<span
+            class="required-star"
+            *ngIf="customFields.controls[i].get('type')?.errors?.['required']"
+            >*</span
+          ></label
+        >
         <select appCustomInputStyle id="customFieldType" formControlName="type">
           <option value="">Select Field Type</option>
           <option value="text">Text</option>
@@ -102,11 +168,11 @@
         Remove
       </button>
     </div>
+    <button appButtonPrimary type="button" (click)="addCustomField()">
+      Add Custom Field
+    </button>
   </div>
-
-  <button appButtonPrimary type="button" (click)="addCustomField()">
-    Add Custom Field
-  </button>
+ 
   <button appButtonPrimary type="submit" [disabled]="!categoryFormGroup.valid">
     {{ !isEditMode ? "Submit" : "Save Changes" }}
   </button>
