@@ -9,7 +9,7 @@ import { Item } from '../../../models/inventory';
 
 export class InventoryTableComponent {
   @Input() items: Item[] | null = []
-  @Input() identificationType: string | undefined = undefined;
+  @Input() identificationType!: string;
 
   @Output() deleteItemEmmiter:EventEmitter<string> = new EventEmitter();
   @Output() updateItemEmmiter: EventEmitter<Item> = new EventEmitter();

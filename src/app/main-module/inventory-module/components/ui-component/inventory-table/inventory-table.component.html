@@ -45,8 +45,8 @@
             <button
               appButtonPrimaryLight
               (click)="showLifecycleHandler(item)"
-              *ngIf="
-                item && item.lifecycle != undefined && item.lifecycle.length > 0
+              [disabled]="
+                item && item.lifecycle != undefined && item.lifecycle.length === 0
               "
             >
               <mat-icon>sync</mat-icon>
