@@ -29,7 +29,7 @@
 
   <div *ngIf="inventoryCounts$ | async as inventoryCounts">
     <app-google-chart
-      *ngIf="inventoryCounts.length > 0"
+      *ngIf="inventoryCounts.length > 0 && categories.length > 0"
       [chartType]="'BarChart'"
       [data]="inventoryChartData"
       [options]="inventoryChartOptions"
