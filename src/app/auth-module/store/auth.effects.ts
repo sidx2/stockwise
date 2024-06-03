@@ -28,7 +28,6 @@ export class authEffects {
                         return loginUserSuccess({ user: res });
                     }),
                     catchError((err) => {
-                        console.log("err: ", err);
                         this.store.dispatch(resetLoading());
                         const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Failed to login. ${error}`);
@@ -47,14 +46,12 @@ export class authEffects {
             switchMap((data) =>
                 this.authService$.signup(data.user).pipe(
                     map((res: any) => {
-                        console.log("res in signup:", res);
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Welcome to StockWise")
                         return signupSuccess({ user: res })
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetLoading());
-                        console.log("err in signup failure:", err);
                         const error = err?.error?.error || "Something went wrong! Could not signup"
                         this.toastr.error(error);
                         return of(signupFailure({ error }))
@@ -71,7 +68,6 @@ export class authEffects {
             switchMap((data) =>
                 this.authService$.createOrg(data.org, data.token).pipe(
                     map((res: any) => {
-                        console.log("res in create org:", res);
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Organization was created successfully")
                         return createOrgSuccess({ org: res })

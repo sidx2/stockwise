@@ -11,12 +11,10 @@ export class OrderHistoryService {
   ) { }
 
   fetchHistory() {
-    console.log("orgId in fetchhistory: ");
     return this.http.post(`${BASE_URL}/order/orders`, {});
   }
 
   updateStatus(status: string, orderId: string) {
-    console.log("orgId in updatestatus: ", status, orderId);
     return this.http.post(`${BASE_URL}/order/${status}`, { id: orderId } )
   }
 

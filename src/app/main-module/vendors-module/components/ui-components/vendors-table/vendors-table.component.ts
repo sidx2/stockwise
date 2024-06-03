@@ -122,7 +122,6 @@ export class VendorsTableComponent implements OnInit {
   }
 
   onDelete(_id: string) {
-    console.log("_id in onDelete", _id)
     if (confirm("Are you sure want to delete this vendor"))
       this.deleteVendor.emit(_id)
   }
