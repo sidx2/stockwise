@@ -1,14 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Vendor } from '../../../models/vendor';
-import { IEmployeesState } from '../../../../employees-module/models/employee';
-import { Editor } from '../../../models/vendor';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { User } from '../../../../../models/global';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
 import { ToastrService } from 'ngx-toastr';
-import { CookieService } from '../../../../../services/cookie.service';
 
 @Component({
   selector: 'app-vendors-table',
@@ -17,11 +12,6 @@ import { CookieService } from '../../../../../services/cookie.service';
 })
 export class VendorsTableComponent implements OnInit {
   @Input() vendors!: Vendor[]
-  @Input() editors!: Editor[]
-
-  @Output() startedEditing = new EventEmitter<Editor>();
-  @Output() cancelledEditing = new EventEmitter<string>();
-  @Output() changeVendor = new EventEmitter<Partial<Vendor>>();
 
   @Output() updateVendor = new EventEmitter<Vendor>();
   @Output() deleteVendor = new EventEmitter<string>();
@@ -29,7 +19,6 @@ export class VendorsTableComponent implements OnInit {
   _vends: Vendor[] = [] // for search purpose
   visisble: boolean = false
   editingId: string = "-1"
-  user!: User
 
   m_orgId!: string
 
@@ -49,10 +38,7 @@ export class VendorsTableComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
-    private cookieService: CookieService,
   ) {
-    this.user = cookieService.getUser();
-
     this.searchSubject.pipe(
       debounceTime(500),  // 0.5 seconds
       takeUntil(this.destroySubject)
@@ -65,10 +51,6 @@ export class VendorsTableComponent implements OnInit {
 
 
   onEdit(_id: string) {
-    if (this.editingId != "-1") {
-      this.cancelledEditing.emit(this.editingId);
-    }
-
     this.editingId = _id
     const editingVendor: Vendor = this.vendors.filter((vendor: Vendor) => vendor._id == _id)[0]
 
@@ -83,12 +65,9 @@ export class VendorsTableComponent implements OnInit {
     }
 
     this.editVendorForm.setValue(value);
-
-    this.startedEditing.emit({ vendorId: this.editingId, name: this.user.name, userId: this.user._id });
   }
 
   onCancel() {
-    this.cancelledEditing.emit(this.editingId);
     this.editingId = "-1"
   }
 
@@ -117,7 +96,6 @@ export class VendorsTableComponent implements OnInit {
 
     this.updateVendor.emit(updatedVendor)
 
-    this.cancelledEditing.emit(this.editingId);
     this.editingId = "-1";
   }
 
@@ -151,25 +129,6 @@ export class VendorsTableComponent implements OnInit {
     return '';
   }
 
-  // socket
-  onVendorChanged(key: string, event: Event) {
-    console.log("key event", key, event)
-
-    this.changeVendor.emit({
-      _id: this.editingId,
-      [key]: event,
-      orgId: this.m_orgId
-    })
-  }
-
-  isEditingVendor(vendor: Vendor): Boolean {
-    return this.editors.some((e) => e.vendorId === vendor._id);
-  }
-
-  getEditorName(vendor: Vendor): string {
-    return this.editors.find((e) => e.vendorId == vendor._id)?.name ?? "";
-  }
-
   // search
   search(e: Event) {
     this.searchSubject.next((e.target as HTMLInputElement).value);
@@ -185,7 +144,6 @@ export class VendorsTableComponent implements OnInit {
     )}
 
   ngOnDestroy(): void {
-    this.cancelledEditing.emit(this.editingId);
     this.destroySubject.next();
     this.destroySubject.complete();
   }
