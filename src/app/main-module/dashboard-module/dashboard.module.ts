@@ -20,6 +20,7 @@ import { DashboardEffects } from './store/dashboard.effects';
     HttpClientModule,
     SharedModule,
     DashboardRoutingModule,
+    SharedModule,
 
     StoreModule.forFeature('dashboard', dashboardReducer),
     EffectsModule.forFeature(DashboardEffects)

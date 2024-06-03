@@ -12,6 +12,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NoDataComponent } from './components/no-data/no-data.component';
+import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,
     TooltipDirective,
+    DeleteConfirmationComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +40,7 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     HeaderComponent, 
     ErrorPageComponent,
     NoDataComponent,
+    DeleteConfirmationComponent,
 
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,

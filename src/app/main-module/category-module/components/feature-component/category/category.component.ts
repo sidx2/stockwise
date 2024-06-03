@@ -101,10 +101,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.selectedCategory = selectedCategory;
   }
 
-  closeModal() {
-    this.showDeleteConfirmation = false;
-  }
-
   cancelDelete() {
     this.showDeleteConfirmation = false;
   }

@@ -60,6 +60,11 @@ const config: SocketIoConfig = { url: SOCKET_URL, options: {} };
       useClass: AuthInterceptor,
       multi: true
     },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: ErrorInterceptor,
+    //   multi: true
+    // },
   ],
   bootstrap: [AppComponent],
 
