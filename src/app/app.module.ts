@@ -13,6 +13,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/errorInterceptor';
+import { SocketIoModule } from 'ngx-socket-io';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ErrorInterceptor } from './interceptors/errorInterceptor';
       closeButton: true,
       timeOut: 3000
     }),
+    SocketIoModule.forRoot(config),
 
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
