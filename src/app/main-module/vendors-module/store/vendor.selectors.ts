@@ -7,3 +7,8 @@ export const vendorsStateSelector = createSelector(
     vendorsFeatureSelector,
     (state) => state
 )
+
+export const vendorSelector = createSelector(
+    vendorsFeatureSelector,
+    (state)=> state.vendors
+)

@@ -16,16 +16,12 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   @Output() updateCategoryEmmiter: EventEmitter<{ updatedCategory: Category, dataChanged: boolean }> = new EventEmitter();
 
   @Input() selectedCategory: Category | null = null;
-  @Input() vendors: Vendor[] | undefined;
+  @Input() vendors: Vendor[] | null = null;
 
   private destroy$ = new Subject<void>();
 
   categoryFormGroup: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
-
-
-  constructor(private store: Store<{ vendors: IVendorsState }>) {
-  }
 
   ngOnInit(): void {
 

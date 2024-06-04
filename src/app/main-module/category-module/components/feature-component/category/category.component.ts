@@ -8,7 +8,7 @@ import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updat
 import { categorySelector, getErrorMessage, getLoading } from '../../../store/category.selector';
 import { ToastrService } from 'ngx-toastr';
 import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor';
-import { vendorsStateSelector } from '../../../../vendors-module/store/vendor.selectors';
+import { vendorSelector, vendorsStateSelector } from '../../../../vendors-module/store/vendor.selectors';
 import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
 
 @Component({
@@ -19,7 +19,7 @@ import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.act
 export class CategoryComponent implements OnInit, OnDestroy {
 
   categories$: Observable<Category[]>;
-  vendorsState$: Observable<IVendorsState>;
+  vendorsState$: Observable<Vendor[]>;
   selectedCategory: Category | null = null;
   categoryIdToDelete: string | null = null;
 
@@ -34,7 +34,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     this.categories$ = this.store.pipe(select(categorySelector));
 
-    this.vendorsState$ = this.store.pipe(select(vendorsStateSelector));
+    this.vendorsState$ = this.store.pipe(select(vendorSelector));
 
     this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
 
