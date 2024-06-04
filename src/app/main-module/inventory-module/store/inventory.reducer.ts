@@ -5,6 +5,7 @@ import { logoutUserSuccess } from '../../../auth-module/store/auth.actions';
 
 const initialState: InventoryState = {
   items: [],
+  totalItems: 0,
   userAssets: [],
   loading: false,
   errorMessage: ''
@@ -13,7 +14,7 @@ const initialState: InventoryState = {
 export const inventoryReducer = createReducer(
   initialState,
 
-  on(getItemSuccess, (state, { items }) => ({ ...state, items, loading:false })),
+  on(getItemSuccess, (state, { items, totalItems }) => ({ ...state, items, totalItems, loading:false })),
 
   on(getItemFailure, (state, {errorMessage})=>({
     ...state,

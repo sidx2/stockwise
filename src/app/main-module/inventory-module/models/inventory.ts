@@ -64,6 +64,7 @@ export interface CheckoutEventData {
 
 export interface InventoryState {
     items: Item[];
+    totalItems: number,
     userAssets: UserAsset[];
     loading: boolean,
     errorMessage: string

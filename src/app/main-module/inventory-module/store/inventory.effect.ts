@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { InventoryService } from '../Services/inventory.service';
-import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, getUserAssetsSuccess, updateItemRequest, checkoutMailRequest, setLoading, getItemSuccess, createItemSuccess, updateItemSuccess, deleteItemSuccess, getItemFailure, createItemFailure, updateItemFailure, deleteItemFailure, checkoutItemFailure, getUserAssetsFailure, checkoutItemSuccess, checkintItemSuccess, checkinItemFailure, checkoutMailSuccess, checkoutMailFailure, createMultipleItemRequest, createMultipleItemSuccess, createMultipleItemFailure} from './inventory.action';
+import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, getUserAssets, getUserAssetsSuccess, updateItemRequest, checkoutMailRequest, setLoading, getItemSuccess, createItemSuccess, updateItemSuccess, deleteItemSuccess, getItemFailure, createItemFailure, updateItemFailure, deleteItemFailure, checkoutItemFailure, getUserAssetsFailure, checkoutItemSuccess, checkintItemSuccess, checkinItemFailure, checkoutMailSuccess, checkoutMailFailure, createMultipleItemRequest, createMultipleItemSuccess, createMultipleItemFailure } from './inventory.action';
 import { MailService } from '../Services/mail.service';
 import { Store } from '@ngrx/store';
 
@@ -15,16 +15,16 @@ export class InventoryEffects {
         private inventoryService: InventoryService,
         private mailService: MailService,
         private store: Store
-    ) {}
+    ) { }
 
     loadInventoryItems$ = createEffect(() => this.actions$.pipe(
         ofType(getItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        debounceTime(500),
         switchMap((action) =>
-            this.inventoryService.getItems().pipe(
-                map(response => getItemSuccess({ items: response })),
+            this.inventoryService.getItems(action.identificationType, action.categoryId, action.limit, action.skip, action.searchText).pipe(
+                map(response => getItemSuccess({ items: response.items, totalItems: response.totalItems  })),
                 catchError(errorResponse => {
-                    return of(getItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(getItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -32,12 +32,12 @@ export class InventoryEffects {
 
     createItem$ = createEffect(() => this.actions$.pipe(
         ofType(createItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.inventoryService.createItem(action.item).pipe(
                 map(response => createItemSuccess({ item: response })),
                 catchError(errorResponse => {
-                    return of(createItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(createItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -45,12 +45,12 @@ export class InventoryEffects {
 
     createMultipleItem$ = createEffect(() => this.actions$.pipe(
         ofType(createMultipleItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.inventoryService.createMultipleItem(action.item).pipe(
                 map(response => createMultipleItemSuccess({ items: response })),
                 catchError(errorResponse => {
-                    return of(createMultipleItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(createMultipleItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -58,12 +58,12 @@ export class InventoryEffects {
 
     updateItem$ = createEffect(() => this.actions$.pipe(
         ofType(updateItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.inventoryService.updateItem(action.updatedItem).pipe(
                 map(response => updateItemSuccess({ updatedItem: response })),
                 catchError(errorResponse => {
-                    return of(updateItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(updateItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -71,13 +71,13 @@ export class InventoryEffects {
 
     deleteItem$ = createEffect(() => this.actions$.pipe(
         ofType(deleteItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.inventoryService.deleteItem(action.itemId).pipe(
                 map(response => deleteItemSuccess({ itemId: response?._id! })),
                 catchError(errorResponse => {
-                    return of(deleteItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(deleteItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -85,12 +85,12 @@ export class InventoryEffects {
 
     checkoutItem$ = createEffect(() => this.actions$.pipe(
         ofType(checkoutItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.inventoryService.checkoutItem(action.assignedToDetails).pipe(
                 map(response => checkoutItemSuccess({ updatedItem: response })),
                 catchError(errorResponse => {
-                    return of(checkoutItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(checkoutItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -98,12 +98,12 @@ export class InventoryEffects {
 
     checkinItem$ = createEffect(() => this.actions$.pipe(
         ofType(checkinItemRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.inventoryService.checkinItem(action.checkinDetails).pipe(
                 map(response => checkintItemSuccess({ updatedItem: response })),
                 catchError(errorResponse => {
-                    return of(checkinItemFailure({errorMessage: errorResponse.error.error}));
+                    return of(checkinItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -111,12 +111,12 @@ export class InventoryEffects {
 
     loadUserAssets$ = createEffect(() => this.actions$.pipe(
         ofType(getUserAssets),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap(() =>
             this.inventoryService.getUserAsset().pipe(
                 map(response => getUserAssetsSuccess({ userAssets: response })),
                 catchError(errorResponse => {
-                    return of(getUserAssetsFailure({errorMessage: errorResponse.error.error}));
+                    return of(getUserAssetsFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
@@ -124,12 +124,12 @@ export class InventoryEffects {
 
     sendMail$ = createEffect(() => this.actions$.pipe(
         ofType(checkoutMailRequest),
-        tap(() => this.store.dispatch(setLoading())), 
+        tap(() => this.store.dispatch(setLoading())),
         switchMap((action) =>
             this.mailService.sendCheckoutMail(action.checkoutMailDetails).pipe(
                 map(response => checkoutMailSuccess()),
                 catchError(errorResponse => {
-                    return of(checkoutMailFailure(errorResponse.error.error)); 
+                    return of(checkoutMailFailure(errorResponse.error.error));
                 })
             )
         )

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { CheckinDetails, CheckoutDetails, Item, UserAsset } from '../models/inventory';
 import { BASE_URL } from '../../../constants/constants';
 
@@ -10,9 +10,33 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  getItems() {
-    return this.http.get<Item[]>(`${BASE_URL}/inventory/items`);
-  }
+  getItems(identificationType: string, categoryId: string, limit: number, skip: number, searchText: string) {
+
+    console.log("inside service");
+    let params = new HttpParams();
+
+    if(identificationType) {
+      params = params.set('identificationType', identificationType);
+    }
+
+    if(categoryId) {
+      params = params.set('categoryId', categoryId);
+    }
+
+    if(limit) {
+      params = params.set('limit', limit.toString());
+    }
+
+    if(skip) {
+      params = params.set('skip', skip.toString());
+    }
+
+    if(searchText) {
+      params = params.set('searchText', searchText);
+    }
+
+    return this.http.get<{items: Item[],totalItems: number}>(`${BASE_URL}/inventory/items_new`, { params: params });
+}
 
   createItem(item: Item) {
     return this.http.post<Item>(`${BASE_URL}/inventory/create`, item);

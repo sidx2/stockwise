@@ -55,7 +55,7 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch(getAllTicketRequest())
     this.filteredTickets$ = this.tickets$;
-    this.store.dispatch(getItemRequest())
+    // this.store.dispatch(getItemRequest())
 
     this.actions$.pipe(ofType(updateTicketStatusSuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.toastr.success("Ticket status updated successfully");

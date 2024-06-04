@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { CheckoutMailDetails, Item, UserAsset, CheckinDetails, CheckoutDetails } from '../models/inventory';
 
 // Actions triggering backend requests
-export const getItemRequest = createAction('[Item] Get Item Request');
+export const getItemRequest = createAction('[Item] Get Item Request', props<{identificationType:string, categoryId: string, limit: number, skip: number, searchText: string}>());
 export const createItemRequest = createAction('[Item] Create Item Request', props<{ item: Item }>());
 export const createMultipleItemRequest = createAction('[Item] Create Multiple Item Request', props<{ item: Item }>());
 export const deleteItemRequest = createAction('[Item] Delete Item Request', props<{ itemId: string }>());
@@ -12,7 +12,7 @@ export const checkinItemRequest = createAction('[Item] Checkin Item Request', pr
 export const checkoutMailRequest = createAction('[Item] Checkout Mail Request', props<{checkoutMailDetails: CheckoutMailDetails}>());
 
 // Success actions
-export const getItemSuccess = createAction('[Item] Get Item Success', props<{ items: Item[] }>());
+export const getItemSuccess = createAction('[Item] Get Item Success', props<{ items: Item[], totalItems: number }>());
 export const createItemSuccess = createAction('[Item] Create Item Success', props<{ item: Item }>());
 export const createMultipleItemSuccess = createAction('[Item] Create Multiple Item Success', props<{ items: Item[] }>());
 export const deleteItemSuccess = createAction('[Item] Delete Item Success', props<{ itemId: string }>());
