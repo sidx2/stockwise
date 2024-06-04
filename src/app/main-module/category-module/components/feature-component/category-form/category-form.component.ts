@@ -2,7 +2,9 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';;
+import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
+import { Subject } from 'rxjs';
+import { vendorsStateSelector } from '../../../../vendors-module/store/vendor.selectors';
 import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor';
 
 @Component({
@@ -13,18 +15,24 @@ import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor'
 export class CategoryFormComponent implements OnInit, OnDestroy {
 
   @Output() createCategoryEmmiter: EventEmitter<Category> = new EventEmitter();
-  @Output() updateCategoryEmmiter: EventEmitter<{ updatedCategory: Category, dataChanged: boolean }> = new EventEmitter();
+  @Output() updateCategoryEmmiter: EventEmitter<{updatedCategory: Category, dataChanged: boolean}> = new EventEmitter();
 
   @Input() selectedCategory: Category | null = null;
-  @Input() vendors: Vendor[] | null = null;
-
   private destroy$ = new Subject<void>();
 
   categoryFormGroup: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
 
-  ngOnInit(): void {
+  vendors!: Vendor[];
 
+  constructor(private store: Store<{ vendors: IVendorsState }>) {
+    this.store.dispatch(fetchVendorsRequest());
+    this.store.select(vendorsStateSelector).subscribe(state => [
+      this.vendors = state.vendors
+    ]);
+  }
+
+  ngOnInit(): void {
     this.categoryFormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
       identificationType: new FormControl(null, Validators.required),
@@ -34,6 +42,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
     if (this.selectedCategory !== null) {
       this.isEditMode = true;
+      console.log("selectedCategory ", this.selectedCategory);
       this.setFormValues(this.selectedCategory);
     } else {
       this.resetForm()
@@ -53,6 +62,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     this.categoryFormGroup.patchValue({
       name: category.name,
       identificationType: category.identificationType,
+      selectedVendors: category.vendors
     });
 
     if (category.customFields && category.customFields.length > 0) {
@@ -61,17 +71,13 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (this.vendors) {
-      console.log("vendors avialble", this.vendors)
-      const selectedVendors = category.vendors?.map((vendorId: string) => {
-        const vendor = this.vendors?.find((vendor: any) => vendor?._id === vendorId);
-        return { _id: vendor?._id, name: vendor?.name };
-      });
-
-      this.categoryFormGroup.patchValue({
-        selectedVendors: selectedVendors
-      });
-    }
+    const selectedVendors = category.vendors?.map((vendorId: string) => {
+      const vendor = this.vendors.find((vendor: any) => vendor?._id === vendorId);
+      return { _id: vendor?._id, name: vendor?.name };
+    });
+    this.categoryFormGroup.patchValue({
+      selectedVendors: selectedVendors
+    });
   }
 
   resetForm() {
@@ -114,15 +120,12 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       if (!this.isEditMode) {
         this.createCategoryEmmiter.emit({ ...formData, vendors: selectedVendorsId });
       } else {
-        this.updateCategoryEmmiter.emit({
-          updatedCategory: {
-            ...formData,
-            _id: this.selectedCategory?._id,
-            orgId: this.selectedCategory?.orgId,
-            vendors: selectedVendorsId,
-            numberOfAssets: this.selectedCategory?.numberOfAssets
-          }, dataChanged: this.categoryFormGroup.dirty
-        });
+        this.updateCategoryEmmiter.emit({updatedCategory:{
+          ...formData,
+          _id: this.selectedCategory?._id,
+          orgId: this.selectedCategory?.orgId,
+          vendors: selectedVendorsId,
+        }, dataChanged: this.categoryFormGroup.dirty});
       }
     }
   }
