@@ -46,7 +46,6 @@ export class LoginComponent implements OnDestroy {
       
     ).subscribe(({ user }) => {
 
-      console.log("user in AuthComponent: ", user);
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
 
@@ -62,7 +61,6 @@ export class LoginComponent implements OnDestroy {
       ofType(fetchOrgSuccess),
       takeUntil(this.destroySubject)
     ).subscribe(({ org }) => {
-      console.log("fetchOrgSuccess:", org);
       this.cookieService.set("org", JSON.stringify(org), 3)
 
       this.router.navigate(['dashboard']);
@@ -86,9 +84,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   onFormSubmit() {
-    console.log(this.loginForm.value)
     if (!this.loginForm.valid) {
-      console.log("invalid form", )
       this.toastr.error("Invalid credentails for login");
       return;
     };

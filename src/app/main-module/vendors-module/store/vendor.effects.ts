@@ -39,7 +39,6 @@ export class vendorEffects {
             switchMap(({ vendor }) =>
                 this.vendorsService$.updateVendor(vendor).pipe(
                     map((res: any) => {
-                        console.log("updateVendor res:", res);
                         // this.appService$.vendorUpdated(res);
                         this.toastr.success(`Vendor updated successfully!`);
                         return updateVendorSuccess({ vendor: res });
@@ -60,7 +59,6 @@ export class vendorEffects {
             switchMap(({ vendorId }) =>
                 this.vendorsService$.deleteVendor(vendorId).pipe(
                     map((res: any) => {
-                        console.log("deleteVendor res:", res);
                         this.toastr.success("Vendor deleted successfully!");
                         return deleteVendorSuccess({ vendor: res });
                     }),
