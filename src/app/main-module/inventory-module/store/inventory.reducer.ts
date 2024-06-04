@@ -36,7 +36,6 @@ export const inventoryReducer = createReducer(
     loading: false
   })),
 
-  
   on(createItemFailure, (state, {errorMessage})=>({
     ...state,
     loading: false,

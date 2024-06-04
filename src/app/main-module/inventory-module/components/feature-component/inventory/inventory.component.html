@@ -57,12 +57,75 @@
     (lifecycleEmmiter)="showLifecycleHandler($event)"
   ></app-inventory-table>
 
-  <pagination-controls
-  id="inventory-pagination"
-  [maxSize]="7"
-  [directionLinks]="true"
-  [autoHide]="false"
-  [responsive]="true">
-</pagination-controls>
-
+  <div class="pagination-controls">
+    <button
+      appButtonPrimary
+      (click)="onPageChange(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      Previous
+    </button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button
+      appButtonPrimary
+      (click)="onPageChange(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      Next
+    </button>
+  </div>
 </div>
+
+<div class="inventory" *ngIf="isInventoryFormVisible">
+  <app-header class="category_header">
+    <h3>{{ !isEditMode ? "New Item" : "Update Item" }}</h3>
+    <button appButtonPrimary (click)="hideInventoryForm()">Cancel</button>
+  </app-header>
+
+  <app-inventory-form
+    [categories]="categories$ | async"
+    [updateItemCategory]="updateItemCategory"
+    (createItemEmmiter)="createItemHandler($event)"
+    (createMultipleItemEmmiter)="createMultipleItemHandler($event)"
+    (updateItemEmmiter)="updateItemHandler($event)"
+    [selectedItem]="selectedItem"
+  ></app-inventory-form>
+</div>
+
+<app-modal *ngIf="showDeleteConfirmation" (closeModalEvent)="cancelDelete()">
+  <app-delete-confirmation
+    heading="Confirm Delete"
+    message="Are you sure you want to delete this item? This action cannot be undone."
+    (cancel)="cancelDelete()"
+    (confirm)="confirmDelete()"
+  >
+  </app-delete-confirmation>
+</app-modal>
+
+<app-modal
+  (closeModalEvent)="hideDetailedViewHandler()"
+  *ngIf="showDetailedView"
+>
+  <app-item-detailed-view
+    [selectedItem]="selectedItem"
+  ></app-item-detailed-view>
+</app-modal>
+
+<app-modal *ngIf="showCheckout" (closeModalEvent)="hideCheckoutItemHandler()">
+  <app-item-checkout
+    [selectedItem]="selectedItem"
+    [employees]="employees"
+    (checkoutEmitter)="checkoutItemHandler($event)"
+  ></app-item-checkout>
+</app-modal>
+
+<app-modal *ngIf="showCheckin" (closeModalEvent)="hideCheckinItemHandler()">
+  <app-item-checkin
+    [selectedItem]="selectedItem"
+    (checkinEmmiter)="checkinItemHandler($event)"
+  ></app-item-checkin>
+</app-modal>
+
+<app-modal *ngIf="showLifecycle" (closeModalEvent)="hideLifecycleHandler()">
+  <app-item-lifecycle [selectedItem]="selectedItem"></app-item-lifecycle>
+</app-modal>

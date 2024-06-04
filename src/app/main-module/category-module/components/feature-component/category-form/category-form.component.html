@@ -41,11 +41,7 @@
 
   <div class="inputDiv" *ngIf="vendors">
     <label for="vendorsList"
-      >Select vendors<span
-        class="required-star"
-        *ngIf="categoryFormGroup.get('selectedVendors')?.errors?.['required']"
-        >*</span
-      ></label
+      >Select vendors</label
     >
     <ng-multiselect-dropdown
       id="vendorsList"

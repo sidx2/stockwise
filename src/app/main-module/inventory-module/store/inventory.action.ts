@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { CheckoutMailDetails, Item, UserAsset, CheckinDetails, CheckoutDetails } from '../models/inventory';
 
 // Actions triggering backend requests
-export const getItemRequest = createAction('[Item] Get Item Request', props<{identificationType:string, categoryId: string, limit: number, skip: number, searchText: string}>());
+export const getItemRequest = createAction('[Item] Get Item Request', props<{identificationType:string, categoryId: string, limit: number, skip: number, searchText: string, assetId: string}>());
 export const createItemRequest = createAction('[Item] Create Item Request', props<{ item: Item }>());
 export const createMultipleItemRequest = createAction('[Item] Create Multiple Item Request', props<{ item: Item }>());
 export const deleteItemRequest = createAction('[Item] Delete Item Request', props<{ itemId: string }>());

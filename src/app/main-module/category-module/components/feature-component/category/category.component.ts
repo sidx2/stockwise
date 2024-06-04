@@ -7,6 +7,9 @@ import { takeUntil } from 'rxjs/operators';
 import { getCategoryRequest, createCategoryRequest, deleteCategoryRequest, updateCategoryRequest, createCategorySuccess, updateCategorySuccess, clearErrorMessage } from '../../../store/category.action';
 import { categorySelector, getErrorMessage, getLoading } from '../../../store/category.selector';
 import { ToastrService } from 'ngx-toastr';
+import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor';
+import { vendorsStateSelector } from '../../../../vendors-module/store/vendor.selectors';
+import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
 
 @Component({
   selector: 'app-category',
@@ -16,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CategoryComponent implements OnInit, OnDestroy {
 
   categories$: Observable<Category[]>;
+  vendorsState$: Observable<IVendorsState>;
   selectedCategory: Category | null = null;
   categoryIdToDelete: string | null = null;
 
@@ -30,6 +34,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     this.categories$ = this.store.pipe(select(categorySelector));
 
+    this.vendorsState$ = this.store.pipe(select(vendorsStateSelector));
+
     this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
 
     this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage)=> {
@@ -43,6 +49,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     
     this.store.dispatch(getCategoryRequest());
+    this.store.dispatch(fetchVendorsRequest());
 
     this.actions$.pipe(ofType(createCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.toastr.success("Category created successfully");

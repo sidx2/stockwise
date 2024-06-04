@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable,map, Subject } from 'rxjs';
+import { Observable, map, Subject } from 'rxjs';
 import { UserAsset, Item } from '../../../../inventory-module/models/inventory';
 import { TicketAdminState, Ticket, UpdateStatus } from '../../../models/ticket-admin';
 import { InventoryState } from '../../../../inventory-module/models/inventory';
@@ -8,7 +8,7 @@ import { clearErrorMessage, getAllTicketRequest, updateTicketStatusRequest, upda
 import { getErrorMessage, getLoading, ticketSelector } from '../../../store/ticket-admin.selector';
 import { inventorySelector } from '../../../../inventory-module/store/inventory.selector';
 import { getItemRequest } from '../../../../inventory-module/store/inventory.action';
-import {  takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -32,10 +32,11 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   isUpdateFormVisible: boolean = false;
   isAssetInfoVisible: boolean = false;
 
-  constructor(private store: Store<{ticketsAdmin: TicketAdminState, inventory: InventoryState }>, private toastr: ToastrService, private actions$: Actions) {
+  constructor(private store: Store<{ ticketsAdmin: TicketAdminState, inventory: InventoryState }>, private toastr: ToastrService, private actions$: Actions) {
 
     this.tickets$ = this.store.pipe(select(ticketSelector), takeUntil(this.destroy$));
     this.filteredTickets$ = this.tickets$
+
     this.items$ = this.store.pipe(select(inventorySelector), takeUntil(this.destroy$));
 
     this.store.pipe(select(getLoading))
@@ -97,15 +98,24 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   }
 
   showAssetInfo(assetId: string) {
+
+    this.store.dispatch(getItemRequest({
+      identificationType: '',
+      categoryId: '',
+      limit: 1,
+      skip: 0,
+      searchText: '',
+      assetId
+    }));
+
     this.items$.pipe(
-      map(items => items.find(item => item._id === assetId)),
       takeUntil(this.destroy$)
-    ).subscribe(selectedItem => {
-      if (selectedItem) {
-        console.log("selected item", selectedItem)
-        this.selectedItem = selectedItem;
+    ).subscribe(items => {
+      if(items.length > 0) {
+        this.selectedItem = items[0];
       }
     });
+
     this.isAssetInfoVisible = true;
   }
 
