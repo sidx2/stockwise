@@ -67,9 +67,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       itemImage: item.itemImage,
     });
 
-    if (this.selectedCategory?.identificationType === 'unique') {
+    if (this.selectedCategory?.identificationType === 'single') {
       this.itemFormGroup.addControl('serialNumber', new FormControl(item?.serialNumber, Validators.required));
-    } else if (this.selectedCategory?.identificationType === 'non-unique') {
+    } else if (this.selectedCategory?.identificationType === 'mass') {
       this.itemFormGroup.addControl('quantity', new FormControl(item?.quantity, Validators.required));
     }
 
@@ -94,7 +94,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       }
       this.addAdditionalFields();
 
-      if (this.selectedCategory.identificationType === 'unique') {
+      if (this.selectedCategory.identificationType === 'single') {
         this.itemFormGroup.addControl('operationType', new FormControl('single', Validators.required));
       } else {
         this.itemFormGroup.removeControl('operationType');
@@ -103,9 +103,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   }
 
   addAdditionalFields(): void {
-    if (this.selectedCategory?.identificationType === 'unique') {
+    if (this.selectedCategory?.identificationType === 'single') {
       this.itemFormGroup.addControl('serialNumber', new FormControl('', Validators.required));
-    } else if (this.selectedCategory?.identificationType === 'non-unique') {
+    } else if (this.selectedCategory?.identificationType === 'mass') {
       this.itemFormGroup.addControl('quantity', new FormControl('', Validators.required));
     }
   }
@@ -154,7 +154,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
     let newItem: Item = {
       name: formData.name,
-      identificationType: this.selectedCategory?.identificationType || 'unique',
+      identificationType: this.selectedCategory?.identificationType || 'single',
       categoryId: this.selectedCategory?._id || '',
       orgId: '',
       customFieldsData: customFieldsData,

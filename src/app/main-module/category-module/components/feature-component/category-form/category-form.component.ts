@@ -16,7 +16,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   @Output() updateCategoryEmmiter: EventEmitter<{ updatedCategory: Category, dataChanged: boolean }> = new EventEmitter();
 
   @Input() selectedCategory: Category | null = null;
-  @Input() vendors: Vendor[] | null = null;
+  @Input() vendors: Vendor[] | undefined;
 
   private destroy$ = new Subject<void>();
 

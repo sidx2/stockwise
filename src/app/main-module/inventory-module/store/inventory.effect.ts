@@ -20,22 +20,23 @@ export class InventoryEffects {
     loadInventoryItems$ = createEffect(() => this.actions$.pipe(
         ofType(getItemRequest),
         debounceTime(500),
-        
+
         tap((action) => {
-            if(!action.searchText) {
+            // if(!action.searchText && !action.skip) {
+            if (!action.searchText) {
                 this.store.dispatch(setLoading());
             }
         }),
         switchMap((action) =>
             this.inventoryService.getItems(action.identificationType, action.categoryId, action.limit, action.skip, action.searchText, action.assetId).pipe(
-                map(response => getItemSuccess({ items: response.items, totalItems: response.totalItems  })),
+                map(response => getItemSuccess({ items: response.items, totalItems: response.totalItems })),
                 catchError(errorResponse => {
                     return of(getItemFailure({ errorMessage: errorResponse.error.error }));
                 })
             )
         )
     ));
-    
+
 
     createItem$ = createEffect(() => this.actions$.pipe(
         ofType(createItemRequest),

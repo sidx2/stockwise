@@ -15,7 +15,7 @@ export interface AssignedTo {
 export interface Item {
     _id?: string;
     name: string;
-    identificationType: 'unique' | 'non-unique';
+    identificationType: 'single' | 'mass';
     categoryId: string;
     orgId?: string;
     quantity: number;

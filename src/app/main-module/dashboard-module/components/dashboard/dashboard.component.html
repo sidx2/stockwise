@@ -32,7 +32,7 @@
   </div>
 
   <!-- Inventory Section -->
-  <div *ngIf="inventoryCounts$ | async as inventoryCounts">
+  <!-- <div *ngIf="inventoryCounts$ | async as inventoryCounts">
     <div *ngIf="inventoryCounts.length > 0 && categories.length > 0">
       <app-google-chart
         [chartType]="'BarChart'"
@@ -50,7 +50,7 @@
       >
       </app-google-chart>
     </div>
-  </div>
+  </div> -->
 
   <!-- No Data Message -->
   <ng-container *ngIf="categories.length === 0">

@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (items && items.length > 0) {
           this.prepareInventoryChartData(items);
         }
-      });
+    });
   }
 
   ngOnDestroy(): void {

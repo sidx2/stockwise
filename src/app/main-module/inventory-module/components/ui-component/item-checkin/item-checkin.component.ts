@@ -16,8 +16,8 @@ export class ItemCheckinComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkinFormGroup = new FormGroup({
-      selectedEmployee: new FormControl('', this.selectedItem?.identificationType === 'non-unique' ? Validators.required : null),
-      quantity: new FormControl('', this.selectedItem?.identificationType === 'non-unique' ? Validators.required : null)
+      selectedEmployee: new FormControl('', this.selectedItem?.identificationType === 'mass' ? Validators.required : null),
+      quantity: new FormControl('', this.selectedItem?.identificationType === 'mass' ? Validators.required : null)
     });
   }
 
@@ -25,7 +25,7 @@ export class ItemCheckinComponent implements OnInit {
     console.log(this.checkinFormGroup.value);
     let checkInData: CheckinDetails;
 
-    if (this.selectedItem && this.selectedItem.identificationType === 'unique') {
+    if (this.selectedItem && this.selectedItem.identificationType === 'single') {
       checkInData = {
         itemId: String(this.selectedItem._id),
         quantity: 1,

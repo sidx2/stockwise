@@ -33,9 +33,9 @@
       appCustomInputStyle
       formControlName="identificationType"
     >
-      <option [ngValue]="null">Select Category</option>
-      <option value="unique">unique</option>
-      <option value="non-unique">non-unique</option>
+      <option [ngValue]="null">Select Identification Type</option>
+      <option value="single">Single Item</option>
+      <option value="mass">Mass Item</option>
     </select>
   </div>
 
@@ -81,7 +81,7 @@
 
     <div
       class="inputDiv"
-      *ngIf="categoryFormGroup.get('identificationType')?.value === 'unique'"
+      *ngIf="categoryFormGroup.get('identificationType')?.value === 'single'"
     >
       <label for="SerialNumber">Serial Number</label>
       <input
@@ -96,7 +96,7 @@
     <div
       class="inputDiv"
       *ngIf="
-        categoryFormGroup.get('identificationType')?.value === 'non-unique'
+        categoryFormGroup.get('identificationType')?.value === 'mass'
       "
     >
       <label for="quantity">Quantity</label>

@@ -33,7 +33,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   destroy$: Subject<void> = new Subject();
 
   selectedCategoryId: string = '';
-  selectedIdentificationType: string = 'unique';
+  selectedIdentificationType: string = 'single';
   updateItemCategory: Category | null = null;
 
   isInventoryFormVisible: boolean = false;
