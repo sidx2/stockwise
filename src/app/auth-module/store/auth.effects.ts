@@ -107,14 +107,15 @@ export class authEffects {
 
     changePassword$ = createEffect(() =>
         this.action$.pipe(
-      ofType(changePasswordRequest),
-      switchMap(({ currPassword, newPassword }) =>
-        this.authService.changePassword(currPassword, newPassword).pipe(
-          map(() => changePasswordSuccess()),
-          catchError(error => of(changePasswordFailure({ error })))
+            ofType(changePasswordRequest),
+            tap((x)=> console.log("hello")),
+            switchMap(({ currPassword, newPassword }) =>
+                this.authService.changePassword(currPassword, newPassword).pipe(
+                    map(() => changePasswordSuccess()),
+                    catchError(error => of(changePasswordFailure({ error })))
+                )
+            )
         )
-      )
-    )
-  );
+    );
 
 }
