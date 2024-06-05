@@ -18,7 +18,7 @@ export const fetchOrg = createAction("fetchOrg", props<{ userId: string }>());
 export const fetchOrgSuccess = createAction("fetchOrgSuccess", props<{ org: Org }>());
 export const fetchOrgFailure = createAction("fetchOrgFailure", props<{ error: string }>());
 
-export const changePasswordRequest = createAction('[Auth] Change Password Request',props<{ currPassword: string, newPassword: string }>());
+export const changePasswordRequest = createAction('[Auth] Change Password Request', props<{ newPassword: string }>());
 export const changePasswordSuccess = createAction('[Auth] Change Password Success');
 export const changePasswordFailure = createAction('[Auth] Change Password Failure', props<{ error: string }>());
 
