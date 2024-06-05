@@ -41,10 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('Dispatching getCategoryRequest');
     this.store.dispatch(getCategoryRequest());
-
-    console.log('Dispatching getInventoryCountsRequest');
     this.store.dispatch(getInventoryCountsRequest());
 
     this.categories$
@@ -58,7 +55,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.inventoryCounts$
       .pipe(takeUntil(this.destroy$))
       .subscribe(items => {
-        console.log("items in dashboard ", items);
         if (items && items.length > 0) {
           this.prepareInventoryChartData(items);
         }
@@ -72,8 +68,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareCategoryChartData(categories: Category[]): void {
     this.categoryChartData = categories.map(category => [category.name, category.numberOfAssets]);
-
-    console.log("categoryChartData",this.categoryChartData)
 
     this.categoryChartOptions = {
       title: 'Assets per Category',
@@ -95,9 +89,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareInventoryChartData(inventoryCounts: InventoryCount[]): void {
     this.inventoryChartData = inventoryCounts.map(item => [item.itemName, item.assignedCount, item.availableCount]);
-
-    console.log("inventoryChartData",this.inventoryChartData)
-
 
     this.inventoryChartOptions = {
       title: 'Inventory Counts',

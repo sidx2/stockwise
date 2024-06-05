@@ -163,9 +163,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   fetchItems(identificationType: string, categoryId: string, assignedStatus: string, limit: number, skip: number, searchText: string) {
 
-    console.log("skip", skip);
-    console.log("limit", limit);
-
     this.store.dispatch(getItemRequest({
       identificationType,
       categoryId,
@@ -208,7 +205,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(page: number) {
-    console.log("page number", page)
     this.currentPage = page;
     const skip = this.getSkipCount();
 

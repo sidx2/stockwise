@@ -115,7 +115,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.categoryFormGroup.valid) {
 
-      console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
       const selectedVendorsId = this.categoryFormGroup.get('selectedVendors')?.value?.map((vendor: Vendor) => vendor._id);

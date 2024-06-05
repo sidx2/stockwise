@@ -94,7 +94,6 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
   updateStatusHandler(updatedStatus: UpdateStatus) {
     updatedStatus.ticketId = this.selectedTicketId;
     this.store.dispatch(updateTicketStatusRequest({ updatedStatus }));
-    console.log("updated status recieved", updatedStatus)
   }
 
   showAssetInfo(assetId: string) {

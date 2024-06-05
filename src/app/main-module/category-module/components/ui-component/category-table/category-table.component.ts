@@ -24,7 +24,6 @@ export class CategoryTableComponent {
   }
 
   updateCategoryHandler(selectedCategory: Category){
-    console.log("Inside table update", selectedCategory);
     this.updateCategoryEmitter.emit(selectedCategory); 
   }
 }

@@ -22,7 +22,6 @@ export class ItemCheckinComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.checkinFormGroup.value);
     let checkInData: CheckinDetails;
 
     if (this.selectedItem && this.selectedItem.identificationType === 'Single') {
