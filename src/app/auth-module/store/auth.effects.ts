@@ -31,7 +31,7 @@ export class authEffects {
                         console.log("err: ", err);
                         this.store.dispatch(resetLoading());
                         const error = err?.error?.error || "Something went wrong";
-                        this.toastr.error(Failed to login. ${error});
+                        this.toastr.error(`Failed to login. ${error}`);
                         return of(loginUserFailure({ error }))
                     }
                     )

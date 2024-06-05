@@ -25,10 +25,10 @@ export class AuthService {
   }
 
   createOrg(credentials: CreateOrgCredentials, token: string) {
-    return this.http.post(`${BASE_URL}/org/create`, credentials, { headers: { Authorization: `Bearer ${token}` } });
+    return this.http.post(`${BASE_URL}/org/create`, credentials, {headers: {Authorization: `Bearer ${token}`}});
   }
 
-  changePassword(currPassword: string, newPassword: string) {
-    return this.http.post(`${BASE_URL}/auth/changePassword`, { currPassword, newPassword });
+  changePassword(newPassword: string){
+    return this.http.post(`${BASE_URL}/auth/changePassword`, {password: newPassword})
   }
 }
