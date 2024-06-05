@@ -51,7 +51,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   dropdownSettings = {
-    singleSelection: false,
+    SingleSelection: false,
     idField: '_id',
     textField: 'name',
     allowSearchFilter: true
@@ -91,10 +91,12 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   addCustomField() {
     this.customFields.push(this.createCustomField('', '', false));
+    this.categoryFormGroup.markAsDirty();
   }
 
   removeCustomField(index: number) {
     this.customFields.removeAt(index);
+    this.categoryFormGroup.markAsDirty();
   }
 
   createCustomField(label: string, type: string, required: boolean) {

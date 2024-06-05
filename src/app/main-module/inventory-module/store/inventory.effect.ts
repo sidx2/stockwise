@@ -28,7 +28,7 @@ export class InventoryEffects {
             }
         }),
         switchMap((action) =>
-            this.inventoryService.getItems(action.identificationType, action.categoryId, action.limit, action.skip, action.searchText, action.assetId).pipe(
+            this.inventoryService.getItems(action.identificationType, action.categoryId, action.assignedStatus,  action.limit, action.skip, action.searchText, action.assetId).pipe(
                 map(response => getItemSuccess({ items: response.items, totalItems: response.totalItems })),
                 catchError(errorResponse => {
                     return of(getItemFailure({ errorMessage: errorResponse.error.error }));

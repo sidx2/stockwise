@@ -29,7 +29,7 @@
   </div>
 
   <div
-    *ngIf="selectedCategory?.identificationType === 'single' && !isEditMode"
+    *ngIf="selectedCategory?.identificationType === 'Single' && !isEditMode"
     class="inputDiv"
   >
     <label for="operationType">Operation Type<span class="required-star" *ngIf="itemFormGroup.get('operationType')?.errors?.['required']">*</span></label>
@@ -38,13 +38,13 @@
       id="operationType"
       formControlName="operationType"
     >
-      <option value="single">Single</option>
+      <option value="Single">Single</option>
       <option value="multiple">Multiple</option>
     </select>
   </div>
 
   <div
-    *ngIf="selectedCategory?.identificationType === 'single'"
+    *ngIf="selectedCategory?.identificationType === 'Single'"
     class="inputDiv"
   >
     <label for="serialNumber">{{
@@ -62,7 +62,7 @@
   </div>
 
   <div
-    *ngIf="selectedCategory?.identificationType === 'mass'"
+    *ngIf="selectedCategory?.identificationType === 'Mass'"
     class="inputDiv"
   >
     <label for="quantity">Quantity<span class="required-star" *ngIf="itemFormGroup.get('quantity')?.errors?.['required']">*</span></label>

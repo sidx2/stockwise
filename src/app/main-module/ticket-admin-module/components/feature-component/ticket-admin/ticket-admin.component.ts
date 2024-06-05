@@ -102,6 +102,7 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
     this.store.dispatch(getItemRequest({
       identificationType: '',
       categoryId: '',
+      assignedStatus: '',
       limit: 1,
       skip: 0,
       searchText: '',

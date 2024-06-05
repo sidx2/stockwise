@@ -32,7 +32,7 @@ export const inventoryReducer = createReducer(
 
   on(createItemSuccess, (state, { item }) => ({
     ...state,
-    items: [...state.items, item],
+    // items: [...state.items, item],
     loading: false
   })),
 
@@ -44,7 +44,7 @@ export const inventoryReducer = createReducer(
 
   on(createMultipleItemSuccess, (state, { items }) => ({
     ...state,
-    items: [...state.items, ...items],
+    // items: [...state.items, ...items],
     loading: false
   })),
 

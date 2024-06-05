@@ -67,9 +67,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       itemImage: item.itemImage,
     });
 
-    if (this.selectedCategory?.identificationType === 'single') {
+    if (this.selectedCategory?.identificationType === 'Single') {
       this.itemFormGroup.addControl('serialNumber', new FormControl(item?.serialNumber, Validators.required));
-    } else if (this.selectedCategory?.identificationType === 'mass') {
+    } else if (this.selectedCategory?.identificationType === 'Mass') {
       this.itemFormGroup.addControl('quantity', new FormControl(item?.quantity, Validators.required));
     }
 
@@ -94,8 +94,8 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       }
       this.addAdditionalFields();
 
-      if (this.selectedCategory.identificationType === 'single') {
-        this.itemFormGroup.addControl('operationType', new FormControl('single', Validators.required));
+      if (this.selectedCategory.identificationType === 'Single') {
+        this.itemFormGroup.addControl('operationType', new FormControl('Single', Validators.required));
       } else {
         this.itemFormGroup.removeControl('operationType');
       }
@@ -103,9 +103,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   }
 
   addAdditionalFields(): void {
-    if (this.selectedCategory?.identificationType === 'single') {
+    if (this.selectedCategory?.identificationType === 'Single') {
       this.itemFormGroup.addControl('serialNumber', new FormControl('', Validators.required));
-    } else if (this.selectedCategory?.identificationType === 'mass') {
+    } else if (this.selectedCategory?.identificationType === 'Mass') {
       this.itemFormGroup.addControl('quantity', new FormControl('', Validators.required));
     }
   }
@@ -154,7 +154,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
     let newItem: Item = {
       name: formData.name,
-      identificationType: this.selectedCategory?.identificationType || 'single',
+      identificationType: this.selectedCategory?.identificationType || 'Single',
       categoryId: this.selectedCategory?._id || '',
       orgId: '',
       customFieldsData: customFieldsData,
@@ -174,7 +174,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       if (this.itemFormGroup.get('operationType')) {
         const operationTypeValue = this.itemFormGroup.get('operationType')?.value;
 
-        if (operationTypeValue === 'single') {
+        if (operationTypeValue === 'Single') {
           this.createItemEmmiter.emit(newItem);
         } else {
           this.createMultipleItemEmmiter.emit(newItem);

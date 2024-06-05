@@ -34,8 +34,8 @@
       formControlName="identificationType"
     >
       <option [ngValue]="null">Select Identification Type</option>
-      <option value="single">Single Item</option>
-      <option value="mass">Mass Item</option>
+      <option value="Single">Single Item</option>
+      <option value="Mass">Mass Item</option>
     </select>
   </div>
 
@@ -81,7 +81,7 @@
 
     <div
       class="inputDiv"
-      *ngIf="categoryFormGroup.get('identificationType')?.value === 'single'"
+      *ngIf="categoryFormGroup.get('identificationType')?.value === 'Single'"
     >
       <label for="SerialNumber">Serial Number</label>
       <input
@@ -96,7 +96,7 @@
     <div
       class="inputDiv"
       *ngIf="
-        categoryFormGroup.get('identificationType')?.value === 'mass'
+        categoryFormGroup.get('identificationType')?.value === 'Mass'
       "
     >
       <label for="quantity">Quantity</label>

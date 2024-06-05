@@ -78,10 +78,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.categoryChartOptions = {
       title: 'Assets per Category',
       hAxis: {
-        title: 'Category'
+        title: 'Number of Assets'
       },
       vAxis: {
-        title: 'Number of Assets'
+        title: 'Category'
       },
       legend: { position: 'none' },
       colors: ['#3399ff', '#66b2ff', '#99ccff', '#cce5ff', '#e6f2ff'],

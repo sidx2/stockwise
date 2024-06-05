@@ -24,8 +24,8 @@
       [(ngModel)]="selectedIdentificationType"
       (change)="onIdentificationTypeChange()"
     >
-      <option value="single">Single Item</option>
-      <option value="mass">Mass Item</option>
+      <option value="Single">Single Items</option>
+      <option value="Mass">Mass Items</option>
     </select>
 
     <select
@@ -44,6 +44,19 @@
         {{ category.name }}
       </option>
     </select>
+
+    <select
+    appCustomInputStyle
+    class="assigned"
+    name="selectedAssignedStatus"
+    id="selectedAssignedStatus"
+    [(ngModel)]="selectedAssignedStatus"
+    (change)="onAssignedStatusChange()"
+  >
+    <option value="">All</option>
+    <option value="assigned">Assigned</option>
+    <option value="not-assigned">Not Assigned</option>
+  </select>
   </div>
 
   <app-inventory-table
@@ -61,7 +74,7 @@
     <button
       appButtonPrimary
       (click)="onPageChange(currentPage - 1)"
-      [disabled]="currentPage === 1"
+      [disabled]="currentPage === 1 || totalPages === 0"
     >
       Previous
     </button>
@@ -69,7 +82,7 @@
     <button
       appButtonPrimary
       (click)="onPageChange(currentPage + 1)"
-      [disabled]="currentPage === totalPages"
+      [disabled]="currentPage === totalPages || totalPages === 0"
     >
       Next
     </button>
