@@ -56,15 +56,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   itemsPerPage: number = 5;
   totalPages: number = 0;
-  
+
   constructor(private store: Store<{ inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
 
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));
 
     this.store.pipe(select(totalItemsSelector), takeUntil(this.destroy$)).subscribe((totalItems) => {
-      this.totalPages = Math.ceil(totalItems/this.itemsPerPage);
-      if(this.totalPages === 0){
+      this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
+      if (this.totalPages === 0) {
         this.currentPage = 0;
       }
     });
@@ -100,6 +100,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.toastr.success('Item added successfully');
       this.hideInventoryForm();
+      
+      this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+      this.currentPage = 1
     })
 
     this.actions$.pipe(
@@ -108,6 +111,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.toastr.success('Items added successfully');
       this.hideInventoryForm();
+
+      this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+      this.currentPage = 1
     })
 
     this.actions$.pipe(
@@ -141,7 +147,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.toastr.success('Item Checkout successfully');
 
-      if (this.checkoutMailDetails) {
+      if(this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
         this.checkoutMailDetails = null;
       }
@@ -176,7 +182,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.searchText = '';
     this.selectedCategoryId = '';
 
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId,this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
 
     this.filteredCategories$ = this.categories$.pipe(
       map(categories => categories.filter(category => category.identificationType === this.selectedIdentificationType)),
@@ -187,36 +193,34 @@ export class InventoryComponent implements OnInit, OnDestroy {
   onCategoryChange(): void {
     this.currentPage = 1
     this.searchText = ''
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId,this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
   }
 
-  onAssignedStatusChange(): void{
+  onAssignedStatusChange(): void {
     this.currentPage = 1
     this.searchText = ''
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId,this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
   }
 
   onSearchTextChange(): void {
     this.currentPage = 1
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId,this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
   }
 
   onPageChange(page: number) {
     console.log("page number", page)
     this.currentPage = page;
     const skip = this.getSkipCount();
-  
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId,this.selectedAssignedStatus, this.itemsPerPage, skip, this.searchText);
+
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, skip, this.searchText);
   }
-  
+
   getSkipCount(): number {
     return (this.currentPage - 1) * this.itemsPerPage;
   }
-  
+
   createItemHandler(item: Item) {
     this.store.dispatch(createItemRequest({ item }));
-    this.currentPage = 1
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
   }
 
   createMultipleItemHandler(item: Item) {
@@ -231,7 +235,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteItemHandler(itemId: string) {    
+  deleteItemHandler(itemId: string) {
     this.itemIdToDelete = itemId;
     this.showDeleteConfirmation = true;
   }

@@ -26,14 +26,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isChangePasswordVisible: boolean = false
 
   constructor(
-    private store: Store<{ inventory: InventoryState }>, 
-    private router: Router, private cs: CookieService, 
+    private store: Store<{ inventory: InventoryState }>,
+    private router: Router, private cs: CookieService,
     private actions$: Actions, private toastr: ToastrService,
     private cookieService: CookieService,
   ) {
     this.userAssets$ = this.store.select(state => state.inventory.userAssets);
     this.user = cookieService.getUser();
-    console.log("user in profile: ", this.user);
   }
 
   ngOnInit(): void {
@@ -42,7 +41,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(changePasswordSuccess),
       takeUntil(this.destroy$)
-      ).subscribe( ()=> {
+    ).subscribe(() => {
       this.toastr.success("Password changed successfully");
       this.hideChangePassword()
     })
@@ -54,18 +53,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.router.navigate(["auth/login"]);
   }
 
-  showChangePassword(){
+  showChangePassword() {
     this.isChangePasswordVisible = true;
   }
 
-  hideChangePassword(){
+  hideChangePassword() {
     this.isChangePasswordVisible = false;
   }
 
-  changePasswordHandler(newPassword: string){
-    console.log("updated password", newPassword)
-    this.store.dispatch(changePasswordRequest({newPassword}))
-    this.hideChangePassword();
+  changePasswordHandler(passwordDetails: { currPassword: string, newPassword: string }) { 
+    console.log('data recieved in profile', passwordDetails)
+    this.store.dispatch(changePasswordRequest({
+      currPassword: passwordDetails.currPassword,
+      newPassword: passwordDetails.newPassword
+    }));
   }
 
   ngOnDestroy(): void {

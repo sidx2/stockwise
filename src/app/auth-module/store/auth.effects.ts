@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 export class authEffects {
     constructor(
         private action$: Actions,
-        private authService$: AuthService,
+        private authService: AuthService,
         private store: Store<{ auth: IAuthState }>,
         private toastr: ToastrService,
     ) { }
@@ -21,7 +21,7 @@ export class authEffects {
             ofType(loginUser),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap(({ credentials }) =>
-                this.authService$.login(credentials).pipe(
+                this.authService.login(credentials).pipe(
                     map((res: any) => {
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Welcome back!");
@@ -44,7 +44,7 @@ export class authEffects {
             ofType(signupRequest),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap((data) =>
-                this.authService$.signup(data.user).pipe(
+                this.authService.signup(data.user).pipe(
                     map((res: any) => {
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Welcome to StockWise")
@@ -66,7 +66,7 @@ export class authEffects {
             ofType(createOrgRequest),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap((data) =>
-                this.authService$.createOrg(data.org, data.token).pipe(
+                this.authService.createOrg(data.org, data.token).pipe(
                     map((res: any) => {
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Organization was created successfully")
@@ -89,7 +89,7 @@ export class authEffects {
             ofType(fetchOrg),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap(() => {
-                return this.authService$.getOrgByUserId().pipe(
+                return this.authService.getOrgByUserId().pipe(
                     map((res: any) => {
                         this.store.dispatch(resetLoading());
                         return fetchOrgSuccess({ org: res });
@@ -107,14 +107,14 @@ export class authEffects {
 
     changePassword$ = createEffect(() =>
         this.action$.pipe(
-            ofType(changePasswordRequest),
-            switchMap(({ newPassword }) =>
-                this.authService$.changePassword(newPassword).pipe(
-                    map(() => changePasswordSuccess()),
-                    catchError(error => of(changePasswordFailure({ error })))
-                )
-            )
+      ofType(changePasswordRequest),
+      switchMap(({ currPassword, newPassword }) =>
+        this.authService.changePassword(currPassword, newPassword).pipe(
+          map(() => changePasswordSuccess()),
+          catchError(error => of(changePasswordFailure({ error })))
         )
+      )
     )
+  );
 
 }
