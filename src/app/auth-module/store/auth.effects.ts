@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 export class authEffects {
     constructor(
         private action$: Actions,
-        private authService$: AuthService,
+        private authService: AuthService,
         private store: Store<{ auth: IAuthState }>,
         private toastr: ToastrService,
     ) { }
@@ -21,14 +21,13 @@ export class authEffects {
             ofType(loginUser),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap(({ credentials }) =>
-                this.authService$.login(credentials).pipe(
+                this.authService.login(credentials).pipe(
                     map((res: any) => {
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Welcome back!");
                         return loginUserSuccess({ user: res });
                     }),
                     catchError((err) => {
-                        console.log("err: ", err);
                         this.store.dispatch(resetLoading());
                         const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Failed to login. ${error}`);
@@ -45,16 +44,14 @@ export class authEffects {
             ofType(signupRequest),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap((data) =>
-                this.authService$.signup(data.user).pipe(
+                this.authService.signup(data.user).pipe(
                     map((res: any) => {
-                        console.log("res in signup:", res);
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Welcome to StockWise")
                         return signupSuccess({ user: res })
                     }),
                     catchError((err) => {
                         this.store.dispatch(resetLoading());
-                        console.log("err in signup failure:", err);
                         const error = err?.error?.error || "Something went wrong! Could not signup"
                         this.toastr.error(error);
                         return of(signupFailure({ error }))
@@ -69,9 +66,8 @@ export class authEffects {
             ofType(createOrgRequest),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap((data) =>
-                this.authService$.createOrg(data.org, data.token).pipe(
+                this.authService.createOrg(data.org, data.token).pipe(
                     map((res: any) => {
-                        console.log("res in create org:", res);
                         this.store.dispatch(resetLoading());
                         this.toastr.success("Organization was created successfully")
                         return createOrgSuccess({ org: res })
@@ -93,7 +89,7 @@ export class authEffects {
             ofType(fetchOrg),
             tap(() => { this.store.dispatch(setLoading()); }),
             switchMap(() => {
-                return this.authService$.getOrgByUserId().pipe(
+                return this.authService.getOrgByUserId().pipe(
                     map((res: any) => {
                         this.store.dispatch(resetLoading());
                         return fetchOrgSuccess({ org: res });
@@ -112,13 +108,22 @@ export class authEffects {
     changePassword$ = createEffect(() =>
         this.action$.pipe(
             ofType(changePasswordRequest),
-            switchMap(({ newPassword }) =>
-                this.authService$.changePassword(newPassword).pipe(
-                    map(() => changePasswordSuccess()),
-                    catchError(error => of(changePasswordFailure({ error })))
+            tap(() => { this.store.dispatch(setLoading()); }),
+            switchMap(({ currPassword, newPassword }) =>
+                this.authService.changePassword(currPassword, newPassword).pipe(
+                    map((res: any) => {
+                        this.store.dispatch(resetLoading());
+                        return changePasswordSuccess();
+                    }),
+                    catchError((err) => {
+                        this.store.dispatch(resetLoading());
+                        const error = err?.error?.error || "Something went wrong";
+                        this.toastr.error(`Failed to change password. ${error}`);
+                        return of(changePasswordFailure({ error }));
+                    })
                 )
             )
         )
-    )
+    );
 
 }

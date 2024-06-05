@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared-module/shared.module';
 import { InventoryModule } from './inventory-module/inventory.module';
 import { CategoryModule } from './category-module/category.module';
@@ -60,6 +60,7 @@ import { DashboardModule } from './dashboard-module/dashboard.module';
     MatIconModule,
     MatCardModule,
     MatListModule,
+    ReactiveFormsModule,
 
 
     StoreModule.forFeature('inventory', inventoryReducer),
