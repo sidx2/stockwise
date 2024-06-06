@@ -14,7 +14,6 @@ export class SidebarComponent {
 
   constructor(private cookieService: CookieService){
     this.user = cookieService.getUser();
-    console.log("user is sidebar: ", this.user);
   }
 
   closeSidebar(): void {

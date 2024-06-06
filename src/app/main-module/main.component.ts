@@ -7,7 +7,8 @@ import { CookieService } from '../services/cookie.service';
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
-  isLoggedIn
+  isLoggedIn: boolean = false
+
   constructor(
     private cookieService: CookieService,
   ) {
