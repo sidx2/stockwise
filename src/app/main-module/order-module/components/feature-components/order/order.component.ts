@@ -42,7 +42,7 @@ export class OrderComponent implements OnDestroy {
 
     this.org = cookieService.getOrg()
     this.user = cookieService.getUser()
-
+    
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])
     })

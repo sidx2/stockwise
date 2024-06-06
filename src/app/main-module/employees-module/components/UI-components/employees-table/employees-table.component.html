@@ -29,41 +29,58 @@
         </td>
       </tr>
 
-      <ng-template #elseBlock [formGroup]="editEmployeeForm">
-        <tr class="pending">
+      <ng-template #elseBlock>
+        <tr class="pending" [formGroup]="editEmployeeForm">
           <td>
-            <input appCustomInputStyle type="text" formControlName="name"
-              [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}" />
+            <input
+              appCustomInputStyle
+              type="text"
+              formControlName="name"
+              [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"
+            />
             <div
               *ngIf="editEmployeeForm.get('name')?.invalid && (editEmployeeForm.get('name')?.dirty || editEmployeeForm.get('name')?.touched)"
-              class="errMsg">
+              class="errMsg"
+            >
               <small class="text-danger">
-                {{ getErrorMessage('name') }}
+                <span *ngIf="editEmployeeForm.get('name')?.hasError('required')">This field is required.</span>
+                <span *ngIf="editEmployeeForm.get('name')?.hasError('minlength')">Must be at least 3 characters long.</span>
+                <span *ngIf="editEmployeeForm.get('name')?.hasError('maxlength')">Cannot exceed 128 characters.</span>
               </small>
             </div>
           </td>
           <td>
-            <input appCustomInputStyle type="email" formControlName="email"
-              [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}" />
+            <input
+              appCustomInputStyle
+              type="email"
+              formControlName="email"
+              [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"
+            />
             <div
               *ngIf="editEmployeeForm.get('email')?.invalid && (editEmployeeForm.get('email')?.dirty || editEmployeeForm.get('email')?.touched)"
-              class="errMsg">
+              class="errMsg"
+            >
               <small class="text-danger">
-                {{ getErrorMessage('email') }}
+                <span *ngIf="editEmployeeForm.get('email')?.hasError('required')">This field is required.</span>
+                <span *ngIf="editEmployeeForm.get('email')?.hasError('validEmail')">Please enter a valid email address.</span>
               </small>
             </div>
           </td>
           <td>
-            <select appCustomInputStyle formControlName="role"
-              [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}">
+            <select
+              appCustomInputStyle
+              formControlName="role"
+              [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}"
+            >
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>
             <div
               *ngIf="editEmployeeForm.get('role')?.invalid && (editEmployeeForm.get('role')?.dirty || editEmployeeForm.get('role')?.touched)"
-              class="errMsg">
+              class="errMsg"
+            >
               <small class="text-danger">
-                {{ getErrorMessage('role') }}
+                <span *ngIf="editEmployeeForm.get('role')?.hasError('required')">This field is required.</span>
               </small>
             </div>
           </td>

@@ -17,7 +17,11 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("name") }}
+        <small class="text-danger">
+          <span *ngIf="addVendorForm.get('name')?.hasError('required')">This field is required.</span>
+          <span *ngIf="addVendorForm.get('name')?.hasError('minlength')">Must be at least 3 characters long.</span>
+          <span *ngIf="addVendorForm.get('name')?.hasError('maxlength')">Cannot exceed 128 characters.</span>
+        </small>
       </span>
     </div>
 
@@ -37,7 +41,9 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("email") }}
+        <small class="text-danger">
+          <span *ngIf="addVendorForm.get('email')?.hasError('validEmail')">Please enter a valid email address.</span>
+        </small>
       </span>
     </div>
 
@@ -57,7 +63,10 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("address") }}
+        <small class="text-danger">
+          <span *ngIf="addVendorForm.get('address')?.hasError('minlength')">Must be at least 3 characters long.</span>
+          <span *ngIf="addVendorForm.get('address')?.hasError('maxlength')">Cannot exceed 128 characters.</span>
+        </small>
       </span>
     </div>
 
@@ -78,7 +87,11 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("phone") }}
+        <small class="text-danger">
+          <span *ngIf="addVendorForm.get('phone')?.hasError('validPhoneNumber')">
+            {{ addVendorForm.get('phone')?.getError('validPhoneNumber').message }}
+          </span>
+        </small>
       </span>
     </div>
 

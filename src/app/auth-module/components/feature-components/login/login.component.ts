@@ -67,22 +67,6 @@ export class LoginComponent implements OnDestroy {
     });
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.loginForm.get(controlName);
-
-    if (control?.hasError('required')) {
-      return 'This field is required.';
-    }
-    if (control?.hasError('validEmail')) {
-      return 'Invalid email address.';
-    }
-    if (control?.hasError('strongPassword')) {
-      return control.getError('strongPassword').message;
-    }
-
-    return '';
-  }
-
   onFormSubmit() {
     if (!this.loginForm.valid) {
       this.toastr.error("Invalid credentails for login");

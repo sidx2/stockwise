@@ -63,22 +63,6 @@ export class SignupComponent implements OnDestroy {
     });
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.signupForm.get(controlName);
-
-    if (control?.hasError('required')) {
-      return 'This field is required.';
-    }
-    if (control?.hasError('validEmail')) {
-      return 'Please enter a valid email address.';
-    }
-    if (control?.hasError('strongPassword')) {
-      return control.getError('strongPassword').message;
-    }
-
-    return '';
-  }
-
   onFormSubmit() {
     if (!this.signupForm.valid) {
       this.toastr.error("Invalid credentials for signup")
