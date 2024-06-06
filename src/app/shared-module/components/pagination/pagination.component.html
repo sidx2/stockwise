@@ -1,0 +1,17 @@
+<div class="pagination-controls">
+  <button
+    appButtonPrimary
+    (click)="onPageChange(currentPage - 1)"
+    [disabled]="currentPage == 1 || totalPages === 0"
+  >
+    Previous
+  </button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button
+    appButtonPrimary
+    (click)="onPageChange(currentPage + 1)"
+    [disabled]="currentPage === totalPages || totalPages === 0"
+  >
+    Next
+  </button>
+</div>

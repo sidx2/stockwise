@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/errorInterceptor';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { AuthModule } from './auth-module/auth.module';
 const config: SocketIoConfig = { url: "http://localhost:5000", options: {} };
 
 @NgModule({
@@ -25,6 +26,7 @@ const config: SocketIoConfig = { url: "http://localhost:5000", options: {} };
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    AuthModule,
 
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
@@ -51,11 +53,11 @@ const config: SocketIoConfig = { url: "http://localhost:5000", options: {} };
       useClass: AuthInterceptor,
       multi: true
     },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: ErrorInterceptor,
-    //   multi: true
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent],
 

@@ -62,10 +62,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.isChangePasswordVisible = false;
   }
 
-  changePasswordHandler(newPassword: string){
-    console.log("updated password", newPassword)
-    this.store.dispatch(changePasswordRequest({newPassword}))
-    this.hideChangePassword();
+  changePasswordHandler(passwordDetails: { currPassword: string, newPassword: string }) { 
+    console.log('data recieved in profile', passwordDetails)
+    this.store.dispatch(changePasswordRequest({
+      currPassword: passwordDetails.currPassword,
+      newPassword: passwordDetails.newPassword
+    }));
   }
 
   ngOnDestroy(): void {

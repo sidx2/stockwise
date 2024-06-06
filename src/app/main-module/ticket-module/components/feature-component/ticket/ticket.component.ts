@@ -58,7 +58,6 @@ export class TicketComponent implements OnInit, OnDestroy {
   }
 
   createTicketHandler(ticket: Ticket): void {
-    console.log("ticket data received", ticket);
     this.store.dispatch(createTicketRequest({ ticket }));
   }
 

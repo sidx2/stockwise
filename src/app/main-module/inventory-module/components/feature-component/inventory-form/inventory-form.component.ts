@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ImageService } from '../../../Services/image.service';
 import { Category } from '../../../../category-module/models/category';
@@ -14,14 +14,13 @@ import { takeUntil } from 'rxjs/operators';
 export class InventoryFormComponent implements OnInit, OnDestroy {
 
   @Input() categories: Category[] | null = null;
-  @Input() updateItemCategory: Category | null = null;
   @Input() selectedItem: Item | null = null;
 
   @Output() createItemEmmiter: EventEmitter<Item> = new EventEmitter();
   @Output() createMultipleItemEmmiter: EventEmitter<Item> = new EventEmitter();
   @Output() updateItemEmmiter: EventEmitter<{ updatedItem: Item, dataChanged: boolean }> = new EventEmitter();
 
-  selectedCategory: Category | null = null;
+  selectedCategory!: Category | null;
   isEditMode: boolean = false;
 
   itemFormGroup: FormGroup = new FormGroup({});
@@ -29,22 +28,23 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private imageService: ImageService, private cd: ChangeDetectorRef) { }
+  constructor(private imageService: ImageService) { }
 
   ngOnInit(): void {
+
     this.itemFormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
       customFields: new FormArray([]),
     });
 
-    if (this.selectedItem !== null) {
+    if(this.selectedItem !== null) {
       this.isEditMode = true;
-      this.selectedCategory = this.updateItemCategory;
+      this.selectedCategory = this.categories?.find(category => category._id === this.selectedItem?.categoryId) || null;
       this.setFormValues(this.selectedItem);
+
     } else {
       this.itemFormGroup.addControl('category', new FormControl(null, Validators.required));
       this.itemFormGroup.addControl('itemImage', new FormControl(null));
-      this.itemFormGroup.reset();
     }
 
     this.itemFormGroup.get('category')?.valueChanges
@@ -52,7 +52,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       .subscribe((value: Category) => {
         this.selectedCategory = value;
         this.onCategoryChange();
-      });
+     });
 
   }
 
@@ -61,21 +61,22 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // edit
   setFormValues(item: Item): void {
+
+    this.itemFormGroup.reset()
+
     this.itemFormGroup.patchValue({
       name: item.name,
-      itemImage: item.itemImage,
     });
 
-    if (this.selectedCategory?.identificationType === 'unique') {
+    if (this.selectedCategory?.identificationType === 'Single') {
       this.itemFormGroup.addControl('serialNumber', new FormControl(item?.serialNumber, Validators.required));
-    } else if (this.selectedCategory?.identificationType === 'non-unique') {
+    } else if (this.selectedCategory?.identificationType === 'Mass') {
       this.itemFormGroup.addControl('quantity', new FormControl(item?.quantity, Validators.required));
     }
 
     const customFieldsArray = this.itemFormGroup.get('customFields') as FormArray;
-    customFieldsArray.clear();
-
     for (let customField of this.selectedCategory?.customFields || []) {
       const initialValue = item.customFieldsData?.[customField.label] || '';
       const control = new FormControl(initialValue, customField.required ? Validators.required : null);
@@ -83,19 +84,28 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  // add
   onCategoryChange(): void {
+
     if (this.selectedCategory) {
+
+      this.itemFormGroup.patchValue({
+        name: '',
+        itemImage: null
+      })
+
       const customFieldsArray = this.itemFormGroup.get('customFields') as FormArray;
-      customFieldsArray.clear();
+      customFieldsArray.clear()
 
       for (let customField of this.selectedCategory.customFields) {
         const control = new FormControl('', customField.required ? Validators.required : null);
         customFieldsArray.push(control);
       }
+
       this.addAdditionalFields();
 
-      if (this.selectedCategory.identificationType === 'unique') {
-        this.itemFormGroup.addControl('operationType', new FormControl('single', Validators.required));
+      if (this.selectedCategory.identificationType === 'Single') {
+        this.itemFormGroup.addControl('operationType', new FormControl('Single', Validators.required));
       } else {
         this.itemFormGroup.removeControl('operationType');
       }
@@ -103,9 +113,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   }
 
   addAdditionalFields(): void {
-    if (this.selectedCategory?.identificationType === 'unique') {
+    if (this.selectedCategory?.identificationType === 'Single') {
       this.itemFormGroup.addControl('serialNumber', new FormControl('', Validators.required));
-    } else if (this.selectedCategory?.identificationType === 'non-unique') {
+    } else if (this.selectedCategory?.identificationType === 'Mass') {
       this.itemFormGroup.addControl('quantity', new FormControl('', Validators.required));
     }
   }
@@ -154,7 +164,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
     let newItem: Item = {
       name: formData.name,
-      identificationType: this.selectedCategory?.identificationType || 'unique',
+      identificationType: this.selectedCategory?.identificationType || 'Single',
       categoryId: this.selectedCategory?._id || '',
       orgId: '',
       customFieldsData: customFieldsData,
@@ -174,7 +184,7 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       if (this.itemFormGroup.get('operationType')) {
         const operationTypeValue = this.itemFormGroup.get('operationType')?.value;
 
-        if (operationTypeValue === 'single') {
+        if (operationTypeValue === 'Single') {
           this.createItemEmmiter.emit(newItem);
         } else {
           this.createMultipleItemEmmiter.emit(newItem);
@@ -185,3 +195,4 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     }
   }
 }
+

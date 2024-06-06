@@ -12,6 +12,7 @@
     class="searchBar"
     placeholder="Search item"
     [(ngModel)]="searchText"
+    (input)="onSearchTextChange()"
   />
 
   <div class="filterOption">
@@ -23,8 +24,8 @@
       [(ngModel)]="selectedIdentificationType"
       (change)="onIdentificationTypeChange()"
     >
-      <option value="unique">unique</option>
-      <option value="non-unique">non-unique</option>
+      <option value="Single">Single Items</option>
+      <option value="Mass">Mass Items</option>
     </select>
 
     <select
@@ -35,18 +36,32 @@
       [(ngModel)]="selectedCategoryId"
       (change)="onCategoryChange()"
     >
-      <option value="all">All</option>
-      <option
-        *ngFor="let category of filteredCategories$ | async"
-        [ngValue]="category._id"
-      >
-        {{ category.name }}
-      </option>
+      <option value="">All</option>
+      <ng-container *ngFor="let category of categories$ | async">
+        <ng-container
+          *ngIf="category.identificationType === selectedIdentificationType"
+        >
+          <option [ngValue]="category._id">{{ category.name }}</option>
+        </ng-container>
+      </ng-container>
+    </select>
+
+    <select
+      appCustomInputStyle
+      class="assigned"
+      name="selectedAssignedStatus"
+      id="selectedAssignedStatus"
+      [(ngModel)]="selectedAssignedStatus"
+      (change)="onAssignedStatusChange()"
+    >
+      <option value="">All</option>
+      <option value="assigned">Assigned</option>
+      <option value="not-assigned">Not Assigned</option>
     </select>
   </div>
 
   <app-inventory-table
-    [items]="filteredItems$ | async | itemFilter : searchText"
+    [items]="items$ | async"
     [identificationType]="selectedIdentificationType"
     (deleteItemEmmiter)="deleteItemHandler($event)"
     (updateItemEmmiter)="showUpdateItemForm($event)"
@@ -55,6 +70,13 @@
     (checkinEmmiter)="showCheckinItemHandler($event)"
     (lifecycleEmmiter)="showLifecycleHandler($event)"
   ></app-inventory-table>
+
+  <app-pagination
+    class="pagination"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
 </div>
 
 <div class="inventory" *ngIf="isInventoryFormVisible">
@@ -65,7 +87,6 @@
 
   <app-inventory-form
     [categories]="categories$ | async"
-    [updateItemCategory]="updateItemCategory"
     (createItemEmmiter)="createItemHandler($event)"
     (createMultipleItemEmmiter)="createMultipleItemHandler($event)"
     (updateItemEmmiter)="updateItemHandler($event)"

@@ -1,19 +1,35 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil, take } from 'rxjs/operators';
-import { checkinItemRequest, checkoutItemRequest, createItemRequest, deleteItemRequest, getItemRequest, updateItemRequest, checkoutMailRequest, createItemSuccess, updateItemSuccess, checkoutItemSuccess, clearErrorMessage, deleteItemSuccess, checkintItemSuccess, createMultipleItemRequest, createMultipleItemSuccess } from '../../../store/inventory.action';
-import { Category, CategoryState } from '../../../../category-module/models/category';
-import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item } from '../../../models/inventory';
-import { InventoryState, CheckinDetails } from '../../../models/inventory';
-import { getCategoryRequest } from '../../../../category-module/store/category.action';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { Actions, ofType } from '@ngrx/effects';
-import { Employee } from '../../../../employees-module/models/employee';
-import { employeesStateSelector } from '../../../../employees-module/store/employees.selectors';
-import { fetchEmployeesRequest } from '../../../../employees-module/store/employees.actions';
-import { getErrorMessage, getLoading, inventorySelector } from '../../../store/inventory.selector';
-import { categorySelector } from '../../../../category-module/store/category.selector';
 import { ToastrService } from 'ngx-toastr';
+
+import {
+  checkinItemRequest,
+  checkoutItemRequest,
+  createItemRequest,
+  deleteItemRequest,
+  getItemRequest,
+  updateItemRequest,
+  checkoutMailRequest,
+  createItemSuccess,
+  checkoutItemSuccess,
+  clearErrorMessage,
+  createMultipleItemRequest,
+  createMultipleItemSuccess
+} from '../../../store/inventory.action';
+
+import { getCategoryRequest } from '../../../../category-module/store/category.action';
+import { fetchEmployeesRequest } from '../../../../employees-module/store/employees.actions';
+
+import { Category, CategoryState } from '../../../../category-module/models/category';
+import { CheckoutDetails, CheckoutEventData, CheckoutMailDetails, Item, InventoryState, CheckinDetails } from '../../../models/inventory';
+import { Employee } from '../../../../employees-module/models/employee';
+
+import { employeesStateSelector } from '../../../../employees-module/store/employees.selectors';
+import { getErrorMessage, getLoading, inventorySelector, totalItemsSelector } from '../../../store/inventory.selector';
+import { categorySelector } from '../../../../category-module/store/category.selector';
 
 @Component({
   selector: 'app-inventory',
@@ -25,12 +41,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
   items$: Observable<Item[]>;
   categories$!: Observable<Category[]>;
   employees!: Employee[];
-  filteredItems$!: Observable<Item[]>;
   filteredCategories$!: Observable<Category[]>;
   destroy$: Subject<void> = new Subject();
 
-  selectedCategoryId: string = 'all';
-  selectedIdentificationType: string = 'unique';
+  selectedCategoryId: string = '';
+  selectedIdentificationType: string = 'Single';
+  selectedAssignedStatus: string = '';
   updateItemCategory: Category | null = null;
 
   isInventoryFormVisible: boolean = false;
@@ -49,10 +65,22 @@ export class InventoryComponent implements OnInit, OnDestroy {
   orgName: string = '';
   checkoutMailDetails: CheckoutMailDetails | null = null;
 
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+
   constructor(private store: Store<{ inventory: InventoryState, categories: CategoryState, employees: Employee[] }>, private actions$: Actions, private toastr: ToastrService) {
 
     this.items$ = this.store.pipe(select(inventorySelector));
     this.categories$ = this.store.pipe(select(categorySelector));
+
+    this.store.pipe(select(totalItemsSelector), takeUntil(this.destroy$)).subscribe((totalItems) => {
+      this.totalPages = totalItems === 0 ? 1 : Math.ceil(totalItems / this.itemsPerPage);
+      if(this.totalPages === 0) {
+        this.currentPage = 0;
+      }
+    });
+
     this.store.select(employeesStateSelector).pipe(
       takeUntil(this.destroy$),
     ).subscribe((state) => {
@@ -65,7 +93,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
       if (errorMessage) {
-        toastr.error(errorMessage);
+        this.toastr.error(errorMessage);
         this.store.dispatch(clearErrorMessage())
       }
     })
@@ -74,14 +102,16 @@ export class InventoryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.store.dispatch(getCategoryRequest());
-    this.store.dispatch(getItemRequest());
     this.store.dispatch(fetchEmployeesRequest());
+
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
 
     this.actions$.pipe(
       ofType(createItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.toastr.success('Item added successfully');
+      
+      this.currentPage = 1
       this.hideInventoryForm();
     })
 
@@ -89,32 +119,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
       ofType(createMultipleItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.toastr.success('Items added successfully');
       this.hideInventoryForm();
-    })
 
-    this.actions$.pipe(
-      ofType(updateItemSuccess),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.toastr.success('Item updated successfully');
-      this.store.dispatch(clearErrorMessage());
-      this.hideInventoryForm();
-    })
-
-    this.actions$.pipe(
-      ofType(deleteItemSuccess),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.toastr.success('Item deleted successfully');
-    })
-
-    this.actions$.pipe(
-      ofType(checkintItemSuccess),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.toastr.success('Item checkin successfully');
-      this.hideCheckinItemHandler()
+      this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
+      this.currentPage = 1
     })
 
     this.actions$.pipe(
@@ -123,16 +131,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
 
-      console.log("checkout successful");
-      this.toastr.success('Item Checkout successfully');
-
       if (this.checkoutMailDetails) {
         this.store.dispatch(checkoutMailRequest({ checkoutMailDetails: this.checkoutMailDetails }));
         this.checkoutMailDetails = null;
       }
     });
 
-    this.onIdentificationTypeChange()
   }
 
   ngOnDestroy(): void {
@@ -140,32 +144,47 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  fetchItems(identificationType: string, categoryId: string, assignedStatus: string, limit: number, skip: number, searchText: string) {
 
-  onIdentificationTypeChange(): void {
-    console.log("inside onidtype", this.selectedIdentificationType);
-    this.searchText = '';
-
-    this.filteredItems$ = this.items$.pipe(
-      map(items => items.filter(item => item.identificationType === this.selectedIdentificationType)),
-      takeUntil(this.destroy$)
-    );
-
-    this.filteredCategories$ = this.categories$.pipe(
-      map(categories => categories.filter(category => category.identificationType === this.selectedIdentificationType)),
-      takeUntil(this.destroy$)
-    );
+    this.store.dispatch(getItemRequest({
+      identificationType,
+      categoryId,
+      assignedStatus,
+      limit,
+      skip,
+      searchText,
+      assetId: ''
+    }));
   }
 
+  onIdentificationTypeChange(): void {
+    this.selectedCategoryId = '';
+    this.searchText = '';
+    this.onPageChange(1)
+  }
 
   onCategoryChange(): void {
-    if (this.selectedCategoryId === 'all') {
-      this.onIdentificationTypeChange();
-    } else {
-      this.filteredItems$ = this.items$.pipe(
-        map(items => items.filter(item => item.categoryId === this.selectedCategoryId)),
-        takeUntil(this.destroy$)
-      );
-    }
+    this.searchText = ''
+    this.onPageChange(1)
+  }
+
+  onAssignedStatusChange(): void {
+    this.searchText = ''
+    this.onPageChange(1)
+  }
+
+  onSearchTextChange(): void {
+    this.onPageChange(1)
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    const skip = this.getSkipCount();
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, skip, this.searchText);
+  }
+
+  getSkipCount(): number {
+    return (this.currentPage - 1) * this.itemsPerPage;
   }
 
   createItemHandler(item: Item) {
@@ -179,6 +198,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   updateItemHandler(updatedItemresponse: { updatedItem: Item, dataChanged: boolean }) {
     if (updatedItemresponse.dataChanged) {
       this.store.dispatch(updateItemRequest({ updatedItem: updatedItemresponse.updatedItem }));
+      this.hideInventoryForm();
     } else {
       this.hideInventoryForm();
     }
@@ -214,29 +234,19 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   showUpdateItemForm(selectedItem: Item) {
     this.isEditMode = true;
-    this.showInventoryForm();
-
-    this.categories$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe((categories: Category[]) => {
-      const updateItemCategory = categories.find(category => category._id === selectedItem.categoryId);
-      if (updateItemCategory) {
-        this.updateItemCategory = updateItemCategory;
-      }
-    });
-
     this.selectedItem = selectedItem;
+    this.showInventoryForm();
   }
 
   // checkout
   showCheckoutItemHandler(selectedItem: Item) {
     this.selectedItem = selectedItem;
-    this.showCheckout = true
+    this.showCheckout = true;
   }
 
   hideCheckoutItemHandler() {
     this.selectedItem = null;
-    this.showCheckout = false
+    this.showCheckout = false;
   }
 
   checkoutItemHandler(event: CheckoutEventData) {
@@ -246,24 +256,24 @@ export class InventoryComponent implements OnInit, OnDestroy {
     checkoutMailDetails.orgName = this.orgName;
     this.checkoutMailDetails = checkoutMailDetails;
 
-    this.store.dispatch(checkoutItemRequest({ assignedToDetails, checkoutMailDetails }));
-
+    this.store.dispatch(checkoutItemRequest({ assignedToDetails }));
     this.hideCheckoutItemHandler();
   }
 
   // checkin
   showCheckinItemHandler(selectedItem: Item) {
     this.selectedItem = selectedItem;
-    this.showCheckin = true
+    this.showCheckin = true;
   }
 
   hideCheckinItemHandler() {
     this.selectedItem = null;
-    this.showCheckin = false
+    this.showCheckin = false;
   }
 
   checkinItemHandler(checkinDetails: CheckinDetails) {
-    this.store.dispatch(checkinItemRequest({ checkinDetails }))
+    this.store.dispatch(checkinItemRequest({ checkinDetails }));
+    this.hideCheckinItemHandler()
   }
 
   // detailed view

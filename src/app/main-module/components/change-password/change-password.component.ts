@@ -1,17 +1,28 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrl: './change-password.component.scss'
+  styleUrls: ['./change-password.component.scss']
 })
-
 export class ChangePasswordComponent {
-  @Output() changePasswordEmmiter : EventEmitter<string> = new EventEmitter();
-  password: string = ''
+  @Output() changePasswordEmitter: EventEmitter<{ currPassword: string, newPassword: string }> = new EventEmitter();
 
-  onSubmit(){
-    console.log("changed password", this.password)
-    this.changePasswordEmmiter.emit(this.password);
+  changePasswordFormGroup: FormGroup = new FormGroup({});
+
+  constructor() {
+    this.changePasswordFormGroup = new FormGroup({
+      currPassword: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [Validators.required])
+    });
+  }
+
+  onSubmit() {
+    if (this.changePasswordFormGroup.valid) {
+      const formData = this.changePasswordFormGroup.value;
+      console.log("formdata", formData)
+      this.changePasswordEmitter.emit(formData);
+    }
   }
 }

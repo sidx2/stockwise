@@ -1,5 +1,5 @@
 <div class="inventory_table" *ngIf="items && items.length > 0">
-  <table *ngIf="identificationType === 'unique'">
+  <table *ngIf="identificationType === 'Single'">
     <thead>
       <tr>
         <th>Name</th>
@@ -73,7 +73,7 @@
     </tbody>
   </table>
 
-  <table *ngIf="identificationType === 'non-unique'">
+  <table *ngIf="identificationType === 'Mass'">
     <thead>
       <tr>
         <th>Name</th>

@@ -33,19 +33,15 @@
       appCustomInputStyle
       formControlName="identificationType"
     >
-      <option [ngValue]="null">Select Category</option>
-      <option value="unique">unique</option>
-      <option value="non-unique">non-unique</option>
+      <option [ngValue]="null">Select Identification Type</option>
+      <option value="Single">Single Item</option>
+      <option value="Mass">Mass Item</option>
     </select>
   </div>
 
   <div class="inputDiv" *ngIf="vendors">
     <label for="vendorsList"
-      >Select vendors<span
-        class="required-star"
-        *ngIf="categoryFormGroup.get('selectedVendors')?.errors?.['required']"
-        >*</span
-      ></label
+      >Select vendors</label
     >
     <ng-multiselect-dropdown
       id="vendorsList"
@@ -85,7 +81,7 @@
 
     <div
       class="inputDiv"
-      *ngIf="categoryFormGroup.get('identificationType')?.value === 'unique'"
+      *ngIf="categoryFormGroup.get('identificationType')?.value === 'Single'"
     >
       <label for="SerialNumber">Serial Number</label>
       <input
@@ -100,7 +96,7 @@
     <div
       class="inputDiv"
       *ngIf="
-        categoryFormGroup.get('identificationType')?.value === 'non-unique'
+        categoryFormGroup.get('identificationType')?.value === 'Mass'
       "
     >
       <label for="quantity">Quantity</label>

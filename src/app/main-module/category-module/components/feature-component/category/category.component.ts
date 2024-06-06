@@ -26,14 +26,14 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<{ categories: CategoryState}>, private actions$: Actions, private toastr: ToastrService) {
+  constructor(private store: Store<{ categories: CategoryState }>, private actions$: Actions, private toastr: ToastrService) {
 
     this.categories$ = this.store.pipe(select(categorySelector));
 
     this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
 
-    this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage)=> {
-      if(errorMessage){
+    this.store.pipe(select(getErrorMessage), takeUntil(this.destroy$)).subscribe((errorMessage) => {
+      if (errorMessage) {
         toastr.error(errorMessage);
         this.store.dispatch(clearErrorMessage())
       }
@@ -41,9 +41,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
-    this.store.dispatch(getCategoryRequest());
 
+    this.store.dispatch(getCategoryRequest());
+    
     this.actions$.pipe(ofType(createCategorySuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.toastr.success("Category created successfully");
       this.hideCategoryForm();
@@ -68,12 +68,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.store.dispatch(createCategoryRequest({ category: category }));
   }
 
-  updateCategoryHandler(updatedCategoryResponse: { updatedCategory: Category, dataChanged: boolean}) {
-    if(updatedCategoryResponse.dataChanged){
+  updateCategoryHandler(updatedCategoryResponse: { updatedCategory: Category, dataChanged: boolean }) {
+    if (updatedCategoryResponse.dataChanged) {
       this.store.dispatch(updateCategoryRequest({ updatedCategory: updatedCategoryResponse.updatedCategory }));
       this.fetchCategoryHandler()
     }
-    else{
+    else {
       this.hideCategoryForm()
     }
   }

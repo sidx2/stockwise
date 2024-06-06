@@ -22,7 +22,7 @@
 
     <div
       class="inputDiv"
-      *ngIf="selectedItem?.identificationType === 'non-unique'"
+      *ngIf="selectedItem?.identificationType === 'Mass'"
     >
       <label for="quantity"
         >Quantity Available
@@ -38,7 +38,7 @@
       />
     </div>
 
-    <div class="inputDiv" *ngIf="selectedItem?.identificationType === 'unique'">
+    <div class="inputDiv" *ngIf="selectedItem?.identificationType === 'Single'">
       <label for="serialNumber">Serial Number</label>
       <input
         appCustomInputStyle

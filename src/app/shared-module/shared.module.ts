@@ -13,6 +13,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { HeaderComponent } from './components/header/header.component';
 import { NoDataComponent } from './components/no-data/no-data.component';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +22,13 @@ import { DeleteConfirmationComponent } from './components/delete-confirmation/de
     ErrorPageComponent,
     HeaderComponent,
     NoDataComponent,
+    DeleteConfirmationComponent,
+    PaginationComponent,
 
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,
     TooltipDirective,
-    DeleteConfirmationComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +43,7 @@ import { DeleteConfirmationComponent } from './components/delete-confirmation/de
     ErrorPageComponent,
     NoDataComponent,
     DeleteConfirmationComponent,
+    PaginationComponent,
 
     ButtonPrimaryDirective,
     ButtonPrimaryLightDirective,

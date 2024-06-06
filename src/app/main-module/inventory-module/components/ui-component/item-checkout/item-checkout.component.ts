@@ -46,12 +46,9 @@ export class ItemCheckoutComponent {
         orgName: ''
       }
 
-      console.log("AssignedTo", assignedToDetails, "checkoutMailDetails", checkoutMailDetails);
       this.checkoutEmitter.emit({ assignedToDetails, checkoutMailDetails });
 
       this.checkoutForm.reset();
-    } else {
-      console.log('Form is not valid');
-    }
+    } 
   }
 }
