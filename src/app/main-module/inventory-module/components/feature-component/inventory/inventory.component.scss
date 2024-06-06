@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.inventory .searchBar{
+.inventory .searchBar {
   display: block;
   width: 90%;
   margin: auto;
@@ -15,13 +15,13 @@
   gap: 1rem;
 }
 
-.filterOption .inputDiv{
+.filterOption .inputDiv {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.pagination{
+.pagination {
   width: 100%;
   position: fixed;
   bottom: 0rem;
@@ -29,11 +29,9 @@
 }
 
 @media screen and (max-width: 600px) {
-  .filterOption .searchBar {
-    flex: 1;
-  }
 
-  .filterOption .filter {
-    flex: 1;
+  .filterOption{
+    flex-direction: column;
+    gap: 0.2rem;
   }
 }
