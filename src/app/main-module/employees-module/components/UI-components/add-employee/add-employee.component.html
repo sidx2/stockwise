@@ -22,7 +22,8 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("name") }}
+        <span *ngIf="addEmployeeForm.controls['name'].hasError('minlength')">Must be at least 3 characters long.</span>
+        <span *ngIf="addEmployeeForm.controls['name'].hasError('maxlength')">Cannot exceed 128 characters.</span>
       </span>
     </div>
 
@@ -43,7 +44,7 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("email") }}
+        <span *ngIf="addEmployeeForm.controls['email'].hasError('validEmail')">Please enter a valid email address.</span>
       </span>
     </div>
 
@@ -61,7 +62,7 @@
         "
         class="error-message"
       >
-        {{ getErrorMessage("role") }}
+        <span *ngIf="addEmployeeForm.controls['role'].hasError('required')">This field is required.</span>
       </span>
     </div>
 

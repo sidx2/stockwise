@@ -61,27 +61,6 @@ export class EmployeesTableComponent {
     this.editing = "-1"
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.editEmployeeForm.get(controlName);
-
-    if (control?.hasError('required')) {
-      return 'This field is required.';
-    }
-    if (control?.hasError('minlength')) {
-      const requiredLength = control.getError('minlength').requiredLength;
-      return `Must be at least ${requiredLength} characters long.`;
-    }
-    if (control?.hasError('maxlength')) {
-      const requiredLength = control.getError('maxlength').requiredLength;
-      return `Cannot exceed ${requiredLength} characters.`;
-    }
-    if (control?.hasError('validEmail')) {
-      return 'Please enter a valid email address.';
-    }
-
-    return '';
-  }
-
   onDone() {
     if (!this.editEmployeeForm.dirty) {
       this.editing = "-1";

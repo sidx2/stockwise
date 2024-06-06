@@ -45,6 +45,7 @@ export class AddEmployeeComponent {
     return '';
   }
   
+  // throw a toast for each invalid field
   onAddEmployee() {
     if (!this.addEmployeeForm.valid) {
       for (const key of Object.keys(this.addEmployeeForm.value)) {

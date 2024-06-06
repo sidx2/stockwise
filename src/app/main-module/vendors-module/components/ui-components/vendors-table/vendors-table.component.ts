@@ -100,6 +100,7 @@ export class VendorsTableComponent implements OnInit {
       return;
     }
 
+    // throw a toast for each invalid field
     if (!this.editVendorForm.valid) {
       for (const key of Object.keys(this.editVendorForm.value)) {
         const error = this.getErrorMessage(key)

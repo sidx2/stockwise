@@ -19,30 +19,6 @@ export class AddVendorComponent {
     phone: new FormControl("", [Validators.required, customValidators.validPhoneNumber]),
   })
 
-  getErrorMessage(controlName: string): string {
-    const control = this.addVendorForm.get(controlName);
-
-    if (control?.hasError('required')) {
-      return 'This field is required.';
-    }
-    if (control?.hasError('minlength')) {
-      const requiredLength = control.getError('minlength').requiredLength;
-      return `Must be at least ${requiredLength} characters long.`;
-    }
-    if (control?.hasError('maxlength')) {
-      const requiredLength = control.getError('maxlength').requiredLength;
-      return `Cannot exceed ${requiredLength} characters.`;
-    }
-    if (control?.hasError('validEmail')) {
-      return 'Please enter a valid email address.';
-    }
-    if (control?.hasError('validPhoneNumber')) {
-      return control.getError('validPhoneNumber').message;
-    }
-    
-    return '';
-  }
-
   onAddVendor() {
     if (!this.addVendorForm.valid) {
       alert("Invalid input")
