@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TicketService } from '../services/ticket.service';
 import { createTicketFailure, createTicketRequest, createTicketSuccess, getUserTicketFailure, getUserTicketRequest, getUserTicketSuccess, setLoading} from './ticket.action';
@@ -12,7 +12,7 @@ export class TicketEffects {
     loadUserTicket$ = createEffect(() => this.actions$.pipe(
         ofType(getUserTicketRequest),
         tap(() => this.store.dispatch(setLoading())), 
-        switchMap((action) =>
+        exhaustMap((action) =>
             this.ticketService.getUserTickets().pipe(
                 map(response => getUserTicketSuccess({ userTickets: response })),
                 catchError(errorResponse => {
@@ -25,7 +25,7 @@ export class TicketEffects {
     createTicket$ = createEffect(() => this.actions$.pipe(
         ofType(createTicketRequest),
         tap(() => this.store.dispatch(setLoading())), 
-        switchMap((action) =>
+        concatMap((action) =>
             this.ticketService.createTicket(action.ticket).pipe(
                 map(response => createTicketSuccess({ ticket: response })),
                 catchError(errorResponse => {

@@ -15,7 +15,7 @@ export interface AssignedTo {
 export interface Item {
     _id?: string;
     name: string;
-    identificationType: 'unique' | 'non-unique';
+    identificationType: 'Single' | 'Mass';
     categoryId: string;
     orgId?: string;
     quantity: number;
@@ -64,6 +64,7 @@ export interface CheckoutEventData {
 
 export interface InventoryState {
     items: Item[];
+    totalItems: number,
     userAssets: UserAsset[];
     loading: boolean,
     errorMessage: string

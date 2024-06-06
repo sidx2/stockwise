@@ -20,15 +20,19 @@ export class ErrorInterceptor implements HttpInterceptor {
           let errorMessage = '';
 
           switch (errorResponse.status) {
+            
             case 401:
               errorMessage = 'Unauthorized';
               break;
+
             case 403:
               errorMessage = 'Forbidden';
               break;
+
             case 500:
               errorMessage = 'Internal Server Error';
               break;
+              
             default:
               return throwError(errorResponse);
           }

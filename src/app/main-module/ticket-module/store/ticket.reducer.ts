@@ -13,7 +13,6 @@ export const ticketReducer = createReducer(
     initialState,
 
     on(getUserTicketSuccess, (state, { userTickets }) => {
-        console.log("User tickets are fetched successfully.");
         return { ...state, userTickets: userTickets, loading: false };
     }),
 

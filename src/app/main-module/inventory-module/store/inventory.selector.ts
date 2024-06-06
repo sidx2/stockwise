@@ -8,6 +8,11 @@ export const inventorySelector = createSelector(
     (state: InventoryState) => state.items
 );
 
+export const totalItemsSelector = createSelector(
+    selectInventoryState,
+    (state: InventoryState) => state.totalItems
+)
+
 export const usrAssetSelector = createSelector(
     selectInventoryState,
     (state: InventoryState) => state.userAssets

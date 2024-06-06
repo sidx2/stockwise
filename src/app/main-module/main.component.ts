@@ -12,6 +12,5 @@ export class MainComponent {
     private cookieService: CookieService,
   ) {
     this.isLoggedIn = Boolean(this.cookieService.get("isLoggedIn")!)
-    console.log("isLoggedIn in main component: ", this.isLoggedIn);
   }
 }

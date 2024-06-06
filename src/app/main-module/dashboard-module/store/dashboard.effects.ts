@@ -18,17 +18,14 @@ export class DashboardEffects {
     loadInventoryItems$ = createEffect(() => this.actions$.pipe(
         ofType(getInventoryCountsRequest),
         tap(() => {
-            console.log('Effect triggered for getInventoryCountsRequest');
             this.store.dispatch(setLoading());
         }),
         switchMap(() =>
             this.dashboardService.getInventoryCount().pipe(
                 map(response => {
-                    console.log('API response in effect:', response);
                     return getInventoryCountsSuccess({ inventoryCounts: response });
                 }),
                 catchError(errorResponse => {
-                    console.log('API error in effect:', errorResponse);
                     return of(getInventoryCountsFailure({ errorMessage: errorResponse.error.error }));
                 })
             )

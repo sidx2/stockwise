@@ -4,6 +4,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
+import { EmployeesService } from '../../../services/employees.service';
 
 @Component({
   selector: 'app-employees-table',
@@ -34,6 +35,7 @@ export class EmployeesTableComponent {
 
   constructor(
     private toastr: ToastrService,
+    private employeeService: EmployeesService,
   ) {
     this.searchSubject.pipe(
       debounceTime(500),  // 0.5 seconds
@@ -111,7 +113,13 @@ export class EmployeesTableComponent {
 
   private performSearch(searchTerm: string) {
     if (!this._emps.length) this._emps = this.employees;
+    if (searchTerm === "") {
+      this.employees = this._emps;
+    }
     this.currPage = 1;
-    this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm.toLowerCase()));
+    this.employeeService.searchEmployee(searchTerm).subscribe(data => {
+      this.employees = data as Employee[];
+    })
+    // this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm.toLowerCase()));
   }
 }

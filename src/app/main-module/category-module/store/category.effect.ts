@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { CategoryService } from '../services/category.service';
-import { createCategoryRequest, getCategoryRequest, deleteCategoryRequest, updateCategoryRequest, getCategorySuccess, createCategorySuccess, deleteCategorySuccess, updateCategorySuccess, getCategoryFailure, createCategoryFailure, deleteCategoryFailure, updateCategoryFailure } from './category.action';
 import { Store } from '@ngrx/store';
-import { setLoading } from './category.action';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, concatMap, exhaustMap, map, mergeMap,tap } from 'rxjs/operators';
+import { CategoryService } from '../services/category.service';
+import { createCategoryRequest, getCategoryRequest, deleteCategoryRequest, updateCategoryRequest, getCategorySuccess, createCategorySuccess, deleteCategorySuccess, updateCategorySuccess, getCategoryFailure, createCategoryFailure, deleteCategoryFailure, updateCategoryFailure, setLoading } from './category.action';
 
 @Injectable()
 export class CategoryEffects {
@@ -13,7 +12,7 @@ export class CategoryEffects {
     loadCategories$ = createEffect(() => this.actions$.pipe(
         ofType(getCategoryRequest),
         tap(() => this.store.dispatch(setLoading())), 
-        switchMap((action) =>
+        exhaustMap((action) =>
             this.categoryService.getCategories().pipe(
                 map(response => getCategorySuccess({ categories: response })),
                 catchError(errorRespone => {
@@ -26,7 +25,7 @@ export class CategoryEffects {
     createCategory$ = createEffect(() => this.actions$.pipe(
         ofType(createCategoryRequest),
         tap(() => this.store.dispatch(setLoading())), 
-        switchMap((action) =>
+        concatMap((action) =>
             this.categoryService.createCategory(action.category).pipe(
                 map((createdCategory) => createCategorySuccess({ category: createdCategory })),
                 catchError(errorRespone => {
@@ -39,7 +38,7 @@ export class CategoryEffects {
     deleteCategory$ = createEffect(()=> this.actions$.pipe(
         ofType(deleteCategoryRequest),
         tap(() => this.store.dispatch(setLoading())), 
-        switchMap(action =>
+        mergeMap(action =>
             this.categoryService.deleteCategory(action.categoryId).pipe(
                 map((deletedCategory) => deleteCategorySuccess({ categoryId: deletedCategory._id })),
                 catchError(errorRespone => {
@@ -52,7 +51,7 @@ export class CategoryEffects {
     updateCategory$ = createEffect( ()=> this.actions$.pipe(
         ofType(updateCategoryRequest),
         tap(() => this.store.dispatch(setLoading())), 
-        switchMap(action =>
+        concatMap(action =>
             this.categoryService.updateCategory(action.updatedCategory).pipe(
                 map((updatedCategory) => updateCategorySuccess({updatedCategory})),
                 catchError(errorRespone => {

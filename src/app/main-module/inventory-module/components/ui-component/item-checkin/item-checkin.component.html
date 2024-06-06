@@ -16,7 +16,7 @@
       />
     </div>
 
-    <div class="inputDiv" *ngIf="selectedItem.identificationType === 'unique'">
+    <div class="inputDiv" *ngIf="selectedItem.identificationType === 'Single'">
       <label for="serialNumber">Serial Number</label>
       <input
         appCustomInputStyle
@@ -27,7 +27,7 @@
       />
     </div>
 
-    <div class="inputDiv" *ngIf="selectedItem.identificationType === 'unique'">
+    <div class="inputDiv" *ngIf="selectedItem.identificationType === 'Single'">
       <label for="employee_name">Employee Name</label>
       <input
         appCustomInputStyle
@@ -40,7 +40,7 @@
 
     <div
       class="inputDiv"
-      *ngIf="selectedItem.identificationType === 'non-unique'"
+      *ngIf="selectedItem.identificationType === 'Mass'"
     >
       <label for="employee_name">Employee Name</label>
       <select
@@ -61,7 +61,7 @@
     <div
       class="inputDiv"
       *ngIf="
-        selectedItem.identificationType === 'non-unique' &&
+        selectedItem.identificationType === 'Mass' &&
         checkinFormGroup.get('selectedEmployee')?.value
       "
     >

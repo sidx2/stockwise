@@ -3,8 +3,8 @@ import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category, CustomField } from '../../../models/category';
 import { Store } from '@ngrx/store';
 import { fetchVendorsRequest } from '../../../../vendors-module/store/vendor.actions';
-import { Subject } from 'rxjs';
-import { vendorsStateSelector } from '../../../../vendors-module/store/vendor.selectors';
+import { Subject, takeUntil } from 'rxjs';
+import { vendorSelector } from '../../../../vendors-module/store/vendor.selectors';
 import { IVendorsState, Vendor } from '../../../../vendors-module/models/vendor';
 
 @Component({
@@ -27,9 +27,10 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<{ vendors: IVendorsState }>) {
     this.store.dispatch(fetchVendorsRequest());
-    this.store.select(vendorsStateSelector).subscribe(state => [
-      this.vendors = state.vendors
-    ]);
+
+    this.store.select(vendorSelector).pipe(takeUntil(this.destroy$)).subscribe(vendors => {
+      this.vendors = vendors;
+    });
   }
 
   ngOnInit(): void {
@@ -50,7 +51,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   dropdownSettings = {
-    singleSelection: false,
+    SingleSelection: false,
     idField: '_id',
     textField: 'name',
     allowSearchFilter: true
@@ -90,10 +91,12 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   addCustomField() {
     this.customFields.push(this.createCustomField('', '', false));
+    this.categoryFormGroup.markAsDirty();
   }
 
   removeCustomField(index: number) {
     this.customFields.removeAt(index);
+    this.categoryFormGroup.markAsDirty();
   }
 
   createCustomField(label: string, type: string, required: boolean) {
@@ -112,7 +115,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.categoryFormGroup.valid) {
 
-      console.log(this.categoryFormGroup.value);
       const formData = this.categoryFormGroup.value;
 
       const selectedVendorsId = this.categoryFormGroup.get('selectedVendors')?.value?.map((vendor: Vendor) => vendor._id);

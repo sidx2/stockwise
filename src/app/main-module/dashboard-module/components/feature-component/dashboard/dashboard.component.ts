@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Category } from '../../../category-module/models/category';
-import { getCategoryRequest } from '../../../category-module/store/category.action';
-import { categorySelector } from '../../../category-module/store/category.selector';
-import { CategoryState } from '../../../category-module/models/category';
-import { DashboardState, InventoryCount, ChartOptions } from '../../models/dashboard';
-import { getLoading, inventoryCountSelector } from '../../store/dashboard.selector';
-import { getInventoryCountsRequest } from '../../store/dashboard.action';
+import { Category } from '../../../../category-module/models/category';
+import { getCategoryRequest } from '../../../../category-module/store/category.action';
+import { categorySelector } from '../../../../category-module/store/category.selector';
+import { CategoryState } from '../../../../category-module/models/category';
+import { DashboardState, InventoryCount, ChartOptions } from '../../../models/dashboard';
+import { getLoading, inventoryCountSelector } from '../../../store/dashboard.selector';
+import { getInventoryCountsRequest } from '../../../store/dashboard.action';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,10 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('Dispatching getCategoryRequest');
     this.store.dispatch(getCategoryRequest());
-
-    console.log('Dispatching getInventoryCountsRequest');
     this.store.dispatch(getInventoryCountsRequest());
 
     this.categories$
@@ -58,11 +55,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.inventoryCounts$
       .pipe(takeUntil(this.destroy$))
       .subscribe(items => {
-        console.log("items in dashboard ", items);
         if (items && items.length > 0) {
           this.prepareInventoryChartData(items);
         }
-      });
+    });
   }
 
   ngOnDestroy(): void {
@@ -73,15 +69,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   prepareCategoryChartData(categories: Category[]): void {
     this.categoryChartData = categories.map(category => [category.name, category.numberOfAssets]);
 
-    console.log("categoryChartData",this.categoryChartData)
-
     this.categoryChartOptions = {
       title: 'Assets per Category',
       hAxis: {
-        title: 'Category'
+        title: 'Number of Assets'
       },
       vAxis: {
-        title: 'Number of Assets'
+        title: 'Category'
       },
       legend: { position: 'none' },
       colors: ['#3399ff', '#66b2ff', '#99ccff', '#cce5ff', '#e6f2ff'],
@@ -95,9 +89,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareInventoryChartData(inventoryCounts: InventoryCount[]): void {
     this.inventoryChartData = inventoryCounts.map(item => [item.itemName, item.assignedCount, item.availableCount]);
-
-    console.log("inventoryChartData",this.inventoryChartData)
-
 
     this.inventoryChartOptions = {
       title: 'Inventory Counts',

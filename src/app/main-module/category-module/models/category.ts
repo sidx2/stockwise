@@ -7,7 +7,7 @@ export interface CustomField {
 export interface Category {
     _id: string;
     name: string;
-    identificationType: "unique" | "non-unique";
+    identificationType: "Single" | "Mass";
     orgId?: string;
     customFields: CustomField[]
     vendors: string[];

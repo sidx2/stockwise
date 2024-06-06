@@ -11,9 +11,9 @@
 
     <tbody>
       <tr *ngFor="let record of selectedItem?.lifecycle">
-        <td>{{ record?.userName }}</td>
-        <td>{{ record?.checkoutDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
-        <td>{{ record.checkinDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+        <td>{{ record.userName }}</td>
+        <td>{{ record.checkoutDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+        <td>{{ record.checkinDate ? (record.checkinDate | date : "dd/MM/yyyy HH:mm:ss") : "No Checkin yet"}}</td>
       </tr>
     </tbody>
   </table>
