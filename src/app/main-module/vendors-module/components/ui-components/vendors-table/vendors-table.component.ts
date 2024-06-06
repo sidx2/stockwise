@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from '../../../../../services/cookie.service';
+import { VendorsService } from '../../../services/vendors.service';
 
 @Component({
   selector: 'app-vendors-table',
@@ -50,6 +51,7 @@ export class VendorsTableComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private cookieService: CookieService,
+    private vendorsService: VendorsService,
   ) {
     this.user = cookieService.getUser();
 
@@ -97,7 +99,7 @@ export class VendorsTableComponent implements OnInit {
       this.editingId = "-1";
       return;
     }
-    
+
     if (!this.editVendorForm.valid) {
       for (const key of Object.keys(this.editVendorForm.value)) {
         const error = this.getErrorMessage(key)
@@ -146,7 +148,7 @@ export class VendorsTableComponent implements OnInit {
     if (control?.hasError('validPhoneNumber')) {
       return control.getError('validPhoneNumber').message;
     }
-    
+
     return '';
   }
 
@@ -174,14 +176,18 @@ export class VendorsTableComponent implements OnInit {
     this.searchSubject.next((e.target as HTMLInputElement).value);
   }
 
-  performSearch(searchTerm: string) {
+  performSearch(query: string) {
     if (!this._vends.length) this._vends = this.vendors;
     this.currPage = 1;
-    this.vendors = this._vends.filter((vend: Vendor) =>
-      JSON.stringify(Object.values(vend))
-        .toLowerCase()
-        .includes(searchTerm)
-    )}
+    this.vendorsService.searchVendors(query).subscribe(data => {
+      this.vendors = data as Vendor[];
+    })
+    // this.vendors = this._vends.filter((vend: Vendor) =>
+    //   JSON.stringify(Object.values(vend))
+    //     .toLowerCase()
+    //     .includes(searchTerm)
+    // )
+  }
 
   ngOnDestroy(): void {
     this.cancelledEditing.emit(this.editingId);

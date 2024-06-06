@@ -24,4 +24,8 @@ export class VendorsService {
   addVendor(vendor: Vendor) {
     return this.http.post(`${BASE_URL}/vendor/create`, { ...vendor })
   }
+  
+  searchVendors(query: string) {
+    return this.http.post(`${BASE_URL}/vendor/search`, { query })
+  }
 }
