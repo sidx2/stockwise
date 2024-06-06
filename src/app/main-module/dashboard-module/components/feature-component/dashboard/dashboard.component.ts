@@ -37,12 +37,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.categories$ = this.store.pipe(select(categorySelector));
     this.inventoryCounts$ = this.store.pipe(select(inventoryCountSelector));
 
-    this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
+    // this.store.pipe(select(getLoading), takeUntil(this.destroy$)).subscribe((loading) => this.isLoading = loading);
   }
 
   ngOnInit(): void {
     this.store.dispatch(getCategoryRequest());
-    this.store.dispatch(getInventoryCountsRequest());
+    // this.store.dispatch(getInventoryCountsRequest());
 
     this.categories$
       .pipe(takeUntil(this.destroy$))
@@ -52,13 +52,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.inventoryCounts$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(items => {
-        if (items && items.length > 0) {
-          this.prepareInventoryChartData(items);
-        }
-    });
+    // this.inventoryCounts$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(items => {
+    //     if (items && items.length > 0) {
+    //       this.prepareInventoryChartData(items);
+    //     }
+    // });
   }
 
   ngOnDestroy(): void {
@@ -87,25 +87,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ];
   }
 
-  prepareInventoryChartData(inventoryCounts: InventoryCount[]): void {
-    this.inventoryChartData = inventoryCounts.map(item => [item.itemName, item.assignedCount, item.availableCount]);
+  // prepareInventoryChartData(inventoryCounts: InventoryCount[]): void {
+  //   this.inventoryChartData = inventoryCounts.map(item => [item.itemName, item.assignedCount, item.availableCount]);
 
-    this.inventoryChartOptions = {
-      title: 'Inventory Counts',
-      hAxis: {
-        title: 'Item Name'
-      },
-      vAxis: {
-        title: 'Count'
-      },
-      legend: { position: 'top' },
-      colors: ['#ff6666', '#3399ff'],
-      backgroundColor: '#f9f9f9',
-    };
-    this.inventoryChartColumns = [
-      { type: 'string', label: 'Item Name' },
-      { type: 'number', label: 'Assigned Count' },
-      { type: 'number', label: 'Available Count' }
-    ];
-  }
+  //   this.inventoryChartOptions = {
+  //     title: 'Inventory Counts',
+  //     hAxis: {
+  //       title: 'Item Name'
+  //     },
+  //     vAxis: {
+  //       title: 'Count'
+  //     },
+  //     legend: { position: 'top' },
+  //     colors: ['#ff6666', '#3399ff'],
+  //     backgroundColor: '#f9f9f9',
+  //   };
+  //   this.inventoryChartColumns = [
+  //     { type: 'string', label: 'Item Name' },
+  //     { type: 'number', label: 'Assigned Count' },
+  //     { type: 'number', label: 'Available Count' }
+  //   ];
+  // }
 }

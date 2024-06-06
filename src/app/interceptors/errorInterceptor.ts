@@ -20,7 +20,10 @@ export class ErrorInterceptor implements HttpInterceptor {
           let errorMessage = '';
 
           switch (errorResponse.status) {
-            
+            case 0:
+              errorMessage = 'Backend is offline. Please try again later.';
+              break;
+              
             case 401:
               errorMessage = 'Unauthorized';
               break;
@@ -34,7 +37,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
               
             default:
-              return throwError(errorResponse);
+              errorMessage = 'An error occurred. Please try again later.';
+              break;
           }
 
           this.toastr.error(errorMessage);
