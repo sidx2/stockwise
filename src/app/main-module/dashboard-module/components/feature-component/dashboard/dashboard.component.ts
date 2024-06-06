@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Category } from '../../../category-module/models/category';
-import { getCategoryRequest } from '../../../category-module/store/category.action';
-import { categorySelector } from '../../../category-module/store/category.selector';
-import { CategoryState } from '../../../category-module/models/category';
-import { DashboardState, InventoryCount, ChartOptions } from '../../models/dashboard';
-import { getLoading, inventoryCountSelector } from '../../store/dashboard.selector';
-import { getInventoryCountsRequest } from '../../store/dashboard.action';
+import { Category } from '../../../../category-module/models/category';
+import { getCategoryRequest } from '../../../../category-module/store/category.action';
+import { categorySelector } from '../../../../category-module/store/category.selector';
+import { CategoryState } from '../../../../category-module/models/category';
+import { DashboardState, InventoryCount, ChartOptions } from '../../../models/dashboard';
+import { getLoading, inventoryCountSelector } from '../../../store/dashboard.selector';
+import { getInventoryCountsRequest } from '../../../store/dashboard.action';
 
 @Component({
   selector: 'app-dashboard',

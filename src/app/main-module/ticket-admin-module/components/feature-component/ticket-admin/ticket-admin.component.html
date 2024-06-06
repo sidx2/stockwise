@@ -2,7 +2,7 @@
 
 <app-header *ngIf="!isTicketFormVisible">
   <h3>Ticket Administration</h3>
-  <button appButtonPrimary>Refresh</button>
+  <button appButtonPrimary (click)="fetchTickets()">Refresh</button>
 </app-header>
 
 <div class="ticketsContainer" *ngIf="!isTicketFormVisible">

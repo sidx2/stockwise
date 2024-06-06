@@ -11,6 +11,7 @@ import { getItemRequest } from '../../../../inventory-module/store/inventory.act
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Actions, ofType } from '@ngrx/effects';
+import { get } from 'https';
 
 @Component({
   selector: 'app-ticket-admin',
@@ -117,6 +118,10 @@ export class TicketAdminComponent implements OnInit, OnDestroy {
     });
 
     this.isAssetInfoVisible = true;
+  }
+
+  fetchTickets(){
+    this.store.dispatch(getAllTicketRequest())
   }
 
   hideAssetInfo() {

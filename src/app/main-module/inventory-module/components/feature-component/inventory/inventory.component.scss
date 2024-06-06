@@ -15,16 +15,14 @@
   gap: 1rem;
 }
 
-.pagination-controls{
-  background-color: white;
-  z-index: 5;
-  border-top: 1px solid rgb(216, 216, 216);
-  padding: 1rem;
-  width: 100%;
+.filterOption .inputDiv{
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   gap: 0.5rem;
+}
+
+.pagination{
+  width: 100%;
   position: fixed;
   bottom: 0rem;
   left: 0rem;
