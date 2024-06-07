@@ -13,9 +13,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/errorInterceptor';
-import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { AuthModule } from './auth-module/auth.module';
-const config: SocketIoConfig = { url: "http://localhost:5000", options: {} };
 
 @NgModule({
   declarations: [
@@ -35,7 +33,6 @@ const config: SocketIoConfig = { url: "http://localhost:5000", options: {} };
       closeButton: true,
       timeOut: 3000
     }),
-    SocketIoModule.forRoot(config),
 
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
