@@ -37,13 +37,12 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
               
             default:
-              errorMessage = 'An error occurred. Please try again later.';
+              return throwError(errorResponse);
               break;
           }
 
           this.toastr.error(errorMessage);
         }
-
         return throwError(errorResponse);
       })
     );
