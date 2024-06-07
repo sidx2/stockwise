@@ -3,12 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
-import { Subject, takeUntil } from 'rxjs';
+import { createOrgFailure, createOrgRequest, createOrgSuccess, signupRequest, signupSuccess } from '../../../store/auth.actions';
+import { Subject, concatMap, takeUntil } from 'rxjs';
 import { IAuthState } from '../../../models/auth';
 import { customValidators } from '../../../../shared-module/validators/customValidators';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from '../../../../services/cookie.service';
+import { User } from '../../../../models/global';
 
 @Component({
   selector: 'app-signup',
@@ -34,33 +35,37 @@ export class SignupComponent implements OnDestroy {
   ) {
     this.actions$.pipe(
       ofType(signupSuccess),
+      concatMap(({ user }) => {
+        this.setSignupCookies(user, 3);
+
+        const org = {
+          name: this.signupForm.value.orgName!,
+          email: this.signupForm.value.email!,
+        }
+
+        this.store.dispatch(createOrgRequest({ org, token: this.cookieService.get("token")! }))
+
+        return this.actions$.pipe(
+          ofType(createOrgSuccess, createOrgFailure),
+        );
+      }),
       takeUntil(this.destroySubject),
     ).subscribe((data) => {
-      console.log("data in signup: ", data);
-
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 3); // Add 3 days
-      this.cookieService.set("token", data.user.token!, 3)
-      this.cookieService.set("user", JSON.stringify(data.user), 3)
-      this.cookieService.set("isLoggedIn", "true", 3)
-
-      const org = {
-        name: this.signupForm.value.orgName!,
-        email: this.signupForm.value.email!,
+      if (data.type === createOrgSuccess.type) {
+        const { org } = data;
+        this.cookieService.set("org", JSON.stringify(org), 3)
+        this.router.navigate(['dashboard']);
       }
-
-      this.cookieService.set("user", JSON.stringify(data.user), 3);
-      this.store.dispatch(createOrgRequest({ org, token: this.cookieService.get("token")! }))
-
     });
+  }
 
-    this.actions$.pipe(
-      ofType(createOrgSuccess),
-      takeUntil(this.destroySubject),
-    ).subscribe((data) => {
-      this.cookieService.set("org", JSON.stringify(data.org), 3)
-      this.router.navigate(['dashboard']);
-    });
+  setSignupCookies(user: User, expiryInDays: number) {
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + expiryInDays);
+
+    this.cookieService.set("token", user.token!, expiryInDays)
+    this.cookieService.set("user", JSON.stringify(user), expiryInDays)
+    this.cookieService.set("isLoggedIn", "true", expiryInDays)
   }
 
   onFormSubmit() {

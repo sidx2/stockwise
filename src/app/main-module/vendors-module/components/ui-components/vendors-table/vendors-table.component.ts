@@ -1,12 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Vendor } from '../../../models/vendor';
-import { Editor } from '../../../models/vendor';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { User } from '../../../../../models/global';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
 import { ToastrService } from 'ngx-toastr';
-import { CookieService } from '../../../../../services/cookie.service';
 
 @Component({
   selector: 'app-vendors-table',
@@ -15,7 +12,6 @@ import { CookieService } from '../../../../../services/cookie.service';
 })
 export class VendorsTableComponent implements OnInit {
   @Input() vendors!: Vendor[]
-  @Input() editors!: Editor[]
 
   @Output() updateVendor = new EventEmitter<Vendor>();
   @Output() deleteVendor = new EventEmitter<string>();
@@ -23,7 +19,6 @@ export class VendorsTableComponent implements OnInit {
   _vends: Vendor[] = [] // for search purpose
   visisble: boolean = false
   editingId: string = "-1"
-  user!: User
 
   editVendorForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
@@ -41,10 +36,7 @@ export class VendorsTableComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
-    private cookieService: CookieService,
   ) {
-    this.user = cookieService.getUser();
-
     this.searchSubject.pipe(
       debounceTime(300),  // 0.3 seconds
       takeUntil(this.destroySubject)
@@ -140,10 +132,6 @@ export class VendorsTableComponent implements OnInit {
 
   performSearch(query: string) {
     if (!this._vends.length) this._vends = this.vendors;
-    // this.currPage = 1;
-    // this.vendorsService.searchVendors(query).subscribe(data => {
-    //   this.vendors = data as Vendor[];
-    // })
     this.vendors = this._vends.filter((vend: Vendor) =>
       JSON.stringify(Object.values(vend))
         .toLowerCase()

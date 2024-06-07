@@ -16,7 +16,6 @@
   <div class="vendors-table" *ngIf="vendors.length > 0">
     <app-vendors-table 
       [vendors]="vendors"
-      [editors]="editors"
       (updateVendor)="onUpdateVendor($event)"
       (deleteVendor)="onDeleteVendor($event)"
     ></app-vendors-table>

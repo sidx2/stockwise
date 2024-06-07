@@ -1,5 +1,3 @@
-import { Org, User } from "../../models/global";
-
 export interface LoginCredentials {
     email: string,
     password: string,

@@ -5,7 +5,6 @@ import { vendorsStateSelector } from '../../../store/vendor.selectors';
 import { Subject, takeUntil } from 'rxjs';
 import { IVendorsState, Vendor } from '../../../models/vendor';
 import { IEmployeesState } from '../../../../employees-module/models/employee';
-import { Editor } from '../../../models/vendor';
 
 @Component({
   selector: 'app-vendors',
@@ -14,7 +13,6 @@ import { Editor } from '../../../models/vendor';
 })
 export class VendorsComponent implements OnInit, OnDestroy {
   vendors!: Vendor[];
-  editors: Editor[] = []
 
   isVisibleAddVendor: boolean = false
   isLoading: boolean = false
@@ -25,7 +23,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
     private store: Store<{ vendors: IVendorsState, employees: IEmployeesState }>,
   ) {
     this.store.dispatch(fetchVendorsRequest());
-    
+
     this.store.select(vendorsStateSelector).pipe(
       takeUntil(this.destroySubject)
     ).subscribe(state => {
