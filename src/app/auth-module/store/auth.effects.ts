@@ -29,8 +29,7 @@ export class authEffects {
                         const error = err?.error?.error || "Something went wrong";
                         this.toastr.error(`Failed to login. ${error}`);
                         return of(loginUserFailure({ error }))
-                    }
-                    )
+                    })
                 )
             )
         )
@@ -78,18 +77,17 @@ export class authEffects {
     fetchOrg$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchOrg),
-            switchMap(() => {
-                return this.authService.getOrgByUserId().pipe(
+            switchMap(() => 
+                this.authService.getOrgByUserId().pipe(
                     map((res: any) => {
                         return fetchOrgSuccess({ org: res });
                     }),
                     catchError((err) => {
                         const error = err?.error?.error || "Something went wrong";
                         return of(fetchOrgFailure({ error }));
-                    }
-                    )
+                    })
                 )
-            })
+            )
         )
     )
 

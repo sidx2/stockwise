@@ -7,7 +7,7 @@ import {
     fetchEmployeesRequest, fetchEmployeesFailure, fetchEmployeesSuccess, 
     updateEmployeeFailure, updateEmployeeRequest, updateEmployeeSuccess 
 } from "./employees.actions";
-import { catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { EmployeesService } from "../services/employees.service";
 import { Store } from "@ngrx/store";
 import { IEmployeesState } from "../models/employee";
@@ -61,7 +61,7 @@ export class EmployeeEffects {
     deleteEmployee$ = createEffect(() =>
         this.action$.pipe(
             ofType(deleteEmployeeRequest),
-            switchMap(({ employeeId }) =>
+            mergeMap(({ employeeId }) =>
                 this.employeesService$.deleteEmployee(employeeId).pipe(
                     map((res: any) => {
                         this.toastr.success("Employee deleted successfully!");

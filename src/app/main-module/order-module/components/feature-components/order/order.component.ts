@@ -40,8 +40,8 @@ export class OrderComponent implements OnDestroy {
       this.isLoading = state.isLoading;
     })
 
-    this.org = this.cookieService.getOrg()
-    this.user = this.cookieService.getUser()
+    this.org = this.cookieService.getOrg();
+    this.user = this.cookieService.getUser();
     
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])
