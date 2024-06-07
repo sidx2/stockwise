@@ -1,10 +1,10 @@
 <form class="login-form" [formGroup]="signupForm" (submit)="onFormSubmit()">
   <img src="https://cdn-icons-png.flaticon.com/512/7527/7527289.png" alt="Login icon">
   <h2>Signup To Stockwise</h2>
-  <div class="p-fluid">
-    <div class="p-floatLabel">
+  <div class="fluid">
+    <div class="floatLabel">
       <label for="orgname">Organization Name</label>
-      <input id="orgname" formControlName="orgName" type="text" class="p-field p-inputtext-lg" pInputText>
+      <input id="orgname" formControlName="orgName" type="text" class="field inputtext-lg" pInputText>
       <div *ngIf="signupForm.controls['orgName'].invalid && signupForm.controls['orgName'].dirty && signupForm.controls['orgName'].touched" class="errMsg">
         <small class="text-danger">
           <span *ngIf="signupForm.controls['orgName'].hasError('minlength')">Organization name must be at least 3 characters long.</span>
@@ -12,9 +12,9 @@
       </div>
     </div>
 
-    <div class="p-floatLabel">
+    <div class="floatLabel">
       <label for="name">Your name</label>
-      <input id="name" formControlName="name" type="text" class="p-field p-inputtext-lg" pInputText>
+      <input id="name" formControlName="name" type="text" class="field inputtext-lg" pInputText>
       <div *ngIf="signupForm.controls['name'].invalid && signupForm.controls['name'].dirty && signupForm.controls['name'].touched" class="errMsg">
         <small class="text-danger">
           <span *ngIf="signupForm.controls['name'].hasError('minlength')">Name must be at least 3 characters long.</span>
@@ -22,9 +22,9 @@
       </div>
     </div>
 
-    <div class="p-floatLabel">
+    <div class="floatLabel">
       <label for="email">Email</label>
-      <input id="email" formControlName="email" type="email" class="p-field p-inputtext-lg" pInputText>
+      <input id="email" formControlName="email" type="email" class="field inputtext-lg" pInputText>
       <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].dirty && signupForm.controls['email'].touched" class="errMsg">
         <small class="text-danger">
           <span *ngIf="signupForm.controls['email'].hasError('validEmail')">Please enter a valid email address.</span>
@@ -32,9 +32,9 @@
       </div>
     </div>
 
-    <div class="p-floatLabel">
+    <div class="floatLabel">
       <label for="password">Password</label>
-      <input id="password" formControlName="password" type="password" class="p-field p-inputtext-lg" pInputText>
+      <input id="password" formControlName="password" type="password" class="field inputtext-lg" pInputText>
       <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].dirty && signupForm.controls['password'].touched" class="errMsg">
         <small class="text-danger">
           <span *ngIf="signupForm.controls['password'].hasError('strongPassword')">Password not strong</span>
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <button type="submit" class="p-button">Signup</button>
+    <button type="submit" class="button">Signup</button>
   </div>
 
   <div class="redirect">
