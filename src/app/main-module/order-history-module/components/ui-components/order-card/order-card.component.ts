@@ -16,13 +16,13 @@ export class OrderCardComponent {
   editingId: string = "-1"
   m_status!: string
 
-  edit(_id: string) {
+  edit(_id: string, status: string) {
     if (_id == "-1") {
       this.editingId = "-1";
       return;
     }
-    this.editingId = _id
-    this.m_status = this.history.filter((h: Order) => h._id == _id)[0].status;
+    this.editingId = _id;
+    this.m_status = status;
   }
 
   onDelete(_id: string) {
@@ -32,6 +32,6 @@ export class OrderCardComponent {
 
   onStatusUpdate(updatedStatus: string) {
     this.statusUpdated.emit({ _id: this.editingId, updatedStatus });
-    this.edit("-1");
+    this.edit("-1", "");
   }
 }

@@ -24,5 +24,5 @@ export const changePasswordFailure = createAction('[Auth] Change Password Failur
 
 export const logoutUserSuccess = createAction('[auth] logout user success');
 
-export const setLoading = createAction('setLoading');
-export const resetLoading = createAction('resetLoading');
+// export const setLoading = createAction('setLoading');
+// export const resetLoading = createAction('resetLoading');

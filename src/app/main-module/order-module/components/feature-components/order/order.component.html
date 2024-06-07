@@ -19,7 +19,7 @@
             formControlName="product"
             (change)="onProductChange(i)"
           >
-            <option *ngFor="let pv of productVendors" [value]="pv.item._id">
+            <option *ngFor="let pv of productAndVendors" [value]="pv.item._id">
               {{ pv.item.name }}
             </option>
           </select>

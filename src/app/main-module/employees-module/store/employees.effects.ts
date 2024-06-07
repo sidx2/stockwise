@@ -33,8 +33,7 @@ export class EmployeeEffects {
                     catchError((err) => {
                         const error = err?.error?.error || "Something went wrong";
                         return of(fetchEmployeesFailure({ error }));
-                    }
-                    )
+                    })
                 )
             )
         )

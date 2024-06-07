@@ -24,7 +24,7 @@ export class OrderComponent implements OnDestroy {
   isLoading: boolean = false;
   destroySubject = new Subject<void>();
 
-  productVendors: Product[] = [];
+  productAndVendors: Product[] = [];
   selectedProductVendors: Partial<Vendor>[][] = [];
 
   constructor(
@@ -36,12 +36,12 @@ export class OrderComponent implements OnDestroy {
     this.store.select(productVendorsStateSelector).pipe(
       takeUntil(this.destroySubject),
     ).subscribe((state) => {
-      this.productVendors = state.productVendors;
+      this.productAndVendors = state.productVendors;
       this.isLoading = state.isLoading;
     })
 
-    this.org = cookieService.getOrg()
-    this.user = cookieService.getUser()
+    this.org = this.cookieService.getOrg()
+    this.user = this.cookieService.getUser()
     
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])
@@ -68,8 +68,8 @@ export class OrderComponent implements OnDestroy {
 
   onProductChange(index: number) {
     const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
-    const productIndex = this.productVendors.findIndex(pv => pv.item._id === selectedProduct);
-    this.selectedProductVendors[index] = this.productVendors[productIndex].vendors;
+    const productIndex = this.productAndVendors.findIndex(pv => pv.item._id === selectedProduct);
+    this.selectedProductVendors[index] = this.productAndVendors[productIndex].vendors;
   }
 
   removeProduct(index: number) {
@@ -102,7 +102,7 @@ export class OrderComponent implements OnDestroy {
         quantity: orderForm.quantity,
       };
 
-      cartItem.item = this.productVendors.filter((product) => {
+      cartItem.item = this.productAndVendors.filter((product) => {
         return product.item._id == orderForm.product
       })[0].item;
       return cartItem;

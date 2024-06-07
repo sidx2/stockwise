@@ -38,7 +38,7 @@ export class EmployeesTableComponent {
     private employeeService: EmployeesService,
   ) {
     this.searchSubject.pipe(
-      debounceTime(500),  // 0.5 seconds
+      debounceTime(300),  // 0.3 seconds
       takeUntil(this.destroySubject)
     ).subscribe(searchTerm => {
       this.performSearch(searchTerm);
@@ -96,9 +96,6 @@ export class EmployeesTableComponent {
       this.employees = this._emps;
     }
     this.currPage = 1;
-    this.employeeService.searchEmployee(searchTerm).subscribe(data => {
-      this.employees = data as Employee[];
-    })
-    // this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm.toLowerCase()));
+    this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm.toLowerCase()));
   }
 }

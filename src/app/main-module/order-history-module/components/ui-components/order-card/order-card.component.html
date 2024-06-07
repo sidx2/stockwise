@@ -1,12 +1,11 @@
 <div class="order-card" *ngIf="editingId !== order._id; else elseBlock">
-
     <div class="order-header">
         <div class="order-meta">
 
             <div class="order-id">Order ID: {{ order._id }}</div>
             <div class="order-status" [ngClass]="['order-status-' + order.status]">
                 {{ order.status | uppercase }}
-                <button appButtonPrimaryLight (click)="edit(order._id)">
+                <button appButtonPrimaryLight (click)="edit(order._id, order.status)">
                 <mat-icon>edit</mat-icon>
                 </button>
                 <button appButtonPrimaryLight (click)="onDelete(order._id)">
@@ -44,7 +43,6 @@
 
 <ng-template #elseBlock>
     <div class="order-card">
-
         <div class="order-header">
             <div class="order-meta">
 
@@ -56,7 +54,7 @@
                         <option value="fulfilled" name="FULFILLED" id="FULFILLED">FULFILLED</option>
                         <option value="rejected" name="REJECTED" id="REJECTED">REJECTED</option>
                     </select>
-                    <button appButtonPrimaryLight (click)="edit('-1')">
+                    <button appButtonPrimaryLight (click)="edit('-1', '')">
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </div>
@@ -81,8 +79,5 @@
                 </ul>
             </div>
         </div>
-        <!-- <div class="additional-details">
-            <h4 *ngIf="order.remark">Remark: <span>{{ order.remark }}</span></h4>
-        </div> -->
     </div>
 </ng-template>

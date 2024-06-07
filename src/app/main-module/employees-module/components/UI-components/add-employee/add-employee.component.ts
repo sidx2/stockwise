@@ -66,7 +66,6 @@ export class AddEmployeeComponent {
   }
 
   onCloseVendor(){
-    this.closeAddEmployee.emit()
+    this.closeAddEmployee.emit();
   }
-
 }
