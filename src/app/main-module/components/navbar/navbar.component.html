@@ -2,7 +2,7 @@
 
 <div class="navbar">
   <div class="left">
-    <button (click)="toggleSidebar($event)" class="menu">
+    <button (click)="openSidebar($event)" class="menu">
       <mat-icon>dashboard</mat-icon>
     </button>
 
@@ -15,15 +15,10 @@
   <div class="middle"></div>
 
   <div class="right">
-    <ul *ngIf="isLoggedIn">
+    <ul>
       <li><a [routerLink]="'profile'">
         <mat-icon class="profileIcon">account_circle</mat-icon>
       </a></li>
-    </ul>
-
-    <ul *ngIf="!isLoggedIn">
-      <li><a [routerLink]="'login'">Login</a></li>
-      <li><a [routerLink]="'signup'">SignUp</a></li>
     </ul>
   </div>
 </div>

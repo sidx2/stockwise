@@ -6,9 +6,8 @@ import { CookieService } from '../../../services/cookie.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent{
   orgName: string = '';
-  isLoggedIn!: boolean;
   isSidebarOpen: boolean = false;
 
   constructor(
@@ -16,20 +15,10 @@ export class NavbarComponent implements OnInit {
     private elementRef: ElementRef
   ) {
     this.orgName = cookieService.getOrg().name;
-    this.isLoggedIn = Boolean(this.cookieService.get("isLoggedIn"));
-
-    console.log("orgname and isLoggedin in navbar: ", this.orgName, this.isLoggedIn);
   }
 
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {}
-
-  toggleSidebar(event: MouseEvent): void {
-    console.log("Toggling sidebar...");
-    this.isSidebarOpen = !this.isSidebarOpen;
-    console.log("isSidebarOpen", this.isSidebarOpen);
+  openSidebar(event: MouseEvent): void {
+    this.isSidebarOpen = true;
     event.stopPropagation(); 
   }
   

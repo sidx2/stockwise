@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { Actions, ofType } from '@ngrx/effects';
 import { ToastrService } from 'ngx-toastr';
 
@@ -110,9 +110,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
       ofType(createItemSuccess),
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      
-      this.currentPage = 1
       this.hideInventoryForm();
+      this.onPageChange(1)
     })
 
     this.actions$.pipe(
@@ -120,9 +119,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.hideInventoryForm();
-
-      this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, 0, this.searchText);
-      this.currentPage = 1
+      this.onPageChange(1)
     })
 
     this.actions$.pipe(
@@ -180,7 +177,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   onPageChange(page: number) {
     this.currentPage = page;
     const skip = this.getSkipCount();
-    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, skip, this.searchText);
+    this.fetchItems(this.selectedIdentificationType, this.selectedCategoryId, this.selectedAssignedStatus, this.itemsPerPage, skip, this.searchText.trim());
   }
 
   getSkipCount(): number {
