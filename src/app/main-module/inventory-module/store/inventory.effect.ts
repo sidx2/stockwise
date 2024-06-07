@@ -26,8 +26,8 @@ export class InventoryEffects {
         debounceTime(500),
 
         tap((action) => {
-            if(!action.searchText && !action.skip) {
-            // if (!action.searchText) {
+            // if(!action.searchText && !action.skip) {
+            if (!action.searchText) {
                 this.store.dispatch(setLoading());
             }
         }),
