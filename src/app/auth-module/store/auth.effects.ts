@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, exhaustMap, map, of, switchMap, tap } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, createOrgFailure, createOrgRequest, createOrgSuccess, fetchOrg, fetchOrgFailure, fetchOrgSuccess, loginUser, loginUserFailure, loginUserSuccess, signupFailure, signupRequest, signupSuccess } from "./auth.actions";
 import { Store } from "@ngrx/store";
@@ -77,7 +77,7 @@ export class authEffects {
     fetchOrg$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchOrg),
-            switchMap(() => 
+            exhaustMap(() => 
                 this.authService.getOrgByUserId().pipe(
                     map((res: any) => {
                         return fetchOrgSuccess({ org: res });

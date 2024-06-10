@@ -1,4 +1,14 @@
 <app-loader *ngIf="isLoading"></app-loader>
+<app-modal *ngIf="showModal" (closeModalEvent)="toggleModal()">
+  <app-delete-confirmation
+    heading="Confirm Delete"
+    message={{modalMessage}}
+    (cancel)="toggleModal()"
+    (confirm)="onConfirmDelete()"
+  >
+  </app-delete-confirmation>
+</app-modal>
+
 <app-header>
   <h3>Place Order</h3>
 </app-header>

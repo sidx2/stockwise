@@ -17,7 +17,8 @@ export class VendorsTableComponent implements OnInit {
   @Output() deleteVendor = new EventEmitter<string>();
 
   _vends: Vendor[] = [] // for search purpose
-  visisble: boolean = false
+  showModal: boolean = false
+  vendorIdToDelete: null | string = null 
   editingId: string = "-1"
 
   editVendorForm = new FormGroup({
@@ -49,6 +50,9 @@ export class VendorsTableComponent implements OnInit {
 
 
   onEdit(_id: string) {
+    if (this.editingId !== "-1" && this.editVendorForm.dirty) {
+      if (!confirm("Changes you made will be discarded")) return;
+    }
     this.editingId = _id
     const editingVendor: Vendor = this.vendors.filter((vendor: Vendor) => vendor._id == _id)[0]
 
@@ -97,8 +101,10 @@ export class VendorsTableComponent implements OnInit {
   }
 
   onDelete(_id: string) {
-    if (confirm("Are you sure want to delete this vendor"))
-      this.deleteVendor.emit(_id)
+    this.vendorIdToDelete = _id;
+    this.toggleModal();
+    // if (confirm("Are you sure want to delete this vendor"))
+    //   this.deleteVendor.emit(_id)
   }
 
   getErrorMessage(controlName: string): string {
@@ -137,6 +143,19 @@ export class VendorsTableComponent implements OnInit {
         .toLowerCase()
         .includes(query)
     )
+  }
+
+  onConfirmDelete() {
+    if (this.vendorIdToDelete) {
+      this.deleteVendor.emit(this.vendorIdToDelete);
+      this.vendorIdToDelete = null;
+    }
+
+    this.toggleModal();
+  }
+
+  toggleModal() {
+    this.showModal = !this.showModal;
   }
 
   ngOnDestroy(): void {

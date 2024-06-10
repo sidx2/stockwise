@@ -1,64 +1,56 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Employee } from '../../../models/employee';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
-import { EmployeesService } from '../../../services/employees.service';
 
 @Component({
   selector: 'app-employees-table',
   templateUrl: './employees-table.component.html',
-  styleUrl: './employees-table.component.scss'
+  styleUrls: ['./employees-table.component.scss']
 })
 export class EmployeesTableComponent {
-  @Input() employees!: Employee[]
-
-  _emps: Employee[] = []
+  @Input() employees!: Employee[];
 
   @Output() updateEmployee = new EventEmitter<Employee>();
   @Output() deleteEmployee = new EventEmitter<string>();
 
-  editing: string = "-1"
+  _emps: Employee[] = []
+  editing: string = "-1";
+  showModal: boolean = false;
+  employeeToDelete: string | null = null;
 
   editEmployeeForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
     email: new FormControl("", [Validators.required, customValidators.validEmail]),
     role: new FormControl("", [Validators.required])
-  })
+  });
 
   psize: number = 10;
   currPage: number = 1;
 
-  private searchSubject = new Subject<string>();
-  private destroySubject = new Subject<void>();
-
-  constructor(
-    private toastr: ToastrService,
-    private employeeService: EmployeesService,
-  ) {
-    this.searchSubject.pipe(
-      debounceTime(300),  // 0.3 seconds
-      takeUntil(this.destroySubject)
-    ).subscribe(searchTerm => {
-      this.performSearch(searchTerm);
-    });
-  }
+  constructor(private toastr: ToastrService) {}
 
   onEdit(_id: string) {
-    this.editing = _id
-    const editingEmp = this.employees?.filter((emp: Employee) => emp._id == _id)[0]
-
-    const value = {
-      name: editingEmp.name,
-      email: editingEmp.email,
-      role: editingEmp.role,
+    if (this.editing !== "-1" && this.editEmployeeForm.dirty) {
+      this.editEmployeeForm.markAsPristine;
+      if(!confirm("Changes you made will be discarded!"))  return;
     }
-    this.editEmployeeForm.setValue(value);
-  }
 
+    this.editing = _id;
+    const editingEmp = this.employees.find(emp => emp._id === _id);
+
+    if (editingEmp) {
+      this.editEmployeeForm.setValue({
+        name: editingEmp.name,
+        email: editingEmp.email,
+        role: editingEmp.role
+      });
+    }
+  }
+  
   onCancel() {
-    this.editing = "-1"
+    this.editing = "-1";
   }
 
   onDone() {
@@ -75,27 +67,42 @@ export class EmployeesTableComponent {
       _id: this.editing,
       name: this.editEmployeeForm.value.name!,
       email: this.editEmployeeForm.value.email!,
-      role: this.editEmployeeForm.value.role!,
-    })
+      role: this.editEmployeeForm.value.role!
+    });
 
     this.editing = "-1";
   }
 
   onDelete(_id: string) {
-    if (confirm("Are you sure want to delete this employee?"))
-      this.deleteEmployee.emit(_id)
+    this.showModal = true;
+    this.employeeToDelete = _id;
   }
-
-  search(e: Event) {
-    this.searchSubject.next((e.target as HTMLInputElement).value);
-  }
-
-  private performSearch(searchTerm: string) {
-    if (!this._emps.length) this._emps = this.employees;
-    if (searchTerm === "") {
-      this.employees = this._emps;
+  
+  handleConfirm() {
+    if (this.employeeToDelete) {
+      this.deleteEmployee.emit(this.employeeToDelete);
     }
-    this.currPage = 1;
-    this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm.toLowerCase()));
+    this.showModal = false;
+  }
+  
+  handleCancel() {
+    this.showModal = false;
+  }
+  
+  onConfirmDelete() {
+    this.showModal = !this.showModal;
+    if (this.employeeToDelete) {
+      this.deleteEmployee.emit(this.employeeToDelete);
+      this.employeeToDelete = null;
+    }
+  }
+  
+  search(e: Event) {
+    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+    this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm));
+  }
+
+  toggleModal() {
+    this.showModal = !this.showModal;
   }
 }

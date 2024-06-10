@@ -7,10 +7,8 @@ import {
     fetchEmployeesRequest, fetchEmployeesFailure, fetchEmployeesSuccess, 
     updateEmployeeFailure, updateEmployeeRequest, updateEmployeeSuccess 
 } from "./employees.actions";
-import { catchError, map, mergeMap, of, switchMap, tap } from "rxjs";
+import { catchError, exhaustAll, exhaustMap, map, merge, mergeMap, of, switchMap, tap } from "rxjs";
 import { EmployeesService } from "../services/employees.service";
-import { Store } from "@ngrx/store";
-import { IEmployeesState } from "../models/employee";
 import { ToastrService } from "ngx-toastr";
 
 @Injectable()
@@ -18,14 +16,13 @@ export class EmployeeEffects {
     constructor(
         private action$: Actions,
         private employeesService$: EmployeesService,
-        private store: Store<{ employees: IEmployeesState }>,
         private toastr: ToastrService,
     ) { }
 
     fetchEmployees$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchEmployeesRequest),
-            switchMap(() =>
+            exhaustMap(() =>
                 this.employeesService$.fetchEmployees().pipe(
                     map((res: any) => {
                         return fetchEmployeesSuccess({ employees: res });
@@ -42,7 +39,7 @@ export class EmployeeEffects {
     updateEmployee$ = createEffect(() =>
         this.action$.pipe(
             ofType(updateEmployeeRequest),
-            switchMap(({ employee }) =>
+            mergeMap(({ employee }) =>
                 this.employeesService$.updateEmployee(employee).pipe(
                     map((res: any) => {
                         this.toastr.success("Employee updated successfully!");
@@ -99,7 +96,7 @@ export class EmployeeEffects {
     addEmployee$ = createEffect(() =>
         this.action$.pipe(
             ofType(createUserSuccess),
-            switchMap(({ user }) =>
+            mergeMap(({ user }) =>
                 this.employeesService$.addEmployee(user).pipe(
                     map((res: any) => {
                         this.toastr.success("Employee was added to the organization successfully!");

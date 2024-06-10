@@ -9,6 +9,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class ModalComponent {
 
   @Output() closeModalEvent: EventEmitter<void> = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<void>();
 
   closeModal(){
     console.log("clicked")

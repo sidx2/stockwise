@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, exhaustAll, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { OrderHistoryService } from "../services/order-history.service";
 import { deleteOrderFailure, deleteOrderRequest, deleteOrderSuccess, fetchHistoryFailure, fetchHistoryRequest, fetchHistorySuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess } from "./order-history.actions";
-import { IHistoryState } from "../models/order-history";
-import { Store } from "@ngrx/store";
 import { ToastrService } from "ngx-toastr";
 
 @Injectable()
@@ -12,14 +10,13 @@ export class historyEffects {
     constructor(
         private action$: Actions,
         private historyService$: OrderHistoryService,
-        private store: Store<{ history: IHistoryState }>,
         private toastr: ToastrService,
     ) { }
 
     fetchHistory$ = createEffect(() =>
         this.action$.pipe(
             ofType(fetchHistoryRequest),
-            switchMap(() =>
+            exhaustMap(() =>
                 this.historyService$.fetchHistory().pipe(
                     map((res: any) => {
                         return fetchHistorySuccess({ history: res });
@@ -36,7 +33,7 @@ export class historyEffects {
     updateStatus$ = createEffect(() =>
         this.action$.pipe(
             ofType(updateStatusRequest),
-            switchMap((data) =>
+            mergeMap((data) =>
                 this.historyService$.updateStatus(data.updatedStatus, data._id).pipe(
                     map((res: any) => {
                         this.toastr.success(`Order staus updated to ${data.updatedStatus}`)
@@ -54,7 +51,7 @@ export class historyEffects {
     deleteOrder$ = createEffect(() =>
         this.action$.pipe(
             ofType(deleteOrderRequest),
-            switchMap(({ _id }) =>
+            mergeMap(({ _id }) =>
                 this.historyService$.deleteOrder(_id).pipe(
                     map((res: any) => {
                         this.toastr.success(`Order deleted successfully!`)

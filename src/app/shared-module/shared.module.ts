@@ -49,6 +49,6 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     ButtonPrimaryLightDirective,
     CustomInputStyleDirective,
     TooltipDirective,
-  ]
+  ],
 })
 export class SharedModule { }

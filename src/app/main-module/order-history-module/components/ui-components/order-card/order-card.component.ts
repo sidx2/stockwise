@@ -26,7 +26,7 @@ export class OrderCardComponent {
   }
 
   onDelete(_id: string) {
-    if (confirm("Are you sure want to delete this Order! It will be deleted permanently."))
+    // if (confirm("Are you sure want to delete this Order! It will be deleted permanently."))
     this.deleteOrder.emit(_id);
   }
 

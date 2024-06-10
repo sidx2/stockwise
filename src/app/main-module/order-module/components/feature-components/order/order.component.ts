@@ -24,6 +24,10 @@ export class OrderComponent implements OnDestroy {
   isLoading: boolean = false;
   destroySubject = new Subject<void>();
 
+  showModal: boolean = false;
+  modalMessage: string = ""
+  orderToRemove: null | number = -1;
+
   productAndVendors: Product[] = [];
   selectedProductVendors: Partial<Vendor>[][] = [];
 
@@ -42,7 +46,7 @@ export class OrderComponent implements OnDestroy {
 
     this.org = this.cookieService.getOrg();
     this.user = this.cookieService.getUser();
-    
+
     this.dynamicForm = this.formBuilder.group({
       OrderFormArray: this.formBuilder.array([])
     })
@@ -73,17 +77,43 @@ export class OrderComponent implements OnDestroy {
   }
 
   removeProduct(index: number) {
-    if (confirm("Are you sure want to remove this order?")) {
+    if (!this.OrderFormArray.at(index).dirty) {
       this.OrderFormArray.removeAt(index);
-      this.selectedProductVendors.splice(index, 1);
+      return;
     }
+    this.modalMessage = "Are you sure you want to delete this order? This action cannot be undone."
+    this.orderToRemove = index;
+    this.toggleModal();
+    // if (confirm("Are you sure want to remove this order?")) {
+    // this.OrderFormArray.removeAt(index);
+    // this.selectedProductVendors.splice(index, 1);
+    // }
   }
 
   removeAll() {
-    if (confirm("Are you sure want to remove all orders?")) {
-      this.OrderFormArray.clear();
-      this.selectedProductVendors = [];
+    this.modalMessage = "Are you sure you want to delete all of the orders? This action cannot be undone."
+    this.orderToRemove = -1;
+    this.toggleModal();
+    // if (this.OrderFormArray.length) {
+    //   this.OrderFormArray.clear();
+    //   this.selectedProductVendors = [];
+    // }
+  }
+
+  onConfirmDelete() {
+    if (this.orderToRemove === -1) {
+      if (this.OrderFormArray.length) {
+        this.OrderFormArray.clear();
+        this.selectedProductVendors = [];
+      }
     }
+    if (this.orderToRemove !== null) {
+      this.OrderFormArray.removeAt(this.orderToRemove);
+      this.selectedProductVendors.splice(this.orderToRemove, 1);
+    }
+    this.orderToRemove = -2;
+
+    this.toggleModal();
   }
 
   placeOrder() {
@@ -125,6 +155,10 @@ export class OrderComponent implements OnDestroy {
   cleanForms() {
     this.OrderFormArray.clear();
     this.selectedProductVendors = [];
+  }
+
+  toggleModal() {
+    this.showModal = !this.showModal;
   }
 
   ngOnDestroy(): void {

@@ -28,25 +28,25 @@ export class EmployeesComponent implements OnDestroy {
     })
   }
 
-  showAddEmployee(){
+  showAddEmployee() {
     this.isVisibleAddEmployee = true;
   }
 
-  hideAddEmployee(){
+  hideAddEmployee() {
     this.isVisibleAddEmployee = false;
   }
 
   onAddEmployee(user: IAddEmployee) {
-    this.store.dispatch(createUserRequest({ user }))
+    this.store.dispatch(createUserRequest({ user }));
     this.hideAddEmployee();
   }
 
   onUpdateEmployee(employee: Employee) {
-    this.store.dispatch(updateEmployeeRequest({ employee }))
+    this.store.dispatch(updateEmployeeRequest({ employee }));
   }
 
   onDeleteEmploye(employeeId: string) {
-    this.store.dispatch(deleteEmployeeRequest({ employeeId }))
+    this.store.dispatch(deleteEmployeeRequest({ employeeId }));
   }
 
   ngOnDestroy(): void {

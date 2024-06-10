@@ -1,5 +1,16 @@
 <input type="text" appCustomInputStyle id="searchInput" placeholder="Search for employee" (input)="search($event)" />
 
+<app-modal *ngIf="showModal" (closeModalEvent)="toggleModal()">
+  <app-delete-confirmation
+    heading="Confirm Delete"
+    message="Are you sure you want to delete this employee? This action cannot be undone."
+    (cancel)="toggleModal()"
+    (confirm)="onConfirmDelete()"
+  >
+  </app-delete-confirmation>
+</app-modal>
+
+
 <div class="employee_table">
   <table>
     <thead>
@@ -10,11 +21,8 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody *ngFor="
-        let emp of employees
-          | paginate : { itemsPerPage: psize, currentPage: currPage };
-        index as i">
-      <tr *ngIf="emp._id != editing; else elseBlock">
+    <tbody *ngFor="let emp of employees | paginate: { itemsPerPage: psize, currentPage: currPage }; index as i">
+      <tr *ngIf="emp._id != editing; else elseBlock" (dblclick)="onEdit(emp._id)">
         <td>{{ emp.name }}</td>
         <td>{{ emp.email }}</td>
         <td>{{ emp.role }}</td>
@@ -22,26 +30,16 @@
           <button appButtonPrimaryLight (click)="onEdit(emp._id)">
             <mat-icon>edit</mat-icon>
           </button>
-
           <button appButtonPrimaryLight (click)="onDelete(emp._id)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
       </tr>
-
       <ng-template #elseBlock>
         <tr class="pending" [formGroup]="editEmployeeForm">
           <td>
-            <input
-              appCustomInputStyle
-              type="text"
-              formControlName="name"
-              [ngClass]="{'error': editEmployeeForm.get('name')?.invalid}"
-            />
-            <div
-              *ngIf="editEmployeeForm.get('name')?.invalid && (editEmployeeForm.get('name')?.dirty || editEmployeeForm.get('name')?.touched)"
-              class="errMsg"
-            >
+            <input appCustomInputStyle type="text" formControlName="name" />
+            <div *ngIf="editEmployeeForm.get('name')?.invalid" class="errMsg">
               <small class="text-danger">
                 <span *ngIf="editEmployeeForm.get('name')?.hasError('required')">This field is required.</span>
                 <span *ngIf="editEmployeeForm.get('name')?.hasError('minlength')">Must be at least 3 characters long.</span>
@@ -50,16 +48,8 @@
             </div>
           </td>
           <td>
-            <input
-              appCustomInputStyle
-              type="email"
-              formControlName="email"
-              [ngClass]="{'error': editEmployeeForm.get('email')?.invalid}"
-            />
-            <div
-              *ngIf="editEmployeeForm.get('email')?.invalid && (editEmployeeForm.get('email')?.dirty || editEmployeeForm.get('email')?.touched)"
-              class="errMsg"
-            >
+            <input appCustomInputStyle type="email" formControlName="email" />
+            <div *ngIf="editEmployeeForm.get('email')?.invalid" class="errMsg">
               <small class="text-danger">
                 <span *ngIf="editEmployeeForm.get('email')?.hasError('required')">This field is required.</span>
                 <span *ngIf="editEmployeeForm.get('email')?.hasError('validEmail')">Please enter a valid email address.</span>
@@ -67,18 +57,11 @@
             </div>
           </td>
           <td>
-            <select
-              appCustomInputStyle
-              formControlName="role"
-              [ngClass]="{'error': editEmployeeForm.get('role')?.invalid}"
-            >
+            <select appCustomInputStyle formControlName="role">
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
             </select>
-            <div
-              *ngIf="editEmployeeForm.get('role')?.invalid && (editEmployeeForm.get('role')?.dirty || editEmployeeForm.get('role')?.touched)"
-              class="errMsg"
-            >
+            <div *ngIf="editEmployeeForm.get('role')?.invalid" class="errMsg">
               <small class="text-danger">
                 <span *ngIf="editEmployeeForm.get('role')?.hasError('required')">This field is required.</span>
               </small>
@@ -88,7 +71,6 @@
             <button appButtonPrimaryLight (click)="onCancel()">
               <mat-icon>cancel</mat-icon>
             </button>
-
             <button type="submit" appButtonPrimaryLight (click)="onDone()">
               <mat-icon>done</mat-icon>
             </button>

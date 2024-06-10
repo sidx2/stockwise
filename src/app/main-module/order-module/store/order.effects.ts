@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { getProductVendorsFailure, getProductVendorsRequest, getProductVendorsSuccess, placeOrderFailure, placeOrderRequest, placeOrderSuccess } from "./order.actions";
 import { OrderService } from "../services/order.service";
 import { Store } from "@ngrx/store";
@@ -19,7 +19,7 @@ export class orderEffects {
     getProductVendors$ = createEffect(() =>
         this.action$.pipe(
             ofType(getProductVendorsRequest),
-            switchMap(() =>
+            exhaustMap(() =>
                 this.orderService$.getProductVendors().pipe(
                     map((res: any) => {
                         return getProductVendorsSuccess({ productVendors: res });
@@ -36,7 +36,7 @@ export class orderEffects {
     placeOrder$ = createEffect(() =>
         this.action$.pipe(
             ofType(placeOrderRequest),
-            switchMap(({ order }) =>
+            mergeMap(({ order }) =>
                 this.orderService$.placeOrder(order).pipe(
                     map((res: any) => {
                         this.toastr.success("Order placed successfully!");

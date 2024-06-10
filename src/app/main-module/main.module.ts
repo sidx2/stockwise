@@ -17,6 +17,8 @@ import { StoreModule } from '@ngrx/store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -61,6 +63,8 @@ import { DashboardModule } from './dashboard-module/dashboard.module';
     MatCardModule,
     MatListModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
 
 
     StoreModule.forFeature('inventory', inventoryReducer),
