@@ -71,9 +71,16 @@ export class OrderComponent implements OnDestroy {
   }
 
   onProductChange(index: number) {
+    console.log(index);
     const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
-    const productIndex = this.productAndVendors.findIndex(pv => pv.item._id === selectedProduct);
-    this.selectedProductVendors[index] = this.productAndVendors[productIndex].vendors;
+    if (selectedProduct) {
+      const productIndex = this.productAndVendors.findIndex(pv => pv.item._id === selectedProduct);
+      this.selectedProductVendors[index] = this.productAndVendors[productIndex].vendors;
+    } else {
+      this.dynamicForm.get(`OrderFormArray.${index}.vendor`)?.setValue("");
+      this.selectedProductVendors[index] = [];
+      this.dynamicForm.get(`OrderFormArray.${index}.quantity`)?.setValue(0);
+    }
   }
 
   removeProduct(index: number) {
@@ -84,20 +91,12 @@ export class OrderComponent implements OnDestroy {
     this.modalMessage = "Are you sure you want to delete this order? This action cannot be undone."
     this.orderToRemove = index;
     this.toggleModal();
-    // if (confirm("Are you sure want to remove this order?")) {
-    // this.OrderFormArray.removeAt(index);
-    // this.selectedProductVendors.splice(index, 1);
-    // }
   }
 
   removeAll() {
     this.modalMessage = "Are you sure you want to delete all of the orders? This action cannot be undone."
     this.orderToRemove = -1;
     this.toggleModal();
-    // if (this.OrderFormArray.length) {
-    //   this.OrderFormArray.clear();
-    //   this.selectedProductVendors = [];
-    // }
   }
 
   onConfirmDelete() {
@@ -122,7 +121,8 @@ export class OrderComponent implements OnDestroy {
       return;
     }
     if (!this.OrderFormArray.valid) {
-      this.toastr.error("All fields are required & quantity must be between 1-999")
+      this.toastr.error("All fields are required & quantity must be between 1-999");
+      return;
     }
 
     const cart: CartItem[] = this.OrderFormArray.value.map((orderForm: OrderForm) => {
@@ -148,7 +148,6 @@ export class OrderComponent implements OnDestroy {
     }
 
     this.store.dispatch(placeOrderRequest({ order }))
-
     this.cleanForms();
   }
 

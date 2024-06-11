@@ -15,15 +15,15 @@ export class EmployeesTableComponent {
   @Output() updateEmployee = new EventEmitter<Employee>();
   @Output() deleteEmployee = new EventEmitter<string>();
 
-  _emps: Employee[] = []
+  _emps: Employee[] = [];
   editing: string = "-1";
   showModal: boolean = false;
   employeeToDelete: string | null = null;
 
   editEmployeeForm = new FormGroup({
-    name: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
+    name:  new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(128)]),
     email: new FormControl("", [Validators.required, customValidators.validEmail]),
-    role: new FormControl("", [Validators.required])
+    role:  new FormControl("", [Validators.required])
   });
 
   psize: number = 10;
@@ -78,19 +78,8 @@ export class EmployeesTableComponent {
     this.employeeToDelete = _id;
   }
   
-  handleConfirm() {
-    if (this.employeeToDelete) {
-      this.deleteEmployee.emit(this.employeeToDelete);
-    }
-    this.showModal = false;
-  }
-  
-  handleCancel() {
-    this.showModal = false;
-  }
-  
   onConfirmDelete() {
-    this.showModal = !this.showModal;
+    this.toggleModal();
     if (this.employeeToDelete) {
       this.deleteEmployee.emit(this.employeeToDelete);
       this.employeeToDelete = null;
@@ -99,7 +88,7 @@ export class EmployeesTableComponent {
   
   search(e: Event) {
     const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
-    this.employees = this._emps.filter(emp => JSON.stringify(emp).toLowerCase().includes(searchTerm));
+    this.employees = this._emps.filter(emp => JSON.stringify(Object.values(emp)).toLowerCase().includes(searchTerm));
   }
 
   toggleModal() {

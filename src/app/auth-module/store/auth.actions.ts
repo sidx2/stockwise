@@ -23,6 +23,3 @@ export const changePasswordSuccess = createAction('[Auth] Change Password Succes
 export const changePasswordFailure = createAction('[Auth] Change Password Failure', props<{ error: string }>());
 
 export const logoutUserSuccess = createAction('[auth] logout user success');
-
-// export const setLoading = createAction('setLoading');
-// export const resetLoading = createAction('resetLoading');

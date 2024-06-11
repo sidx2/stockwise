@@ -3,8 +3,6 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, exhaustMap, map, of, switchMap, tap } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { changePasswordFailure, changePasswordRequest, changePasswordSuccess, createOrgFailure, createOrgRequest, createOrgSuccess, fetchOrg, fetchOrgFailure, fetchOrgSuccess, loginUser, loginUserFailure, loginUserSuccess, signupFailure, signupRequest, signupSuccess } from "./auth.actions";
-import { Store } from "@ngrx/store";
-import { IAuthState } from "../models/auth";
 import { ToastrService } from "ngx-toastr";
 
 @Injectable()
@@ -12,7 +10,6 @@ export class authEffects {
     constructor(
         private action$: Actions,
         private authService: AuthService,
-        private store: Store<{ auth: IAuthState }>,
         private toastr: ToastrService,
     ) { }
 
@@ -33,7 +30,7 @@ export class authEffects {
                 )
             )
         )
-    )
+    );
 
     signupUser$ = createEffect(() =>
         this.action$.pipe(
@@ -52,7 +49,7 @@ export class authEffects {
                 )
             )
         )
-    )
+    );
 
     createOrg$ = createEffect(() =>
         this.action$.pipe(
@@ -72,7 +69,7 @@ export class authEffects {
                 )
             )
         )
-    )
+    );
 
     fetchOrg$ = createEffect(() =>
         this.action$.pipe(
@@ -89,7 +86,7 @@ export class authEffects {
                 )
             )
         )
-    )
+    );
 
     changePassword$ = createEffect(() =>
         this.action$.pipe(

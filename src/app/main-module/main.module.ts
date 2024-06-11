@@ -35,6 +35,7 @@ import { vendorEffects } from './vendors-module/store/vendor.effects';
 import { EmployeeEffects } from './employees-module/store/employees.effects';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { DashboardModule } from './dashboard-module/dashboard.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { DashboardModule } from './dashboard-module/dashboard.module';
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
+    NgSelectModule,
 
 
     StoreModule.forFeature('inventory', inventoryReducer),

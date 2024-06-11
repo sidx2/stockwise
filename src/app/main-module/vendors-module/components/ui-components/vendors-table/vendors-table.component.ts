@@ -103,8 +103,6 @@ export class VendorsTableComponent implements OnInit {
   onDelete(_id: string) {
     this.vendorIdToDelete = _id;
     this.toggleModal();
-    // if (confirm("Are you sure want to delete this vendor"))
-    //   this.deleteVendor.emit(_id)
   }
 
   getErrorMessage(controlName: string): string {

@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/errorInterceptor';
 import { AuthModule } from './auth-module/auth.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AuthModule } from './auth-module/auth.module';
     HttpClientModule,
     AppRoutingModule,
     AuthModule,
+    NgSelectModule,
 
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',

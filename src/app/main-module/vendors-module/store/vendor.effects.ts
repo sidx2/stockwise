@@ -39,7 +39,6 @@ export class vendorEffects {
             switchMap(({ vendor }) =>
                 this.vendorsService$.updateVendor(vendor).pipe(
                     map((res: any) => {
-                        // this.appService$.vendorUpdated(res);
                         this.toastr.success(`Vendor updated successfully!`);
                         return updateVendorSuccess({ vendor: res });
                     }),

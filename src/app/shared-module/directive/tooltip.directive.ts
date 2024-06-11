@@ -8,7 +8,7 @@ export class TooltipDirective {
   private tooltipElement: HTMLDivElement;
 
   constructor(private elementRef: ElementRef) {
-    this.tooltipElement =  document.createElement('div')
+    this.tooltipElement =  document.createElement('div');
   }
 
   @HostListener('mouseenter') onMouseEnter() {

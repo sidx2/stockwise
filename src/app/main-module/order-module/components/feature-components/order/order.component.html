@@ -1,11 +1,7 @@
 <app-loader *ngIf="isLoading"></app-loader>
 <app-modal *ngIf="showModal" (closeModalEvent)="toggleModal()">
-  <app-delete-confirmation
-    heading="Confirm Delete"
-    message={{modalMessage}}
-    (cancel)="toggleModal()"
-    (confirm)="onConfirmDelete()"
-  >
+  <app-delete-confirmation heading="Confirm Delete" message={{modalMessage}} (cancel)="toggleModal()"
+    (confirm)="onConfirmDelete()">
   </app-delete-confirmation>
 </app-modal>
 
@@ -16,46 +12,24 @@
 <div>
   <form [formGroup]="dynamicForm">
     <div formArrayName="OrderFormArray" class="form-container">
-      <div
-        *ngFor="let formGroup of OrderFormArray.controls; let i = index"
-        [formGroupName]="i"
-        class="form-group"
-      >
+      <div *ngFor="let formGroup of OrderFormArray.controls; let i = index" [formGroupName]="i" class="form-group">
         <div class="inputDiv">
           <label for="product">Product:</label>
-          <select
-            appCustomInputStyle
-            id="product"
-            formControlName="product"
-            (change)="onProductChange(i)"
-          >
-            <option *ngFor="let pv of productAndVendors" [value]="pv.item._id">
-              {{ pv.item.name }}
-            </option>
-          </select>
+          <ng-select formControlName="product" (change)="onProductChange(i)">
+            <ng-option *ngFor="let pv of productAndVendors" [value]="pv.item._id">{{pv.item.name}}</ng-option>
+          </ng-select>
         </div>
 
         <div class="inputDiv">
           <label for="vendor">Vendor:</label>
-          <select id="vendor" formControlName="vendor" appCustomInputStyle>
-            <option
-              *ngFor="let vendor of selectedProductVendors[i]"
-              [ngValue]="vendor"
-            >
-              {{ vendor.name }}
-            </option>
-          </select>
+          <ng-select formControlName="vendor">
+            <ng-option *ngFor="let vendor of selectedProductVendors[i]" [value]="vendor">{{vendor.name}}</ng-option>
+          </ng-select>
         </div>
 
         <div class="inputDiv">
           <label for="quantity">Quantity:</label>
-          <input
-            appCustomInputStyle
-            type="number"
-            formControlName="quantity"
-            name="quantity"
-            id="quantity"
-          />
+          <input appCustomInputStyle type="number" formControlName="quantity" name="quantity" id="quantity" />
         </div>
 
         <button appButtonPrimary (click)="removeProduct(i)" class="btnRed">Remove</button>
