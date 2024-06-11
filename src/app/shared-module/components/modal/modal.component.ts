@@ -12,7 +12,6 @@ export class ModalComponent {
   @Output() confirmed = new EventEmitter<void>();
 
   closeModal(){
-    console.log("clicked")
     this.closeModalEvent.emit()
   }
 

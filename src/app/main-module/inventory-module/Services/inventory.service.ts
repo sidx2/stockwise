@@ -12,7 +12,6 @@ export class InventoryService {
 
   getItems(identificationType: string, categoryId: string, assignedStatus: string,  limit: number, skip: number, searchText: string, assetId: string) {
 
-    console.log("inside service");
     let params = new HttpParams();
 
     if(identificationType) {
@@ -20,7 +19,6 @@ export class InventoryService {
     }
 
     if(categoryId) {
-      console.log("hello");
       params = params.set('categoryId', categoryId);
     }
 

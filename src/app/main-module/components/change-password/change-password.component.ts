@@ -21,7 +21,6 @@ export class ChangePasswordComponent {
   onSubmit() {
     if (this.changePasswordFormGroup.valid) {
       const formData = this.changePasswordFormGroup.value;
-      console.log("formdata", formData)
       this.changePasswordEmitter.emit(formData);
     }
   }

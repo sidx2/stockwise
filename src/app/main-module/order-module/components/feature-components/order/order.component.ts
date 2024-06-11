@@ -71,7 +71,6 @@ export class OrderComponent implements OnDestroy {
   }
 
   onProductChange(index: number) {
-    console.log(index);
     const selectedProduct = this.dynamicForm.get(`OrderFormArray.${index}.product`)?.value;
     if (selectedProduct) {
       const productIndex = this.productAndVendors.findIndex(pv => pv.item._id === selectedProduct);

@@ -17,7 +17,6 @@ export class AdminGuard implements CanActivate {
     for (let cookie of cookies) {
       const [cookieName, cookieValue] = cookie.split('=');
       if (cookieName === "user") {
-        console.log("cookieValue: ", cookieValue)
         if (cookieValue != "")
           this.user = JSON.parse(cookieValue);
       }
