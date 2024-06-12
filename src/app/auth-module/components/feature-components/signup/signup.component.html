@@ -1,5 +1,5 @@
 <form class="login-form" [formGroup]="signupForm" (submit)="onFormSubmit()">
-  <img src="https://cdn-icons-png.flaticon.com/512/7527/7527289.png" alt="Login icon">
+  <img src={{iconUrl}} alt="Login icon">
   <h2>Signup To Stockwise</h2>
   <div class="fluid">
     <div class="floatLabel">
@@ -28,6 +28,7 @@
       <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="errMsg">
         <small class="text-danger">
           <span *ngIf="signupForm.controls['email'].hasError('validEmail')">Please enter a valid email address.</span>
+          <span *ngIf="signupForm.controls['email']?.hasError('userExists')">User with this email already exists.</span>
         </small>
       </div>
     </div>

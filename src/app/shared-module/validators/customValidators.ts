@@ -1,4 +1,6 @@
-import { FormControl } from "@angular/forms";
+import { AbstractControl, FormControl } from "@angular/forms";
+import { catchError, delay, map, of, switchMap } from "rxjs";
+import { AuthService } from "../../auth-module/services/auth.service";
 
 export class customValidators {
     static strongPassword(control: FormControl): { [key: string]: any } | null {
@@ -47,5 +49,19 @@ export class customValidators {
         }
 
         return null;
+    }
+
+    static userExists(authService: AuthService) {
+        return (control: AbstractControl) => {
+            return of(control.value).pipe(
+                delay(500),
+                switchMap((email) => {
+                    return authService.userExists(email).pipe(
+                        map((response: any) => {
+                            return response["exists"] ? { userExists: { message: 'User already exists' } } : null;
+                },
+                catchError(err => of(null))))
+            }))
+        };
     }
 }

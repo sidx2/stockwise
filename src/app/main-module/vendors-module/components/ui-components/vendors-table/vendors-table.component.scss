@@ -1,3 +1,4 @@
+/* Style the search input */
 :host {
   width: 90%;
   margin: 1rem auto;
@@ -10,6 +11,43 @@
   margin-bottom: 10px;
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #ddd;
+}
+
 .vendors_table {
   margin: auto;
   overflow-x: auto;
@@ -20,99 +58,7 @@ table {
   width: 100%;
   margin: 0 auto;
   border-collapse: collapse;
-  margin-bottom: 3rem;
-
-  input {
-    width: 150px;
-    text-align: left;
-  }
-
-  tbody {
-    .editing {
-      border: 1px solid transparent;
-      border-radius: 7px;
-      background-image: linear-gradient(white, white),
-        linear-gradient(
-          45deg,
-          #ff0000,
-          #ff9900,
-          #ccff00,
-          #33ff00,
-          #00ff66,
-          #00ffff,
-          #0066ff,
-          #3300ff,
-          #cc00ff,
-          #ff00cc,
-          #ff0066,
-          #ff0000
-        );
-      background-origin: border-box;
-      background-clip: content-box, border-box;
-      animation: neonGlow 2s linear infinite;
-      position: relative;
-
-      th {
-        background-color: #f2f2f2;
-        border: 1px solid #dddddd;
-        padding: 0.8rem;
-        text-align: left;
-      }
-      
-      tr:hover {
-        background-color: #f2f2f2;
-      }
-      
-      td {
-        border: 1px solid #dddddd;
-        padding: 0.8rem;
-      }
-      
-      td .assignedTo {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-    }
-
-    @keyframes neonGlow {
-      0% {
-        box-shadow: 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000,
-          0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000, 0 0 3px #ff0000;
-      }
-      25% {
-        box-shadow: 0 0 3px #ff9900, 0 0 2px #ff9900, 0 0 3px #ff9900,
-          0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900, 0 0 3px #ff9900;
-      }
-      50% {
-        box-shadow: 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00,
-          0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00, 0 0 3px #33ff00;
-      }
-      75% {
-        box-shadow: 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff,
-          0 0 4px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff, 0 0 3px #0066ff;
-      }
-      100% {
-        box-shadow: 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc,
-          0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc, 0 0 3px #ff00cc;
-      }
-    }
-
-    .editor-box {
-      position: absolute;
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 5px;
-      border: 1px solid black;
-      border-radius: 5px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      // transform: translateY(-50%);
-      margin-top: -90px;
-      // top: 5px;
-      left: 10%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-    }
-  }
+  margin-bottom: 2rem;
 }
 
 th {
@@ -129,6 +75,36 @@ tr:hover {
 td {
   border: 1px solid #dddddd;
   padding: 0.8rem;
+  max-width: 100px;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+td:hover {
+  overflow-x: auto;
+}
+
+td::-webkit-scrollbar {
+  height: 4px;
+  display: none; /* Initially hidden */
+}
+
+td:hover::-webkit-scrollbar {
+  display: block; /* Visible on hover */
+}
+
+td::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+td::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+td::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 td .assignedTo {
@@ -140,10 +116,6 @@ td .assignedTo {
 table .actions {
   display: flex;
   gap: 0.5rem;
-}
-
-table .editing {
-  border: 1px solid blue;
 }
 
 /* Style the edit and delete buttons */
@@ -162,15 +134,9 @@ button:hover {
   background-color: #ccc;
 }
 
-/* Style the fixed bottom container */
-.fixed-container {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  background-color: #fff;
-  padding: 10px;
-  box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1);
+/* Style the pagination controls */
+.pagination-controls {
+  margin-top: 20px;
 }
 
 .paginationControls {
@@ -180,10 +146,10 @@ button:hover {
   width: 100%;
   background-color: #fff;
   padding: 10px;
-  box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-around;
-  z-index: 5;
+  z-index: -5;
 }
 
 .pending {

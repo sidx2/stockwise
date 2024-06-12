@@ -34,7 +34,7 @@ export class EmployeesTableComponent {
   onEdit(_id: string) {
     if (this.editing !== "-1" && this.editEmployeeForm.dirty) {
       this.editEmployeeForm.markAsPristine;
-      if(!confirm("Changes you made will be discarded!"))  return;
+      if(!confirm("Changes you made will be discarded!")) return;
     }
 
     this.editing = _id;

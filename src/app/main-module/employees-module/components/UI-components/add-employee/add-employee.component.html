@@ -45,6 +45,7 @@
         class="error-message"
       >
         <span *ngIf="addEmployeeForm.controls['email'].hasError('validEmail')">Please enter a valid email address.</span>
+        <span *ngIf="addEmployeeForm.controls['email'].hasError('userExists')">User with this email already exists.</span>
       </span>
     </div>
 

@@ -1,5 +1,4 @@
 /* Style the search input */
-
 :host {
   width: 90%;
   margin: 1rem auto;
@@ -22,7 +21,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index:5;
+  z-index: 5;
 }
 
 .modal-content {
@@ -49,8 +48,7 @@ button:hover {
   background-color: #ddd;
 }
 
-
-.employee_table{
+.employee_table {
   margin: auto;
   overflow-x: auto;
 }
@@ -61,12 +59,6 @@ table {
   margin: 0 auto;
   border-collapse: collapse;
   margin-bottom: 2rem;
-
-
-  input {
-    width: 200px;
-    text-align: left;
-  }
 }
 
 th {
@@ -83,6 +75,36 @@ tr:hover {
 td {
   border: 1px solid #dddddd;
   padding: 0.8rem;
+  max-width: 100px;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+td:hover {
+  overflow-x: auto;
+}
+
+td::-webkit-scrollbar {
+  height: 4px;
+  display: none; /* Initially hidden */
+}
+
+td:hover::-webkit-scrollbar {
+  display: block; /* Visible on hover */
+}
+
+td::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+td::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+td::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 td .assignedTo {

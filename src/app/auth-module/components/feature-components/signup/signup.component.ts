@@ -10,6 +10,7 @@ import { customValidators } from '../../../../shared-module/validators/customVal
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from '../../../../services/cookie.service';
 import { User } from '../../../../models/global';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,9 +21,10 @@ export class SignupComponent implements OnDestroy {
   signupForm = new FormGroup({
     orgName: new FormControl("", [Validators.required, Validators.minLength(3)]),
     name: new FormControl("", [Validators.required, Validators.minLength(3)]),
-    email: new FormControl("", [Validators.required, customValidators.validEmail]),
+    email: new FormControl("", [Validators.required, customValidators.validEmail], [customValidators.userExists(this.authService)]),
     password: new FormControl("", [Validators.required, customValidators.strongPassword])
   })
+  iconUrl = "https://cdn-icons-png.flaticon.com/512/7527/7527289.png"
 
   destroySubject = new Subject<void>();
 
@@ -32,6 +34,7 @@ export class SignupComponent implements OnDestroy {
     private cookieService: CookieService,
     private actions$: Actions,
     private toastr: ToastrService,
+    private authService: AuthService,
   ) {
     this.actions$.pipe(
       ofType(signupSuccess),

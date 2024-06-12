@@ -7,14 +7,14 @@ import { IStatusUpdated, Order } from '../../../models/order-history';
   styleUrl: './order-card.component.scss'
 })
 export class OrderCardComponent {
-  @Input() order!: Order
-  @Input() history!: Order[]
+  @Input() order!: Order;
+  @Input() history!: Order[];
 
   @Output() statusUpdated = new EventEmitter<IStatusUpdated>();
   @Output() deleteOrder = new EventEmitter<string>();
 
-  editingId: string = "-1"
-  m_status!: string
+  editingId: string = "-1";
+  m_status!: string;
 
   edit(_id: string, status: string) {
     if (_id == "-1") {

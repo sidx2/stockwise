@@ -19,7 +19,7 @@ import { User } from '../../../../models/global';
 })
 export class LoginComponent implements OnDestroy {
   destroySubject = new Subject<void>();
-
+  iconUrl = "https://cdn-icons-png.flaticon.com/512/7527/7527289.png"
   isLoading: boolean = false;
 
   loginForm = new FormGroup({

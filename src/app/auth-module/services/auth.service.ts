@@ -31,4 +31,8 @@ export class AuthService {
   changePassword(currPassword: string, newPassword: string) {
     return this.http.post(`${BASE_URL}/auth/changePassword`, { currPassword, newPassword });
   }
+
+  userExists(email: string) {
+    return this.http.post(`${BASE_URL}/auth/userExists`, { email });
+  }
 }

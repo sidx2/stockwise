@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IAddEmployee } from '../../../models/employee';
 import { customValidators } from '../../../../../shared-module/validators/customValidators';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../../../auth-module/services/auth.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -16,12 +17,13 @@ export class AddEmployeeComponent {
 
   addEmployeeForm = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.min(3), Validators.max(128)]),
-    email: new FormControl("", [Validators.required, customValidators.validEmail]),
+    email: new FormControl("", [Validators.required, customValidators.validEmail], [customValidators.userExists(this.authService)]),
     role: new FormControl("employee", [Validators.required]),
   })
 
   constructor(
     private toastr: ToastrService,
+    private authService: AuthService,
   ) { }
 
   getErrorMessage(controlName: string): string {
@@ -50,7 +52,7 @@ export class AddEmployeeComponent {
     if (!this.addEmployeeForm.valid) {
       for (const key of Object.keys(this.addEmployeeForm.value)) {
         const error = this.getErrorMessage(key)
-        this.toastr.error(`Invalid ${key}. ${error}`);
+        if (error) this.toastr.error(`Invalid ${key}. ${error}`);
       }
       return;
     }

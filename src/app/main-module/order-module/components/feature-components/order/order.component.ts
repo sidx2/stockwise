@@ -93,6 +93,7 @@ export class OrderComponent implements OnDestroy {
   }
 
   removeAll() {
+    if (!this.OrderFormArray.length) return;
     this.modalMessage = "Are you sure you want to delete all of the orders? This action cannot be undone."
     this.orderToRemove = -1;
     this.toggleModal();
@@ -146,7 +147,7 @@ export class OrderComponent implements OnDestroy {
       cart,
     }
 
-    this.store.dispatch(placeOrderRequest({ order }))
+    this.store.dispatch(placeOrderRequest({ order }));
     this.cleanForms();
   }
 
